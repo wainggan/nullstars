@@ -113,6 +113,8 @@ function struct_assign(_target, _assign) {
 	return _target;
 }
 
+/// @arg {id.DsList} _list
+/// @return Array<Any>
 function array_from_list(_list) {
 	var _array = array_create(ds_list_size(_list));
 	for (var i = 0; i < ds_list_size(_list); i++) {
@@ -121,11 +123,16 @@ function array_from_list(_list) {
 	return _array;
 }
 
+/// @arg {Real} _x
+/// @arg {Real} _y
+/// @arg {Any} _obj
+/// @arg {Bool} _ordered
+/// @return Array<Any>
 function instance_place_array(_x, _y, _obj, _ordered) {
-	var _list = ds_list_create();
-	instance_place_list(_x, _y, _obj, _list, _ordered);
+	static __list = ds_list_create();
+	ds_list_clear(__list);
+	instance_place_list(_x, _y, _obj, __list, _ordered);
 	var _array = array_from_list(_list);
-	ds_list_destroy(_list);
 	return _array;
 }
 

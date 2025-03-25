@@ -667,7 +667,7 @@ action_dashjump_wall = function(_key_dir, _wall_dir) {
 	
 };
 
-action_jump_bounce = function(_dir, _from_x, _from_y) {
+impl_jump_bounce = function(_dir, _from_x, _from_y) {
 	
 	actor_move_y(_from_y - y);
 	
@@ -688,7 +688,7 @@ action_jump_bounce = function(_dir, _from_x, _from_y) {
 	
 }
 
-event.add("bounce", action_jump_bounce);
+event.add("bounce", impl_jump_bounce);
 
 #endregion
 
