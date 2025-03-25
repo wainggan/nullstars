@@ -128,8 +128,8 @@ function MenuPageList(_width = 200) : MenuPage() constructor {
 					_x + _width - 8 + 4 + _pad_x,
 					_y + 8 + _pad_y,
 					list[current].description,
-					-1, (_width_t - 8 - 8 - 4) / _scale,
-					_scale, _scale, 0,
+					-1, (_width_t - 8 - 8) / _scale - _pad_x,
+					_scale, _scale, 0
 				);
 			}
 		}
@@ -149,7 +149,7 @@ function MenuPageList(_width = 200) : MenuPage() constructor {
 					_x + _pad_x,
 					_y + _pad_y + j * _option_pad,
 					">",
-					_scale, _scale, 0,
+					_scale, _scale, 0
 				);
 			_e.draw(
 				_x + _pad_x + 12 * _scale,
@@ -295,7 +295,7 @@ function MenuPageMap() : MenuPage() constructor {
 				HEIGHT / 2 + 0 + _c_y,
 				tween(Tween.Circ, other.anim),
 				tween(Tween.Circ, other.anim),
-				0, c_white, 1,
+				0, c_white, 1
 			);
 		}
 	
