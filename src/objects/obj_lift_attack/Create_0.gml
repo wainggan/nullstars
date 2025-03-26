@@ -54,6 +54,9 @@ reset = function(){
 	state.change(state_idle);
 	x = xstart;
 	y = ystart;
+	reset_polarity_x = 0;
+	reset_polarity_y = 0;
+	rest = true;
 	with pet {
 		x = other.x;
 		y = other.y;
@@ -71,6 +74,8 @@ state_idle = state.add()
 	
 	var _activate = false;
 	
+	pet.lift_x = 0;
+	pet.lift_y = 0;
 	
 	pet.mask_index = spr_none;
 	mask_index = sprite_index;
