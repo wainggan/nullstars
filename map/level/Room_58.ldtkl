@@ -88,7 +88,27 @@
 			"seed": 9707316,
 			"overrideTilesetUid": null,
 			"gridTiles": [],
-			"entityInstances": []
+			"entityInstances": [
+				{
+					"__identifier": "obj_room_portal",
+					"__grid": [42,4],
+					"__pivot": [0,0],
+					"__tags": [ "SIZE_TILE", "flag" ],
+					"__tile": null,
+					"__smartColor": "#A22633",
+					"iid": "410cd840-e920-11ef-a4bb-c74f4bfcce4f",
+					"width": 288,
+					"height": 144,
+					"defUid": 579,
+					"px": [672,64],
+					"fieldInstances": [{ "__identifier": "background", "__type": "LocalEnum.Level_Background", "__value": "city", "__tile": null, "defUid": 580, "realEditorValues": [{
+						"id": "V_String",
+						"params": ["city"]
+					}] }],
+					"__worldX": 31920,
+					"__worldY": 9504
+				}
+			]
 		},
 		{
 			"__identifier": "Instances",
@@ -173,9 +193,9 @@
 					"defUid": 16,
 					"px": [528,176],
 					"fieldInstances": [
-						{ "__identifier": "target", "__type": "Point", "__value": { "cx": 33, "cy": 2 }, "__tile": null, "defUid": 17, "realEditorValues": [{
+						{ "__identifier": "target", "__type": "Point", "__value": { "cx": 33, "cy": 1 }, "__tile": null, "defUid": 17, "realEditorValues": [{
 							"id": "V_String",
-							"params": ["33,2"]
+							"params": ["33,1"]
 						}] },
 						{ "__identifier": "spd", "__type": "Float", "__value": 6, "__tile": null, "defUid": 18, "realEditorValues": [] },
 						{ "__identifier": "reliant", "__type": "Bool", "__value": false, "__tile": null, "defUid": 203, "realEditorValues": [] }
