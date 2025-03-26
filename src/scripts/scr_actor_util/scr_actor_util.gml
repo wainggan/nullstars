@@ -31,22 +31,38 @@ function actor_scan(_x, _y, _dir, _cap = 30) {
 }
 
 function actor_check(_x, _y, _dir, _target, _cap = undefined) {
+	return actor_check_scan(_x, _y, _dir, _target, _cap)[0];
+}
+
+/// exists for optimization.
+/// 
+/// @return Array<Real> [0]: Bool = if hit actor, [1]: { x: Real, y: Real } = scan data
+function actor_check_scan(_x, _y, _dir, _target, _cap = undefined) {
+	static __out = array_create(2);
+	
 	var _ = actor_scan(_x, _y, _dir, _cap);
+	__out[1] = _;
 	
 	var _x1 = min(_x, _.x) + 1;
 	var _y1 = min(_y, _.y) + 1;
 	var _x2 = max(_x + sprite_width, _.x + sprite_width) - 1;
 	var _y2 = max(_y + sprite_height, _.y + sprite_height) - 1;
+	
+	var _paranoia = __out;
 
 	with _target {
 		if rectangle_in_rectangle(
 			bbox_left, bbox_top,
 			bbox_right, bbox_bottom,
 			_x1, _y1, _x2, _y2
-		) return true;
+		) {
+			_paranoia[0] = true;
+			return _paranoia;
+		}
 	}
 	
-	return false;
+	__out[0] = false;
+	return __out;
 }
 
 function actor_stretch(_x1, _y1, _x2, _y2, _inst = self) {
