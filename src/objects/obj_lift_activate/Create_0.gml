@@ -41,6 +41,9 @@ state_idle = state.add()
 	
 	var _activate = false;
 	
+	lift_x = 0;
+	lift_y = 0;
+	
 	time -= 1;
 	if time < 0 with obj_player {
 		if riding(other) _activate = true;
