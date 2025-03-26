@@ -19,7 +19,7 @@ switch _di {
 	case 0:
 	case 2: {
 		_bbl = x + 8;
-		_bbr = y + sprite_width - 8;
+		_bbr = x + sprite_width - 8;
 		_bbt = max(_center_y - 16, y + 8);
 		_bbb = min(_center_y + 16, y + sprite_height - 8);
 		
