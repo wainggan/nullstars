@@ -11,7 +11,7 @@
 	"iid": "d5a16520-6280-11ee-ba61-ad454e9d2411",
 	"jsonVersion": "1.5.3",
 	"appBuildId": 473703,
-	"nextUid": 609,
+	"nextUid": 610,
 	"identifierStyle": "Free",
 	"toc": [
 		{
@@ -189,7 +189,7 @@
 					"levelIid": "ee2d9b90-9b00-11ef-ae8e-13f9eeaab133",
 					"layerIid": "ee2d9b93-9b00-11ef-ae8e-53063a77a79e",
 					"entityIid": "6205d520-9b00-11ef-ae8e-499008f9a68c"
-				}, "worldX": 28496, "worldY": 7344, "widPx": 32, "heiPx": 32, "fields": { "index": "none", "waypoint": true } },
+				}, "worldX": 32272, "worldY": 9952, "widPx": 32, "heiPx": 32, "fields": { "index": "none", "waypoint": true } },
 				{ "iids": {
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
 					"levelIid": "e8aa9a70-9b00-11ef-b1e1-e957588eb09d",
@@ -374,7 +374,7 @@
 					"levelIid": "ee2d9b90-9b00-11ef-ae8e-13f9eeaab133",
 					"layerIid": "ee2d9b93-9b00-11ef-ae8e-53063a77a79e",
 					"entityIid": "6d9175c0-9b00-11ef-ae8e-fbcec5a590e6"
-				}, "worldX": 28592, "worldY": 7184, "widPx": 16, "heiPx": 160, "fields": { "time": 8, "ref": {
+				}, "worldX": 32368, "worldY": 9792, "widPx": 16, "heiPx": 160, "fields": { "time": 8, "ref": {
 					"entityIid": "74ff77d0-9b00-11ef-ae8e-1d8ddf1a9582",
 					"layerIid": "ee2d9b93-9b00-11ef-ae8e-53063a77a79e",
 					"levelIid": "ee2d9b90-9b00-11ef-ae8e-13f9eeaab133",
@@ -513,7 +513,7 @@
 					"levelIid": "ee2d9b90-9b00-11ef-ae8e-13f9eeaab133",
 					"layerIid": "ee2d9b93-9b00-11ef-ae8e-53063a77a79e",
 					"entityIid": "74ff77d0-9b00-11ef-ae8e-1d8ddf1a9582"
-				}, "worldX": 28992, "worldY": 7104, "widPx": 176, "heiPx": 16, "fields" : {} },
+				}, "worldX": 32768, "worldY": 9728, "widPx": 176, "heiPx": 16, "fields" : {} },
 				{ "iids": {
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
 					"levelIid": "e8aa9a70-9b00-11ef-b1e1-e957588eb09d",
@@ -14428,10 +14428,10 @@
 			"identifier": "Room_47",
 			"iid": "ee2d9b90-9b00-11ef-ae8e-13f9eeaab133",
 			"uid": 589,
-			"worldX": 28432,
-			"worldY": 6736,
+			"worldX": 32240,
+			"worldY": 9344,
 			"worldDepth": 0,
-			"pxWid": 1152,
+			"pxWid": 1120,
 			"pxHei": 752,
 			"__bgColor": "#2D2A30",
 			"bgColor": null,
@@ -14457,7 +14457,7 @@
 				{ "__identifier": "flags", "__type": "Array<LocalEnum.Level_Flags>", "__value": [], "__tile": null, "defUid": 451, "realEditorValues": [] }
 			],
 			"layerInstances": null,
-			"__neighbours": []
+			"__neighbours": [ { "levelIid": "8e2a7d10-e920-11ef-a4bb-ab1e6620c716", "dir": "o" }, { "levelIid": "a3e102a0-e920-11ef-a648-578dd143f44b", "dir": "w" } ]
 		},
 		{
 			"identifier": "Room_48",
@@ -14737,7 +14737,7 @@
 				{ "__identifier": "flags", "__type": "Array<LocalEnum.Level_Flags>", "__value": [], "__tile": null, "defUid": 451, "realEditorValues": [] }
 			],
 			"layerInstances": null,
-			"__neighbours": [ { "levelIid": "fe74e260-e920-11ef-a648-033e513af496", "dir": "n" }, { "levelIid": "047c2de0-e920-11ef-a648-759aedd6ba9c", "dir": "s" }, { "levelIid": "a3e102a0-e920-11ef-a648-578dd143f44b", "dir": "s" } ]
+			"__neighbours": [ { "levelIid": "fe74e260-e920-11ef-a648-033e513af496", "dir": "n" }, { "levelIid": "047c2de0-e920-11ef-a648-759aedd6ba9c", "dir": "s" }, { "levelIid": "a3e102a0-e920-11ef-a648-578dd143f44b", "dir": "s" }, { "levelIid": "8e2a7d10-e920-11ef-a4bb-ab1e6620c716", "dir": "e" } ]
 		},
 		{
 			"identifier": "Room_56",
@@ -14816,8 +14816,8 @@
 			"worldX": 31248,
 			"worldY": 9440,
 			"worldDepth": 0,
-			"pxWid": 960,
-			"pxHei": 544,
+			"pxWid": 992,
+			"pxHei": 560,
 			"__bgColor": "#2D2A30",
 			"bgColor": null,
 			"useAutoIdentifier": true,
@@ -14842,7 +14842,42 @@
 				{ "__identifier": "flags", "__type": "Array<LocalEnum.Level_Flags>", "__value": [], "__tile": null, "defUid": 451, "realEditorValues": [] }
 			],
 			"layerInstances": null,
-			"__neighbours": [ { "levelIid": "b4572070-9b00-11ef-8881-d96bcd9e8e89", "dir": "n" }, { "levelIid": "047c2de0-e920-11ef-a648-759aedd6ba9c", "dir": "w" } ]
+			"__neighbours": [ { "levelIid": "ee2d9b90-9b00-11ef-ae8e-13f9eeaab133", "dir": "e" }, { "levelIid": "b4572070-9b00-11ef-8881-d96bcd9e8e89", "dir": "n" }, { "levelIid": "047c2de0-e920-11ef-a648-759aedd6ba9c", "dir": "w" }, { "levelIid": "8e2a7d10-e920-11ef-a4bb-ab1e6620c716", "dir": "n" } ]
+		},
+		{
+			"identifier": "Room_59",
+			"iid": "8e2a7d10-e920-11ef-a4bb-ab1e6620c716",
+			"uid": 609,
+			"worldX": 31536,
+			"worldY": 8704,
+			"worldDepth": 0,
+			"pxWid": 960,
+			"pxHei": 736,
+			"__bgColor": "#2D2A30",
+			"bgColor": null,
+			"useAutoIdentifier": true,
+			"bgRelPath": null,
+			"bgPos": null,
+			"bgPivotX": 0.5,
+			"bgPivotY": 0.5,
+			"__smartColor": "#F0CEB1",
+			"__bgPos": null,
+			"externalRelPath": "level/Room_59.ldtkl",
+			"fieldInstances": [
+				{ "__identifier": "preset", "__type": "LocalEnum.Level_Preset", "__value": "area1_2", "__tile": null, "defUid": 506, "realEditorValues": [{
+					"id": "V_String",
+					"params": ["area1_2"]
+				}] },
+				{ "__identifier": "area", "__type": "LocalEnum.Level_Area", "__value": null, "__tile": null, "defUid": 591, "realEditorValues": [] },
+				{ "__identifier": "background", "__type": "LocalEnum.Level_Background", "__value": null, "__tile": null, "defUid": 152, "realEditorValues": [] },
+				{ "__identifier": "music", "__type": "LocalEnum.Level_Music", "__value": null, "__tile": null, "defUid": 153, "realEditorValues": [] },
+				{ "__identifier": "biome", "__type": "LocalEnum.Level_Biome", "__value": null, "__tile": null, "defUid": 154, "realEditorValues": [] },
+				{ "__identifier": "lut_grade", "__type": "LocalEnum.Level_Grade", "__value": null, "__tile": null, "defUid": 504, "realEditorValues": [] },
+				{ "__identifier": "lut_mix", "__type": "Float", "__value": null, "__tile": null, "defUid": 502, "realEditorValues": [] },
+				{ "__identifier": "flags", "__type": "Array<LocalEnum.Level_Flags>", "__value": [], "__tile": null, "defUid": 451, "realEditorValues": [] }
+			],
+			"layerInstances": null,
+			"__neighbours": [ { "levelIid": "ee2d9b90-9b00-11ef-ae8e-13f9eeaab133", "dir": "o" }, { "levelIid": "b4572070-9b00-11ef-8881-d96bcd9e8e89", "dir": "w" }, { "levelIid": "a3e102a0-e920-11ef-a648-578dd143f44b", "dir": "s" } ]
 		}
 	],
 	"worlds": [],
