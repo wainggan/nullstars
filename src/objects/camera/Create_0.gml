@@ -17,23 +17,24 @@ shake_damp = 1;
 
 update = function(_anim = true) {
 	
-	var _cam_w = camera_get_view_width(view_camera[0]),
-	_cam_h = camera_get_view_height(view_camera[0])
+	var _cam = game_camera_get();
 
 	if instance_exists(target) {
-		var _out = {
+		static __out = {
 			x: x, y: y
 		};
-		target.cam(_out); // bandage
-		target_x = _out.x;
-		target_y = _out.y;
+		__out.x = x;
+		__out.y = y;
+		target.cam(__out); // bandage
+		target_x = __out.x;
+		target_y = __out.y;
 	}
 
 	var _tx = target_x, _ty = target_y;
 	var _ts = 0.025;
-
+	
 	var _weights = collision_point(_tx, _ty, obj_camera_focus, true, true);
-
+	
 	if _weights != noone {
 		var _dist = point_distance(target_x, target_y, _weights.x, _weights.y);
 		_tx = lerp(_tx, _weights.x, max(0, 1 - power(_dist / _weights.sprite_width * 2, _weights.weight)));
@@ -43,69 +44,140 @@ update = function(_anim = true) {
 			_ty = _weights.y;
 		}
 	}
-
-	_weights = noone;
-	var _inside = true;
-
+	
+	var _scale = 128;
+	
+	var _f = 420;
+	var _final_tx = 0;
+	var _final_ty = 0;
+	
 	with obj_camera_room {
-		var _check = collision_point(_tx, _ty, self, true, false);
-		if _check != noone && (_weights == noone || _check.priority > _weights.priority) {
-			_weights = _check;
-			_inside = true;
-		} else {
-			continue;
-		}
-		if !point_in_rectangle(
-			_tx, _ty, 
-			x + crop_x1 * TILESIZE, y + crop_y1 * TILESIZE, 
-			x + sprite_width - crop_x2 * TILESIZE,
-			y + sprite_height - crop_y2 * TILESIZE
-		) _inside = false;
-	}
-
-	var _changed = false;
-
-	if _weights != noone {
-	
-	
-		if _inside && _weights.unlock_x {
-			if _weights.sprite_width <= _cam_w {
-				_tx = _weights.x + _weights.sprite_width / 2;
+		var _ux = (_tx - x) / sprite_width;
+		var _uy = (_ty - y) / sprite_height;
+		
+		var _d = sdf(_tx, _ty, x, y, x + sprite_width, y + sprite_height) / _scale;
+		var _dm = max(abs(_ux), abs(_uy));
+		
+		var _s = 0.25;
+		
+		var _p = _s <= 0 ? hmin(_f, _d) : smin(_f, _d, _s);
+		_f = _p[0];
+		
+		var _self_tx = _tx;
+		if unlock_x {
+			if sprite_width <= _cam.w {
+				_self_tx = x + sprite_width / 2;
 			} else {
-				_tx = clamp(_tx, _weights.x + _cam_w / 2, _weights.x + _weights.sprite_width - _cam_w / 2)
+				_self_tx = clamp(_tx, x + _cam.w / 2, x + sprite_width - _cam.w / 2);
 			}
-			_changed = true;
 		}
-	
-		if _inside && _weights.unlock_y {
-			if _weights.sprite_height <= _cam_h {
-				_ty = _weights.y + _weights.sprite_height / 2;
+		var _self_ty = _ty;
+		if unlock_y {
+			if sprite_height <= _cam.h {
+				_self_ty = y + sprite_height / 2;
 			} else {
-				_ty = clamp(_ty, _weights.y + _cam_h / 2, _weights.y + _weights.sprite_height - _cam_h / 2)
+				_self_ty = clamp(_ty, y + _cam.h / 2, y + sprite_height - _cam.h / 2);
 			}
-			_changed = true;
-		} 
+		}
+		
+		_final_tx = lerp(_final_tx, _self_tx, _p[1]);
+		_final_ty = lerp(_final_ty, _self_ty, _p[1]);
+	}
 	
+	var _k = 1;
+	with obj_camera_room {
+		var _d = (sdf(
+				_tx, _ty,
+				x + crop_x1 * TILESIZE, y + crop_y1 * TILESIZE,
+				x + sprite_width - crop_x2 * TILESIZE,
+				y + sprite_height - crop_y2 * TILESIZE
+			) - _scale) / _scale;
+		_k -= power(clamp(-_d, 0, 1), 2);
 	}
-
-	if !_changed {
-		_weights = noone;
-	}
-
-	roomsnap_cooldown -= 1;
-	if roomsnap_last != _weights || roomsnap_last_inside != _changed {
-		roomsnap_timer = 1;
-	}
-	roomsnap_last = _weights
-	roomsnap_last_inside = _changed;
+	_k = max(_k, 0);
 	
-	roomsnap_timer = approach(roomsnap_timer, 0, 0.08);
-	_ts = lerp(_ts, 0.01, roomsnap_timer);
-
-	// bad idea
-	if target == obj_player_death {
-		_ts = 0.8
-	}
+	_final_tx = lerp(_final_tx, _tx, _k);
+	_final_ty = lerp(_final_ty, _ty, _k);
+	
+	_tx = _final_tx;
+	_ty = _final_ty;
+	
+	
+//
+	//var _weights = collision_point(_tx, _ty, obj_camera_focus, true, true);
+//
+	//if _weights != noone {
+		//var _dist = point_distance(target_x, target_y, _weights.x, _weights.y);
+		//_tx = lerp(_tx, _weights.x, max(0, 1 - power(_dist / _weights.sprite_width * 2, _weights.weight)));
+		//_ty = lerp(_ty, _weights.y, max(0, 1 - power(_dist / _weights.sprite_height * 2, _weights.weight)));
+		//if _weights.force {
+			//_tx = _weights.x;
+			//_ty = _weights.y;
+		//}
+	//}
+//
+	//_weights = noone;
+	//var _inside = true;
+//
+	//with obj_camera_room {
+		//var _check = collision_point(_tx, _ty, self, true, false);
+		//if _check != noone && (_weights == noone || _check.priority > _weights.priority) {
+			//_weights = _check;
+			//_inside = true;
+		//} else {
+			//continue;
+		//}
+		//if !point_in_rectangle(
+			//_tx, _ty, 
+			//x + crop_x1 * TILESIZE, y + crop_y1 * TILESIZE, 
+			//x + sprite_width - crop_x2 * TILESIZE,
+			//y + sprite_height - crop_y2 * TILESIZE
+		//) _inside = false;
+	//}
+//
+	//var _changed = false;
+//
+	//if _weights != noone {
+	//
+	//
+		//if _inside && _weights.unlock_x {
+			//if _weights.sprite_width <= _cam_w {
+				//_tx = _weights.x + _weights.sprite_width / 2;
+			//} else {
+				//_tx = clamp(_tx, _weights.x + _cam_w / 2, _weights.x + _weights.sprite_width - _cam_w / 2)
+			//}
+			//_changed = true;
+		//}
+	//
+		//if _inside && _weights.unlock_y {
+			//if _weights.sprite_height <= _cam_h {
+				//_ty = _weights.y + _weights.sprite_height / 2;
+			//} else {
+				//_ty = clamp(_ty, _weights.y + _cam_h / 2, _weights.y + _weights.sprite_height - _cam_h / 2)
+			//}
+			//_changed = true;
+		//} 
+	//
+	//}
+//
+	//if !_changed {
+		//_weights = noone;
+	//}
+//
+	//roomsnap_cooldown -= 1;
+	//if roomsnap_last != _weights || roomsnap_last_inside != _changed {
+		//roomsnap_timer = 1;
+	//}
+	//roomsnap_last = _weights
+	//roomsnap_last_inside = _changed;
+	//
+	//roomsnap_timer = approach(roomsnap_timer, 0, 0.08);
+	//_ts = lerp(_ts, 0.01, roomsnap_timer);
+//
+	//// bad idea
+	//if target == obj_player_death {
+		//_ts = 0.8
+	//}
 
 	/*
 	var _w = room_width, _h = room_height;
@@ -151,8 +223,8 @@ update = function(_anim = true) {
 
 	camera_set_view_pos(
 		view_camera[0], 
-		floor(x - _cam_w / 2) + _shake_x, 
-		floor(y - _cam_h / 2) + _shake_y
+		floor(x - _cam.w / 2) + _shake_x, 
+		floor(y - _cam.h / 2) + _shake_y
 	);
 
 };
