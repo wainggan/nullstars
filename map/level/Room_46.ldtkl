@@ -1080,7 +1080,40 @@
 			"seed": 6521318,
 			"overrideTilesetUid": null,
 			"gridTiles": [],
-			"entityInstances": []
+			"entityInstances": [
+				{
+					"__identifier": "obj_spike_bubble",
+					"__grid": [25,2],
+					"__pivot": [0.5,0.5],
+					"__tags": ["spike"],
+					"__tile": null,
+					"__smartColor": "#85FF6A",
+					"iid": "d724eef0-e920-11ef-a4bb-c7b2dd801864",
+					"width": 48,
+					"height": 48,
+					"defUid": 272,
+					"px": [408,40],
+					"fieldInstances": [],
+					"__worldX": 27368,
+					"__worldY": 8616
+				},
+				{
+					"__identifier": "obj_spike_bubble",
+					"__grid": [28,3],
+					"__pivot": [0.5,0.5],
+					"__tags": ["spike"],
+					"__tile": null,
+					"__smartColor": "#85FF6A",
+					"iid": "d7e3d220-e920-11ef-a4bb-db273f8d2070",
+					"width": 48,
+					"height": 48,
+					"defUid": 272,
+					"px": [456,56],
+					"fieldInstances": [],
+					"__worldX": 27416,
+					"__worldY": 8632
+				}
+			]
 		},
 		{
 			"__identifier": "DecorUnder",
