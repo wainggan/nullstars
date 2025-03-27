@@ -2,6 +2,7 @@
 event_inherited();
 
 trigger_setup();
+glue_parent_setup();
 
 pet = instance_create_layer(x, y, layer, obj_Solid, {
 	image_xscale: sprite_width, image_yscale: sprite_height
@@ -54,6 +55,7 @@ reset = function(){
 	state.change(state_idle);
 	x = xstart;
 	y = ystart;
+	glue_parent_moved(x, y);
 	reset_polarity_x = 0;
 	reset_polarity_y = 0;
 	rest = true;
@@ -139,6 +141,7 @@ state_active = state.add()
 		game_camera_set_shake(4, 0.4)
 		state.change(state_retract);
 	});
+	glue_parent_moved(x, y);
 	
 	pet.mask_index = pet.sprite_index;
 	mask_index = spr_none;
@@ -180,6 +183,7 @@ state_retract = state.add()
 			game_camera_set_shake(2, 0.4);
 			state.change(state_idle);
 		});
+		glue_parent_moved(x, y);
 		
 		pet.mask_index = pet.sprite_index;
 		mask_index = spr_none;
@@ -197,6 +201,7 @@ state_retract = state.add()
 		
 		actor_move_x(start_x - x);
 		actor_move_y(start_y - y);
+		glue_parent_moved(x, y);
 		
 		pet.mask_index = pet.sprite_index;
 		mask_index = spr_none;

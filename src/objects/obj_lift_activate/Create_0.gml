@@ -29,6 +29,7 @@ reset = function(){
 	state.change(state_idle);
 	x = xstart;
 	y = ystart;
+	glue_parent_moved(x, y);
 }
 
 state = new State();
