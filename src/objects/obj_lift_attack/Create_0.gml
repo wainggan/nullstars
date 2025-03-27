@@ -146,7 +146,7 @@ state_active = state.add()
 	pet.mask_index = pet.sprite_index;
 	mask_index = spr_none;
 	
-	with pet solid_move(other.x - x, other.y - y)
+	with pet solid_move(other.x - x, other.y - y, , other.x_vel, other.y_vel);
 	
 })
 
@@ -188,7 +188,7 @@ state_retract = state.add()
 		pet.mask_index = pet.sprite_index;
 		mask_index = spr_none;
 		
-		with pet solid_move(other.x - x, other.y - y)
+		with pet solid_move(other.x - x, other.y - y, , other.x_vel, other.y_vel);
 	}
 	
 	if (sign(x - start_x) != reset_polarity_x)
@@ -206,7 +206,7 @@ state_retract = state.add()
 		pet.mask_index = pet.sprite_index;
 		mask_index = spr_none;
 		
-		with pet solid_move(other.x - x, other.y - y)
+		with pet solid_move(other.x - x, other.y - y, , 0, 0);
 		
 		state.change(state_idle)
 	}

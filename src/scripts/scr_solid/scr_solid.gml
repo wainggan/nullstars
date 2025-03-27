@@ -1,5 +1,15 @@
 
-function solid_move(_xv, _yv, _lift = true) {
+/// moves a solid, moving any actors that are in the way or are "riding" the solid.
+/// when an actor is moved and `_lift` is true, the actor's `lift_#` variables are
+/// set to `_xv` and `_yv`. if `_lift_x` != undefined, then `_xv` and `_yv` are set to
+/// `_lift_x` and `_lift_y` respectively.
+/// 
+/// @arg {Real} _xv
+/// @arg {Real} _yv
+/// @arg {Bool} [_lift] true by default.
+/// @arg {Real} [_lift_x]
+/// @arg {Real} [_lift_y]
+function solid_move(_xv, _yv, _lift = true, _lift_x = undefined, _lift_y = undefined) {
 	
 	static __riding = [];
 	array_delete(__riding, 0, array_length(__riding));
@@ -11,8 +21,13 @@ function solid_move(_xv, _yv, _lift = true) {
 	y_rem += _yv;
 	
 	if _lift {
-		lift_x = _xv;
-		lift_y = _yv;
+		if _lift_x != undefined {
+			lift_x = _lift_x;
+			lift_y = _lift_y;
+		} else {
+			lift_x = _xv;
+			lift_y = _yv;
+		}
 	}
 	
 	var _moveX = round(x_rem);
