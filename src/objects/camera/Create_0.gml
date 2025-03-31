@@ -52,8 +52,7 @@ update = function(_anim = true) {
 	var _final_ty = 0;
 	
 	with obj_camera_room {
-		
-		var _d = sdf(_tx, _ty, x, y, x + sprite_width, y + sprite_height) / sqrt(_scale);
+		var _d = sdf(_tx, _ty, x, y, x + sprite_width, y + sprite_height) / sqrt(_scale * 2);
 		
 		var _s = 1;
 		
