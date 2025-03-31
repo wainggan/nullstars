@@ -52,13 +52,10 @@ update = function(_anim = true) {
 	var _final_ty = 0;
 	
 	with obj_camera_room {
-		var _ux = (_tx - x) / sprite_width;
-		var _uy = (_ty - y) / sprite_height;
 		
-		var _d = sdf(_tx, _ty, x, y, x + sprite_width, y + sprite_height) / _scale;
-		var _dm = max(abs(_ux), abs(_uy));
+		var _d = sdf(_tx, _ty, x, y, x + sprite_width, y + sprite_height) / sqrt(_scale);
 		
-		var _s = 0.25;
+		var _s = 1;
 		
 		var _p = _s <= 0 ? hmin(_f, _d) : smin(_f, _d, _s);
 		_f = _p[0];
