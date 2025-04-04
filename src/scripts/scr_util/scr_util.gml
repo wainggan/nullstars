@@ -176,6 +176,75 @@ function array_ref_create(_array, _index) {
 	}
 }
 
+/// smooth min.
+/// finds the minimum between _a and _b, smoothed by _k.
+/// 
+/// returns 2 values. [0] is the minimum, and [1] is a number
+/// from 0-1 representing how much of _a or _b is in the minimum.
+/// array must be used before another call to smin().
+/// @arg {Real} _a
+/// @arg {Real} _b
+/// @arg {Real} _k
+/// @return Array<Real>
+function smin(_a, _b, _k) {
+	static __out = array_create(2);
+	
+	var _h = 1 - min(abs(_a - _b) / (6 * _k), 1);
+	var _w = power(_h, 3);
+	var _m = _w * 0.5;
+	var _s = _w * _k;
+	
+	if _a < _b {
+		__out[0] = _a - _s;
+		__out[1] = _m;
+		return __out;
+	} else {
+		__out[0] = _b - _s;
+		__out[1] = 1 - _m;
+		return __out;
+	}
+}
+
+/// hard min.
+/// finds the minimum between _a and _b
+/// 
+/// similar api to smin(), for utility.
+/// 
+/// @arg {Real} _a
+/// @arg {Real} _b
+/// 
+/// @return Array<Real>
+function hmin(_a, _b) {
+	static __out = array_create(2);
+	
+	if _a < _b {
+		__out[0] = _a;
+		__out[1] = 0;
+		return __out;
+	} else {
+		__out[0] = _b;
+		__out[1] = 1;
+		return __out;
+	}
+}
+
+/// rectangle sdf function.
+/// 
+/// @arg {Real} _px point x
+/// @arg {Real} _py point y
+/// @arg {Real} _rx0 rectangle left x
+/// @arg {Real} _ry0 rectangle upper y
+/// @arg {Real} _rx1 rectangle right x
+/// @arg {Real} _ry1 rectangle lower y
+/// 
+/// @return Real
+function sdf(_px, _py, _rx0, _ry0, _rx1, _ry1) {
+	var _dx = max(_rx0 - _px, _px - _rx1);
+	var _dy = max(_ry0 - _py, _py - _ry1);
+	var _dd = min(0.0, max(_dx, _dy));
+	return sqrt(power(max(0, _dx), 2) + power(max(0, _dy), 2)) + _dd;
+}
+
 function draw_sprite_tiled_area(_sprite, _subimg, _xx, _yy, _x1, _y1, _x2, _y2) {
 	draw_sprite_tiled_area_ext(_sprite, _subimg, _xx, _yy, _x1, _y1, _x2, _y2, c_white, 1);
 }
