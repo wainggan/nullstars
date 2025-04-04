@@ -29,6 +29,7 @@ reset = function(){
 	state.change(state_idle);
 	x = xstart;
 	y = ystart;
+	glue_parent_moved(x, y);
 }
 
 state = new State();
@@ -40,6 +41,9 @@ state_idle = state.add()
 .set("step", function(){
 	
 	var _activate = false;
+	
+	lift_x = 0;
+	lift_y = 0;
 	
 	time -= 1;
 	if time < 0 with obj_player {

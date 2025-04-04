@@ -1,3 +1,12 @@
+/*
+ * trampoline object
+ * 
+ * defines a "bounce" event, as follows:
+ *     function (_dir, _from_x, _from_y);
+ * `_dir` defines what direction the spring is bouncing to. 0 is up
+ * `_from_x` defines where the object should be snapped to. if _dir == 0, this is meaningless.
+ * `_from_y` defines where the object should be snapped to. if _dir != 0, this is meaningless.
+*/
 
 event_inherited()
 
@@ -7,4 +16,5 @@ glue_child_set_move(function (_x, _y) {
 	y = _y;
 });
 
-boxable = [obj_ball, obj_box] // @todo: need to fix
+cache_actors = ds_list_create();
+

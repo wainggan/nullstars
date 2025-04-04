@@ -113,6 +113,8 @@ function struct_assign(_target, _assign) {
 	return _target;
 }
 
+/// @arg {id.DsList} _list
+/// @return Array<Any>
 function array_from_list(_list) {
 	var _array = array_create(ds_list_size(_list));
 	for (var i = 0; i < ds_list_size(_list); i++) {
@@ -121,11 +123,16 @@ function array_from_list(_list) {
 	return _array;
 }
 
+/// @arg {Real} _x
+/// @arg {Real} _y
+/// @arg {Any} _obj
+/// @arg {Bool} _ordered
+/// @return Array<Any>
 function instance_place_array(_x, _y, _obj, _ordered) {
-	var _list = ds_list_create();
-	instance_place_list(_x, _y, _obj, _list, _ordered);
+	static __list = ds_list_create();
+	ds_list_clear(__list);
+	instance_place_list(_x, _y, _obj, __list, _ordered);
 	var _array = array_from_list(_list);
-	ds_list_destroy(_list);
 	return _array;
 }
 
@@ -238,4 +245,53 @@ function sdf(_px, _py, _rx0, _ry0, _rx1, _ry1) {
 	return sqrt(power(max(0, _dx), 2) + power(max(0, _dy), 2)) + _dd;
 }
 
+function draw_sprite_tiled_area(_sprite, _subimg, _xx, _yy, _x1, _y1, _x2, _y2) {
+	draw_sprite_tiled_area_ext(_sprite, _subimg, _xx, _yy, _x1, _y1, _x2, _y2, c_white, 1);
+}
+
+// https://gmlscripts.com/script/draw_sprite_tiled_area
+function draw_sprite_tiled_area_ext(_sprite, _subimg, _xx, _yy, _x1, _y1, _x2, _y2, _colour, _alpha) {
+	
+	var _sw = sprite_get_width(_sprite);
+	var _sh = sprite_get_height(_sprite);
+
+	var i = _x1 - ((_x1 mod _sw) - (_xx mod _sw)) - _sw * +((_x1 mod _sw) < (_xx mod _sw));
+	var j = _y1 - ((_y1 mod _sh) - (_yy mod _sh)) - _sh * +((_y1 mod _sh) < (_yy mod _sh)); 
+	var jj = j;
+
+	for(; i <= _x2; i += _sw) {
+		for(; j <= _y2; j += _sh) {
+
+			var _left = 0;
+			if i <= _x1
+				_left = _x1 - i;
+			else
+				_left = 0;
+			var _x = i + _left;
+
+			var _top = 0;
+			if j <= _y1
+				_top = _y1 - j;
+			else
+				_top = 0;
+			var _y = j + _top;
+
+			var _width = 0;
+			if _x2 <= i + _sw
+				_width = ((_sw) - (i + _sw - _x2) + 1) - _left;
+			else
+				_width = _sw - _left;
+
+			var _height = 0;
+			if _y2 <= j + _sh
+				_height = ((_sh) - (j + _sh - _y2) + 1) - _top;
+			else
+				_height = _sh - _top;
+
+			draw_sprite_part_ext(_sprite, _subimg, _left, _top, _width, _height, _x, _y, 1, 1, _colour, _alpha);
+		}
+		j = jj;
+	}
+	
+}
 
