@@ -102,9 +102,9 @@
 					"defUid": 6,
 					"px": [0,0],
 					"fieldInstances": [
-						{ "__identifier": "crop_x1", "__type": "Int", "__value": 5, "__tile": null, "defUid": 48, "realEditorValues": [{ "id": "V_Int", "params": [5] }] },
+						{ "__identifier": "crop_x1", "__type": "Int", "__value": 0, "__tile": null, "defUid": 48, "realEditorValues": [null] },
 						{ "__identifier": "crop_x2", "__type": "Int", "__value": 0, "__tile": null, "defUid": 52, "realEditorValues": [] },
-						{ "__identifier": "crop_y1", "__type": "Int", "__value": 0, "__tile": null, "defUid": 50, "realEditorValues": [] },
+						{ "__identifier": "crop_y1", "__type": "Int", "__value": 5, "__tile": null, "defUid": 50, "realEditorValues": [{ "id": "V_Int", "params": [5] }] },
 						{ "__identifier": "crop_y2", "__type": "Int", "__value": 0, "__tile": null, "defUid": 51, "realEditorValues": [] },
 						{ "__identifier": "unlock_x", "__type": "Bool", "__value": true, "__tile": null, "defUid": 59, "realEditorValues": [] },
 						{ "__identifier": "unlock_y", "__type": "Bool", "__value": true, "__tile": null, "defUid": 60, "realEditorValues": [] },
