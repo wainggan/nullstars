@@ -51,12 +51,23 @@ update = function(_anim = true) {
 	var _final_tx = 0;
 	var _final_ty = 0;
 	
+	var _k = 1;
+	
 	with obj_camera_room {
-		var _d = sdf(_tx, _ty, x, y, x + sprite_width, y + sprite_height) / sqrt(_scale * 2);
+		var _d = sdf(
+			_tx, _ty,
+			x + crop_x1 * TILESIZE,
+			y + crop_y1 * TILESIZE,
+			x + sprite_width - crop_x2 * TILESIZE,
+			y + sprite_height - crop_y2 * TILESIZE
+		);
+		
+		var _d_s = _d / sqrt(_scale * 2);
+		var _d_k = (_d - _scale) / _scale;
 		
 		var _s = 1;
 		
-		var _p = _s <= 0 ? hmin(_f, _d) : smin(_f, _d, _s);
+		var _p = _s <= 0 ? hmin(_f, _d_s) : smin(_f, _d_s, _s);
 		_f = _p[0];
 		
 		var _self_tx = _tx;
@@ -78,17 +89,8 @@ update = function(_anim = true) {
 		
 		_final_tx = lerp(_final_tx, _self_tx, _p[1]);
 		_final_ty = lerp(_final_ty, _self_ty, _p[1]);
-	}
-	
-	var _k = 1;
-	with obj_camera_room {
-		var _d = (sdf(
-				_tx, _ty,
-				x + crop_x1 * TILESIZE, y + crop_y1 * TILESIZE,
-				x + sprite_width - crop_x2 * TILESIZE,
-				y + sprite_height - crop_y2 * TILESIZE
-			) - _scale) / _scale;
-		_k -= power(clamp(-_d, 0, 1), 2);
+		
+		_k -= power(clamp(-_d_k, 0, 1), 2);
 	}
 	_k = max(_k, 0);
 	
