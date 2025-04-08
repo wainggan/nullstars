@@ -154,6 +154,24 @@ if config.light_method {
 		
 		// 2nd pass: draw shadows on top of light groups
 		
+		if config.light_shadow_dynamic {
+			vertex_begin(dynamic_vb, level_get_vf_shadows());
+			
+			// todo: ??
+			with obj_Solid {
+				if object_index == obj_ss_up continue;
+				if object_index == obj_ss_down continue;
+				if object_index == obj_ss_left continue;
+				if object_index == obj_ss_right continue;
+				if collidable {
+					util_vertex_buffer_quad(other.dynamic_vb, bbox_left, bbox_top, bbox_right, bbox_bottom);
+					util_vertex_buffer_quad(other.dynamic_vb, bbox_left, bbox_bottom, bbox_right, bbox_top);
+				}
+			}
+			
+			vertex_end(dynamic_vb);
+		}
+		
 		var _matrix = matrix_build_identity();
 		var _matrix_ind = util_matrix_get_alignment();
 	
@@ -183,6 +201,10 @@ if config.light_method {
 					if _lvl.shadow_vb != -1 {
 						vertex_submit(_lvl.shadow_vb, pr_trianglelist, -1);
 					}
+				}
+				
+				if other.config.light_shadow_dynamic {
+					vertex_submit(other.dynamic_vb, pr_trianglelist, -1);
 				}
 			}
 		}
