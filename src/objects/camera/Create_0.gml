@@ -65,7 +65,7 @@ update = function(_anim = true) {
 		var _d_s = _d / sqrt(_scale * 2);
 		var _d_k = (_d - _scale) / _scale;
 		
-		var _s = 1;
+		var _s = weight;
 		
 		var _p = _s <= 0 ? hmin(_f, _d_s) : smin(_f, _d_s, _s);
 		_f = _p[0];

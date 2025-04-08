@@ -114,7 +114,7 @@
 						{ "__identifier": "crop_y2", "__type": "Int", "__value": 0, "__tile": null, "defUid": 51, "realEditorValues": [] },
 						{ "__identifier": "unlock_x", "__type": "Bool", "__value": true, "__tile": null, "defUid": 59, "realEditorValues": [null] },
 						{ "__identifier": "unlock_y", "__type": "Bool", "__value": true, "__tile": null, "defUid": 60, "realEditorValues": [null] },
-						{ "__identifier": "priority", "__type": "Int", "__value": 0, "__tile": null, "defUid": 477, "realEditorValues": [] }
+						{ "__identifier": "weight", "__type": "Float", "__value": 0.5, "__tile": null, "defUid": 617, "realEditorValues": [] }
 					],
 					"__worldX": 464,
 					"__worldY": 16
@@ -176,7 +176,7 @@
 						{ "__identifier": "crop_y2", "__type": "Int", "__value": 0, "__tile": null, "defUid": 51, "realEditorValues": [] },
 						{ "__identifier": "unlock_x", "__type": "Bool", "__value": true, "__tile": null, "defUid": 59, "realEditorValues": [] },
 						{ "__identifier": "unlock_y", "__type": "Bool", "__value": true, "__tile": null, "defUid": 60, "realEditorValues": [] },
-						{ "__identifier": "priority", "__type": "Int", "__value": 0, "__tile": null, "defUid": 477, "realEditorValues": [] }
+						{ "__identifier": "weight", "__type": "Float", "__value": 0.5, "__tile": null, "defUid": 617, "realEditorValues": [] }
 					],
 					"__worldX": 16,
 					"__worldY": 16
@@ -200,7 +200,7 @@
 						{ "__identifier": "crop_y2", "__type": "Int", "__value": 0, "__tile": null, "defUid": 51, "realEditorValues": [null] },
 						{ "__identifier": "unlock_x", "__type": "Bool", "__value": true, "__tile": null, "defUid": 59, "realEditorValues": [null] },
 						{ "__identifier": "unlock_y", "__type": "Bool", "__value": true, "__tile": null, "defUid": 60, "realEditorValues": [null] },
-						{ "__identifier": "priority", "__type": "Int", "__value": 0, "__tile": null, "defUid": 477, "realEditorValues": [] }
+						{ "__identifier": "weight", "__type": "Float", "__value": 0.5, "__tile": null, "defUid": 617, "realEditorValues": [] }
 					],
 					"__worldX": 560,
 					"__worldY": 560
@@ -278,7 +278,7 @@
 						{ "__identifier": "crop_y2", "__type": "Int", "__value": 0, "__tile": null, "defUid": 51, "realEditorValues": [] },
 						{ "__identifier": "unlock_x", "__type": "Bool", "__value": true, "__tile": null, "defUid": 59, "realEditorValues": [] },
 						{ "__identifier": "unlock_y", "__type": "Bool", "__value": true, "__tile": null, "defUid": 60, "realEditorValues": [] },
-						{ "__identifier": "priority", "__type": "Int", "__value": 0, "__tile": null, "defUid": 477, "realEditorValues": [] }
+						{ "__identifier": "weight", "__type": "Float", "__value": 0.5, "__tile": null, "defUid": 617, "realEditorValues": [] }
 					],
 					"__worldX": 1296,
 					"__worldY": 832
@@ -426,7 +426,7 @@
 						{ "__identifier": "text", "__type": "String", "__value": "-- crystals\n* it is said that their glow will bring the end of times. \n* time has already ended. this legend is meaningless.", "__tile": null, "defUid": 266, "realEditorValues": [{
 							"id": "V_String",
 							"params": [
-								"-- crystals\n* it is said that their glow will bring the end of times. \n* time has already ended. this legend is meaningless."
+								"-- crystals\\n* it is said that their glow will bring the end of times. \\n* time has already ended. this legend is meaningless."
 							]
 						}] },
 						{ "__identifier": "color", "__type": "Color", "__value": "#FFFFFF", "__tile": null, "defUid": 602, "realEditorValues": [] }
@@ -449,7 +449,7 @@
 					"fieldInstances": [
 						{ "__identifier": "text", "__type": "String", "__value": "<-- exit\n\nsorry you didn't enjoy what was here. you may leave.", "__tile": null, "defUid": 266, "realEditorValues": [{
 							"id": "V_String",
-							"params": ["<-- exit\n\nsorry you didn't enjoy what was here. you may leave."]
+							"params": ["<-- exit\\n\\nsorry you didn't enjoy what was here. you may leave."]
 						}] },
 						{ "__identifier": "color", "__type": "Color", "__value": "#FFFFFF", "__tile": null, "defUid": 602, "realEditorValues": [] }
 					],
