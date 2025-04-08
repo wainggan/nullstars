@@ -5,7 +5,13 @@
 gml_release_mode(RELEASE);
 
 global.defs = {
-	terminal_vel: 5
+	// global terminal velocity
+	terminal_vel: 5,
+	// speed of lifts when returning back to normal positions
+	lift_spd_return: 2,
+	// how long lifts get stunned after reaching their final position in frames
+	// note: this effects how long momentum retention is as well
+	lift_stun_time: 10,
 }
 
 global.config = {
