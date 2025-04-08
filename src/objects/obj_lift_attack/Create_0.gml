@@ -45,6 +45,7 @@ rest = true;
 anim_vel = 0;
 anim_sight_x = 0;
 anim_sight_y = 0;
+anim_line = 1;
 
 trigger_set(function(){
 	if !rest return;
@@ -109,6 +110,8 @@ state_active = state.add()
 	
 	start_x = x;
 	start_y = y;
+	
+	anim_line = 1;
 	
 	reset_polarity_x = lengthdir_x(1, dir);
 	reset_polarity_y = lengthdir_y(1, dir);
