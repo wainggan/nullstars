@@ -167,8 +167,8 @@ state_retract = state.add()
 	time -= 1;
 	if time < 0 {
 		accel = approach(accel, 0.04, 0.002);
-		x_vel = approach(x_vel, lengthdir_x(1, _dir), accel);
-		y_vel = approach(y_vel, lengthdir_y(1, _dir), accel);
+		x_vel = approach(x_vel, lengthdir_x(2, _dir), accel);
+		y_vel = approach(y_vel, lengthdir_y(2, _dir), accel);
 		
 		anim_vel -= point_distance(0, 0, x_vel, y_vel);
 		
