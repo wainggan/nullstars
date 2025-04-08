@@ -63,6 +63,13 @@ state_active = state.add()
 .set("enter", function(){
 	vel = 0;
 	accel = 0;
+	
+	instance_create_layer(x, y, layer, obj_effects_rectpop, {
+		width: sprite_width,
+		height: sprite_height,
+		pad: 16,
+		spd: 0.04,
+	});
 })
 .set("step", function(){
 	
