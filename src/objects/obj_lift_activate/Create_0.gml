@@ -99,7 +99,7 @@ state_retract = state.add()
 	time -= 1;
 	if time < 0 {
 		accel = approach(accel, 0.04, 0.002);
-		vel = approach(vel, 2, accel);
+		vel = approach(vel, global.defs.lift_spd_return, accel);
 		
 		anim_vel -= vel;
 		
