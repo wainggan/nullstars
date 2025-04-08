@@ -168,17 +168,17 @@ var _s_stand = 0,
 	_s_run_fall = 24;
 
 anim = new AnimController();
-anim.add("idle", new AnimLevel([_s_stand]))
-.add("walk", new AnimLevel([
+anim.add("idle", new AnimLevel([_s_stand]));
+anim.add("walk", new AnimLevel([
 		_s_walk_a1, _s_walk_b1,
 		_s_walk_a2, _s_walk_b2
-	], 12))
-.add("jump", new AnimLevel([_s_jump]))
-.add("fall", new AnimLevel([_s_fall]))
-.add("dive", new AnimLevel([_s_dive]))
-.add("jab", new AnimLevel([_s_dash]))
-.add("longjump", new AnimLevel([_s_long]))
-.add("swim", new AnimLevel([_s_swim_idle_1, _s_swim_idle_2], 1 / 60))
+	], 12));
+anim.add("jump", new AnimLevel([_s_jump]));
+anim.add("fall", new AnimLevel([_s_fall]));
+anim.add("dive", new AnimLevel([_s_dive]));
+anim.add("jab", new AnimLevel([_s_dash]));
+anim.add("longjump", new AnimLevel([_s_long]));
+anim.add("swim", new AnimLevel([_s_swim_idle_1, _s_swim_idle_2], 1 / 60))
 .add("swimming", new AnimLevel([_s_swim_1, _s_swim_2], 1 / 60))
 .add("ledge", new AnimLevel([_s_ledge]))
 .add("crouch", new AnimLevel([_s_crouch]))
@@ -695,8 +695,8 @@ event.add("bounce", impl_jump_bounce);
 
 state = new State();
 
-state_stuck = state.add()
-.set("step", function() {
+state_stuck = state.add();
+state_stuck.set("step", function() {
 	if game_paused() {
 		return;
 	}
@@ -711,8 +711,8 @@ state_stuck = state.add()
 	}
 });
 
-state_base = state.add()
-.set("step", function () {
+state_base = state.add();
+state_base.set("step", function () {
 	
 	var _kh = INPUT.check("right") - INPUT.check("left");
 	var _kv = INPUT.check("down") - INPUT.check("up");
@@ -928,8 +928,8 @@ state_stuck = state_base.add()
 	}
 });
 
-state_free = state_base.add()
-.set("step", function () {
+state_free = state_base.add();
+state_free.set("step", function () {
 	
 	var _kh = INPUT.check("right") - INPUT.check("left");
 	var _kv = INPUT.check("down") - INPUT.check("up");
@@ -1132,8 +1132,8 @@ state_free = state_base.add()
 	
 });
 
-state_ledge = state_base.add()
-.set("enter", function(){
+state_ledge = state_base.add();
+state_ledge.set("enter", function(){
 	hold_jump_key_timer = 0;
 	hold_jump_vel = defs.terminal_vel;
 	hold_jump_vel_timer = 0;
@@ -1218,8 +1218,8 @@ action_dash_end = function() {
 	
 };
 
-state_dash = state_base.add()
-.set("enter", function() {
+state_dash = state_base.add();
+state_dash.set("enter", function() {
 	
 	game_set_pause(3);
 	
@@ -1358,8 +1358,8 @@ state_dash = state_base.add()
 	
 });
 
-state_swim = state_base.add()
-.set("step", function() {
+state_swim = state_base.add();
+state_swim.set("step", function() {
 	
 	var _kh = INPUT.check("right") - INPUT.check("left");
 	var _kv = INPUT.check("down") - INPUT.check("up");
@@ -1419,8 +1419,8 @@ state_swim = state_base.add()
 	
 });
 
-state_swim_bullet = state_base.add()
-.set("enter", function() {
+state_swim_bullet = state_base.add();
+state_swim.set("enter", function() {
 	
 	game_set_pause(4);
 	
@@ -1510,8 +1510,8 @@ state_swim_bullet = state_base.add()
 	
 });
 
-state_menu = state_base.add()
-.set("enter", function() {
+state_menu = state_base.add();
+state_menu.set("enter", function() {
 	with obj_menu system.open(page_none);
 })
 .set("step", function() {

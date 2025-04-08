@@ -225,25 +225,25 @@
 					"levelIid": "41a05e50-e920-11ef-a4bb-cb1c358dbbd8",
 					"layerIid": "41a05e53-e920-11ef-a4bb-e50c42897aef",
 					"entityIid": "7c12d5b0-e920-11ef-ab8a-635d0e0a553a"
-				}, "worldX": 35376, "worldY": 8192, "widPx": 32, "heiPx": 32, "fields": { "index": "sdkfslkjdf", "waypoint": true } },
+				}, "worldX": 38144, "worldY": 8080, "widPx": 32, "heiPx": 32, "fields": { "index": "sdkfslkjdf", "waypoint": true } },
 				{ "iids": {
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
 					"levelIid": "621d8450-e920-11ef-ab8a-0739c24c0598",
 					"layerIid": "621d8453-e920-11ef-ab8a-71ce5b71c0f9",
 					"entityIid": "b6311b10-1030-11f0-b8da-d93b6d571217"
-				}, "worldX": 37040, "worldY": 8032, "widPx": 32, "heiPx": 32, "fields": { "index": "ksldjfjlks", "waypoint": true } },
+				}, "worldX": 36640, "worldY": 8016, "widPx": 32, "heiPx": 32, "fields": { "index": "ksldjfjlks", "waypoint": true } },
 				{ "iids": {
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
 					"levelIid": "9841a6c0-1030-11f0-b8da-d7d001d45ee7",
 					"layerIid": "9841cdd2-1030-11f0-b8da-bd1cf0b741b7",
 					"entityIid": "1817b630-1030-11f0-8b0b-b30b76939f0b"
-				}, "worldX": 38736, "worldY": 8048, "widPx": 32, "heiPx": 32, "fields": { "index": "sdfsfd", "waypoint": true } },
+				}, "worldX": 35376, "worldY": 8144, "widPx": 32, "heiPx": 32, "fields": { "index": "sdfsfd", "waypoint": true } },
 				{ "iids": {
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
 					"levelIid": "386d86f0-1030-11f0-b8da-71fc97ecaf08",
 					"layerIid": "386d86f3-1030-11f0-b8da-695685babf0d",
 					"entityIid": "bcc62470-1030-11f0-b8da-7d4d43faf296"
-				}, "worldX": 38576, "worldY": 8384, "widPx": 32, "heiPx": 32, "fields": { "index": "dlkjlskjdfkl", "waypoint": true } }
+				}, "worldX": 37888, "worldY": 8368, "widPx": 32, "heiPx": 32, "fields": { "index": "dlkjlskjdfkl", "waypoint": true } }
 			]
 		},
 		{
@@ -453,7 +453,7 @@
 					"levelIid": "41a05e50-e920-11ef-a4bb-cb1c358dbbd8",
 					"layerIid": "41a05e53-e920-11ef-a4bb-e50c42897aef",
 					"entityIid": "eca7b7d0-e920-11ef-ab8a-f131671251a7"
-				}, "worldX": 35488, "worldY": 8048, "widPx": 16, "heiPx": 144, "fields": { "time": 9, "ref": {
+				}, "worldX": 38256, "worldY": 7936, "widPx": 16, "heiPx": 144, "fields": { "time": 9, "ref": {
 					"entityIid": "ef373c50-e920-11ef-ab8a-abcf164adf94",
 					"layerIid": "41a05e53-e920-11ef-a4bb-e50c42897aef",
 					"levelIid": "41a05e50-e920-11ef-a4bb-cb1c358dbbd8",
@@ -464,7 +464,7 @@
 					"levelIid": "621d8450-e920-11ef-ab8a-0739c24c0598",
 					"layerIid": "621d8453-e920-11ef-ab8a-71ce5b71c0f9",
 					"entityIid": "4bf842e0-1030-11f0-b8da-c1db0e46f520"
-				}, "worldX": 37184, "worldY": 7888, "widPx": 16, "heiPx": 144, "fields": { "time": 7, "ref": {
+				}, "worldX": 36784, "worldY": 7872, "widPx": 16, "heiPx": 144, "fields": { "time": 7, "ref": {
 					"entityIid": "547718b0-1030-11f0-b8da-370ce342d90f",
 					"layerIid": "621d8453-e920-11ef-ab8a-71ce5b71c0f9",
 					"levelIid": "621d8450-e920-11ef-ab8a-0739c24c0598",
@@ -475,7 +475,7 @@
 					"levelIid": "9841a6c0-1030-11f0-b8da-d7d001d45ee7",
 					"layerIid": "9841cdd2-1030-11f0-b8da-bd1cf0b741b7",
 					"entityIid": "f3e27480-1030-11f0-8b0b-e9c2e137b40c"
-				}, "worldX": 38848, "worldY": 7904, "widPx": 16, "heiPx": 144, "fields": { "time": 1, "ref": {
+				}, "worldX": 35488, "worldY": 8000, "widPx": 16, "heiPx": 144, "fields": { "time": 5, "ref": {
 					"entityIid": "f6116270-1030-11f0-8b0b-effb26b064dc",
 					"layerIid": "9841cdd2-1030-11f0-b8da-bd1cf0b741b7",
 					"levelIid": "9841a6c0-1030-11f0-b8da-d7d001d45ee7",
@@ -486,7 +486,7 @@
 					"levelIid": "386d86f0-1030-11f0-b8da-71fc97ecaf08",
 					"layerIid": "386d86f3-1030-11f0-b8da-695685babf0d",
 					"entityIid": "87fe5500-1030-11f0-b8da-ff62b88af48d"
-				}, "worldX": 38576, "worldY": 8448, "widPx": 144, "heiPx": 16, "fields": { "time": 10, "ref": {
+				}, "worldX": 37888, "worldY": 8432, "widPx": 144, "heiPx": 16, "fields": { "time": 10, "ref": {
 					"entityIid": "8c586050-1030-11f0-b8da-83840007976d",
 					"layerIid": "386d86f3-1030-11f0-b8da-695685babf0d",
 					"levelIid": "386d86f0-1030-11f0-b8da-71fc97ecaf08",
@@ -611,25 +611,25 @@
 					"levelIid": "41a05e50-e920-11ef-a4bb-cb1c358dbbd8",
 					"layerIid": "41a05e53-e920-11ef-a4bb-e50c42897aef",
 					"entityIid": "ef373c50-e920-11ef-ab8a-abcf164adf94"
-				}, "worldX": 36848, "worldY": 7776, "widPx": 16, "heiPx": 144, "fields" : {} },
+				}, "worldX": 39616, "worldY": 7664, "widPx": 16, "heiPx": 144, "fields" : {} },
 				{ "iids": {
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
 					"levelIid": "621d8450-e920-11ef-ab8a-0739c24c0598",
 					"layerIid": "621d8453-e920-11ef-ab8a-71ce5b71c0f9",
 					"entityIid": "547718b0-1030-11f0-b8da-370ce342d90f"
-				}, "worldX": 38384, "worldY": 7856, "widPx": 16, "heiPx": 144, "fields" : {} },
+				}, "worldX": 37984, "worldY": 7840, "widPx": 16, "heiPx": 144, "fields" : {} },
 				{ "iids": {
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
 					"levelIid": "9841a6c0-1030-11f0-b8da-d7d001d45ee7",
 					"layerIid": "9841cdd2-1030-11f0-b8da-bd1cf0b741b7",
 					"entityIid": "f6116270-1030-11f0-8b0b-effb26b064dc"
-				}, "worldX": 39728, "worldY": 7888, "widPx": 16, "heiPx": 144, "fields" : {} },
+				}, "worldX": 36432, "worldY": 7840, "widPx": 16, "heiPx": 144, "fields" : {} },
 				{ "iids": {
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
 					"levelIid": "386d86f0-1030-11f0-b8da-71fc97ecaf08",
 					"layerIid": "386d86f3-1030-11f0-b8da-695685babf0d",
 					"entityIid": "8c586050-1030-11f0-b8da-83840007976d"
-				}, "worldX": 38464, "worldY": 8320, "widPx": 16, "heiPx": 112, "fields" : {} }
+				}, "worldX": 37776, "worldY": 8304, "widPx": 16, "heiPx": 112, "fields" : {} }
 			]
 		}
 	],
@@ -15013,7 +15013,7 @@
 			"worldX": 34208,
 			"worldY": 7728,
 			"worldDepth": 0,
-			"pxWid": 1072,
+			"pxWid": 1040,
 			"pxHei": 544,
 			"__bgColor": "#2D2A30",
 			"bgColor": null,
@@ -15039,16 +15039,16 @@
 				{ "__identifier": "flags", "__type": "Array<LocalEnum.Level_Flags>", "__value": [], "__tile": null, "defUid": 451, "realEditorValues": [] }
 			],
 			"layerInstances": null,
-			"__neighbours": [ { "levelIid": "cd86b7b0-e920-11ef-a4bb-4922aabd7903", "dir": "w" }, { "levelIid": "41a05e50-e920-11ef-a4bb-cb1c358dbbd8", "dir": "e" } ]
+			"__neighbours": [ { "levelIid": "cd86b7b0-e920-11ef-a4bb-4922aabd7903", "dir": "w" }, { "levelIid": "9841a6c0-1030-11f0-b8da-d7d001d45ee7", "dir": "e" } ]
 		},
 		{
 			"identifier": "Room_62",
 			"iid": "41a05e50-e920-11ef-a4bb-cb1c358dbbd8",
 			"uid": 612,
-			"worldX": 35280,
-			"worldY": 7216,
+			"worldX": 38096,
+			"worldY": 7104,
 			"worldDepth": 0,
-			"pxWid": 1680,
+			"pxWid": 1632,
 			"pxHei": 1072,
 			"__bgColor": "#2D2A30",
 			"bgColor": null,
@@ -15074,16 +15074,16 @@
 				{ "__identifier": "flags", "__type": "Array<LocalEnum.Level_Flags>", "__value": [], "__tile": null, "defUid": 451, "realEditorValues": [] }
 			],
 			"layerInstances": null,
-			"__neighbours": [ { "levelIid": "83c59da0-e920-11ef-a4bb-3fcb004c7255", "dir": "w" }, { "levelIid": "621d8450-e920-11ef-ab8a-0739c24c0598", "dir": "e" } ]
+			"__neighbours": [{ "levelIid": "621d8450-e920-11ef-ab8a-0739c24c0598", "dir": "w" }]
 		},
 		{
 			"identifier": "Room_63",
 			"iid": "621d8450-e920-11ef-ab8a-0739c24c0598",
 			"uid": 613,
-			"worldX": 36960,
-			"worldY": 7312,
+			"worldX": 36560,
+			"worldY": 7296,
 			"worldDepth": 0,
-			"pxWid": 1616,
+			"pxWid": 1536,
 			"pxHei": 912,
 			"__bgColor": "#2D2A30",
 			"bgColor": null,
@@ -15109,17 +15109,17 @@
 				{ "__identifier": "flags", "__type": "Array<LocalEnum.Level_Flags>", "__value": [], "__tile": null, "defUid": 451, "realEditorValues": [] }
 			],
 			"layerInstances": null,
-			"__neighbours": [ { "levelIid": "41a05e50-e920-11ef-a4bb-cb1c358dbbd8", "dir": "w" }, { "levelIid": "9841a6c0-1030-11f0-b8da-d7d001d45ee7", "dir": "e" }, { "levelIid": "386d86f0-1030-11f0-b8da-71fc97ecaf08", "dir": "s" } ]
+			"__neighbours": [ { "levelIid": "41a05e50-e920-11ef-a4bb-cb1c358dbbd8", "dir": "e" }, { "levelIid": "9841a6c0-1030-11f0-b8da-d7d001d45ee7", "dir": "w" }, { "levelIid": "386d86f0-1030-11f0-b8da-71fc97ecaf08", "dir": "s" } ]
 		},
 		{
 			"identifier": "Room_64",
 			"iid": "9841a6c0-1030-11f0-b8da-d7d001d45ee7",
 			"uid": 614,
-			"worldX": 38576,
-			"worldY": 7424,
+			"worldX": 35248,
+			"worldY": 7408,
 			"worldDepth": 0,
-			"pxWid": 1472,
-			"pxHei": 800,
+			"pxWid": 1312,
+			"pxHei": 912,
 			"__bgColor": "#2D2A30",
 			"bgColor": null,
 			"useAutoIdentifier": true,
@@ -15144,14 +15144,14 @@
 				{ "__identifier": "flags", "__type": "Array<LocalEnum.Level_Flags>", "__value": [], "__tile": null, "defUid": 451, "realEditorValues": [] }
 			],
 			"layerInstances": null,
-			"__neighbours": [ { "levelIid": "621d8450-e920-11ef-ab8a-0739c24c0598", "dir": "w" }, { "levelIid": "386d86f0-1030-11f0-b8da-71fc97ecaf08", "dir": "s" } ]
+			"__neighbours": [ { "levelIid": "83c59da0-e920-11ef-a4bb-3fcb004c7255", "dir": "w" }, { "levelIid": "621d8450-e920-11ef-ab8a-0739c24c0598", "dir": "e" } ]
 		},
 		{
 			"identifier": "Room_65",
 			"iid": "386d86f0-1030-11f0-b8da-71fc97ecaf08",
 			"uid": 615,
-			"worldX": 37952,
-			"worldY": 8224,
+			"worldX": 37264,
+			"worldY": 8208,
 			"worldDepth": 0,
 			"pxWid": 960,
 			"pxHei": 592,
@@ -15179,14 +15179,14 @@
 				{ "__identifier": "flags", "__type": "Array<LocalEnum.Level_Flags>", "__value": [], "__tile": null, "defUid": 451, "realEditorValues": [] }
 			],
 			"layerInstances": null,
-			"__neighbours": [ { "levelIid": "621d8450-e920-11ef-ab8a-0739c24c0598", "dir": "n" }, { "levelIid": "9841a6c0-1030-11f0-b8da-d7d001d45ee7", "dir": "n" }, { "levelIid": "ed5045c0-1030-11f0-8b0b-11ecccdd38e7", "dir": "s" } ]
+			"__neighbours": [ { "levelIid": "621d8450-e920-11ef-ab8a-0739c24c0598", "dir": "n" }, { "levelIid": "ed5045c0-1030-11f0-8b0b-11ecccdd38e7", "dir": "s" } ]
 		},
 		{
 			"identifier": "Room_66",
 			"iid": "ed5045c0-1030-11f0-8b0b-11ecccdd38e7",
 			"uid": 616,
-			"worldX": 37952,
-			"worldY": 8816,
+			"worldX": 37264,
+			"worldY": 8800,
 			"worldDepth": 0,
 			"pxWid": 960,
 			"pxHei": 544,
