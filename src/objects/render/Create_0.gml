@@ -35,6 +35,8 @@ surf_app = -1;
 surf_compose = -1;
 surf_lut = -1;
 
+dynamic_vb = vertex_create_buffer();
+
 lights_ds = ds_list_create();
 lights_array = [];
 
@@ -79,6 +81,7 @@ config = {
 	light_spot: true,
 	light_spot_shader: true,
 	light_shadow: true,
+	light_shadow_dynamic: true,
 	light_method: true,
 	light_method_scissor: true,
 	light_method_blur: false, // broken

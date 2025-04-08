@@ -844,17 +844,17 @@ function Level() constructor {
 	
 }
 
-function game_level_setup_light(_level) {
+function util_vertex_buffer_quad(_vb, _x1, _y1, _x2, _y2) {
+	vertex_position_3d(_vb, _x1, _y1, 0);
+	vertex_position_3d(_vb, _x1, _y1, 1);
+	vertex_position_3d(_vb, _x2, _y2, 0);
 	
-	static _Quad = function(_vb, _x1, _y1, _x2, _y2) {
-		vertex_position_3d(_vb, _x1, _y1, 0);
-		vertex_position_3d(_vb, _x1, _y1, 1);
-		vertex_position_3d(_vb, _x2, _y2, 0);
-		
-		vertex_position_3d(_vb, _x1, _y1, 1);
-		vertex_position_3d(_vb, _x2, _y2, 0);
-		vertex_position_3d(_vb, _x2, _y2, 1);
-	};
+	vertex_position_3d(_vb, _x1, _y1, 1);
+	vertex_position_3d(_vb, _x2, _y2, 0);
+	vertex_position_3d(_vb, _x2, _y2, 1);
+}
+
+function game_level_setup_light(_level) {
 	
 	var _tiles = _level.tiles;
 	var _x_off = _level.x;
@@ -880,11 +880,11 @@ function game_level_setup_light(_level) {
 				_y++;
 			}
 			
-			_Quad(
+			util_vertex_buffer_quad(
 				_vb, 
 				_cx, _cy, _cx + TILESIZE, _cy + _h
 			);
-			_Quad(
+			util_vertex_buffer_quad(
 				_vb, 
 				_cx + TILESIZE, _cy, _cx, _cy + _h
 			);
