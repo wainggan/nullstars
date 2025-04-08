@@ -1145,6 +1145,8 @@ state_ledge = state_base.add()
 	x_vel = 0;
 	
 	y_vel = 0;
+	hold_jump_key_timer = 0;
+	hold_jump_vel_timer = 0;
 	if !actor_collision(x + dir, y - 22) {
 		y_vel = 1
 	} else {
