@@ -5,7 +5,7 @@ glue_child_setup();
 glue_child_set_move(function(_x, _y) {
 	var _xv = _x - x;
 	
-	pos += -_xv / 32;
+	pos += -_xv / scale / 2;
 	
 	x = _x;
 	y = _y;
@@ -13,6 +13,9 @@ glue_child_set_move(function(_x, _y) {
 
 pos = 0;
 vel = 0;
+
+// good enough
+scale = clamp(140 / sqrt(sprite_height), 2, 16);
 
 hit = 0;
 
