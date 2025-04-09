@@ -9,8 +9,8 @@ if abs(pos) > 1 && sign(vel) == sign(pos) {
 	vel *= 0.94;
 }
 
-var _b_x = x + lengthdir_x(sprite_height, -90 + pos * 16);
-var _b_y = y + lengthdir_y(sprite_height, -90 + pos * 16);
+var _b_x = x + lengthdir_x(sprite_height, -90 + pos * scale);
+var _b_y = y + lengthdir_y(sprite_height, -90 + pos * scale);
 
 if collision_line(x, y, _b_x + 8, _b_y, obj_player, false, false) != noone {
 	if hit <= 0 {
