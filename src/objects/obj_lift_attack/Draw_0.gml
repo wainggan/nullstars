@@ -6,7 +6,7 @@ var _pad = 6;
 if state.is(state_idle) {
 	// todo:
 	draw_sprite_tiled_area(
-		spr_spike_pond_fill, 0,
+		spr_spike_pond_fill, 1,
 		wave(-32, 32, 12), wave(-24, 24, 10, 0.5),
 		min(x, anim_sight_x) + 6, min(y, anim_sight_y) + _pad,
 		max(x, anim_sight_x) + sprite_width - 6, max(y, anim_sight_y) + sprite_height - _pad
