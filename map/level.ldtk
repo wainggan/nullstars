@@ -11,7 +11,7 @@
 	"iid": "d5a16520-6280-11ee-ba61-ad454e9d2411",
 	"jsonVersion": "1.5.3",
 	"appBuildId": 473703,
-	"nextUid": 643,
+	"nextUid": 644,
 	"identifierStyle": "Free",
 	"toc": [
 		{
@@ -249,7 +249,13 @@
 					"levelIid": "bec0ec40-1030-11f0-9cf6-3defa309dce7",
 					"layerIid": "bec0ec43-1030-11f0-9cf6-3bb82ec2d9dc",
 					"entityIid": "429d1480-1030-11f0-9cf6-bdd974128bcb"
-				}, "worldX": 40352, "worldY": 8096, "widPx": 32, "heiPx": 32, "fields": { "index": "klajfkf", "waypoint": true } }
+				}, "worldX": 40352, "worldY": 8096, "widPx": 32, "heiPx": 32, "fields": { "index": "klajfkf", "waypoint": true } },
+				{ "iids": {
+					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
+					"levelIid": "ec711930-1030-11f0-86f7-755cdfcb017d",
+					"layerIid": "ec711933-1030-11f0-86f7-5185cd3db5e1",
+					"entityIid": "c464d780-1030-11f0-86f7-43c8d0f396de"
+				}, "worldX": 39648, "worldY": 6624, "widPx": 32, "heiPx": 32, "fields": { "index": "dkfksllakjsd", "waypoint": true } }
 			]
 		},
 		{
@@ -508,7 +514,18 @@
 					"layerIid": "7faaebf2-1030-11f0-9cf6-1f09de89b817",
 					"levelIid": "7faac4e0-1030-11f0-9cf6-9d06baece2dc",
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3"
-				}, "dir": "right", "name": "none", "terms": [] } }
+				}, "dir": "right", "name": "none", "terms": [] } },
+				{ "iids": {
+					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
+					"levelIid": "ec711930-1030-11f0-86f7-755cdfcb017d",
+					"layerIid": "ec711933-1030-11f0-86f7-5185cd3db5e1",
+					"entityIid": "abe88800-1030-11f0-86f7-ad9340cd52b5"
+				}, "worldX": 39536, "worldY": 6464, "widPx": 16, "heiPx": 144, "fields": { "time": 8, "ref": {
+					"entityIid": "bc121ac0-1030-11f0-86f7-efd3ef96787c",
+					"layerIid": "ec711933-1030-11f0-86f7-5185cd3db5e1",
+					"levelIid": "ec711930-1030-11f0-86f7-755cdfcb017d",
+					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3"
+				}, "dir": "left", "name": "none", "terms": [] } }
 			]
 		},
 		{
@@ -652,7 +669,13 @@
 					"levelIid": "7faac4e0-1030-11f0-9cf6-9d06baece2dc",
 					"layerIid": "7faaebf2-1030-11f0-9cf6-1f09de89b817",
 					"entityIid": "e741f250-1030-11f0-9cf6-e537009852e7"
-				}, "worldX": 41808, "worldY": 8000, "widPx": 16, "heiPx": 144, "fields" : {} }
+				}, "worldX": 41808, "worldY": 8000, "widPx": 16, "heiPx": 144, "fields" : {} },
+				{ "iids": {
+					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
+					"levelIid": "ec711930-1030-11f0-86f7-755cdfcb017d",
+					"layerIid": "ec711933-1030-11f0-86f7-5185cd3db5e1",
+					"entityIid": "bc121ac0-1030-11f0-86f7-efd3ef96787c"
+				}, "worldX": 38032, "worldY": 6464, "widPx": 16, "heiPx": 128, "fields" : {} }
 			]
 		}
 	],
@@ -15710,10 +15733,10 @@
 			"iid": "41a05e50-e920-11ef-a4bb-cb1c358dbbd8",
 			"uid": 612,
 			"worldX": 38096,
-			"worldY": 7104,
+			"worldY": 7184,
 			"worldDepth": 0,
 			"pxWid": 1632,
-			"pxHei": 1072,
+			"pxHei": 992,
 			"__bgColor": "#2D2A30",
 			"bgColor": null,
 			"useAutoIdentifier": true,
@@ -15738,17 +15761,17 @@
 				{ "__identifier": "flags", "__type": "Array<LocalEnum.Level_Flags>", "__value": [], "__tile": null, "defUid": 451, "realEditorValues": [] }
 			],
 			"layerInstances": null,
-			"__neighbours": [ { "levelIid": "621d8450-e920-11ef-ab8a-0739c24c0598", "dir": "w" }, { "levelIid": "bec0ec40-1030-11f0-9cf6-3defa309dce7", "dir": "e" } ]
+			"__neighbours": [ { "levelIid": "621d8450-e920-11ef-ab8a-0739c24c0598", "dir": "w" }, { "levelIid": "bec0ec40-1030-11f0-9cf6-3defa309dce7", "dir": "e" }, { "levelIid": "ec711930-1030-11f0-86f7-755cdfcb017d", "dir": "n" } ]
 		},
 		{
 			"identifier": "Room_63",
 			"iid": "621d8450-e920-11ef-ab8a-0739c24c0598",
 			"uid": 613,
 			"worldX": 36560,
-			"worldY": 7296,
+			"worldY": 7184,
 			"worldDepth": 0,
 			"pxWid": 1536,
-			"pxHei": 912,
+			"pxHei": 1024,
 			"__bgColor": "#2D2A30",
 			"bgColor": null,
 			"useAutoIdentifier": true,
@@ -15773,7 +15796,7 @@
 				{ "__identifier": "flags", "__type": "Array<LocalEnum.Level_Flags>", "__value": [], "__tile": null, "defUid": 451, "realEditorValues": [] }
 			],
 			"layerInstances": null,
-			"__neighbours": [ { "levelIid": "41a05e50-e920-11ef-a4bb-cb1c358dbbd8", "dir": "e" }, { "levelIid": "9841a6c0-1030-11f0-b8da-d7d001d45ee7", "dir": "w" }, { "levelIid": "386d86f0-1030-11f0-b8da-71fc97ecaf08", "dir": "s" } ]
+			"__neighbours": [ { "levelIid": "41a05e50-e920-11ef-a4bb-cb1c358dbbd8", "dir": "e" }, { "levelIid": "9841a6c0-1030-11f0-b8da-d7d001d45ee7", "dir": "w" }, { "levelIid": "386d86f0-1030-11f0-b8da-71fc97ecaf08", "dir": "s" }, { "levelIid": "ec711930-1030-11f0-86f7-755cdfcb017d", "dir": "n" } ]
 		},
 		{
 			"identifier": "Room_64",
@@ -15885,10 +15908,10 @@
 			"iid": "bec0ec40-1030-11f0-9cf6-3defa309dce7",
 			"uid": 622,
 			"worldX": 39728,
-			"worldY": 6160,
+			"worldY": 6240,
 			"worldDepth": 0,
 			"pxWid": 704,
-			"pxHei": 2016,
+			"pxHei": 1936,
 			"__bgColor": "#2D2A30",
 			"bgColor": null,
 			"useAutoIdentifier": true,
@@ -15913,7 +15936,7 @@
 				{ "__identifier": "flags", "__type": "Array<LocalEnum.Level_Flags>", "__value": [], "__tile": null, "defUid": 451, "realEditorValues": [] }
 			],
 			"layerInstances": null,
-			"__neighbours": [ { "levelIid": "41a05e50-e920-11ef-a4bb-cb1c358dbbd8", "dir": "w" }, { "levelIid": "7faac4e0-1030-11f0-9cf6-9d06baece2dc", "dir": "e" } ]
+			"__neighbours": [ { "levelIid": "41a05e50-e920-11ef-a4bb-cb1c358dbbd8", "dir": "w" }, { "levelIid": "7faac4e0-1030-11f0-9cf6-9d06baece2dc", "dir": "e" }, { "levelIid": "ec711930-1030-11f0-86f7-755cdfcb017d", "dir": "w" } ]
 		},
 		{
 			"identifier": "Room_68",
@@ -15949,6 +15972,41 @@
 			],
 			"layerInstances": null,
 			"__neighbours": [{ "levelIid": "bec0ec40-1030-11f0-9cf6-3defa309dce7", "dir": "w" }]
+		},
+		{
+			"identifier": "Room_69",
+			"iid": "ec711930-1030-11f0-86f7-755cdfcb017d",
+			"uid": 643,
+			"worldX": 36560,
+			"worldY": 6240,
+			"worldDepth": 0,
+			"pxWid": 3168,
+			"pxHei": 944,
+			"__bgColor": "#2D2A30",
+			"bgColor": null,
+			"useAutoIdentifier": true,
+			"bgRelPath": null,
+			"bgPos": null,
+			"bgPivotX": 0.5,
+			"bgPivotY": 0.5,
+			"__smartColor": "#F3E7D0",
+			"__bgPos": null,
+			"externalRelPath": "level/Room_69.ldtkl",
+			"fieldInstances": [
+				{ "__identifier": "preset", "__type": "LocalEnum.Level_Preset", "__value": "area1_1", "__tile": null, "defUid": 506, "realEditorValues": [{
+					"id": "V_String",
+					"params": ["area1_1"]
+				}] },
+				{ "__identifier": "area", "__type": "LocalEnum.Level_Area", "__value": null, "__tile": null, "defUid": 591, "realEditorValues": [] },
+				{ "__identifier": "background", "__type": "LocalEnum.Level_Background", "__value": null, "__tile": null, "defUid": 152, "realEditorValues": [] },
+				{ "__identifier": "music", "__type": "LocalEnum.Level_Music", "__value": null, "__tile": null, "defUid": 153, "realEditorValues": [] },
+				{ "__identifier": "biome", "__type": "LocalEnum.Level_Biome", "__value": null, "__tile": null, "defUid": 154, "realEditorValues": [] },
+				{ "__identifier": "lut_grade", "__type": "LocalEnum.Level_Grade", "__value": null, "__tile": null, "defUid": 504, "realEditorValues": [] },
+				{ "__identifier": "lut_mix", "__type": "Float", "__value": null, "__tile": null, "defUid": 502, "realEditorValues": [] },
+				{ "__identifier": "flags", "__type": "Array<LocalEnum.Level_Flags>", "__value": [], "__tile": null, "defUid": 451, "realEditorValues": [] }
+			],
+			"layerInstances": null,
+			"__neighbours": [ { "levelIid": "41a05e50-e920-11ef-a4bb-cb1c358dbbd8", "dir": "s" }, { "levelIid": "621d8450-e920-11ef-ab8a-0739c24c0598", "dir": "s" }, { "levelIid": "bec0ec40-1030-11f0-9cf6-3defa309dce7", "dir": "e" } ]
 		}
 	],
 	"worlds": [],
