@@ -2568,7 +2568,7 @@
 				},
 				{
 					"__identifier": "obj_decor_light",
-					"__grid": [62,30],
+					"__grid": [56,27],
 					"__pivot": [0.5,0.5],
 					"__tags": [ "light", "decor" ],
 					"__tile": { "tilesetUid": 8, "x": 400, "y": 0, "w": 16, "h": 16 },
@@ -2577,14 +2577,14 @@
 					"width": 16,
 					"height": 16,
 					"defUid": 138,
-					"px": [1000,488],
+					"px": [904,440],
 					"fieldInstances": [
 						{ "__identifier": "color", "__type": "Color", "__value": "#99DDFF", "__tile": null, "defUid": 139, "realEditorValues": [{ "id": "V_Int", "params": [10083839] }] },
 						{ "__identifier": "intensity", "__type": "Float", "__value": 1, "__tile": null, "defUid": 140, "realEditorValues": [] },
 						{ "__identifier": "size", "__type": "Int", "__value": 128, "__tile": null, "defUid": 141, "realEditorValues": [{ "id": "V_Int", "params": [128] }] }
 					],
-					"__worldX": 19896,
-					"__worldY": 8968
+					"__worldX": 19800,
+					"__worldY": 8920
 				}
 			]
 		},
