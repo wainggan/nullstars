@@ -91,16 +91,16 @@
 			"entityInstances": [
 				{
 					"__identifier": "obj_camera_room",
-					"__grid": [-7,5],
+					"__grid": [-8,5],
 					"__pivot": [0,0],
 					"__tags": [ "SIZE_TILE", "camera", "flag" ],
 					"__tile": { "tilesetUid": 8, "x": 288, "y": 256, "w": 16, "h": 16 },
 					"__smartColor": "#D77643",
 					"iid": "99bc39b0-1030-11f0-86f7-e93520abf254",
-					"width": 1616,
+					"width": 1632,
 					"height": 784,
 					"defUid": 6,
-					"px": [-112,80],
+					"px": [-128,80],
 					"fieldInstances": [
 						{ "__identifier": "crop_x1", "__type": "Int", "__value": 0, "__tile": null, "defUid": 48, "realEditorValues": [] },
 						{ "__identifier": "crop_x2", "__type": "Int", "__value": 0, "__tile": null, "defUid": 52, "realEditorValues": [] },
@@ -108,9 +108,9 @@
 						{ "__identifier": "crop_y2", "__type": "Int", "__value": 0, "__tile": null, "defUid": 51, "realEditorValues": [] },
 						{ "__identifier": "unlock_x", "__type": "Bool", "__value": true, "__tile": null, "defUid": 59, "realEditorValues": [] },
 						{ "__identifier": "unlock_y", "__type": "Bool", "__value": true, "__tile": null, "defUid": 60, "realEditorValues": [] },
-						{ "__identifier": "weight", "__type": "Float", "__value": 0.5, "__tile": null, "defUid": 617, "realEditorValues": [] }
+						{ "__identifier": "weight", "__type": "Float", "__value": 0.3, "__tile": null, "defUid": 617, "realEditorValues": [{ "id": "V_Float", "params": [0.3] }] }
 					],
-					"__worldX": 40320,
+					"__worldX": 40304,
 					"__worldY": 7504
 				}
 			]
@@ -152,9 +152,9 @@
 					"defUid": 16,
 					"px": [80,688],
 					"fieldInstances": [
-						{ "__identifier": "target", "__type": "Point", "__value": { "cx": 20, "cy": 43 }, "__tile": null, "defUid": 17, "realEditorValues": [{
+						{ "__identifier": "target", "__type": "Point", "__value": { "cx": 19, "cy": 43 }, "__tile": null, "defUid": 17, "realEditorValues": [{
 							"id": "V_String",
-							"params": ["20,43"]
+							"params": ["19,43"]
 						}] },
 						{ "__identifier": "spd", "__type": "Float", "__value": 6, "__tile": null, "defUid": 18, "realEditorValues": [] },
 						{ "__identifier": "reliant", "__type": "Bool", "__value": false, "__tile": null, "defUid": 203, "realEditorValues": [] }
@@ -175,9 +175,9 @@
 					"defUid": 16,
 					"px": [112,544],
 					"fieldInstances": [
-						{ "__identifier": "target", "__type": "Point", "__value": { "cx": 13, "cy": 30 }, "__tile": null, "defUid": 17, "realEditorValues": [{
+						{ "__identifier": "target", "__type": "Point", "__value": { "cx": 12, "cy": 30 }, "__tile": null, "defUid": 17, "realEditorValues": [{
 							"id": "V_String",
-							"params": ["13,30"]
+							"params": ["12,30"]
 						}] },
 						{ "__identifier": "spd", "__type": "Float", "__value": 6, "__tile": null, "defUid": 18, "realEditorValues": [] },
 						{ "__identifier": "reliant", "__type": "Bool", "__value": false, "__tile": null, "defUid": 203, "realEditorValues": [] }
@@ -384,7 +384,7 @@
 					"px": [48,528],
 					"fieldInstances": [
 						{ "__identifier": "name", "__type": "String", "__value": "none", "__tile": null, "defUid": 583, "realEditorValues": [] },
-						{ "__identifier": "time", "__type": "Float", "__value": 7, "__tile": null, "defUid": 158, "realEditorValues": [{ "id": "V_Float", "params": [7] }] },
+						{ "__identifier": "time", "__type": "Float", "__value": 6, "__tile": null, "defUid": 158, "realEditorValues": [{ "id": "V_Float", "params": [6] }] },
 						{ "__identifier": "ref", "__type": "EntityRef", "__value": {
 							"entityIid": "e741f250-1030-11f0-9cf6-e537009852e7",
 							"layerIid": "7faaebf2-1030-11f0-9cf6-1f09de89b817",

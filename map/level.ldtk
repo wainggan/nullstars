@@ -249,7 +249,7 @@
 					"levelIid": "bec0ec40-1030-11f0-9cf6-3defa309dce7",
 					"layerIid": "bec0ec43-1030-11f0-9cf6-3bb82ec2d9dc",
 					"entityIid": "429d1480-1030-11f0-9cf6-bdd974128bcb"
-				}, "worldX": 40336, "worldY": 8096, "widPx": 32, "heiPx": 32, "fields": { "index": "klajfkf", "waypoint": true } }
+				}, "worldX": 40352, "worldY": 8096, "widPx": 32, "heiPx": 32, "fields": { "index": "klajfkf", "waypoint": true } }
 			]
 		},
 		{
@@ -503,7 +503,7 @@
 					"levelIid": "7faac4e0-1030-11f0-9cf6-9d06baece2dc",
 					"layerIid": "7faaebf2-1030-11f0-9cf6-1f09de89b817",
 					"entityIid": "e48199d0-1030-11f0-9cf6-e11e7e840d20"
-				}, "worldX": 40480, "worldY": 7952, "widPx": 16, "heiPx": 144, "fields": { "time": 7, "ref": {
+				}, "worldX": 40480, "worldY": 7952, "widPx": 16, "heiPx": 144, "fields": { "time": 6, "ref": {
 					"entityIid": "e741f250-1030-11f0-9cf6-e537009852e7",
 					"layerIid": "7faaebf2-1030-11f0-9cf6-1f09de89b817",
 					"levelIid": "7faac4e0-1030-11f0-9cf6-9d06baece2dc",
