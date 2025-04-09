@@ -45,6 +45,7 @@ rest = true;
 anim_vel = 0;
 anim_sight_x = 0;
 anim_sight_y = 0;
+anim_frame = 0;
 anim_line = 1;
 
 trigger_set(function(){
@@ -86,6 +87,8 @@ state_idle = state.add()
 	var _check = actor_check_scan(x, y, dir, obj_player);
 	anim_sight_x = _check[1].x;
 	anim_sight_y = _check[1].y;
+	
+	anim_frame += 1;
 	
 	time -= 1;
 	if time < 0 _activate = _check[0];
@@ -132,6 +135,7 @@ state_active = state.add()
 	y_vel = approach(y_vel, lengthdir_y(spd, dir), accel);
 	
 	anim_vel += min(point_distance(0, 0, x_vel, y_vel), 5);
+	anim_frame += 2;
 	
 	pet.mask_index = spr_none;
 	mask_index = sprite_index;
@@ -174,6 +178,7 @@ state_retract = state.add()
 		y_vel = approach(y_vel, lengthdir_y(global.defs.lift_spd_return, _dir), accel);
 		
 		anim_vel -= point_distance(0, 0, x_vel, y_vel);
+		anim_frame += 1;
 		
 		pet.mask_index = spr_none;
 		mask_index = sprite_index;

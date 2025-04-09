@@ -6,7 +6,7 @@ var _center_y = y + sprite_height / 2;
 
 var _di = round(dir / 90); // going to kill myself
 
-var _anim = (global.time / 4 % 32);
+var _anim = (anim_frame / 4 % 32);
 
 var _off_x = _center_x;
 var _off_y = _center_y;
