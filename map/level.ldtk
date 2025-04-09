@@ -6107,7 +6107,7 @@
 							"uid": 414,
 							"active": true,
 							"size": 1,
-							"tileRectsIds": [ [679], [711], [743] ],
+							"tileRectsIds": [ [679], [743] ],
 							"alpha": 1,
 							"chance": 0.06,
 							"breakOnMatch": true,
