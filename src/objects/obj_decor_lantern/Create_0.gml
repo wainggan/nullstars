@@ -18,8 +18,9 @@ hit = 0;
 
 
 light = instance_create_layer(x, y, "Lights", obj_light, {
-	intensity: 0.6,
-	size: 32,
+	intensity: intensity,
+	color: color,
+	size: size,
 });
 
 reset = function() {
