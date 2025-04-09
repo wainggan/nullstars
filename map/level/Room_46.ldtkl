@@ -118,7 +118,7 @@
 					"__identifier": "obj_button",
 					"__grid": [9,10],
 					"__pivot": [0,0],
-					"__tags": ["trigger"],
+					"__tags": [ "trigger", "glue_target" ],
 					"__tile": { "tilesetUid": 8, "x": 320, "y": 32, "w": 16, "h": 16 },
 					"__smartColor": "#B55088",
 					"iid": "f2425fe0-9b00-11ef-ae8e-d947afa0bcdc",

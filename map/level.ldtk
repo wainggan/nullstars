@@ -11,7 +11,7 @@
 	"iid": "d5a16520-6280-11ee-ba61-ad454e9d2411",
 	"jsonVersion": "1.5.3",
 	"appBuildId": 473703,
-	"nextUid": 642,
+	"nextUid": 643,
 	"identifierStyle": "Free",
 	"toc": [
 		{
@@ -243,7 +243,13 @@
 					"levelIid": "386d86f0-1030-11f0-b8da-71fc97ecaf08",
 					"layerIid": "386d86f3-1030-11f0-b8da-695685babf0d",
 					"entityIid": "bcc62470-1030-11f0-b8da-7d4d43faf296"
-				}, "worldX": 37888, "worldY": 8368, "widPx": 32, "heiPx": 32, "fields": { "index": "dlkjlskjdfkl", "waypoint": true } }
+				}, "worldX": 37888, "worldY": 8368, "widPx": 32, "heiPx": 32, "fields": { "index": "dlkjlskjdfkl", "waypoint": true } },
+				{ "iids": {
+					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
+					"levelIid": "bec0ec40-1030-11f0-9cf6-3defa309dce7",
+					"layerIid": "bec0ec43-1030-11f0-9cf6-3bb82ec2d9dc",
+					"entityIid": "429d1480-1030-11f0-9cf6-bdd974128bcb"
+				}, "worldX": 40336, "worldY": 8096, "widPx": 32, "heiPx": 32, "fields": { "index": "klajfkf", "waypoint": true } }
 			]
 		},
 		{
@@ -491,7 +497,18 @@
 					"layerIid": "386d86f3-1030-11f0-b8da-695685babf0d",
 					"levelIid": "386d86f0-1030-11f0-b8da-71fc97ecaf08",
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3"
-				}, "dir": "down", "name": "none", "terms": [] } }
+				}, "dir": "down", "name": "none", "terms": [] } },
+				{ "iids": {
+					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
+					"levelIid": "7faac4e0-1030-11f0-9cf6-9d06baece2dc",
+					"layerIid": "7faaebf2-1030-11f0-9cf6-1f09de89b817",
+					"entityIid": "e48199d0-1030-11f0-9cf6-e11e7e840d20"
+				}, "worldX": 40480, "worldY": 7952, "widPx": 16, "heiPx": 144, "fields": { "time": 7, "ref": {
+					"entityIid": "e741f250-1030-11f0-9cf6-e537009852e7",
+					"layerIid": "7faaebf2-1030-11f0-9cf6-1f09de89b817",
+					"levelIid": "7faac4e0-1030-11f0-9cf6-9d06baece2dc",
+					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3"
+				}, "dir": "right", "name": "none", "terms": [] } }
 			]
 		},
 		{
@@ -629,7 +646,13 @@
 					"levelIid": "386d86f0-1030-11f0-b8da-71fc97ecaf08",
 					"layerIid": "386d86f3-1030-11f0-b8da-695685babf0d",
 					"entityIid": "8c586050-1030-11f0-b8da-83840007976d"
-				}, "worldX": 37776, "worldY": 8304, "widPx": 16, "heiPx": 112, "fields" : {} }
+				}, "worldX": 37776, "worldY": 8304, "widPx": 16, "heiPx": 112, "fields" : {} },
+				{ "iids": {
+					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
+					"levelIid": "7faac4e0-1030-11f0-9cf6-9d06baece2dc",
+					"layerIid": "7faaebf2-1030-11f0-9cf6-1f09de89b817",
+					"entityIid": "e741f250-1030-11f0-9cf6-e537009852e7"
+				}, "worldX": 41808, "worldY": 8000, "widPx": 16, "heiPx": 144, "fields" : {} }
 			]
 		}
 	],
@@ -10449,7 +10472,7 @@
 		{
 			"identifier": "obj_button",
 			"uid": 209,
-			"tags": ["trigger"],
+			"tags": [ "trigger", "glue_target" ],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "Activates when most of any object touches it.",
@@ -15862,10 +15885,10 @@
 			"iid": "bec0ec40-1030-11f0-9cf6-3defa309dce7",
 			"uid": 622,
 			"worldX": 39728,
-			"worldY": 6688,
+			"worldY": 6160,
 			"worldDepth": 0,
-			"pxWid": 720,
-			"pxHei": 1488,
+			"pxWid": 704,
+			"pxHei": 2016,
 			"__bgColor": "#2D2A30",
 			"bgColor": null,
 			"useAutoIdentifier": true,
@@ -15887,7 +15910,39 @@
 				{ "__identifier": "flags", "__type": "Array<LocalEnum.Level_Flags>", "__value": [], "__tile": null, "defUid": 451, "realEditorValues": [] }
 			],
 			"layerInstances": null,
-			"__neighbours": [{ "levelIid": "41a05e50-e920-11ef-a4bb-cb1c358dbbd8", "dir": "w" }]
+			"__neighbours": [ { "levelIid": "41a05e50-e920-11ef-a4bb-cb1c358dbbd8", "dir": "w" }, { "levelIid": "7faac4e0-1030-11f0-9cf6-9d06baece2dc", "dir": "e" } ]
+		},
+		{
+			"identifier": "Room_68",
+			"iid": "7faac4e0-1030-11f0-9cf6-9d06baece2dc",
+			"uid": 642,
+			"worldX": 40432,
+			"worldY": 7424,
+			"worldDepth": 0,
+			"pxWid": 1616,
+			"pxHei": 944,
+			"__bgColor": "#2D2A30",
+			"bgColor": null,
+			"useAutoIdentifier": true,
+			"bgRelPath": null,
+			"bgPos": null,
+			"bgPivotX": 0.5,
+			"bgPivotY": 0.5,
+			"__smartColor": "#8C8A8D",
+			"__bgPos": null,
+			"externalRelPath": "level/Room_68.ldtkl",
+			"fieldInstances": [
+				{ "__identifier": "preset", "__type": "LocalEnum.Level_Preset", "__value": null, "__tile": null, "defUid": 506, "realEditorValues": [] },
+				{ "__identifier": "area", "__type": "LocalEnum.Level_Area", "__value": null, "__tile": null, "defUid": 591, "realEditorValues": [] },
+				{ "__identifier": "background", "__type": "LocalEnum.Level_Background", "__value": null, "__tile": null, "defUid": 152, "realEditorValues": [] },
+				{ "__identifier": "music", "__type": "LocalEnum.Level_Music", "__value": null, "__tile": null, "defUid": 153, "realEditorValues": [] },
+				{ "__identifier": "biome", "__type": "LocalEnum.Level_Biome", "__value": null, "__tile": null, "defUid": 154, "realEditorValues": [] },
+				{ "__identifier": "lut_grade", "__type": "LocalEnum.Level_Grade", "__value": null, "__tile": null, "defUid": 504, "realEditorValues": [] },
+				{ "__identifier": "lut_mix", "__type": "Float", "__value": null, "__tile": null, "defUid": 502, "realEditorValues": [] },
+				{ "__identifier": "flags", "__type": "Array<LocalEnum.Level_Flags>", "__value": [], "__tile": null, "defUid": 451, "realEditorValues": [] }
+			],
+			"layerInstances": null,
+			"__neighbours": [{ "levelIid": "bec0ec40-1030-11f0-9cf6-3defa309dce7", "dir": "w" }]
 		}
 	],
 	"worlds": [],
