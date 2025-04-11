@@ -1,5 +1,33 @@
 
+#macro INPUT global.game.input.manager
+
 function Game() constructor {
+	
+	if !file_exists(FILE_DATA) {
+		global.file = json_parse(json_stringify(global.file_default));
+	} else {
+		var _file = game_json_open(FILE_DATA);
+		_file = game_file_upgrade(_file);
+		global.file = _file;
+	}
+	
+	global.settings = global.file.settings; // alias
+	global.data = global.file.data; // alias
+	
+	global.strings = game_json_open("strings.json");
+	
+	
+	// temp
+	global.onoff = 1;
+	game_update_overlay(global.settings.debug.overlay);
+	game_update_gctime(global.settings.debug.gctime);
+	game_update_log(global.settings.debug.log);
+	
+	
+	state = new GameState();
+	
+	input = new Controls();
+	camera = new Camera();
 	
 	checkpoint = new GameHandleCheckpoints();
 	gate = new GameHandleGates();
@@ -9,9 +37,39 @@ function Game() constructor {
 	news_sound = new News();
 	
 	
+	log(Log.user, $"running nullstars! build {date_datetime_string(GM_build_date)} {GM_build_type} - {GM_version}");
+	
+	
+	static update_begin = function() {
+		global.logger.update();
+		
+		if !self.state.paused() {
+			self.step_begin();
+		}
+	};
 	static update = function() {
-		schedule.update();
+		
+		if !self.state.paused() {
+			self.step();
+		}
+	};
+	static update_end = function() {
+		
+		if !self.state.paused() {
+			self.step_end();
+		}
 	}
+	
+	static step_begin = function() {
+		state.time += 1;
+		input.update();
+	};
+	static step = function() {
+		schedule.update();
+	};
+	static step_end = function() {
+		camera.update(self);
+	};
 	
 	static unpack = function() {
 		checkpoint.unpack();
@@ -28,6 +86,28 @@ function Game() constructor {
 		checkpoint.pack();
 		gate.pack();
 	}
+	
+}
+
+function GameState() constructor {
+	
+	// frames since game start
+	time = 0;
+	
+	/// freeze frames. decremented every frame
+	freeze = 0;
+	
+	/// whether game objects should run at all
+	pause = false;
+	
+	// on/off switches
+	oo_onoff = true;
+	oo_flipflop = true;
+	
+	// timer state
+	timer_active = false;
+	timer_current = 0;
+	timer_target = 0;
 	
 }
 
