@@ -121,6 +121,7 @@
     {"$GMIncludedFile":"","%Name":"Room_70.bin","CopyToMask":-1,"filePath":"datafiles/room","name":"Room_70.bin","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"Room_8.bin","CopyToMask":-1,"filePath":"datafiles/room","name":"Room_8.bin","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"Room_9.bin","CopyToMask":-1,"filePath":"datafiles/room","name":"Room_9.bin","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"strings.json","CopyToMask":-1,"filePath":"datafiles","name":"strings.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"world.bin","CopyToMask":-1,"filePath":"datafiles","name":"world.bin","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
   ],
   "isEcma":false,

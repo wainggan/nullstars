@@ -153,6 +153,8 @@ function game_file_load() {
 	}
 	global.settings = global.file.settings; // alias
 	global.data = global.file.data; // alias
+	
+	global.strings = game_json_open("strings.json");
 }
 
 function game_file_save() {
