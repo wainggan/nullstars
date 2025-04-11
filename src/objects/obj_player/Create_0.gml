@@ -1563,9 +1563,9 @@ squish = function(_data) {
 	
 	var _out = false;
 	
+	// todo: a particular edge case happens sometimes due to this not detecting diagonal escape positions
 	for (var i = 0; i < _amount * 2; i++) {
 		var _d = (i % 2 == 0 ? 1 : -1) * floor((i + 2) / 2);
-		show_debug_message("_d = {0}, {1} {2} {3} {4}", _d, x, y, _data.target_x, _data.target_y)
 		if !actor_collision(x + _d, y) {
 			x += _d;
 			_out = true;
