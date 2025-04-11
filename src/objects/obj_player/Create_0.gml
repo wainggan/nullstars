@@ -859,8 +859,12 @@ state_base.set("step", function () {
 	if state.is(state_free) {
 		if y_vel > -1 {
 			if get_check_wall(dir, 1) && INPUT.check("grab") && !onground {
-				state.change(state_ledge);
-				return;
+				var _crouched = nat_crouch();
+				if !_crouched || (_crouched && get_can_uncrouch()) {
+					nat_crouch(false);
+					state.change(state_ledge);
+					return;
+				}
 			}
 		}
 	}
