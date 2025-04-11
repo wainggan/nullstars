@@ -83,10 +83,18 @@ nat_crouch = function(_value = undefined) {
 nat_crouch(false);
 
 get_can_uncrouch = function() {
-	if !nat_crouch() return true;
+	if !nat_crouch() {
+		return true;
+	}
 	var _pre = mask_index;
 	mask_index = spr_debug_player;
+	
 	var _collide = actor_collision(x, y);
+	var _inst = instance_place(x, y, obj_ss_down);
+	if _inst != noone {
+		_collide = true;
+	}
+	
 	mask_index = _pre;
 	return !_collide;
 };
@@ -777,36 +785,25 @@ state_base.set("step", function () {
 	
 	state.child();
 	
-	var _d = 0, _amount = 0;
-	var _shifted = false;
-	
-	if !_shifted {
-		_d = 0;
-		_amount = state.is(state_dash) ? 16 : 4;
-		if actor_collision(x + x_vel, y)
-			for (_d = 1; _d < _amount; _d++) {
-				if actor_collision(x + x_vel, y + _d) {
-				} else break;
-			}
-		if _d != _amount {
-			actor_move_y(_d)
-			_shifted = true;
-		}
-			
-		_d = 0;
-		_amount = state.is(state_dash) ? 10 : 2;
-		if actor_collision(x + x_vel, y)
-			for (_d = 1; _d < _amount; _d++) {
-				if actor_collision(x + x_vel, y - _d) {
-				} else break;
-			}
-		if _d != _amount {
-			actor_move_y(-_d)
-			_shifted = true;
-		}
-	}
-	
 	static __collide_x = function() {
+		var _amount = 0;
+		if state.is(state_dash) {
+			_amount = 12;
+		} else {
+			_amount = 0;
+		}
+		
+		for (var i = 0; i < _amount * 2 + 1; i++) {
+			var _d = (i % 2 == 0 ? 1 : -1) * floor((i + 2) / 2);
+			if !actor_collision(x + sign(x_vel), y + _d) {
+				actor_move_y(_d);
+				// avoid getting stuck
+				// it's probably fine...
+				actor_move_x(sign(x_vel));
+				return;
+			}
+		}
+		
 		if vel_grace_timer <= 0 || abs(x_vel) > abs(vel_grace) { // bad idea
 			vel_grace_timer = 14;
 			vel_grace = x_vel;
@@ -818,35 +815,24 @@ state_base.set("step", function () {
 		}
 	};
 	actor_move_x(x_vel, __collide_x);
-
-	if (y_vel < 0 ||
-		(dash_grace > 0 && dash_dir_y == 1 && dash_dir_x == 0)) &&
-		!_shifted {
-		_d = 0;
-		_amount = 8;
-		if actor_collision(x, y + y_vel)
-			for (_d = 1; _d < _amount; _d++) {
-				if actor_collision(x - _d, y + y_vel) {
-				} else break;
-			}
-		if _d != _amount {
-			actor_move_x(-_d)
-			_shifted = true;
-		}
-		
-		_d = 0;
-		if actor_collision(x, y + y_vel)
-			for (_d = 1; _d < _amount; _d++) {
-				if actor_collision(x + _d, y + y_vel) {
-				} else break;
-			}
-		if _d != _amount {
-			actor_move_x(_d)
-			_shifted = true;
-		}
-	}
 	
 	static __collide_y = function() {
+		var _amount = 0;
+		if y_vel < 0 || (dash_grace > 0 && dash_dir_y == 1 && dash_dir_x == 0) {
+			_amount = 8;
+		} else {
+			_amount = 2;
+		}
+		
+		for (var i = 0; i < _amount * 2 + 1; i++) {
+			var _d = (i % 2 == 0 ? 1 : -1) * floor((i + 2) / 2);
+			if !actor_collision(x + _d, y + sign(y_vel)) {
+				actor_move_x(_d);
+				actor_move_y(sign(y_vel));
+				return;
+			}
+		}
+		
 		if y_vel > 0 {
 			if y_vel > 1 {
 				scale_x = 1.2;
@@ -1539,7 +1525,80 @@ state_menu.set("enter", function() {
 	
 });
 
-squish = function() {
+squish = function(_data) {
+	
+	if !instance_exists(_data.pusher) {
+		game_player_kill();
+		return;
+	}
+	
+	// since squish only gets calls when solids push actors, _data.pusher.collidable must be false.
+	// it's safe to re-enable it so long as it is set back to false at the end of the function
+	
+	_data.pusher.collidable = true;
+	
+	var _crouched = false;
+	if !nat_crouch() && state.is(state_free) {
+		nat_crouch(true);
+		_crouched = true;
+		
+		// this looks so fucking stupid
+		if !actor_collision(x, y) {
+			scale_x = 1.2;
+			scale_y = 0.8;
+			_data.pusher.collidable = false;
+			return;
+		}
+		if !actor_collision(_data.target_x, _data.target_y) {
+			x = _data.target_x;
+			y = _data.target_y;
+			scale_x = 1.2;
+			scale_y = 0.8;
+			_data.pusher.collidable = false;
+			return;
+		}
+	}
+	
+	var _amount = 12;
+	
+	var _out = false;
+	
+	for (var i = 0; i < _amount * 2; i++) {
+		var _d = (i % 2 == 0 ? 1 : -1) * floor((i + 2) / 2);
+		show_debug_message("_d = {0}, {1} {2} {3} {4}", _d, x, y, _data.target_x, _data.target_y)
+		if !actor_collision(x + _d, y) {
+			x += _d;
+			_out = true;
+			break;
+		}
+		if !actor_collision(x, y + _d) {
+			y += _d;
+			_out = true;
+			break;
+		}
+		if !actor_collision(_data.target_x + _d, _data.target_y) {
+			x = _data.target_x + _d;
+			y = _data.target_y;
+			_out = true;
+			break;
+		}
+		if !actor_collision(_data.target_x, _data.target_y + _d) {
+			x = _data.target_x;
+			y = _data.target_y + _d;
+			_out = true;
+			break;
+		}
+	}
+	
+	if _out {
+		if !_crouched && get_can_uncrouch() {
+			nat_crouch(false);
+		}
+		_data.pusher.collidable = false;
+		return;
+	}
+	
+	_data.pusher.collidable = false;
 	game_player_kill();
 };
 

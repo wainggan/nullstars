@@ -333,6 +333,52 @@
 					"fieldInstances": [],
 					"__worldX": 32160,
 					"__worldY": 9776
+				},
+				{
+					"__identifier": "obj_lift_attack",
+					"__grid": [24,14],
+					"__pivot": [0,0],
+					"__tags": [ "lift", "object", "SIZE_TILE", "trigger", "glue_parent" ],
+					"__tile": null,
+					"__smartColor": "#B55088",
+					"iid": "77fd47f0-1030-11f0-ab4d-b9fc4ce86de6",
+					"width": 64,
+					"height": 32,
+					"defUid": 267,
+					"px": [384,224],
+					"fieldInstances": [
+						{ "__identifier": "dir", "__type": "LocalEnum.Direction_4", "__value": "up", "__tile": null, "defUid": 268, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["up"]
+						}] },
+						{ "__identifier": "spd", "__type": "Float", "__value": 6, "__tile": null, "defUid": 269, "realEditorValues": [] },
+						{ "__identifier": "reliant", "__type": "Bool", "__value": false, "__tile": null, "defUid": 270, "realEditorValues": [] }
+					],
+					"__worldX": 31632,
+					"__worldY": 9664
+				},
+				{
+					"__identifier": "obj_lift_attack",
+					"__grid": [15,14],
+					"__pivot": [0,0],
+					"__tags": [ "lift", "object", "SIZE_TILE", "trigger", "glue_parent" ],
+					"__tile": null,
+					"__smartColor": "#B55088",
+					"iid": "89e1f830-1030-11f0-ab4d-af3c963ba875",
+					"width": 32,
+					"height": 32,
+					"defUid": 267,
+					"px": [240,224],
+					"fieldInstances": [
+						{ "__identifier": "dir", "__type": "LocalEnum.Direction_4", "__value": "up", "__tile": null, "defUid": 268, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["up"]
+						}] },
+						{ "__identifier": "spd", "__type": "Float", "__value": 2, "__tile": null, "defUid": 269, "realEditorValues": [{ "id": "V_Float", "params": [2] }] },
+						{ "__identifier": "reliant", "__type": "Bool", "__value": false, "__tile": null, "defUid": 270, "realEditorValues": [] }
+					],
+					"__worldX": 31488,
+					"__worldY": 9664
 				}
 			]
 		},
@@ -2311,6 +2357,22 @@
 					"fieldInstances": [],
 					"__worldX": 31760,
 					"__worldY": 9648
+				},
+				{
+					"__identifier": "obj_ss_down",
+					"__grid": [23,7],
+					"__pivot": [0,0],
+					"__tags": [ "semisolid", "SIZE_TILE" ],
+					"__tile": { "tilesetUid": 8, "x": 400, "y": 80, "w": 16, "h": 16 },
+					"__smartColor": "#63C74D",
+					"iid": "a9d2d970-1030-11f0-ab4d-b1e32ac3ba00",
+					"width": 96,
+					"height": 16,
+					"defUid": 245,
+					"px": [368,112],
+					"fieldInstances": [],
+					"__worldX": 31616,
+					"__worldY": 9552
 				}
 			]
 		},

@@ -25,8 +25,10 @@ lift_last_y = 0;
 
 event = new Event();
 
+/// @arg {id.Instance} _solid
 riding = function(_solid) {
 	return place_meeting(x, y + 1, _solid);
 };
-squish = function(){};
+/// @arg {struct} _data
+squish = function(_data) {};
 
