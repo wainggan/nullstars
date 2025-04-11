@@ -1,5 +1,5 @@
 {
-  "$GMProject":"",
+  "$GMProject":"v1",
   "%Name":"nullstars",
   "AudioGroups":[
     {"$GMAudioGroup":"","%Name":"audiogroup_default","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
@@ -49,6 +49,7 @@
     {"$GMFolder":"","%Name":"bgm","folderPath":"folders/sounds/bgm.yy","name":"bgm","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"sfx","folderPath":"folders/sounds/sfx.yy","name":"sfx","resourceType":"GMFolder","resourceVersion":"2.0",},
   ],
+  "ForcedPrefabProjectReferences":[],
   "IncludedFiles":[
     {"$GMIncludedFile":"","%Name":"Room_0.bin","CopyToMask":-1,"filePath":"datafiles/room","name":"Room_0.bin","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"Room_1.bin","CopyToMask":-1,"filePath":"datafiles/room","name":"Room_1.bin","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
@@ -127,7 +128,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.11.0.179",
+    "IDEVersion":"2024.13.0.190",
   },
   "name":"nullstars",
   "resources":[
