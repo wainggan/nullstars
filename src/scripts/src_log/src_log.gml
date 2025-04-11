@@ -39,6 +39,11 @@ function Logger() constructor {
 global.logger = new Logger();
 
 function log(_level, _message) {
+	if !RELEASE {
+		// this is probably fine
+		var _str = debug_get_callstack(2)[1];
+		_message += " @ " + _str;
+	}
 	global.logger.write(_level, _message);
 }
 function log_level(_level) {

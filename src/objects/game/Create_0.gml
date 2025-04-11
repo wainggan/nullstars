@@ -26,6 +26,6 @@ game_update_overlay(global.settings.debug.overlay);
 game_update_gctime(global.settings.debug.gctime);
 game_update_log(global.settings.debug.log);
 
-log(Log.user, $"running nullstars! build {date_datetime_string(GM_build_date)} {GM_build_type} - {GM_version}")
+log(Log.user, $"running nullstars! build {date_datetime_string(GM_build_date)} {GM_build_type} - {GM_version}");
 
 

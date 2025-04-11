@@ -128,70 +128,56 @@ global.file_default = {
 	},
 }
 
-function game_file_update(_file) {
+function game_file_upgrade(_file) {
+	// todo: very temporary
+	if _file.json < FILE_DATA_VERSION {
+		log(Log.user, $"update system not implemented, falling back to empty file!");
+		log(Log.user, $"really sorry about this. make parchii fix this.");
+		_file = json_parse(json_stringify(global.file_default));
+	}
 	var i = _file.json;
 	for (; i < FILE_DATA_VERSION; i++) {
 		log(Log.user, $"updating save file from {_file.json} to {i}...");
 	}
+	return _file;
 }
 
-function game_file_load() {
-	if !file_exists(FILE_DATA) {
-		global.file = json_parse(json_stringify(global.file_default));
-	} else {
-		var _file = game_json_open(FILE_DATA);
-		game_file_update(_file);
-		global.file = _file;
-		
-		// TEMPORARY
-		if global.file.json < FILE_DATA_VERSION {
-			log(Log.user, $"save file deleted since the format changed ({global.file.json} => {FILE_DATA_VERSION})");
-			file_delete(FILE_DATA);
-			game_file_load();
-			return;
-		}
-	}
-	global.settings = global.file.settings; // alias
-	global.data = global.file.data; // alias
-	
-	global.strings = game_json_open("strings.json");
-}
-
+// todo: move to Game()
 function game_file_save() {
 	global.game.pack();
 	game_json_save(FILE_DATA, global.file);
 }
 
-
+/// writes to a file
+/// @arg {string} _filename
 function game_json_save(_filename, _tree) {
-	log(Log.hide, $"saving file {_filename}");
+	log(Log.hide, $"util_json_save: writing file {_filename}");
+	
 	var _string = json_stringify(_tree, true);
 	var _buffer = buffer_create(string_byte_length(_string)+1, buffer_fixed, 1);
+	
 	buffer_write(_buffer, buffer_string, _string);
 	buffer_save(_buffer, _filename);
 	buffer_delete(_buffer);
 }
 
+/// opens a json file
+/// @arg {string} _filename
+/// @return any
 function game_json_open(_filename) {
-	if file_exists(_filename) {
-		log(Log.hide, $"loading file {_filename}");
-		
-		var _time = get_timer();
-		var _buffer = buffer_load(_filename);
-		show_debug_message("buffer load: {0}", (get_timer() - _time) / 1000)
-		_time = get_timer();
-		var _string = buffer_read(_buffer, buffer_string);
-		show_debug_message("buffer read: {0}", (get_timer() - _time) / 1000)
-		buffer_delete(_buffer);
-		
-		_time = get_timer();
-		var _loadData = json_parse(_string, , true);
-		show_debug_message("buffer json: {0}", (get_timer() - _time) / 1000)
-		
-		return _loadData
-		
-	} else {
-		throw $"file {_filename} does not exist";
+	if !file_exists(_filename) {
+		log(Log.error, $"util_json_open: file {_filename} doesn't exist!");
+		return -1;
 	}
+	
+	log(Log.note, $"util_json_open: loading file {_filename}");
+	
+	var _buffer = buffer_load(_filename);
+	var _string = buffer_read(_buffer, buffer_string);
+	buffer_delete(_buffer);
+	
+	var _data = json_parse(_string, undefined, true);
+	
+	return _data;
 }
 

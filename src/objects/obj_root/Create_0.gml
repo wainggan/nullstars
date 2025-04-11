@@ -1,0 +1,1 @@
+global.game = new Game();

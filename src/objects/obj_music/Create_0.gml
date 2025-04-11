@@ -8,11 +8,11 @@ bgm_old = {};
 
 state = new State();
 
-state_base = state.add()
-.set("step", function() {
+state_base = state.add();
+state_base.set("step", function() {
 	
-	var _bgm = game_level_get_music(camera.x, camera.y);
-	if array_contains(game_level_get_flags(camera.x, camera.y), "hub") {
+	var _bgm = game_level_get_music(global.game.camera.x, global.game.camera.y);
+	if array_contains(game_level_get_flags(global.game.camera.x, global.game.camera.y), "hub") {
 		_bgm = "hub";
 	}
 	
