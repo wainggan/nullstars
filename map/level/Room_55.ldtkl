@@ -175,7 +175,10 @@
 					"defUid": 156,
 					"px": [80,32],
 					"fieldInstances": [
-						{ "__identifier": "name", "__type": "String", "__value": "none", "__tile": null, "defUid": 583, "realEditorValues": [] },
+						{ "__identifier": "name", "__type": "String", "__value": "1-5", "__tile": null, "defUid": 583, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["1-5"]
+						}] },
 						{ "__identifier": "time", "__type": "Float", "__value": 8, "__tile": null, "defUid": 158, "realEditorValues": [{ "id": "V_Float", "params": [8] }] },
 						{ "__identifier": "ref", "__type": "EntityRef", "__value": {
 							"entityIid": "33053dd0-9b00-11ef-8881-17350a5c2ee2",

@@ -421,7 +421,7 @@
 					"layerIid": "ee2d9b93-9b00-11ef-ae8e-53063a77a79e",
 					"levelIid": "ee2d9b90-9b00-11ef-ae8e-13f9eeaab133",
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3"
-				}, "dir": "right", "name": "none", "terms": [] } },
+				}, "dir": "right", "name": "1-d", "terms": [] } },
 				{ "iids": {
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
 					"levelIid": "e8aa9a70-9b00-11ef-b1e1-e957588eb09d",
@@ -432,7 +432,7 @@
 					"layerIid": "e8aa9a73-9b00-11ef-b1e1-d13e4d44e204",
 					"levelIid": "e8aa9a70-9b00-11ef-b1e1-e957588eb09d",
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3"
-				}, "dir": "right", "name": "none", "terms": [] } },
+				}, "dir": "right", "name": "1-a", "terms": [] } },
 				{ "iids": {
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
 					"levelIid": "5b512b70-9b00-11ef-b1e1-491955bf4018",
@@ -443,7 +443,7 @@
 					"layerIid": "5b515280-9b00-11ef-b1e1-65ed4dd1ad68",
 					"levelIid": "5b512b70-9b00-11ef-b1e1-491955bf4018",
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3"
-				}, "dir": "right", "name": "none", "terms": [] } },
+				}, "dir": "right", "name": "1-4", "terms": [] } },
 				{ "iids": {
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
 					"levelIid": "195d8120-9b00-11ef-b27b-a358682a4525",
@@ -454,7 +454,7 @@
 					"layerIid": "195d8123-9b00-11ef-b27b-656c840b0691",
 					"levelIid": "195d8120-9b00-11ef-b27b-a358682a4525",
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3"
-				}, "dir": "right", "name": "none", "terms": [] } },
+				}, "dir": "right", "name": "1-b", "terms": [] } },
 				{ "iids": {
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
 					"levelIid": "b4572070-9b00-11ef-8881-d96bcd9e8e89",
@@ -465,7 +465,7 @@
 					"layerIid": "b4572073-9b00-11ef-8881-7578e0aef15c",
 					"levelIid": "b4572070-9b00-11ef-8881-d96bcd9e8e89",
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3"
-				}, "dir": "down", "name": "none", "terms": [] } },
+				}, "dir": "down", "name": "1-5", "terms": [] } },
 				{ "iids": {
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
 					"levelIid": "41a05e50-e920-11ef-a4bb-cb1c358dbbd8",
@@ -476,7 +476,7 @@
 					"layerIid": "41a05e53-e920-11ef-a4bb-e50c42897aef",
 					"levelIid": "41a05e50-e920-11ef-a4bb-cb1c358dbbd8",
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3"
-				}, "dir": "right", "name": "none", "terms": [] } },
+				}, "dir": "right", "name": "1-8", "terms": [] } },
 				{ "iids": {
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
 					"levelIid": "621d8450-e920-11ef-ab8a-0739c24c0598",
@@ -487,7 +487,7 @@
 					"layerIid": "621d8453-e920-11ef-ab8a-71ce5b71c0f9",
 					"levelIid": "621d8450-e920-11ef-ab8a-0739c24c0598",
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3"
-				}, "dir": "right", "name": "none", "terms": [] } },
+				}, "dir": "right", "name": "1-7", "terms": [] } },
 				{ "iids": {
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
 					"levelIid": "9841a6c0-1030-11f0-b8da-d7d001d45ee7",
@@ -498,7 +498,7 @@
 					"layerIid": "9841cdd2-1030-11f0-b8da-bd1cf0b741b7",
 					"levelIid": "9841a6c0-1030-11f0-b8da-d7d001d45ee7",
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3"
-				}, "dir": "right", "name": "none", "terms": [] } },
+				}, "dir": "right", "name": "1-6", "terms": [] } },
 				{ "iids": {
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
 					"levelIid": "386d86f0-1030-11f0-b8da-71fc97ecaf08",
@@ -509,7 +509,7 @@
 					"layerIid": "386d86f3-1030-11f0-b8da-695685babf0d",
 					"levelIid": "386d86f0-1030-11f0-b8da-71fc97ecaf08",
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3"
-				}, "dir": "down", "name": "none", "terms": [] } },
+				}, "dir": "down", "name": "1-e", "terms": [] } },
 				{ "iids": {
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
 					"levelIid": "7faac4e0-1030-11f0-9cf6-9d06baece2dc",
@@ -520,7 +520,7 @@
 					"layerIid": "7faaebf2-1030-11f0-9cf6-1f09de89b817",
 					"levelIid": "7faac4e0-1030-11f0-9cf6-9d06baece2dc",
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3"
-				}, "dir": "right", "name": "none", "terms": [] } },
+				}, "dir": "right", "name": "1-9", "terms": [] } },
 				{ "iids": {
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
 					"levelIid": "ec711930-1030-11f0-86f7-755cdfcb017d",
@@ -531,7 +531,7 @@
 					"layerIid": "ec711933-1030-11f0-86f7-5185cd3db5e1",
 					"levelIid": "ec711930-1030-11f0-86f7-755cdfcb017d",
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3"
-				}, "dir": "left", "name": "none", "terms": [] } },
+				}, "dir": "left", "name": "1-g", "terms": [] } },
 				{ "iids": {
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
 					"levelIid": "806cc440-1030-11f0-86f7-77ac1483a96a",
@@ -542,7 +542,7 @@
 					"layerIid": "806cc443-1030-11f0-86f7-855fe9d156dc",
 					"levelIid": "806cc440-1030-11f0-86f7-77ac1483a96a",
 					"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3"
-				}, "dir": "right", "name": "none", "terms": [] } }
+				}, "dir": "right", "name": "1-10", "terms": [] } }
 			]
 		},
 		{
