@@ -858,7 +858,7 @@ state_base.set("step", function () {
 	// this is horrible
 	if state.is(state_free) {
 		if y_vel > -1 {
-			if get_check_wall(dir, 1) && INPUT.check("grab") && !onground {
+			if get_check_wall(dir, 1) && INPUT.check("grab") {
 				var _crouched = nat_crouch();
 				if !_crouched || (_crouched && get_can_uncrouch()) {
 					nat_crouch(false);
@@ -1160,12 +1160,6 @@ state_ledge.set("enter", function(){
 	}
 	
 	if !get_check_wall(dir, 1) {
-		x_vel += get_lift_x();
-		y_vel += get_lift_y();
-		state.change(state_free);
-		return;
-	}
-	if onground {
 		x_vel += get_lift_x();
 		y_vel += get_lift_y();
 		state.change(state_free);
