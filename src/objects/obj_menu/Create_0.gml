@@ -2,20 +2,20 @@
 system = new Menu();
 
 page_none = new MenuPageList()
-.add(new MenuButton("close", function(){
+.add(new MenuButton(global.strings[$ "menu-i-close"], function(){
 	system.close()
 }))
-.add(new MenuButton("map", function(){
+.add(new MenuButton(global.strings[$ "menu-i-map"], function(){
 	system.open(page_map)
 }))
-.add(new MenuButton("settings", function(){
+.add(new MenuButton(global.strings[$ "menu-i-setting"], function(){
 	system.open(page_settings)
 }))
-.add(new MenuButton("debug", function(){
+.add(new MenuButton(global.strings[$ "menu-i-debug"], function(){
 	log(Log.warn, "good luck");
 	system.open(page_debug);
 }))
-.add(new MenuButton("exit", function(){
+.add(new MenuButton(global.strings[$ "menu-i-exit"], function(){
 	game_end()
 }))
 
@@ -42,15 +42,14 @@ page_settings_graphics = new MenuPageList(260)
 .add(new MenuButton("back", function(){
 	system.close();
 }))
-.add(new MenuRadio("window scale", 
+.add(new MenuRadio(global.strings[$ "menu_setting_graphic-i-winscale"], 
 		["1x", "2x", "3x", "4x"],
 		global.settings.graphic.windowscale,
 		function(_) {
 	global.settings.graphic.windowscale = _;
 	game_update_windowscale(_ + 1);
 	game_file_save();
-}, @"allows you to set the window scale. particularly useful if you have a high density display.
-unused if fullscreen is enabled."))
+}, global.strings[$ "menu_setting_graphic-h-winscale"]))
 .add(new MenuRadio("fullscreen", 
 		["off", "exclusive", "borderless"],
 		global.settings.graphic.fullscreen,
