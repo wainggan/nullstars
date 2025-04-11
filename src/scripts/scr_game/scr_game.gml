@@ -121,8 +121,11 @@ function GameHandleGates() constructor {
 	}
 	
 	static add = function(_object) {
+		if _object.name = "" {
+			log(Log.error, $"gate: name is blank! {_object.x} {_object.y} {_object}")
+		}
 		if list[$ _object.name] != undefined {
-			log(Log.error, $"gate: {_object.name} already exists!");
+			log(Log.warn, $"gate: {_object.name} already exists!");
 		}
 		list[$ _object.name] = {
 			object: _object,
