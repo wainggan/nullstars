@@ -37,7 +37,7 @@ last_able = _checkable;
 last_alive = instance_exists(obj_player);
 
 if !game_timer_running() && _start {
-	game_timer_start(time * 60, self, ref);
+	game_timer_start(time * 60, self);
 	
 	game_set_pause(4)
 	game_camera_set_shake(3, 0.5)
@@ -58,7 +58,7 @@ if !game_timer_running() && _start {
 if _end {
 	var _cond = false;
 	
-	if game_timer_running() && game.timer_start == self {
+	if game_timer_running() && global.game.state.timer_target == self {
 		game_timer_stop()
 		_cond = true;
 	}
@@ -80,12 +80,16 @@ if _end {
 	
 }
 
+var _letsgoo = level_get_instance(global.game.state.timer_target) == self;
+
 
 with level_get_instance(ref) {
 	
 	if !global.game.gate.data(other.name).complete && game_level_get_safe(x, y) {
-		if game_timer_running() {
-			if instance_exists(other.pet) instance_destroy(other.pet)
+		if game_timer_running() && _letsgoo {
+			if instance_exists(other.pet) {
+				instance_destroy(other.pet);
+			}
 		} else {
 			if !instance_exists(other.pet) {
 				other.pet = instance_create_layer(x, y, layer, obj_Solid, {
@@ -98,13 +102,13 @@ with level_get_instance(ref) {
 		if instance_exists(other.pet) instance_destroy(other.pet)
 	}
 	
+	if !_letsgoo {
+		break;
+	}
+	
 	var _touch = place_meeting(x, y, obj_player)
 	var _cond = _touch && !lastTouch;
 	lastTouch = _touch
-
-	if game_timer_running() && self.id != level_get_instance(game.timer_target) {
-		_cond = false;
-	}
 
 	if _cond {
 		var _pop = false;
