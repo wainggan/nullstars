@@ -56,6 +56,7 @@ for (var i_table = 0; i_table < array_length(_file.toc); i_table++) {
 	}
 	
 	_field.uid = _item.id;
+	_field.rid = -1;
 	
 	var _inst = instance_create_layer(
 		_item.x, _item.y,
