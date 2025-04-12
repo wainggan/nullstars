@@ -24,6 +24,7 @@ function Game() constructor {
 	game_update_log(global.settings.debug.log);
 	
 	
+	global.time = 0;
 	state = new GameState();
 	
 	input = new Controls();
@@ -37,25 +38,22 @@ function Game() constructor {
 	news_sound = new News();
 	
 	
-	log(Log.user, $"running nullstars! build {date_datetime_string(GM_build_date)} {GM_build_type} - {GM_version}");
-	
-	
 	static update_begin = function() {
 		global.logger.update();
 		
-		if !self.state.paused() {
+		if !self.state.get_pause() {
 			self.step_begin();
 		}
 	};
 	static update = function() {
 		
-		if !self.state.paused() {
+		if !self.state.get_pause() {
 			self.step();
 		}
 	};
 	static update_end = function() {
 		
-		if !self.state.paused() {
+		if !self.state.get_pause() {
 			self.step_end();
 		}
 	}
@@ -72,6 +70,8 @@ function Game() constructor {
 	};
 	
 	static unpack = function() {
+		log(Log.note, "Game(): running unpack()");
+		
 		checkpoint.unpack();
 		gate.unpack();
 		
@@ -83,9 +83,13 @@ function Game() constructor {
 
 	}
 	static pack = function() {
+		log(Log.note, "Game(): running pack()");
+		
 		checkpoint.pack();
 		gate.pack();
 	}
+	
+	log(Log.user, $"running nullstars! build {date_datetime_string(GM_build_date)} {GM_build_type} - {GM_version}");
 	
 }
 
@@ -95,10 +99,12 @@ function GameState() constructor {
 	time = 0;
 	
 	/// freeze frames. decremented every frame
-	freeze = 0;
+	pause = 0;
+	pause_defer = 0;
 	
 	/// whether game objects should run at all
-	pause = false;
+	pause_freeze = false;
+	pause_freeze_defer = false;
 	
 	// on/off switches
 	oo_onoff = true;
@@ -106,8 +112,76 @@ function GameState() constructor {
 	
 	// timer state
 	timer_active = false;
+	timer_length = 0;
 	timer_current = 0;
 	timer_target = 0;
+	
+	
+	static update = function () {
+		// update pause
+		pause = pause_defer;
+		pause -= 1;
+		pause_defer = pause;
+		
+		pause_freeze = pause_freeze_defer;
+		
+		// update timer
+		if timer_active {
+			timer_current += 1;
+			if timer_length - timer_current <= 0 {
+				self.timer_stop();
+			}
+		}
+		
+		time += 1;
+		global.time = time;
+	};
+	
+	static reset = function () {
+		oo_onoff = true;
+		oo_flipflop = true;
+	};
+	
+	// game_get_pause() and game_pause() only change once game_pause_update() is run
+	static set_pause = function (_frames) {
+		// + 1 to make sure the first frame paused is preserved after update
+		pause_defer = max(_frames + 1, pause_defer);
+	};
+	static set_pause_freeze = function (_freeze) {
+		pause_freeze_defer = _freeze;
+	};
+	
+	static get_pause = function () {
+		return pause_freeze || pause > 0;
+	};
+	
+	
+	static timer_start = function (_length, _target = undefined) {
+		timer_current = 0;
+		timer_length = _length;
+		timer_target = _target;
+		timer_active = true;
+		
+		self.reset();
+		with obj_Entity {
+			reset();
+		}
+		
+		instance_create_layer(0, 0, "Instances", obj_timer_render);
+	};
+	
+	static timer_stop = function () {
+		timer_current = 0;
+		timer_active = false;
+	};
+	
+	static timer_get = function () {
+		return timer_current;
+	};
+	
+	static timer_running = function () {
+		return timer_active;
+	};
 	
 }
 
@@ -221,7 +295,4 @@ function GameHandleGates() constructor {
 		return list[$ _index];
 	}
 }
-
-global.game = new Game();
-
 
