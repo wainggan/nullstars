@@ -67,7 +67,7 @@ for (var i_table = 0; i_table < array_length(_file.toc); i_table++) {
 	
 	global.entities[$ _item.id] = _inst
 	global.entities_toc[$ _item.id] = _inst
-		
+	
 }
 
 

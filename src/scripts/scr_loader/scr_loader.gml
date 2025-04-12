@@ -2,7 +2,8 @@
 
 enum LoaderProgress {
 	out,
-	loading,
+	prepping,
+	prepared,
 	loaded,
 }
 
@@ -25,7 +26,8 @@ function Loader() constructor {
 		array_push(levels, {
 			id: i,
 			loaded: LoaderProgress.out,
-			time: 0,
+			time_load: 0,
+			time_prep: 0,
 			x: _room.x,
 			y: _room.y,
 			width: _room.width,
@@ -35,8 +37,6 @@ function Loader() constructor {
 		});
 	}
 	
-	loaded = [];
-	
 	// [Buffer.Id, Real]
 	// [0] - the buffer we cache
 	// [1] - how many depend on it
@@ -44,26 +44,43 @@ function Loader() constructor {
 	
 	// [String, ...]
 	// [0] - instruction type
+	// [1] - priority
 	queue = [];
 	
-	static queue_add_file = function (_base) {
-		_base.loaded = LoaderProgress.loading;
-		array_push(queue, ["file", _base]);
+	static queue_add = function (_base) {
+		if array_length(queue) == 0 {
+			array_push(queue, _base);
+			return;
+		}
+		for (var i = 0; i < array_length(queue); i++) {
+			if queue[i][1] <= _base[1] {
+				array_insert(queue, i, _base);
+				return;
+			}
+		}
+	}
+	
+	static queue_add_file = function (_level) {
+		log(Log.note, $"Loader(): queue_add_file {_level.name} ({_level.id})");
+		_level.loaded = LoaderProgress.prepping;
+		self.queue_add(["file", 0, _level]);
 	};
 	
-	static queue_add_load = function (_base, _bin_id) {
+	static queue_add_prep = function (_level, _bin_id) {
+		log(Log.note, $"Loader(): queue_add_prep {_level.name} ({_level.id})");
 		bins[_bin_id][1] += 1;
-		array_push(queue, ["load", _base, _bin_id]);
+		self.queue_add(["prep", 0, _level, _bin_id]);
 	};
 	
 	static queue_process = function () {
+		// HERE: this now needs to take one item at a time
 		while array_length(queue) != 0 {
 			var _item = array_pop(queue);
 			
 			if _item[0] == "file" {
 				queue_process_file(_item);
-			} else if _item[0] == "load" {
-				queue_process_load(_item);
+			} else if _item[0] == "prep" {
+				queue_process_prep(_item);
 			}
 		}
 	};
@@ -77,11 +94,10 @@ function Loader() constructor {
 			throw "oops";
 		}
 		array_push(bins, [_buffer, 0]);
-		queue_add_load(_base, array_length(bins) - 1);
-		
+		queue_add_prep(_base, array_length(bins) - 1);
 	};
 	
-	static queue_process_load = function (_base) {
+	static queue_process_prep = function (_base) {
 		var _data = _base[1];
 		var _bin_id = _base[2];
 		
@@ -89,7 +105,7 @@ function Loader() constructor {
 		_level.init(bins[_bin_id][0]);
 		
 		_data.data = _level;
-		array_push(loaded, _data);
+		_data.loaded = LoaderProgress.prepared;
 		
 		bins[_bin_id][1] -= 1;
 	};
@@ -122,6 +138,7 @@ function Loader() constructor {
 		}
 		
 		_field.uid = _item.id;
+		_field.rid = -1;
 		
 		var _inst = instance_create_layer(
 			_item.x, _item.y,
@@ -140,23 +157,29 @@ function Loader() constructor {
 		
 		for (var i = 0; i < array_length(levels); i++) {
 			var _level = levels[i];
-			if rectangle_in_rectangle(
-				_cam.x, _cam.y,
-				_cam.x + _cam.w,
-				_cam.y + _cam.h,
-				_level.x, _level.y,
-				_level.x + _level.width,
-				_level.y + _level.height
-			) {
+			
+			if util_check_level_zone_prep(_cam, _level) {
 				if _level.loaded == LoaderProgress.out && _level.data != undefined {
 					self.queue_add_file(_level);
-				} else if _level.loaded == LoaderProgress.loaded {
-					_level.time = 60 * 10;
+				} else if _level.loaded = LoaderProgress.prepared {
+					_level.time_prep = 60 * 4;
 				}
+				
+			} else if util_check_level_zone_load(_cam, _level) {
+				if _level.loaded == LoaderProgress.out && _level.data != undefined {
+					self.queue_add_file(_level);
+				} else if _level.loaded == LoaderProgress.prepared {
+					_level.time_prep = 60 * 4;
+				} else if _level.loaded == LoaderProgress.loaded {
+					_level.time_load = 60 * 10;
+				}
+				
 			} else {
-				if _level.loaded == LoaderProgress.loaded {
-					_level.time -= 1;
-					if _level.time <= 0 {
+				if _level.loaded == LoaderProgress.prepared {
+					
+				} else if _level.loaded == LoaderProgress.loaded {
+					_level.time_load -= 1;
+					if _level.time_load <= 0 {
 						_level.data.destroy();
 						delete _level.data;
 						_level.loaded = LoaderProgress.out;
@@ -177,5 +200,37 @@ function Loader() constructor {
 		
 	};
 
+}
+
+function util_check_level_zone_prep(_cam, _level) {
+	var _pad = 128;
+	return rectangle_in_rectangle(
+		_cam.x - _pad,
+		_cam.y - _pad,
+		_cam.x + _cam.w + _pad,
+		_cam.y + _cam.h + _pad,
+		_level.x, _level.y,
+		_level.x + _level.width,
+		_level.y + _level.height
+	);
+}
+
+function util_check_level_zone_load(_cam, _level) {
+	return rectangle_in_rectangle(
+		_cam.x, _cam.y,
+		_cam.x + _cam.w,
+		_cam.y + _cam.h,
+		_level.x, _level.y,
+		_level.x + _level.width,
+		_level.y + _level.height
+	) || rectangle_in_rectangle(
+		obj_player.bbox_left + min(0, obj_player.x_vel),
+		obj_player.bbox_top + min(0, obj_player.y_vel),
+		obj_player.bbox_left + max(0, obj_player.x_vel),
+		obj_player.bbox_bottom + max(0, obj_player.y_vel),
+		_level.x, _level.y,
+		_level.x + _level.width,
+		_level.y + _level.height
+	);
 }
 
