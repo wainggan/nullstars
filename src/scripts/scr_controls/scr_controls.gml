@@ -66,5 +66,6 @@ function Controls() constructor {
 		manager.update();
 	}
 	
+	log(Log.note, "Controls(): initialized");
 }
 

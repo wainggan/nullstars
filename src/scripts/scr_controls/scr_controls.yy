@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_input",
+  "%Name":"scr_controls",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_input",
+  "name":"scr_controls",
   "parent":{
     "name":"game",
     "path":"folders/game.yy",

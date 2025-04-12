@@ -90,7 +90,6 @@ function Game() constructor {
 	}
 	
 	log(Log.user, $"running nullstars! build {date_datetime_string(GM_build_date)} {GM_build_type} - {GM_version}");
-	
 }
 
 function GameState() constructor {

@@ -592,14 +592,15 @@ function level_get_vf_shadows() {
 global.entities_toc = {}
 global.entities = {}
 
-function Level() constructor {
+function Level(_id, _x, _y, _width, _height) constructor {
 	
 	loaded = false;
 	
-	x = 0;
-	y = 0;
-	width = 0;
-	height = 0;
+	id = _id;
+	x = _x;
+	y = _y;
+	width = _width;
+	height = _height;
 	
 	file = -1;
 	
@@ -642,21 +643,14 @@ function Level() constructor {
 	shadow_vb = -1;
 	
 	/// run once after having created Level()
-	static init = function(_level, _file) {
+	static init = function(_buffer) {
 		
-		var _lv_x = _level.x div TILESIZE,
-			_lv_y = _level.y div TILESIZE,
-			_lv_w = _level.width div TILESIZE,
-			_lv_h = _level.height div TILESIZE;
-	
-		x = _lv_x * TILESIZE;
-		y = _lv_y * TILESIZE;
-		width = _lv_w * TILESIZE;
-		height = _lv_h * TILESIZE;
+		var _lv_x = x div TILESIZE,
+			_lv_y = y div TILESIZE,
+			_lv_w = width div TILESIZE,
+			_lv_h = height div TILESIZE;
 		
 		var _time = get_timer();
-		
-		var _buffer = buffer_load(_file);
 			
 		show_debug_message("level: file: {0}", (get_timer() - _time) / 1000)
 		
@@ -720,8 +714,6 @@ function Level() constructor {
 		tiles_spike = layer_tilemap_create(layer_spike, x, y, tl_debug_spikes, _lv_w, _lv_h);
 		level_unpack_bin_layer_grid(_buffer, _info.content.layers[$ "Spikes"].pointer, tiles_spike);
 		
-		buffer_delete(_buffer);
-		
 		entities = [];
 		
 		var _layernames = struct_get_names(_info.content.layers);
@@ -744,6 +736,7 @@ function Level() constructor {
 						
 						var _field = _e.fields; // this just seems like such a good idea!
 						_field.uid = _e.id;
+						_field.rid = self.id;
 						
 						// @todo: rewrite
 						if array_contains(_e.tags, "SIZE_TILE") {

@@ -167,6 +167,6 @@ function Camera() constructor {
 
 	}
 	
-	
+	log(Log.note, "Camera(): initialized");
 }
 
