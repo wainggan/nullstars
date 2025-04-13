@@ -1,4 +1,22 @@
 
+function __assert__(_line) {
+	static __ctx = {
+		line: "",
+	};
+	static __out = method(__ctx, function (_input) {
+		if !_input {
+			throw $"assertion failed @ {line}";
+		}
+	});
+
+	__ctx.line = _line;
+	
+	return __out;
+}
+#macro assert if RELEASE {} else __assert__(debug_get_callstack(1)[0])
+#macro assert_const __assert__(debug_get_callstack(1)[0])
+
+
 /// moves `a` to `b` by `amount` without overshooting
 /// @arg {real} _a starting value
 /// @arg {real} _b ending value
