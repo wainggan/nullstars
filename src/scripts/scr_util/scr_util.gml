@@ -1,20 +1,5 @@
 
-function __assert__(_line) {
-	static __ctx = {
-		line: "",
-	};
-	static __out = method(__ctx, function (_input) {
-		if !_input {
-			throw $"assertion failed @ {line}";
-		}
-	});
-
-	__ctx.line = _line;
-	
-	return __out;
-}
-#macro assert if RELEASE {} else __assert__(debug_get_callstack(1)[0])
-#macro assert_const __assert__(debug_get_callstack(1)[0])
+#macro assert if RELEASE {} else for (var __check__;; { if !__check__ { throw $"assertion failed @ {debug_get_callstack(1)[0]} : found {__check__}"; } break; }) __check__ =
 
 
 /// moves `a` to `b` by `amount` without overshooting
