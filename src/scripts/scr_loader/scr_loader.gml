@@ -47,7 +47,7 @@ function Loader() constructor {
 	// [1] - priority
 	queue = [];
 	
-	/// @arg {struct.LoaderOptionFile} _option
+	/// @arg {struct.LoaderOption} _option
 	static queue_add = function (_option) {
 		if array_length(queue) == 0 {
 			array_push(queue, _option);
@@ -67,10 +67,53 @@ function Loader() constructor {
 		};
 		array_sort(queue, __sort);
 		
+		var _todo = [];
+		for (var i = 0; i < array_length(queue); i++) {
+			array_push(_todo, i);
+		}
+		
+		var _remove = [];
+		
 		var _cam = game_camera_get();
 		
 		var _budget_runs = 1;
 		var _budget_time = 0.5;
+		
+		while array_length(_todo) != 0 {
+			
+			var _index = array_pop(_todo);
+			var _item = queue[_index];
+			
+			if _item.priority == 0 && util_check_level_zone_load(_cam, _item.level) {
+				while true {
+					var _status = _item.process(self);
+					if _status == LoaderOptionStatus.complete {
+						break;
+					}
+					if _status == LoaderOptionStatus.wait {
+						global.game.state.set_pause_freeze(true);
+						break;
+					}
+				}
+				
+				var _out = _item.collect();
+				
+				for (var i = 0; i < array_length(_out); i++) {
+					if is_instanceof(_out[i], LoaderOption) {
+						array_push(queue, _out[i]);
+						array_push(_todo, array_length(queue) - 1);
+						// todo: sort?
+					} else {
+						// gonna guess this is a buffer lol
+						array_push(bins, out[i]);
+					}
+				}
+				
+				array_push(_remove, _index);
+				
+			}
+			
+		}
 		
 		for (var i = array_length(queue) - 1; i >= 0; i--) {
 			var _item = queue[i];
@@ -103,31 +146,6 @@ function Loader() constructor {
 		}
 	};
 	
-	static queue_process_item = function (_option, _budget) {
-		if _option.priority == 0 && util_check_level_zone_load(_cam, _option.level) {
-			
-			while true {
-				var _status = _option.process(self);
-				if _status == LoaderOptionStatus.complete {
-					break;
-				}
-				if _status == LoaderOptionStatus.wait {
-					global.game.state.set_pause_freeze(true);
-					break;
-				}
-			}
-			
-			array_delete(queue, i, 1);
-			
-		} else if _budget {
-			
-			var _status = _option.process(self);
-			if _status == LoaderOptionStatus.complete {
-				array_delete(queue, i , 1);
-			}
-			
-		}
-	};
 	
 	static queue_process_file = function (_base) {
 		var _data = _base[1];
@@ -284,10 +302,19 @@ enum LoaderOptionStatus {
 	wait,
 }
 
-function LoaderOptionFile(_level) constructor {
-	priority = 0;
+function LoaderOption(_level, _priority) constructor {
+	priority = _priority;
 	level = _level;
 	
+	static process = function (_loader) {
+		return LoaderOptionStatus.complete;
+	};
+	static collect = function () {
+		return [];
+	};
+}
+
+function LoaderOptionFile(_level) : LoaderOption(_level, 0) constructor {
 	bin = -1;
 	
 	static process = function (_loader) {
