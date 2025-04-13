@@ -304,7 +304,7 @@ enum LoaderOptionStatus {
 
 function LoaderOption(_level, _priority) constructor {
 	priority = _priority;
-	level = _level;
+	//level = _level;
 	
 	static process = function (_loader) {
 		return LoaderOptionStatus.complete;
