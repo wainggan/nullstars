@@ -1,5 +1,5 @@
 
-#macro assert if RELEASE {} else for (var __check__;; { if !__check__ { throw $"assertion failed @ {_GMFILE_}:{_GMLINE_} :: found {__check__}"; } break; }) __check__ =
+#macro assert if RELEASE {} else for (var __check__ = true;; { if !__check__ { throw $"assertion failed @ {_GMFILE_}:{_GMLINE_} :: found {__check__}"; } break; }) __check__ =
 
 
 /// moves `a` to `b` by `amount` without overshooting
