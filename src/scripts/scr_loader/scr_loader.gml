@@ -42,46 +42,90 @@ function Loader() constructor {
 	// [1] - how many depend on it
 	bins = [];
 	
-	// [String, ...]
+	// [String, Real, ...]
 	// [0] - instruction type
 	// [1] - priority
 	queue = [];
 	
-	static queue_add = function (_base) {
+	/// @arg {struct.LoaderOptionFile} _option
+	static queue_add = function (_option) {
 		if array_length(queue) == 0 {
-			array_push(queue, _base);
+			array_push(queue, _option);
 			return;
 		}
 		for (var i = 0; i < array_length(queue); i++) {
-			if queue[i][1] <= _base[1] {
-				array_insert(queue, i, _base);
+			if queue[i].priority <= _option.priority {
+				array_insert(queue, i, _option);
 				return;
 			}
 		}
 	}
 	
-	static queue_add_file = function (_level) {
-		log(Log.note, $"Loader(): queue_add_file {_level.name} ({_level.id})");
-		_level.loaded = LoaderProgress.prepping;
-		self.queue_add(["file", 0, _level]);
-	};
-	
-	static queue_add_prep = function (_level, _bin_id) {
-		log(Log.note, $"Loader(): queue_add_prep {_level.name} ({_level.id})");
-		bins[_bin_id][1] += 1;
-		self.queue_add(["prep", 0, _level, _bin_id]);
-	};
-	
 	static queue_process = function () {
-		// HERE: this now needs to take one item at a time
-		while array_length(queue) != 0 {
-			var _item = array_pop(queue);
+		static __sort = function (_a, _b) {
+			return _b.priority - _a.priority;
+		};
+		array_sort(queue, __sort);
+		
+		var _cam = game_camera_get();
+		
+		var _budget_runs = 1;
+		var _budget_time = 0.5;
+		
+		for (var i = array_length(queue) - 1; i >= 0; i--) {
+			var _item = queue[i];
 			
-			if _item[0] == "file" {
-				queue_process_file(_item);
-			} else if _item[0] == "prep" {
-				queue_process_prep(_item);
+			if _item.priority == 0 && util_check_level_zone_load(_cam, _item.level) {
+				
+				while true {
+					var _status = _item.process(self);
+					if _status == LoaderOptionStatus.complete {
+						break;
+					}
+					if _status == LoaderOptionStatus.wait {
+						global.game.state.set_pause_freeze(true);
+						break;
+					}
+				}
+				
+				array_delete(queue, i, 1);
+				
+			} else if _budget_runs > 0 && _budget_time > 0 {
+				
+				var _status = _item.process(self);
+				if _status == LoaderOptionStatus.complete {
+					array_delete(queue, i , 1);
+				}
+				
 			}
+			
+			
+		}
+	};
+	
+	static queue_process_item = function (_option, _budget) {
+		if _option.priority == 0 && util_check_level_zone_load(_cam, _option.level) {
+			
+			while true {
+				var _status = _option.process(self);
+				if _status == LoaderOptionStatus.complete {
+					break;
+				}
+				if _status == LoaderOptionStatus.wait {
+					global.game.state.set_pause_freeze(true);
+					break;
+				}
+			}
+			
+			array_delete(queue, i, 1);
+			
+		} else if _budget {
+			
+			var _status = _option.process(self);
+			if _status == LoaderOptionStatus.complete {
+				array_delete(queue, i , 1);
+			}
+			
 		}
 	};
 	
@@ -232,5 +276,31 @@ function util_check_level_zone_load(_cam, _level) {
 		_level.x + _level.width,
 		_level.y + _level.height
 	);
+}
+
+enum LoaderOptionStatus {
+	complete,
+	running,
+	wait,
+}
+
+function LoaderOptionFile(_level) constructor {
+	priority = 0;
+	level = _level;
+	
+	bin = -1;
+	
+	static process = function (_loader) {
+		bin = buffer_load(level.name);
+		if bin == -1 {
+			log(Log.error, $"Loader(): file '{level.name}' doesn't exist");
+			throw "oops";
+		}
+		return LoaderOptionStatus.complete;
+	};
+
+	static collect = function () {
+		return [bin, ];
+	};
 }
 
