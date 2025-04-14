@@ -1,4 +1,10 @@
 
+/*
+ * so here's the situation.
+ * 
+ * [insert explanation here]
+ */
+
 
 enum LoaderProgress {
 	out,
@@ -14,6 +20,7 @@ function Loader() constructor {
 	if _buffer == -1 {
 		log(Log.error, $"Loader(): file 'world.bin' doesn't exist");
 		log(Log.error, "what do you even do about this?");
+		assert(false);
 	}
 	var _file = level_unpack_bin_main(_buffer);
 	buffer_delete(_buffer);
@@ -42,24 +49,7 @@ function Loader() constructor {
 	// [1] - how many depend on it
 	bins = [];
 	
-	// [String, Real, ...]
-	// [0] - instruction type
-	// [1] - priority
 	queue = [];
-	
-	/// @arg {struct.LoaderOption} _option
-	static queue_add = function (_option) {
-		if array_length(queue) == 0 {
-			array_push(queue, _option);
-			return;
-		}
-		for (var i = 0; i < array_length(queue); i++) {
-			if queue[i].priority <= _option.priority {
-				array_insert(queue, i, _option);
-				return;
-			}
-		}
-	}
 	
 	static queue_process = function () {
 		static __sort = function (_a, _b) {
@@ -76,100 +66,72 @@ function Loader() constructor {
 		
 		var _cam = game_camera_get();
 		
-		var _budget_runs = 1;
-		var _budget_time = 0.5;
+		var _budget_runs = 4;
+		var _budget_time = 60; // ms
 		
 		while array_length(_todo) != 0 {
 			
 			var _index = array_pop(_todo);
 			var _item = queue[_index];
 			
+			var _status = LoaderOptionStatus.complete;
+			
 			if _item.priority == 0 && util_check_level_zone_load(_cam, _item.level) {
+				
+				// this item must be processed now
+				// keep processing it until it is complete
 				while true {
-					var _status = _item.process(self);
+					_status = _item.process(self);
 					if _status == LoaderOptionStatus.complete {
 						break;
 					}
 					if _status == LoaderOptionStatus.wait {
-						global.game.state.set_pause_freeze(true);
 						break;
 					}
 				}
 				
-				var _out = _item.collect();
-				
-				for (var i = 0; i < array_length(_out); i++) {
-					if is_instanceof(_out[i], LoaderOption) {
-						array_push(queue, _out[i]);
-						array_push(_todo, array_length(queue) - 1);
-						// todo: sort?
-					} else {
-						// gonna guess this is a buffer lol
-						array_push(bins, out[i]);
-					}
+				// if it must wait for the next frame to
+				// be processed, freeze the game for a frame.
+				if _status == LoaderOptionStatus.wait {
+					game_set_freeze(true);
+					continue;
 				}
-				
-				array_push(_remove, _index);
-				
-			}
-			
-		}
-		
-		for (var i = array_length(queue) - 1; i >= 0; i--) {
-			var _item = queue[i];
-			
-			if _item.priority == 0 && util_check_level_zone_load(_cam, _item.level) {
-				
-				while true {
-					var _status = _item.process(self);
-					if _status == LoaderOptionStatus.complete {
-						break;
-					}
-					if _status == LoaderOptionStatus.wait {
-						global.game.state.set_pause_freeze(true);
-						break;
-					}
-				}
-				
-				array_delete(queue, i, 1);
 				
 			} else if _budget_runs > 0 && _budget_time > 0 {
+				// this item can be processed over multiple frames.
+				_status = _item.process(self);
 				
-				var _status = _item.process(self);
-				if _status == LoaderOptionStatus.complete {
-					array_delete(queue, i , 1);
+				if _status != LoaderOptionStatus.complete {
+					// whatever
+					continue;
 				}
-				
 			}
 			
+			assert(_status == LoaderOptionStatus.complete);
 			
+			var _out = _item.collect(self);
+			
+			assert(is_array(_out));
+			
+			for (var i = 0; i < array_length(_out); i++) {
+				assert(is_instanceof(_out[i], LoaderOption));
+				
+				// if we recieve a loaderoption, we need to add it to
+				// the queue *and* todo list. this ensures that if it turns
+				// out to be a priority 0 option, it gets dealt with correctly later
+				array_push(queue, _out[i]);
+				array_push(_todo, array_length(queue) - 1);
+				// todo: sort?
+			}
+			
+			// the item was complete, so remove it
+			array_push(_remove, _index);
+			
+			// deal with budget
+			_budget_runs -= 1;
 		}
-	};
-	
-	
-	static queue_process_file = function (_base) {
-		var _data = _base[1];
 		
-		var _buffer = buffer_load(_data.name);
-		if _buffer == -1 {
-			log(Log.error, $"Loader(): file '{_data.name}' doesn't exist");
-			throw "oops";
-		}
-		array_push(bins, [_buffer, 0]);
-		queue_add_prep(_base, array_length(bins) - 1);
-	};
-	
-	static queue_process_prep = function (_base) {
-		var _data = _base[1];
-		var _bin_id = _base[2];
-		
-		var _level = new Level(_data.id, _data.x, _data.y, _data.width, _data.height);
-		_level.init(bins[_bin_id][0]);
-		
-		_data.data = _level;
-		_data.loaded = LoaderProgress.prepared;
-		
-		bins[_bin_id][1] -= 1;
+		// todo: remove
 	};
 	
 	
@@ -304,30 +266,60 @@ enum LoaderOptionStatus {
 
 function LoaderOption(_level, _priority) constructor {
 	priority = _priority;
-	//level = _level;
+	// todo: rename to `level`
+	lvl = _level;
 	
 	static process = function (_loader) {
 		return LoaderOptionStatus.complete;
 	};
-	static collect = function () {
+	/// @arg {struct.Loader} _loader
+	static collect = function (_loader) {
 		return [];
 	};
 }
 
+/// loads a file into a buffer
 function LoaderOptionFile(_level) : LoaderOption(_level, 0) constructor {
 	bin = -1;
 	
 	static process = function (_loader) {
-		bin = buffer_load(level.name);
+		bin = buffer_load(lvl.name);
 		if bin == -1 {
-			log(Log.error, $"Loader(): file '{level.name}' doesn't exist");
-			throw "oops";
+			log(Log.error, $"Loader(): file '{lvl.name}' doesn't exist");
+			assert(false);
 		}
 		return LoaderOptionStatus.complete;
 	};
 
-	static collect = function () {
-		return [bin, ];
+	static collect = function (_loader) {
+		assert(buffer_exists(bin));
+		
+		array_push(_loader.bins, [bin, 1]);
+		var _bin_id = array_length(_loader.bins) - 1;
+		
+		return [new LoaderOptionParse(lvl, _bin_id)];
+	};
+}
+
+/// parses level information from buffer. the level is now "prepared"
+function LoaderOptionParse(_level, _bin_id) : LoaderOption(_level, 0) constructor {
+	bin_id = _bin_id;
+	
+	static process = function (_loader) {
+
+		var _level = new Level(lvl.id, lvl.x, lvl.y, lvl.width, lvl.height);
+		_level.init(_loader.bins[bin_id][0]);
+		
+		lvl.data = _level;
+		lvl.loaded = LoaderProgress.prepared;
+		
+		_loader.bins[bin_id][1] -= 1;
+		
+		return LoaderOptionStatus.complete;
+	};
+
+	static collect = function (_loader) {
+		return [];
 	};
 }
 
