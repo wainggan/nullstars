@@ -3,6 +3,8 @@
 
 function Game() constructor {
 	
+	global.game = self;
+	
 	if !file_exists(FILE_DATA) {
 		global.file = json_parse(json_stringify(global.file_default));
 	} else {
@@ -33,9 +35,13 @@ function Game() constructor {
 	checkpoint = new GameHandleCheckpoints();
 	gate = new GameHandleGates();
 	
+	level = new Loader();
+	
 	schedule = new Schedule();
 	
 	news_sound = new News();
+	
+	room_goto(rm_game);
 	
 	
 	static update_begin = function() {
@@ -52,10 +58,11 @@ function Game() constructor {
 		}
 	};
 	static update_end = function() {
-		
 		if !self.state.get_pause() {
 			self.step_end();
 		}
+		
+		self.level.update();
 	}
 	
 	static step_begin = function() {

@@ -1,3 +1,3 @@
 
-global.game.update();
+global.game.update_begin();
 

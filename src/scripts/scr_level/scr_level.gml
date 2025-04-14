@@ -278,6 +278,8 @@ function level_unpack_bin_field_value(_buffer) {
 }
 
 function level_unpack_bin_room(_buffer) {
+	buffer_seek(_buffer, buffer_seek_start, 0);
+	
 	var _header = level_unpack_bin_room_header(_buffer);
 	var _content = level_unpack_bin_room_content(_buffer);
 	
@@ -353,6 +355,7 @@ function level_unpack_bin_toc(_buffer) {
 }
 
 function level_unpack_bin_main(_buffer) {
+	buffer_seek(_buffer, buffer_seek_start, 0);
 	
 	var _room_count = buffer_read(_buffer, buffer_u32);
 	var _rooms = array_create(_room_count);
