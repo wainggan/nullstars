@@ -41,14 +41,29 @@ function Game() constructor {
 	
 	news_sound = new News();
 	
-	room_goto(rm_game);
+	
+	opening_timeline = new Timeline()
+	.add(new KeyframeCallback(function () {
+		room_goto(rm_game);
+		return true;
+	}))
+	.add(new KeyframeCallback(function () {
+		level.setup();
+		global.game.unpack();
+		return true;
+	}));
 	
 	
 	static update_begin = function() {
+		opening_timeline.update();
 		global.logger.update();
 		
 		if !self.state.get_pause() {
 			self.step_begin();
+			
+			if array_length(self.level.queue) == 0 {
+				instance_create_layer(0, 0, "Instances", obj_player);
+			}
 		}
 	};
 	static update = function() {
@@ -63,10 +78,10 @@ function Game() constructor {
 		}
 		
 		self.level.update();
+		self.state.update();
 	}
 	
 	static step_begin = function() {
-		state.time += 1;
 		input.update();
 	};
 	static step = function() {
@@ -130,6 +145,7 @@ function GameState() constructor {
 		pause_defer = pause;
 		
 		pause_freeze = pause_freeze_defer;
+		pause_freeze_defer = false;
 		
 		// update timer
 		if timer_active {
@@ -139,7 +155,9 @@ function GameState() constructor {
 			}
 		}
 		
-		time += 1;
+		if !self.get_pause() {
+			time += 1;
+		}
 		global.time = time;
 	};
 	
