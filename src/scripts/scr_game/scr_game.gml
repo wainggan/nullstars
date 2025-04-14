@@ -47,10 +47,6 @@ function Game() constructor {
 		
 		if !self.state.get_pause() {
 			self.step_begin();
-			
-			if array_length(self.level.queue) == 0 {
-				instance_create_layer(0, 0, "Instances", obj_player);
-			}
 		}
 	};
 	static update = function() {
@@ -69,10 +65,11 @@ function Game() constructor {
 	}
 	
 	static step_begin = function() {
+		schedule.update();
 		input.update();
 	};
 	static step = function() {
-		schedule.update();
+		
 	};
 	static step_end = function() {
 		camera.update(self);

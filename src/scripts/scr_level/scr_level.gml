@@ -903,13 +903,13 @@ function game_level_setup_light(_level) {
 
 function game_level_get(_x, _y) {
 	for (var i = 0; i < array_length(global.game.level.levels); i++) {
-		var _lvl = global.game.level.levels[i].data;
+		var _lvl = global.game.level.levels[i];
 		if point_in_rectangle(
 				_x, _y, 
 				_lvl.x, _lvl.y,
 				_lvl.x + _lvl.width,
 				_lvl.y + _lvl.height) {
-			return _lvl;
+			return _lvl.data;
 		}
 	}
 	return undefined;
