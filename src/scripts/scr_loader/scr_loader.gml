@@ -42,14 +42,14 @@ function Loader() constructor {
 		log(Log.error, "what do you even do about this?");
 		assert(false);
 	}
-	var _file = level_unpack_bin_main(_buffer);
+	file = level_unpack_bin_main(_buffer);
 	buffer_delete(_buffer);
 	
 	
 	levels = [];
 	
-	for (var i = 0; i < array_length(_file.rooms); i++) {
-		var _room = _file.rooms[i];
+	for (var i = 0; i < array_length(file.rooms); i++) {
+		var _room = file.rooms[i];
 		array_push(levels, {
 			id: i,
 			loaded: LoaderProgress.out,
@@ -63,6 +63,8 @@ function Loader() constructor {
 			data: undefined,
 		});
 	}
+	
+	loaded = [];
 	
 	// [Buffer.Id, Real]
 	// [0] - the buffer we cache
@@ -163,46 +165,47 @@ function Loader() constructor {
 		
 	};
 	
-	
-	for (var i_table = 0; i_table < array_length(_file.toc); i_table++) {
-		var _item = _file.toc[i_table];
-	
-		var _field = {};
+	static setup = function () {
+		for (var i_table = 0; i_table < array_length(self.file.toc); i_table++) {
+			var _item = self.file.toc[i_table];
 		
-		var _val = _item.fields;
-		
-		switch _item.object {
-			case nameof(obj_checkpoint):
-				_field.index = _val.index;
-				break;
-			case nameof(obj_timer_start):
-				_field.name = _val.name;
-				_field.time = _val.time;
-				_field.dir = _val.dir;
-				_field.ref = _val.ref;
-				
-				_field.image_xscale = floor(_item.width / TILESIZE);
-				_field.image_yscale = floor(_item.height / TILESIZE);
-				break;
-			case nameof(obj_timer_end):
-				_field.image_xscale = floor(_item.width / TILESIZE);
-				_field.image_yscale = floor(_item.height / TILESIZE);
-				break;
+			var _field = {};
+			
+			var _val = _item.fields;
+			
+			switch _item.object {
+				case nameof(obj_checkpoint):
+					_field.index = _val.index;
+					break;
+				case nameof(obj_timer_start):
+					_field.name = _val.name;
+					_field.time = _val.time;
+					_field.dir = _val.dir;
+					_field.ref = _val.ref;
+					
+					_field.image_xscale = floor(_item.width / TILESIZE);
+					_field.image_yscale = floor(_item.height / TILESIZE);
+					break;
+				case nameof(obj_timer_end):
+					_field.image_xscale = floor(_item.width / TILESIZE);
+					_field.image_yscale = floor(_item.height / TILESIZE);
+					break;
+			}
+			
+			_field.uid = _item.id;
+			_field.rid = -1;
+			
+			var _inst = instance_create_layer(
+				_item.x, _item.y,
+				"Instances",
+				asset_get_index(_item.object),
+				_field
+			);
+			
+			global.entities[$ _item.id] = _inst;
+			global.entities_toc[$ _item.id] = _inst;
 		}
-		
-		_field.uid = _item.id;
-		_field.rid = -1;
-		
-		var _inst = instance_create_layer(
-			_item.x, _item.y,
-			"Instances",
-			asset_get_index(_item.object),
-			_field
-		);
-		
-		global.entities[$ _item.id] = _inst;
-		global.entities_toc[$ _item.id] = _inst;
-	}
+	};
 	
 	static update = function () {
 		var _cam = game_camera_get();
@@ -223,13 +226,14 @@ function Loader() constructor {
 				} else if _level.loaded == LoaderProgress.loaded {
 					// entities inside the level should automatically be destroyed now
 					_level.loaded = LoaderProgress.prepared;
+					array_delete(self.loaded, array_get_index(self.loaded, _level.data), 1);
 				}
 				
 			} else {
 				if _level.loaded == LoaderProgress.prepared {
-					assert(false);
+					// assert(false);
 				} else if _level.loaded == LoaderProgress.loaded {
-					assert(false);
+					// assert(false);
 				}
 			}
 		}
@@ -245,7 +249,6 @@ function Loader() constructor {
 		}
 		
 	};
-
 }
 
 function util_check_level_zone_prep(_cam, _level) {
@@ -367,6 +370,7 @@ function LoaderOptionLoad(_level) : LoaderOption(_level, 0) constructor {
 		assert(level.loaded == LoaderProgress.prepared);
 		level.data.load();
 		level.loaded = LoaderProgress.loaded;
+		array_push(_loader.loaded, level.data);
 		return LoaderOptionStatus.complete;
 	};
 }

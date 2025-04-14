@@ -902,8 +902,8 @@ function game_level_setup_light(_level) {
 
 
 function game_level_get(_x, _y) {
-	for (var i = 0; i < array_length(level.levels); i++) {
-		var _lvl = level.levels[i];
+	for (var i = 0; i < array_length(global.game.level.levels); i++) {
+		var _lvl = global.game.level.levels[i].data;
 		if point_in_rectangle(
 				_x, _y, 
 				_lvl.x, _lvl.y,
@@ -915,8 +915,8 @@ function game_level_get(_x, _y) {
 	return undefined;
 }
 function game_level_get_safe_rect(_x1, _y1, _x2, _y2) {
-	for (var i = 0; i < array_length(level.loaded); i++) {
-		var _lvl = level.loaded[i];
+	for (var i = 0; i < array_length(global.game.level.loaded); i++) {
+		var _lvl = global.game.level.loaded[i];
 		if rectangle_in_rectangle(
 				_x1, _y1, _x2, _y2,
 				_lvl.x, _lvl.y,
@@ -945,8 +945,8 @@ function game_level_onscreen() {
 		__cache_x = _cam.x
 		__cache_y = _cam.y
 		
-		for (var i = 0; i < array_length(level.loaded); i++) {
-			var _lvl = level.loaded[i];
+		for (var i = 0; i < array_length(global.game.level.loaded); i++) {
+			var _lvl = global.game.level.loaded[i];
 			if rectangle_in_rectangle(
 					_cam.x - _pad, _cam.y - _pad,
 					_cam.x + _cam.w + _pad, _cam.y + _cam.h + _pad,

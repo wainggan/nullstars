@@ -106,10 +106,10 @@ function actor_move_y(_amount, _callback = undefined, _pusher = noone) {
 
 function actor_collision(_x, _y) {
 	
-	static __list = ds_list_create()
+	static __list = ds_list_create();
 	
-	for (var i = 0; i < array_length(level.loaded); i++) {
-		if place_meeting(_x, _y, level.loaded[i].tiles) return true;
+	for (var i = 0; i < array_length(global.game.level.loaded); i++) {
+		if place_meeting(_x, _y, global.game.level.loaded[i].tiles) return true;
 	}
 	
 	ds_list_clear(__list)

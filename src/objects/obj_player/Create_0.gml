@@ -406,11 +406,11 @@ get_check_death = function(_x, _y) {
 	var _right = (bbox_right - x) + _x - 1;
 	var _bottom = (bbox_bottom - y) + _y - 1;
 	
-	for (var i_level = 0; i_level < array_length(level.loaded); i_level++) {
+	for (var i_level = 0; i_level < array_length(global.game.level.loaded); i_level++) {
 		
-		var _tm = level.loaded[i_level].tiles_spike;
-		var _l_x = level.loaded[i_level].x;
-		var _l_y = level.loaded[i_level].y;
+		var _tm = global.game.level.loaded[i_level].tiles_spike;
+		var _l_x = global.game.level.loaded[i_level].x;
+		var _l_y = global.game.level.loaded[i_level].y;
 		var _width = tilemap_get_width(_tm);
 		var _height = tilemap_get_height(_tm);
 		
