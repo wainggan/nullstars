@@ -58,6 +58,12 @@ function Camera() constructor {
 			self.target.cam(__out); // bandage
 			self.target_x = __out.x;
 			self.target_y = __out.y;
+		} else {
+			var _kh = INPUT.check("right") - INPUT.check("left");
+			var _kv = INPUT.check("down") - INPUT.check("up");
+			
+			self.target_x += _kh * 10;
+			self.target_y += _kv * 10;
 		}
 	
 		var _tx = self.target_x, _ty = self.target_y;

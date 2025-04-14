@@ -1,4 +1,6 @@
 
+exit;
+
 var _cam = game_camera_get();
 
 // holy shit please fucking kill me
