@@ -164,6 +164,8 @@ function Camera() constructor {
 			default:
 				break;
 		}
+		
+		shake_time = max(shake_time - shake_damp, 0);
 	
 		camera_set_view_pos(
 			view_camera[0], 
