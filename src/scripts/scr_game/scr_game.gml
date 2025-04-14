@@ -42,20 +42,7 @@ function Game() constructor {
 	news_sound = new News();
 	
 	
-	opening_timeline = new Timeline()
-	.add(new KeyframeCallback(function () {
-		room_goto(rm_game);
-		return true;
-	}))
-	.add(new KeyframeCallback(function () {
-		level.setup();
-		global.game.unpack();
-		return true;
-	}));
-	
-	
 	static update_begin = function() {
-		opening_timeline.update();
 		global.logger.update();
 		
 		if !self.state.get_pause() {
@@ -103,13 +90,16 @@ function Game() constructor {
 			y = _checkpoint.y;
 		}
 
-	}
+	};
 	static pack = function() {
 		log(Log.note, "Game(): running pack()");
 		
 		checkpoint.pack();
 		gate.pack();
-	}
+	};
+	
+	level.setup();
+	unpack();
 	
 	log(Log.user, $"running nullstars! build {date_datetime_string(GM_build_date)} {GM_build_type} - {GM_version}");
 }

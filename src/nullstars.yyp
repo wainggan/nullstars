@@ -224,7 +224,6 @@
     {"id":{"name":"ps_water_pour","path":"particles/ps_water_pour/ps_water_pour.yy",},},
     {"id":{"name":"ps_water_splash","path":"particles/ps_water_splash/ps_water_splash.yy",},},
     {"id":{"name":"rm_game","path":"rooms/rm_game/rm_game.yy",},},
-    {"id":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
     {"id":{"name":"scr_actor_util","path":"scripts/scr_actor_util/scr_actor_util.yy",},},
     {"id":{"name":"scr_actor","path":"scripts/scr_actor/scr_actor.yy",},},
     {"id":{"name":"scr_anim","path":"scripts/scr_anim/scr_anim.yy",},},
@@ -395,7 +394,6 @@
   "resourceType":"GMProject",
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
-    {"roomId":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
     {"roomId":{"name":"rm_game","path":"rooms/rm_game/rm_game.yy",},},
   ],
   "templateType":"game",
