@@ -2,7 +2,27 @@
 /*
  * so here's the situation.
  * 
- * [insert explanation here]
+ * - rooms exist in the world
+ * - when a room enters the "preparation zone", a "file"
+ * command (called options below) is generated. this loads
+ * a file into a buffer. the room is now "prepping"
+ * - on completion, that generates a "parse" command. this
+ * gets the information from the buffer
+ * - when collisions and entities are collected, the room is
+ * now "prepared".
+ * - when a room enters the "loading zone", either a "file"
+ * command is generated (if the level is "out"), or a "load"
+ * command is generated. this creates the room's entities.
+ * - this will check if the room is prepared/prepping. if
+ * neither are true, then the "file" command is generated.
+ * - once the room is prepared, we load the entities.
+ * - when a room exits the loading zone, the room is demoted
+ * to "prepared", and the entities it had can be destroyed.
+ * - when a room exits the preparation zone, a "destroy"
+ * command is created, which will destroy the room's resources.
+ * 
+ * this is a very delicate process with lots of room for
+ * error. pay attention to `assert()` where used.
  */
 
 
@@ -82,6 +102,8 @@ function Loader() constructor {
 				// keep processing it until it is complete
 				while true {
 					_status = _item.process(self);
+					assert(_status != undefined);
+					
 					if _status == LoaderOptionStatus.complete {
 						break;
 					}
@@ -100,6 +122,7 @@ function Loader() constructor {
 			} else if _budget_runs > 0 && _budget_time > 0 {
 				// this item can be processed over multiple frames.
 				_status = _item.process(self);
+				assert(_status != undefined);
 				
 				if _status != LoaderOptionStatus.complete {
 					// whatever
@@ -131,7 +154,13 @@ function Loader() constructor {
 			_budget_runs -= 1;
 		}
 		
-		// todo: remove
+		// remove elements without screwing up indicies
+		array_sort(_remove, true);
+		repeat array_length(_remove) {
+			var _index = array_pop(_remove);
+			array_delete(queue, _index, 1);
+		}
+		
 	};
 	
 	
@@ -175,39 +204,32 @@ function Loader() constructor {
 		global.entities_toc[$ _item.id] = _inst;
 	}
 	
-	
 	static update = function () {
 		var _cam = game_camera_get();
 		
 		for (var i = 0; i < array_length(levels); i++) {
 			var _level = levels[i];
 			
-			if util_check_level_zone_prep(_cam, _level) {
-				if _level.loaded == LoaderProgress.out && _level.data != undefined {
-					self.queue_add_file(_level);
-				} else if _level.loaded = LoaderProgress.prepared {
-					_level.time_prep = 60 * 4;
+			if util_check_level_zone_load(_cam, _level) {
+				if _level.loaded == LoaderProgress.out && _level.data == undefined {
+					array_push(self.queue, new LoaderOptionFile(_level));
+				} else if _level.loaded == LoaderProgress.prepared {
+					array_push(self.queue, new LoaderOptionLoad(_level));
 				}
 				
-			} else if util_check_level_zone_load(_cam, _level) {
-				if _level.loaded == LoaderProgress.out && _level.data != undefined {
-					self.queue_add_file(_level);
-				} else if _level.loaded == LoaderProgress.prepared {
-					_level.time_prep = 60 * 4;
+			} else if util_check_level_zone_prep(_cam, _level) {
+				if _level.loaded == LoaderProgress.out && _level.data == undefined {
+					array_push(self.queue, new LoaderOptionFile(_level));
 				} else if _level.loaded == LoaderProgress.loaded {
-					_level.time_load = 60 * 10;
+					// entities inside the level should automatically be destroyed now
+					_level.loaded = LoaderProgress.prepared;
 				}
 				
 			} else {
 				if _level.loaded == LoaderProgress.prepared {
-					
+					assert(false);
 				} else if _level.loaded == LoaderProgress.loaded {
-					_level.time_load -= 1;
-					if _level.time_load <= 0 {
-						_level.data.destroy();
-						delete _level.data;
-						_level.loaded = LoaderProgress.out;
-					}
+					assert(false);
 				}
 			}
 		}
@@ -240,6 +262,18 @@ function util_check_level_zone_prep(_cam, _level) {
 }
 
 function util_check_level_zone_load(_cam, _level) {
+	var _check = false;
+	if instance_exists(obj_player) {
+		_check = rectangle_in_rectangle(
+			obj_player.bbox_left + min(0, obj_player.x_vel),
+			obj_player.bbox_top + min(0, obj_player.y_vel),
+			obj_player.bbox_left + max(0, obj_player.x_vel),
+			obj_player.bbox_bottom + max(0, obj_player.y_vel),
+			_level.x, _level.y,
+			_level.x + _level.width,
+			_level.y + _level.height
+		) != 0;
+	}
 	return rectangle_in_rectangle(
 		_cam.x, _cam.y,
 		_cam.x + _cam.w,
@@ -247,15 +281,7 @@ function util_check_level_zone_load(_cam, _level) {
 		_level.x, _level.y,
 		_level.x + _level.width,
 		_level.y + _level.height
-	) || rectangle_in_rectangle(
-		obj_player.bbox_left + min(0, obj_player.x_vel),
-		obj_player.bbox_top + min(0, obj_player.y_vel),
-		obj_player.bbox_left + max(0, obj_player.x_vel),
-		obj_player.bbox_bottom + max(0, obj_player.y_vel),
-		_level.x, _level.y,
-		_level.x + _level.width,
-		_level.y + _level.height
-	);
+	) || _check;
 }
 
 enum LoaderOptionStatus {
@@ -266,8 +292,7 @@ enum LoaderOptionStatus {
 
 function LoaderOption(_level, _priority) constructor {
 	priority = _priority;
-	// todo: rename to `level`
-	lvl = _level;
+	level = _level;
 	
 	static process = function (_loader) {
 		return LoaderOptionStatus.complete;
@@ -282,10 +307,14 @@ function LoaderOption(_level, _priority) constructor {
 function LoaderOptionFile(_level) : LoaderOption(_level, 0) constructor {
 	bin = -1;
 	
+	level.loaded = LoaderProgress.prepping;
+	
+	log(Log.note, $"Loader(): created LoaderOptionFile {level.id}");
+	
 	static process = function (_loader) {
-		bin = buffer_load(lvl.name);
+		bin = buffer_load(level.name);
 		if bin == -1 {
-			log(Log.error, $"Loader(): file '{lvl.name}' doesn't exist");
+			log(Log.error, $"Loader(): file '{level.name}' doesn't exist");
 			assert(false);
 		}
 		return LoaderOptionStatus.complete;
@@ -297,7 +326,7 @@ function LoaderOptionFile(_level) : LoaderOption(_level, 0) constructor {
 		array_push(_loader.bins, [bin, 1]);
 		var _bin_id = array_length(_loader.bins) - 1;
 		
-		return [new LoaderOptionParse(lvl, _bin_id)];
+		return [new LoaderOptionParse(level, _bin_id)];
 	};
 }
 
@@ -305,21 +334,49 @@ function LoaderOptionFile(_level) : LoaderOption(_level, 0) constructor {
 function LoaderOptionParse(_level, _bin_id) : LoaderOption(_level, 0) constructor {
 	bin_id = _bin_id;
 	
+	log(Log.note, $"Loader(): created LoaderOptionParse {level.id}");
+	
 	static process = function (_loader) {
 
-		var _level = new Level(lvl.id, lvl.x, lvl.y, lvl.width, lvl.height);
+		var _level = new Level(level.id, level.x, level.y, level.width, level.height);
 		_level.init(_loader.bins[bin_id][0]);
 		
-		lvl.data = _level;
-		lvl.loaded = LoaderProgress.prepared;
+		level.data = _level;
+		level.loaded = LoaderProgress.prepared;
 		
 		_loader.bins[bin_id][1] -= 1;
 		
 		return LoaderOptionStatus.complete;
 	};
-
+	
 	static collect = function (_loader) {
-		return [];
+		var _cam = game_camera_get();
+		if util_check_level_zone_load(_cam, level) {
+			return [new LoaderOptionLoad(level)];
+		} else {
+			return [];
+		}
+	};
+}
+
+/// creates level entities.
+function LoaderOptionLoad(_level) : LoaderOption(_level, 0) constructor {
+	log(Log.note, $"Loader(): created LoaderOptionLoad {level.id}");
+	
+	static process = function (_loader) {
+		assert(level.loaded == LoaderProgress.prepared);
+		level.data.load();
+		level.loaded = LoaderProgress.loaded;
+		return LoaderOptionStatus.complete;
+	};
+}
+
+/// destroy level.
+function LoaderOptionDestroy(_level) : LoaderOption(_level, 0) constructor {
+	log(Log.note, $"Loader(): created LoaderOptionDestroy {level.id}");
+	
+	static process = function (_loader) {
+		assert(false);
 	};
 }
 
