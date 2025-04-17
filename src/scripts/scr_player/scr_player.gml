@@ -27,3 +27,4 @@ function game_player_kill() {
 	instance_destroy(obj_player);
 	
 }
+

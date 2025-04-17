@@ -44,6 +44,7 @@ function Game() constructor {
 	
 	static update_begin = function() {
 		global.logger.update();
+		input.update();
 		
 		if !self.state.get_pause() {
 			self.step_begin();
@@ -66,7 +67,6 @@ function Game() constructor {
 	
 	static step_begin = function() {
 		schedule.update();
-		input.update();
 	};
 	static step = function() {
 		
@@ -80,13 +80,6 @@ function Game() constructor {
 		
 		checkpoint.unpack();
 		gate.unpack();
-		
-		with obj_player {
-			var _checkpoint = game_checkpoint_ref();
-			x = _checkpoint.x;
-			y = _checkpoint.y;
-		}
-
 	};
 	static pack = function() {
 		log(Log.note, "Game(): running pack()");
@@ -97,6 +90,8 @@ function Game() constructor {
 	
 	level.setup();
 	unpack();
+	
+	instance_create_layer(0, 0, "Instances", obj_player_death);
 	
 	log(Log.user, $"running nullstars! build {date_datetime_string(GM_build_date)} {GM_build_type} - {GM_version}");
 }

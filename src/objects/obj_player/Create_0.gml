@@ -1343,6 +1343,9 @@ state_dash.set("enter", function() {
 });
 
 state_swim = state_base.add();
+state_swim.set("enter", function() {
+	show_debug_message("yes")
+})
 state_swim.set("step", function() {
 	
 	var _kh = INPUT.check("right") - INPUT.check("left");
@@ -1405,6 +1408,7 @@ state_swim.set("step", function() {
 
 state_swim_bullet = state_base.add();
 state_swim.set("enter", function() {
+	show_debug_message("no")
 	
 	game_set_pause(4);
 	
