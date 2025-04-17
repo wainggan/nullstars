@@ -46,13 +46,13 @@ function Controls() constructor {
 		.add_keyboard_key(ord("X"))
 		.add_keyboard_key(ord("K"))
 		.add_gamepad_button(gp_face2)
-		.add_gamepad_button(gp_face3)
+		.add_gamepad_button(gp_face3);
 	
 	manager.create_input("grab")
 		.add_keyboard_key(vk_shift)
 		.add_keyboard_key(vk_space)
 		.add_gamepad_shoulder_virtual(gp_shoulderl)
-		.add_gamepad_shoulder_virtual(gp_shoulderr)
+		.add_gamepad_shoulder_virtual(gp_shoulderr);
 	
 	manager.create_input("menu")
 		.add_keyboard_key(vk_escape)

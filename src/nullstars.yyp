@@ -128,7 +128,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.13.0.190",
+    "IDEVersion":"2024.13.1.193",
   },
   "name":"nullstars",
   "resources":[
@@ -237,6 +237,7 @@
     {"id":{"name":"scr_entity","path":"scripts/scr_entity/scr_entity.yy",},},
     {"id":{"name":"scr_event","path":"scripts/scr_event/scr_event.yy",},},
     {"id":{"name":"scr_file","path":"scripts/scr_file/scr_file.yy",},},
+    {"id":{"name":"scr_future","path":"scripts/scr_future/scr_future.yy",},},
     {"id":{"name":"scr_game","path":"scripts/scr_game/scr_game.yy",},},
     {"id":{"name":"scr_globals","path":"scripts/scr_globals/scr_globals.yy",},},
     {"id":{"name":"scr_glue","path":"scripts/scr_glue/scr_glue.yy",},},
