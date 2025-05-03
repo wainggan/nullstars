@@ -16,8 +16,8 @@ collidable = true;
 reset = function(){};
 
 // camera offset
+/// @arg {struct.Camera} _out
 cam = function(_out) {
-	_out.x = x;
-	_out.y = y;
+	_out.move(x, y)
 }
 

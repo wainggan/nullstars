@@ -6,6 +6,7 @@ function game_player_kill() {
 	
 	var _x = obj_player.x, _y = obj_player.y;
 	game_render_particle(_x, _y - 16, ps_player_death_0);
+	
 	global.game.schedule.add_wait(2, method({ _x, _y }, function(){
 		game_render_particle(_x, _y - 16, ps_player_death_1);
 		game_camera_set_shake(8, 0.8);
