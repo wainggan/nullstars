@@ -1609,7 +1609,7 @@ riding = function(_solid) {
 		(state.is(state_ledge) && place_meeting(x + dir, y, _solid));
 };
 
-cam = function(_out) {
+cam = function(_cam) {
 	
 	if state.is(state_free) && onground {
 		cam_ground_x = x + dir * 64;
@@ -1627,9 +1627,11 @@ cam = function(_out) {
 		_y += -4;
 	}*/
 	
-	_out.x = lerp(cam_ground_x, _x, 1 - max(0, 1 - power(_dist / 64, 2)) * 0.0);
-	_out.y = lerp(cam_ground_y, _y, 1 - max(0, 1 - power(_dist / 128, 2)) * 0.8);
+	_x = lerp(cam_ground_x, _x, 1 - max(0, 1 - power(_dist / 64, 2)) * 0.0);
+	_y = lerp(cam_ground_y, _y, 1 - max(0, 1 - power(_dist / 128, 2)) * 0.8);
 	
+	var _ = _cam.constrain(_x, _y);
+	_cam.move(_.x, _.y);
 }
 
 outside = function() { return false; };

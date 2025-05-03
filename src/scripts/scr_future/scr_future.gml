@@ -1,31 +1,30 @@
 
-enum Poll {
-	Complete,
-	// the Future is still running
-	Running,
-	// the Future is still running, but running poll()
-	// again will *not* be able to advance it
-	Wait,
-}
-
 function Future() constructor {
-	static poll = function () {};
+	static poll = function (_wake) {
+		return 0;
+	};
 }
 
 function FutureJoin(_a, _b) constructor {
 	a = _a;
 	b = _b;
-	static poll = function () {
+	static poll = function (_wake) {
 		if a != undefined {
-			a.poll();
+			var _out = a.poll(_wake);
+			if _out != undefined {
+				a = undefined;
+			}
 		}
 		if b != undefined {
-			b.poll();
+			var _out = b.poll(_wake);
+			if _out != undefined {
+				b = undefined;
+			}
 		}
 		if a == undefined && b == undefined {
-			return Poll.Complete;
+			return 0;
 		} else {
-			return Poll.Wait;
+			return undefined;
 		}
 	};
 }

@@ -91,7 +91,7 @@ function Game() constructor {
 	level.setup();
 	unpack();
 	
-	instance_create_layer(0, 0, "Instances", obj_player_death);
+	instance_create_layer(0, 0, "Instances", obj_cutscene_respawn);
 	
 	log(Log.user, $"running nullstars! build {date_datetime_string(GM_build_date)} {GM_build_type} - {GM_version}");
 }

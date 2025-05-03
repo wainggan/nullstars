@@ -40,24 +40,28 @@ function Camera() constructor {
 	
 	/// @arg {struct.Game} _game
 	static update = function (_game) {
+		
+		
 		self.calculate(true);
 	}
 	
 	/// @arg {bool} _anim
 	static calculate = function (_anim) {
-			
+		
 		var _cam_w = camera_get_view_width(view_camera[0]);
 		var _cam_h = camera_get_view_height(view_camera[0]);
 	
-		if instance_exists(self.target) {
+		if instance_exists(self.target) || is_struct(self.target) {
 			static __out = {
-				x: 0, y: 0,
+				x: 0, y: 0, anim: false,
 			};
 			__out.x = self.x;
 			__out.y = self.y;
+			__out.anim = _anim;
 			self.target.cam(__out); // bandage
 			self.target_x = __out.x;
 			self.target_y = __out.y;
+			_anim = __out.anim;
 		} else {
 			var _kh = INPUT.check("right") - INPUT.check("left");
 			var _kv = INPUT.check("down") - INPUT.check("up");
@@ -174,6 +178,105 @@ function Camera() constructor {
 		);
 
 	}
+	
+	static move = function (_target_x, _target_y, _anim = true) {
+		var _ts = 0.025;
+		if _anim {
+			self.x_sod.set_weights(_ts, 1, 0.25);
+			self.y_sod.set_weights(_ts, 1, 0.25);
+			self.x_sod.update(_target_x);
+			self.y_sod.update(_target_y);
+	
+			self.x = self.x_sod.get_value();
+			self.y = self.y_sod.get_value();
+		} else {
+			self.x = _target_x;
+			self.y = _target_y;
+			self.x_sod.set_value(self.x);
+			self.y_sod.set_value(self.y);
+		}
+	};
+	
+	static constrain = function (_target_x, _target_y) {
+		static __out = {
+			x: 0, y: 0,
+		};
+		
+		var _cam_w = camera_get_view_width(view_camera[0]);
+		var _cam_h = camera_get_view_height(view_camera[0]);
+		
+		var _tx = _target_x, _ty = _target_y;
+		
+		with collision_point(_tx, _ty, obj_camera_focus, true, true) {
+			var _dist = point_distance(_tx, _ty, x, y);
+			_tx = lerp(_tx, x, max(0, 1 - power(_dist / sprite_width * 2, weight)));
+			_ty = lerp(_ty, y, max(0, 1 - power(_dist / sprite_height * 2, weight)));
+			if force {
+				_tx = x;
+				_ty = y;
+			}
+		}
+
+		var _scale = 128;
+		
+		var _f = 420;
+		var _final_tx = 0;
+		var _final_ty = 0;
+		
+		var _k = 1;
+		
+		with obj_camera_room {
+			var _d = sdf(
+				_tx, _ty,
+				x + crop_x1 * TILESIZE,
+				y + crop_y1 * TILESIZE,
+				x + sprite_width - crop_x2 * TILESIZE,
+				y + sprite_height - crop_y2 * TILESIZE
+			);
+			
+			var _d_s = _d / sqrt(_scale * 2);
+			var _d_k = (_d - _scale) / _scale;
+			
+			var _s = weight;
+			
+			var _p = _s <= 0 ? hmin(_f, _d_s) : smin(_f, _d_s, _s);
+			_f = _p[0];
+			
+			var _self_tx = _tx;
+			if unlock_x {
+				if sprite_width <= _cam_w {
+					_self_tx = x + sprite_width / 2;
+				} else {
+					_self_tx = clamp(_tx, x + _cam_w / 2, x + sprite_width - _cam_w / 2);
+				}
+			}
+			var _self_ty = _ty;
+			if unlock_y {
+				if sprite_height <= _cam_h {
+					_self_ty = y + sprite_height / 2;
+				} else {
+					_self_ty = clamp(_ty, y + _cam_h / 2, y + sprite_height - _cam_h / 2);
+				}
+			}
+			
+			_final_tx = lerp(_final_tx, _self_tx, _p[1]);
+			_final_ty = lerp(_final_ty, _self_ty, _p[1]);
+			
+			_k -= power(clamp(-_d_k, 0, 1), 2);
+		}
+		_k = max(_k, 0);
+		
+		_final_tx = lerp(_final_tx, _tx, _k);
+		_final_ty = lerp(_final_ty, _ty, _k);
+		
+		_tx = _final_tx;
+		_ty = _final_ty;
+		
+		__out.x = _tx;
+		__out.y = _ty;
+		
+		return __out;
+	};
 	
 	log(Log.note, "Camera(): initialized");
 }
