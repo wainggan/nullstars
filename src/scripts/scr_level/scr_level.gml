@@ -656,7 +656,7 @@ function Level(_id, _x, _y, _width, _height) constructor {
 		
 		var _time = get_timer();
 			
-		show_debug_message("level: file: {0}", (get_timer() - _time) / 1000)
+		LOG(Log.note, "level: file: {0}", (get_timer() - _time) / 1000);
 		
 		_time = get_timer();
 		
@@ -666,7 +666,7 @@ function Level(_id, _x, _y, _width, _height) constructor {
 		global.UNPACKPOINTOFFSET_X = 0;
 		global.UNPACKPOINTOFFSET_Y = 0;
 		
-		show_debug_message("level: unpack: {0}", (get_timer() - _time) / 1000)
+		LOG(Log.note, "level: unpack: {0}", (get_timer() - _time) / 1000);
 		
 		_time = get_timer();
 
@@ -773,7 +773,7 @@ function Level(_id, _x, _y, _width, _height) constructor {
 			}
 		}
 		
-		show_debug_message("level: parse: {0}", (get_timer() - _time) / 1000)
+		LOG(Log.note, "level: parse: {0}", (get_timer() - _time) / 1000);
 	}
 	
 	/// creates tile data from file
