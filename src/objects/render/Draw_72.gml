@@ -5,7 +5,7 @@ var _cam_x = camera_get_view_x(view_camera[0]),
 	_cam_h = camera_get_view_height(view_camera[0]);
 
 
-var _lvl_onscreen = game_level_onscreen()
+var _lvl_onscreen = game_level_onscreen();
 
 
 // clear screen
