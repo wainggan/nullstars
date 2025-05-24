@@ -443,7 +443,7 @@ function LoaderOptionDestroy(_level) : LoaderOption(_level, 0) constructor {
 	LOG(Log.note, $"Loader(): created LoaderOptionDestroy {level.id}");
 	
 	static process = function (_loader) {
-		ASSERT(level.loaded == LoaderProgress.prepared);
+		ASSERT(level.loaded == LoaderProgress.prepared || level.loaded == LoaderProgress.loaded);
 		level.loaded = LoaderProgress.out;
 		level.data.unload();
 		level.data = undefined;

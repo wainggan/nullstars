@@ -134,6 +134,7 @@
     {"name":"scr_level","order":16,"path":"scripts/scr_level/scr_level.yy",},
     {"name":"scr_loader","order":34,"path":"scripts/scr_loader/scr_loader.yy",},
     {"name":"scr_menu","order":23,"path":"scripts/scr_menu/scr_menu.yy",},
+    {"name":"scr_music","order":35,"path":"scripts/scr_music/scr_music.yy",},
     {"name":"scr_observe","order":2,"path":"scripts/scr_observe/scr_observe.yy",},
     {"name":"scr_player","order":2,"path":"scripts/scr_player/scr_player.yy",},
     {"name":"scr_render","order":20,"path":"scripts/scr_render/scr_render.yy",},

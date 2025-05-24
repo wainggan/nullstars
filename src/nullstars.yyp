@@ -245,6 +245,7 @@
     {"id":{"name":"scr_level","path":"scripts/scr_level/scr_level.yy",},},
     {"id":{"name":"scr_loader","path":"scripts/scr_loader/scr_loader.yy",},},
     {"id":{"name":"scr_menu","path":"scripts/scr_menu/scr_menu.yy",},},
+    {"id":{"name":"scr_music","path":"scripts/scr_music/scr_music.yy",},},
     {"id":{"name":"scr_observe","path":"scripts/scr_observe/scr_observe.yy",},},
     {"id":{"name":"scr_pause","path":"scripts/scr_pause/scr_pause.yy",},},
     {"id":{"name":"scr_player","path":"scripts/scr_player/scr_player.yy",},},
