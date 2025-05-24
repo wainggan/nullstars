@@ -787,7 +787,7 @@ function Level(_id, _x, _y, _width, _height) constructor {
 		loaded = true;
 		
 		for (var i_entity = 0; i_entity < array_length(entities); i_entity++) {
-			var _e = entities[i_entity]
+			var _e = entities[i_entity];
 			
 			var _exists = false;
 
@@ -894,8 +894,8 @@ function game_level_setup_light(_level) {
 	
 	if _count > 0 vertex_freeze(_vb);
 	
-	show_debug_message($"{_count} shadow tiles")
-	
+	LOG(Log.note, $"{_count} shadow tiles");
+
 	_level.shadow_vb = _vb;
 	
 }

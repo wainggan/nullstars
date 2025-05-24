@@ -231,6 +231,7 @@ function Loader() constructor {
 				
 			} else {
 				if _level.loaded == LoaderProgress.prepared {
+					// @todo: level destruction
 					// ASSERT(false);
 				} else if _level.loaded == LoaderProgress.loaded {
 					// ASSERT(false);

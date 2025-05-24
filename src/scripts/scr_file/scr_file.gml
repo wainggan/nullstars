@@ -124,9 +124,9 @@ global.file_default = {
 				// 1 = error
 				// 2 = warn
 				// 3 = note
-		}
+		},
 	},
-}
+};
 
 function game_file_upgrade(_file) {
 	// todo: very temporary
@@ -154,7 +154,7 @@ function game_json_save(_filename, _tree) {
 	LOG(Log.hide, $"util_json_save: writing file {_filename}");
 	
 	var _string = json_stringify(_tree, true);
-	var _buffer = buffer_create(string_byte_length(_string)+1, buffer_fixed, 1);
+	var _buffer = buffer_create(string_byte_length(_string) + 1, buffer_fixed, 1);
 	
 	buffer_write(_buffer, buffer_string, _string);
 	buffer_save(_buffer, _filename);

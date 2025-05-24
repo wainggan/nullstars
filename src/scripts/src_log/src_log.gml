@@ -15,7 +15,9 @@ function Logger() constructor {
 	anims = [];
 	
 	static write = function (_level, _message, _file, _line) {
-		show_debug_message($"{_level} :: {_message} @ {_file}:{_line}");
+		if !RELEASE {
+			show_debug_message($"{_level} @ {_file}:{_line} :: {_message}");
+		}
 		if _level >= point {
 			array_insert(messages, 0, _message);
 			array_insert(anims, 0, 0);
