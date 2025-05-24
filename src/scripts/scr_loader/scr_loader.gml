@@ -426,7 +426,7 @@ function LoaderOptionLoad(_level) : LoaderOption(_level, 0) constructor {
 	};
 }
 
-function LoaderOptionUnload(_level) : LoaderOption(_level, 0) constructor {
+function LoaderOptionUnload(_level) : LoaderOption(_level, 1) constructor {
 	LOG(Log.note, $"Loader(): created LoaderOptionUnload {level.id}");
 	
 	static process = function (_loader) {
@@ -434,18 +434,19 @@ function LoaderOptionUnload(_level) : LoaderOption(_level, 0) constructor {
 			return LoaderOptionStatus.complete;
 		}
 		level.loaded = LoaderProgress.prepared;
+		level.data.unload();
 		return LoaderOptionStatus.complete;
 	};
 }
 
 /// destroy level.
-function LoaderOptionDestroy(_level) : LoaderOption(_level, 0) constructor {
+function LoaderOptionDestroy(_level) : LoaderOption(_level, 1) constructor {
 	LOG(Log.note, $"Loader(): created LoaderOptionDestroy {level.id}");
 	
 	static process = function (_loader) {
 		ASSERT(level.loaded == LoaderProgress.prepared || level.loaded == LoaderProgress.loaded);
 		level.loaded = LoaderProgress.out;
-		level.data.unload();
+		level.data.destroy();
 		level.data = undefined;
 		return LoaderOptionStatus.complete;
 	};

@@ -820,7 +820,7 @@ function Level(_id, _x, _y, _width, _height) constructor {
 	}
 	
 	/// flags level as 'unloaded', probably destroying 
-	/// it's associated entities in the process.
+	/// its associated entities in the process.
 	static unload = function() {
 		
 		if !loaded return;
@@ -830,7 +830,7 @@ function Level(_id, _x, _y, _width, _height) constructor {
 	
 	/// destroys tile data.
 	static destroy = function() {
-		if shadow_vb == -1 {
+		if shadow_vb != -1 {
 			vertex_delete_buffer(shadow_vb);
 		}
 		
