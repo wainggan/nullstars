@@ -5,6 +5,10 @@
 gml_release_mode(RELEASE);
 
 global.defs = {
+	// how long it takes to unload the entities of a level
+	level_load_time: 180,
+	// how long it takes to unload level data
+	level_prep_time: 240,
 	// global terminal velocity
 	terminal_vel: 5,
 	// speed of lifts when returning back to normal positions
