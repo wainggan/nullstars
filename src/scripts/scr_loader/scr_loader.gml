@@ -69,7 +69,8 @@ function Loader() constructor {
 	// [Buffer.Id, Real]
 	// [0] - the buffer we cache
 	// [1] - how many depend on it
-	bins = [];
+	bins = {};
+	bin_top = 0;
 	
 	queue = [];
 	
@@ -96,7 +97,7 @@ function Loader() constructor {
 			var _index = array_pop(_todo);
 			var _item = queue[_index];
 			
-			var _status = LoaderOptionStatus.complete;
+			var _status = LoaderOptionStatus.running;
 			
 			if _item.priority == 0 && util_check_level_zone_load(_cam, _item.level) {
 				
@@ -130,6 +131,8 @@ function Loader() constructor {
 					// whatever
 					continue;
 				}
+			} else {
+				continue;
 			}
 			
 			ASSERT(_status == LoaderOptionStatus.complete);
@@ -225,35 +228,60 @@ function Loader() constructor {
 					array_push(self.queue, new LoaderOptionFile(_level));
 				} else if _level.loaded == LoaderProgress.loaded {
 					// entities inside the level should automatically be destroyed now
-					_level.loaded = LoaderProgress.prepared;
-					array_delete(self.loaded, array_get_index(self.loaded, _level.data), 1);
+					array_push(self.queue, new LoaderOptionUnload(_level));
 				}
 				
 			} else {
 				if _level.loaded == LoaderProgress.prepared {
-					// @todo: level destruction
-					// ASSERT(false);
+					array_push(self.queue, new LoaderOptionDestroy(_level));
 				} else if _level.loaded == LoaderProgress.loaded {
-					// ASSERT(false);
+					array_push(self.queue, new LoaderOptionUnload(_level));
 				}
+			}
+		}
+		
+		for (var i = 0; i < array_length(loaded); i++) {
+			var _level = loaded[i];
+			if _level.loaded != LoaderProgress.loaded {
+				array_delete(loaded, i--, 1);
 			}
 		}
 		
 		self.queue_process();
 		
-		for (var i = 0; i < array_length(bins); i++) {
-			if bins[i][1] <= 0 {
-				buffer_delete(bins[i][0]);
-				array_delete(bins, i, 1);
-				i--;
+		var _bin_ids = struct_get_names(bins);
+		for (var i = 0; i < array_length(_bin_ids); i++) {
+			var _b = bins[$ _bin_ids[i]];
+			if _b[1] <= 0 {
+				buffer_delete(_b[0]);
+				struct_remove(bins, _bin_ids[i]);
 			}
 		}
 		
+		with obj_Exists {
+			var _lvl = game_level_get_safe_rect(bbox_left, bbox_top, bbox_right, bbox_bottom);
+			if (_lvl == undefined || !_lvl.loaded) && outside(_cam) {
+				instance_destroy();
+			}
+		}
+		
+		with obj_spike_bubble {
+			if (global.time + parity) % GAME_BUBBLE_PARITY > 0 {
+				continue;
+			}
+			var _lvl = game_level_get_safe(x, y);
+			if (_lvl == undefined || !_lvl.loaded)
+			&& rectangle_in_rectangle(
+				x - 64, y - 64, x + 64, y + 64,
+				_cam.x, _cam.y, _cam.x + _cam.w, _cam.y + _cam.h) {
+				instance_destroy();
+			}
+		}
 	};
 }
 
 function util_check_level_zone_prep(_cam, _level) {
-	var _pad = 128;
+	var _pad = 256;
 	return rectangle_in_rectangle(
 		_cam.x - _pad,
 		_cam.y - _pad,
@@ -327,8 +355,10 @@ function LoaderOptionFile(_level) : LoaderOption(_level, 0) constructor {
 	static collect = function (_loader) {
 		ASSERT(buffer_exists(bin));
 		
-		array_push(_loader.bins, [bin, 1]);
-		var _bin_id = array_length(_loader.bins) - 1;
+		var _bin_id = _loader.bin_top++;
+		_loader.bins[$ _bin_id] = [bin, 1];
+		
+		LOG(Log.note, $"Loader(): producing LoaderOptionParse with {_bin_id}");
 		
 		return [new LoaderOptionParse(level, _bin_id)];
 	};
@@ -338,17 +368,18 @@ function LoaderOptionFile(_level) : LoaderOption(_level, 0) constructor {
 function LoaderOptionParse(_level, _bin_id) : LoaderOption(_level, 0) constructor {
 	bin_id = _bin_id;
 	
-	LOG(Log.note, $"Loader(): created LoaderOptionParse {level.id}");
+	LOG(Log.note, $"Loader(): created LoaderOptionParse {level.id} (binid: {_bin_id})");
 	
 	static process = function (_loader) {
+		ASSERT(_loader.bins[$ bin_id] != undefined);
 
 		var _level = new Level(level.id, level.x, level.y, level.width, level.height);
-		_level.init(_loader.bins[bin_id][0]);
+		_level.init(_loader.bins[$ bin_id][0]);
 		
 		level.data = _level;
 		level.loaded = LoaderProgress.prepared;
 		
-		_loader.bins[bin_id][1] -= 1;
+		_loader.bins[$ bin_id][1] -= 1;
 		
 		return LoaderOptionStatus.complete;
 	};
@@ -371,7 +402,19 @@ function LoaderOptionLoad(_level) : LoaderOption(_level, 0) constructor {
 		ASSERT(level.loaded == LoaderProgress.prepared);
 		level.data.load();
 		level.loaded = LoaderProgress.loaded;
-		array_push(_loader.loaded, level.data);
+		array_push(_loader.loaded, level);
+		return LoaderOptionStatus.complete;
+	};
+}
+
+function LoaderOptionUnload(_level) : LoaderOption(_level, 0) constructor {
+	LOG(Log.note, $"Loader(): created LoaderOptionUnload {level.id}");
+	
+	static process = function (_loader) {
+		if level.loaded != LoaderProgress.loaded {
+			return LoaderOptionStatus.complete;
+		}
+		level.loaded = LoaderProgress.prepared;
 		return LoaderOptionStatus.complete;
 	};
 }
@@ -381,7 +424,11 @@ function LoaderOptionDestroy(_level) : LoaderOption(_level, 0) constructor {
 	LOG(Log.note, $"Loader(): created LoaderOptionDestroy {level.id}");
 	
 	static process = function (_loader) {
-		ASSERT(false);
+		ASSERT(level.loaded == LoaderProgress.prepared);
+		level.loaded = LoaderProgress.out;
+		level.data.unload();
+		level.data = undefined;
+		return LoaderOptionStatus.complete;
 	};
 }
 

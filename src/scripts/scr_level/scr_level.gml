@@ -901,7 +901,7 @@ function game_level_setup_light(_level) {
 	
 }
 
-
+/// @return {struct.Level | undefined}
 function game_level_get(_x, _y) {
 	for (var i = 0; i < array_length(global.game.level.levels); i++) {
 		var _lvl = global.game.level.levels[i];
@@ -915,6 +915,7 @@ function game_level_get(_x, _y) {
 	}
 	return undefined;
 }
+/// @return {struct.Level | undefined}
 function game_level_get_safe_rect(_x1, _y1, _x2, _y2) {
 	for (var i = 0; i < array_length(global.game.level.loaded); i++) {
 		var _lvl = global.game.level.loaded[i];
@@ -923,28 +924,28 @@ function game_level_get_safe_rect(_x1, _y1, _x2, _y2) {
 				_lvl.x, _lvl.y,
 				_lvl.x + _lvl.width,
 				_lvl.y + _lvl.height) {
-			return _lvl;
+			return _lvl.data;
 		}
 	}
 	return undefined;
 }
 function game_level_get_safe(_x, _y) {
-	return game_level_get_safe_rect(_x, _y, _x + 1, _y + 1)
+	return game_level_get_safe_rect(_x, _y, _x + 1, _y + 1);
 }
 
 function game_level_onscreen() {
 	var _cam = game_camera_get();
 	
-	static _pad = 16
+	static _pad = 16;
 	
-	static __out = []
-	static __cache_x = 0
-	static __cache_y = 0
+	static __out = [];
+	static __cache_x = 0;
+	static __cache_y = 0;
 	
 	if __cache_x != _cam.x || __cache_y != _cam.y {
 		array_delete(__out, 0, array_length(__out)); // hopefully this is fine
-		__cache_x = _cam.x
-		__cache_y = _cam.y
+		__cache_x = _cam.x;
+		__cache_y = _cam.y;
 		
 		for (var i = 0; i < array_length(global.game.level.loaded); i++) {
 			var _lvl = global.game.level.loaded[i];
@@ -955,7 +956,7 @@ function game_level_onscreen() {
 					_lvl.x, _lvl.y,
 					_lvl.x + _lvl.width,
 					_lvl.y + _lvl.height) {
-				array_push(__out, _lvl)
+				array_push(__out, _lvl.data);
 			}
 		}
 	}

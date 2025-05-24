@@ -408,9 +408,10 @@ get_check_death = function(_x, _y) {
 	
 	for (var i_level = 0; i_level < array_length(global.game.level.loaded); i_level++) {
 		
-		var _tm = global.game.level.loaded[i_level].tiles_spike;
-		var _l_x = global.game.level.loaded[i_level].x;
-		var _l_y = global.game.level.loaded[i_level].y;
+		var _lvl = global.game.level.loaded[i_level].data;
+		var _tm = _lvl.tiles_spike;
+		var _l_x = _lvl.x;
+		var _l_y = _lvl.y;
 		var _width = tilemap_get_width(_tm);
 		var _height = tilemap_get_height(_tm);
 		

@@ -109,7 +109,7 @@ function actor_collision(_x, _y) {
 	static __list = ds_list_create();
 	
 	for (var i = 0; i < array_length(global.game.level.loaded); i++) {
-		if place_meeting(_x, _y, global.game.level.loaded[i].tiles) return true;
+		if place_meeting(_x, _y, global.game.level.loaded[i].data.tiles) return true;
 	}
 	
 	ds_list_clear(__list)
