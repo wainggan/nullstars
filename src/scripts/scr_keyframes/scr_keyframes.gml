@@ -122,7 +122,6 @@ function KeyframeCamera(_from_x, _from_y, _to_x, _to_y, _speed) : Keyframe() con
 function KeyframeRespawn() : Keyframe() constructor {
 	// @todo:
 	static init = function () {
-		LOG(Log.user, "fuck me");
 		instance_destroy(obj_player);
 	};
 	static tick = function () {
