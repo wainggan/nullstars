@@ -36,6 +36,8 @@ global.config = {
 
 #macro TILESIZE 16
 
+#macro ENABLE_LOG true
+
 #macro GAME_BUBBLE_PARITY 8
 
 #macro GAME_RENDER_LIGHT_SIZE 2048
