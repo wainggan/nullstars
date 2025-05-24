@@ -4,7 +4,7 @@ var _cam = game_camera_get();
 var _pad = 6;
 
 if state.is(state_idle) {
-	// todo:
+	// @todo:
 	draw_sprite_tiled_area(
 		spr_spike_pond_fill, 1,
 		wave(-32, 32, 12), wave(-24, 24, 10, 0.5),

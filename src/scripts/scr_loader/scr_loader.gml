@@ -444,7 +444,7 @@ function LoaderOptionDestroy(_level) : LoaderOption(_level, 1) constructor {
 	LOG(Log.note, $"Loader(): created LoaderOptionDestroy {level.id}");
 	
 	static process = function (_loader) {
-		if (level.loaded == LoaderProgress.out) {
+		if level.loaded == LoaderProgress.out {
 			return LoaderOptionStatus.complete;
 		}
 		ASSERT(level.loaded == LoaderProgress.prepared || level.loaded == LoaderProgress.loaded);

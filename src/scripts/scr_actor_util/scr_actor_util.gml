@@ -23,7 +23,7 @@ function actor_scan(_x, _y, _dir, _cap = 30) {
 		_check_y += lengthdir_y(sprite_height, _dir);
 		_check--;
 	}
-	
+
 	__return.x = _check_x;
 	__return.y = _check_y;
 	
