@@ -1500,7 +1500,7 @@ state_swim.set("enter", function() {
 
 state_menu = state_base.add();
 state_menu.set("enter", function() {
-	with obj_menu system.open(page_none);
+	with global.game.menu system.open(page_none);
 })
 .set("step", function() {
 	x_vel = approach(x_vel, 0, defs.move_accel);
@@ -1509,18 +1509,18 @@ state_menu.set("enter", function() {
 	buffer_dash = 0;
 	buffer_jump = 0;
 	
-	with obj_menu {
-		system.update();
-	}
+	// @todo: this kinda sucks
+	// die
+	global.game.menu.system.update();
 	
-	if array_length(obj_menu.system.stack) == 0 {
-		obj_menu.system.stop();
+	if array_length(global.game.menu.system.stack) == 0 {
+		global.game.menu.system.stop();
 		state.change(state_free);
 		return;
 	}
 	
 	if !place_meeting(x, y, obj_checkpoint) {
-		obj_menu.system.stop();
+		global.game.menu.system.stop();
 		state.change(state_free);
 		return;
 	}
