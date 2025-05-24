@@ -80,7 +80,7 @@ if _end {
 	
 }
 
-var _letsgoo = level_get_instance(global.game.state.timer_target) == self;
+var _letsgoo = global.game.state.timer_target == self;
 
 
 with level_get_instance(ref) {

@@ -46,6 +46,7 @@ function string_mask(_mask) {
 	return string_repeat("0", abs(string_length(_str) - 31)) + _str
 }
 
+/// @arg {string} _uid
 function level_get_instance(_uid) {
 	return global.entities[$ _uid];
 }
