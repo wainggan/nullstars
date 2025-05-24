@@ -9,6 +9,8 @@ function Game() constructor {
 		global.file = json_parse(json_stringify(global.file_default));
 	} else {
 		var _file = game_json_open(FILE_DATA);
+		ASSERT(_file != -1);
+		LOG(Log.note, "Game(): opened file json");
 		_file = game_file_upgrade(_file);
 		global.file = _file;
 	}
@@ -17,9 +19,11 @@ function Game() constructor {
 	global.data = global.file.data; // alias
 	
 	global.strings = game_json_open("strings.json");
+	ASSERT(global.strings != -1);
+	LOG(Log.note, "Game(): loaded strings.json");
 	
 	
-	// temp
+	// @todo: temp
 	global.onoff = 1;
 	game_update_overlay(global.settings.debug.overlay);
 	game_update_gctime(global.settings.debug.gctime);

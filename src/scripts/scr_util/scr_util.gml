@@ -48,6 +48,7 @@ function mod_euclidean(_value, _by) {
 
 /// @pure
 function map(_value, _start_low, _start_high, _target_low, _target_high) {
+	gml_pragma("forceinline");
     return ((_value - _start_low) / (_start_high - _start_low)) * (_target_high - _target_low) + _target_low;
 }
 
@@ -61,12 +62,14 @@ function map(_value, _start_low, _start_high, _target_low, _target_high) {
 /// @return {real}
 /// @pure
 function wave(_from, _to, _duration, _offset = 0, _time = global.time / 60) {
+	gml_pragma("forceinline");
 	var _a4 = (_from - _to) * 0.5;
 	return _to + _a4 + sin(((_time + _duration) / _duration + _offset) * (pi*2)) * _a4;
 }
 
 /// @pure
 function wrap(_value, _min, _max) {
+	gml_pragma("forceinline");
 	_value = floor(_value);
 	var _low = floor(min(_min, _max));
 	var _high = floor(max(_min, _max));
@@ -83,15 +86,18 @@ function chance(_percent) {
 
 /// @pure
 function parabola(_p1, _p2, _height, _off) {
-  return -(_height / power((_p1 - _p2) / 2, 2)) * (_off - _p1) * (_off - _p2)
+	gml_pragma("forceinline");
+	return -(_height / power((_p1 - _p2) / 2, 2)) * (_off - _p1) * (_off - _p2)
 }
 /// @pure
 function parabola_mid(_center, _size, _height, _off) {
-  return parabola(_center - _size, _center + _size, _height, _off)
+	gml_pragma("forceinline");
+	return parabola(_center - _size, _center + _size, _height, _off)
 }
 /// @pure
 function parabola_mid_edge(_center, _p, _height, _off) {
-  return parabola(_center - (_p - _center), _p, _height, _off)
+	gml_pragma("forceinline");
+	return parabola(_center - (_p - _center), _p, _height, _off)
 }
 
 /// smoothstep-style interpolation
@@ -105,6 +111,7 @@ function hermite(_t) {
 /// smoothstep
 /// @pure
 function herp(_a, _b, _t) {
+	gml_pragma("forceinline");
 	return lerp(_a, _b, hermite(_t));
 }
 
@@ -159,6 +166,7 @@ function hex_to_dec(_hex) {
 }
 
 function array_kick(_array, _index) {
+	gml_pragma("forceinline");
 	_array[_index] = _array[array_length(_array) - 1];
 	array_pop(_array);
 }
