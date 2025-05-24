@@ -43,8 +43,8 @@ reset_polarity_y = 0;
 rest = true;
 
 anim_vel = 0;
-anim_sight_x = 0;
-anim_sight_y = 0;
+anim_sight_x = x; // @todo: bandage
+anim_sight_y = y;
 anim_frame = 0;
 anim_line = 1;
 
