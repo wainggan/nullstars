@@ -14,8 +14,8 @@ function Logger() constructor {
 	messages = [];
 	anims = [];
 	
-	static write = function (_level, _message) {
-		show_debug_message($"{_level} :: {_message}");
+	static write = function (_level, _message, _file, _line) {
+		show_debug_message($"{_level} :: {_message} @ {_file}:{_line}");
 		if _level >= point {
 			array_insert(messages, 0, _message);
 			array_insert(anims, 0, 0);
@@ -38,15 +38,25 @@ function Logger() constructor {
 
 global.logger = new Logger();
 
-function log(_level, _message) {
-	if !RELEASE {
-		// this is probably fine
-		var _str = debug_get_callstack(2)[1];
-		_message += " @ " + _str;
-	}
-	global.logger.write(_level, _message);
-}
 function log_level(_level) {
 	global.logger.point = _level;
 }
+
+/// @ignore
+function __log__(_file, _line) {
+    static __ctx = {
+        file: "",
+        line: "",
+    };
+    static __out = method(__ctx, function (_level, _message) {
+		global.logger.write(_level, _message, file, line);
+    });
+
+    __ctx.file = _file;
+    __ctx.line = _line;
+    
+    return __out;
+}
+
+#macro LOG if RELEASE {} else __log__(_GMFILE_, _GMLINE_)
 

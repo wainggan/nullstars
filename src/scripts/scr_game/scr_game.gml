@@ -76,13 +76,13 @@ function Game() constructor {
 	};
 	
 	static unpack = function() {
-		log(Log.note, "Game(): running unpack()");
+		LOG(Log.note, "Game(): running unpack()");
 		
 		checkpoint.unpack();
 		gate.unpack();
 	};
 	static pack = function() {
-		log(Log.note, "Game(): running pack()");
+		LOG(Log.note, "Game(): running pack()");
 		
 		checkpoint.pack();
 		gate.pack();
@@ -91,9 +91,9 @@ function Game() constructor {
 	level.setup();
 	unpack();
 	
-	instance_create_layer(0, 0, "Instances", obj_cutscene_respawn);
+	// instance_create_layer(0, 0, "Instances", obj_cutscene_respawn);
 	
-	log(Log.user, $"running nullstars! build {date_datetime_string(GM_build_date)} {GM_build_type} - {GM_version}");
+	LOG(Log.user, $"running nullstars! build {date_datetime_string(GM_build_date)} {GM_build_type} - {GM_version}");
 }
 
 function GameState() constructor {
@@ -227,7 +227,7 @@ function GameHandleCheckpoints() constructor {
 	
 	static add = function(_object) {
 		if list[$ _object.index] != undefined {
-			log(Log.error, $"checkpoint: {_object.index} already exists!");
+			LOG(Log.error, $"checkpoint: {_object.index} already exists!");
 		}
 		list[$ _object.index] = {
 			object: _object,
@@ -282,10 +282,10 @@ function GameHandleGates() constructor {
 	
 	static add = function(_object) {
 		if _object.name = "" {
-			log(Log.error, $"gate: name is blank! {_object.x} {_object.y} {_object}")
+			LOG(Log.error, $"gate: name is blank! {_object.x} {_object.y} {_object}")
 		}
 		if list[$ _object.name] != undefined {
-			log(Log.warn, $"gate: {_object.name} already exists!");
+			LOG(Log.warn, $"gate: {_object.name} already exists!");
 		}
 		list[$ _object.name] = {
 			object: _object,

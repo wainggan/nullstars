@@ -131,13 +131,13 @@ global.file_default = {
 function game_file_upgrade(_file) {
 	// todo: very temporary
 	if _file.json < FILE_DATA_VERSION {
-		log(Log.user, $"update system not implemented, falling back to empty file!");
-		log(Log.user, $"really sorry about this. make parchii fix this.");
+		LOG(Log.user, $"update system not implemented, falling back to empty file!");
+		LOG(Log.user, $"really sorry about this. make parchii fix this.");
 		_file = json_parse(json_stringify(global.file_default));
 	}
 	var i = _file.json;
 	for (; i < FILE_DATA_VERSION; i++) {
-		log(Log.user, $"updating save file from {_file.json} to {i}...");
+		LOG(Log.user, $"updating save file from {_file.json} to {i}...");
 	}
 	return _file;
 }
@@ -151,7 +151,7 @@ function game_file_save() {
 /// writes to a file
 /// @arg {string} _filename
 function game_json_save(_filename, _tree) {
-	log(Log.hide, $"util_json_save: writing file {_filename}");
+	LOG(Log.hide, $"util_json_save: writing file {_filename}");
 	
 	var _string = json_stringify(_tree, true);
 	var _buffer = buffer_create(string_byte_length(_string)+1, buffer_fixed, 1);
@@ -161,16 +161,18 @@ function game_json_save(_filename, _tree) {
 	buffer_delete(_buffer);
 }
 
-/// opens a json file
+/// opens a json file.
+/// 
+/// returns `-1` if an error occured.
 /// @arg {string} _filename
-/// @return any
+/// @return {struct | real}
 function game_json_open(_filename) {
 	if !file_exists(_filename) {
-		log(Log.error, $"util_json_open: file {_filename} doesn't exist!");
+		LOG(Log.error, $"util_json_open: file {_filename} doesn't exist!");
 		return -1;
 	}
 	
-	log(Log.note, $"util_json_open: loading file {_filename}");
+	LOG(Log.note, $"util_json_open: loading file {_filename}");
 	
 	var _buffer = buffer_load(_filename);
 	var _string = buffer_read(_buffer, buffer_string);
@@ -178,6 +180,8 @@ function game_json_open(_filename) {
 	
 	var _data = json_parse(_string, undefined, true);
 	
+	// kill me
+	// Feather ignore once GM1045
 	return _data;
 }
 
