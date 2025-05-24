@@ -46,11 +46,11 @@ function Loader() constructor {
 	buffer_delete(_buffer);
 	
 	
-	levels = [];
+	levels = array_create(array_length(file.rooms));
 	
-	for (var i = 0; i < array_length(file.rooms); i++) {
+	for (var i = 0; i < array_length(levels); i++) {
 		var _room = file.rooms[i];
-		array_push(levels, {
+		levels[i] = {
 			id: i,
 			loaded: LoaderProgress.out,
 			time_load: 0,
@@ -61,7 +61,7 @@ function Loader() constructor {
 			height: _room.height,
 			name: $"room/{_room.name}.bin",
 			data: undefined,
-		});
+		};
 	}
 	
 	loaded = [];
@@ -80,9 +80,9 @@ function Loader() constructor {
 		};
 		array_sort(queue, __sort);
 		
-		var _todo = [];
-		for (var i = 0; i < array_length(queue); i++) {
-			array_push(_todo, i);
+		var _todo = array_create(array_length(queue));
+		for (var i = 0; i < array_length(_todo); i++) {
+			_todo[i] = i;
 		}
 		
 		var _remove = [];
