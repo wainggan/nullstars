@@ -60,5 +60,5 @@ function __log__(_file, _line) {
     return __out;
 }
 
-#macro LOG if RELEASE {} else __log__(_GMFILE_, _GMLINE_)
+#macro LOG if !ENABLE_LOG {} else __log__(_GMFILE_, _GMLINE_)
 
