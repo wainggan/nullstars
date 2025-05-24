@@ -423,11 +423,9 @@
 					"defUid": 265,
 					"px": [1312,912],
 					"fieldInstances": [
-						{ "__identifier": "text", "__type": "String", "__value": "-- crystals\n* it is said that their glow will bring the end of times. \n* time has already ended. this legend is meaningless.", "__tile": null, "defUid": 266, "realEditorValues": [{
+						{ "__identifier": "text", "__type": "String", "__value": "game-tablet-0", "__tile": null, "defUid": 266, "realEditorValues": [{
 							"id": "V_String",
-							"params": [
-								"-- crystals\n* it is said that their glow will bring the end of times. \n* time has already ended. this legend is meaningless."
-							]
+							"params": ["game-tablet-0"]
 						}] },
 						{ "__identifier": "color", "__type": "Color", "__value": "#FFFFFF", "__tile": null, "defUid": 602, "realEditorValues": [] }
 					],
@@ -447,9 +445,9 @@
 					"defUid": 265,
 					"px": [208,464],
 					"fieldInstances": [
-						{ "__identifier": "text", "__type": "String", "__value": "<-- exit\n\nsorry you didn't enjoy what was here. you may leave.", "__tile": null, "defUid": 266, "realEditorValues": [{
+						{ "__identifier": "text", "__type": "String", "__value": "game-tablet-2", "__tile": null, "defUid": 266, "realEditorValues": [{
 							"id": "V_String",
-							"params": ["<-- exit\n\nsorry you didn't enjoy what was here. you may leave."]
+							"params": ["game-tablet-2"]
 						}] },
 						{ "__identifier": "color", "__type": "Color", "__value": "#FFFFFF", "__tile": null, "defUid": 602, "realEditorValues": [] }
 					],
