@@ -136,7 +136,6 @@
     {"id":{"name":"ft_sign","path":"fonts/ft_sign/ft_sign.yy",},},
     {"id":{"name":"ft_timer","path":"fonts/ft_timer/ft_timer.yy",},},
     {"id":{"name":"game","path":"objects/game/game.yy",},},
-    {"id":{"name":"level_old","path":"objects/level_old/level_old.yy",},},
     {"id":{"name":"obj_Actor","path":"objects/obj_Actor/obj_Actor.yy",},},
     {"id":{"name":"obj_ball","path":"objects/obj_ball/obj_ball.yy",},},
     {"id":{"name":"obj_bounce_left","path":"objects/obj_bounce_left/obj_bounce_left.yy",},},

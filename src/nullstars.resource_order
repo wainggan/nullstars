@@ -40,7 +40,6 @@
     {"name":"ac_tweens","order":1,"path":"animcurves/ac_tweens/ac_tweens.yy",},
     {"name":"ft_sign","order":1,"path":"fonts/ft_sign/ft_sign.yy",},
     {"name":"game","order":1,"path":"objects/game/game.yy",},
-    {"name":"level_old","order":4,"path":"objects/level_old/level_old.yy",},
     {"name":"obj_ball","order":9,"path":"objects/obj_ball/obj_ball.yy",},
     {"name":"obj_bounce_left","order":22,"path":"objects/obj_bounce_left/obj_bounce_left.yy",},
     {"name":"obj_bounce_right","order":23,"path":"objects/obj_bounce_right/obj_bounce_right.yy",},
