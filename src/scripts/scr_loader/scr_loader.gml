@@ -419,8 +419,8 @@ function LoaderOptionLoad(_level) : LoaderOption(_level, 0) constructor {
 	
 	static process = function (_loader) {
 		ASSERT(level.loaded == LoaderProgress.prepared);
-		level.data.load();
 		level.loaded = LoaderProgress.loaded;
+		level.data.load();
 		array_push(_loader.loaded, level);
 		return LoaderOptionStatus.complete;
 	};
@@ -444,8 +444,12 @@ function LoaderOptionDestroy(_level) : LoaderOption(_level, 1) constructor {
 	LOG(Log.note, $"Loader(): created LoaderOptionDestroy {level.id}");
 	
 	static process = function (_loader) {
+		if (level.loaded == LoaderProgress.out) {
+			return LoaderOptionStatus.complete;
+		}
 		ASSERT(level.loaded == LoaderProgress.prepared || level.loaded == LoaderProgress.loaded);
 		level.loaded = LoaderProgress.out;
+		level.data.unload();
 		level.data.destroy();
 		level.data = undefined;
 		return LoaderOptionStatus.complete;
