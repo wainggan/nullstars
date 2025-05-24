@@ -219,23 +219,29 @@ function Loader() constructor {
 			if util_check_level_zone_load(_cam, _level) {
 				if _level.loaded == LoaderProgress.out && _level.data == undefined {
 					array_push(self.queue, new LoaderOptionFile(_level));
+				
 				} else if _level.loaded == LoaderProgress.prepared {
 					array_push(self.queue, new LoaderOptionLoad(_level));
+				
 				} else if _level.loaded == LoaderProgress.loaded {
 					_level.time_load = global.defs.level_load_time;
 					_level.time_prep = global.defs.level_prep_time;
+					
 				}
 				
 			} else if util_check_level_zone_prep(_cam, _level) {
 				if _level.loaded == LoaderProgress.out && _level.data == undefined {
 					array_push(self.queue, new LoaderOptionFile(_level));
+				
 				} else if _level.loaded == LoaderProgress.loaded {
 					if _level.time_load-- <= 0 {
 						// entities inside the level should automatically be destroyed now
 						array_push(self.queue, new LoaderOptionUnload(_level));
 					}
+				
 				} else if _level.loaded == LoaderProgress.prepared {
 					_level.time_prep = global.defs.level_prep_time;
+				
 				}
 				
 			} else {
@@ -243,10 +249,12 @@ function Loader() constructor {
 					if _level.time_prep-- <= 0 {
 						array_push(self.queue, new LoaderOptionDestroy(_level));
 					}
+				
 				} else if _level.loaded == LoaderProgress.loaded {
 					if _level.time_load-- <= 0 {
 						array_push(self.queue, new LoaderOptionUnload(_level));
 					}
+				
 				}
 			}
 		}
