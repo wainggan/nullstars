@@ -224,8 +224,8 @@ function Loader() constructor {
 					array_push(self.queue, new LoaderOptionLoad(_level));
 				
 				} else if _level.loaded == LoaderProgress.loaded {
-					_level.time_load = global.defs.level_load_time;
-					_level.time_prep = global.defs.level_prep_time;
+					_level.time_load = GAME_LOAD_TIME_FILE;
+					_level.time_prep = GAME_LOAD_TIME_PREP;
 					
 				}
 				
@@ -240,7 +240,7 @@ function Loader() constructor {
 					}
 				
 				} else if _level.loaded == LoaderProgress.prepared {
-					_level.time_prep = global.defs.level_prep_time;
+					_level.time_prep = GAME_LOAD_TIME_PREP;
 				
 				}
 				
@@ -300,12 +300,11 @@ function Loader() constructor {
 }
 
 function util_check_level_zone_prep(_cam, _level) {
-	var _pad = 512;
 	return rectangle_in_rectangle(
-		_cam.x - _pad,
-		_cam.y - _pad,
-		_cam.x + _cam.w + _pad,
-		_cam.y + _cam.h + _pad,
+		_cam.x - GAME_LOAD_RADIUS_FILE,
+		_cam.y - GAME_LOAD_RADIUS_FILE,
+		_cam.x + _cam.w + GAME_LOAD_RADIUS_FILE,
+		_cam.y + _cam.h + GAME_LOAD_RADIUS_FILE,
 		_level.x, _level.y,
 		_level.x + _level.width,
 		_level.y + _level.height
@@ -326,9 +325,10 @@ function util_check_level_zone_load(_cam, _level) {
 		) != 0;
 	}
 	return rectangle_in_rectangle(
-		_cam.x, _cam.y,
-		_cam.x + _cam.w,
-		_cam.y + _cam.h,
+		_cam.x - GAME_LOAD_RADIUS_ENTITY,
+		_cam.y - GAME_LOAD_RADIUS_ENTITY,
+		_cam.x + _cam.w + GAME_LOAD_RADIUS_ENTITY,
+		_cam.y + _cam.h + GAME_LOAD_RADIUS_ENTITY,
 		_level.x, _level.y,
 		_level.x + _level.width,
 		_level.y + _level.height

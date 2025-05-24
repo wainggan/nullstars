@@ -5,10 +5,6 @@
 gml_release_mode(RELEASE);
 
 global.defs = {
-	// how long it takes to unload the entities of a level
-	level_load_time: 180,
-	// how long it takes to unload level data
-	level_prep_time: 240,
 	// global terminal velocity
 	terminal_vel: 5,
 	// speed of lifts when returning back to normal positions
@@ -45,6 +41,10 @@ global.config = {
 #macro GAME_RENDER_LIGHT_SIZE 2048
 #macro GAME_RENDER_LIGHT_KERNEL 256
 
-#macro GAME_LOAD_RADIUS_FILE 1024
-#macro GAME_LOAD_RADIUS_ENTITY 64
+#macro GAME_LOAD_RADIUS_FILE 512
+#macro GAME_LOAD_RADIUS_ENTITY 128
+// how long it takes to unload the entities of a level
+#macro GAME_LOAD_TIME_FILE 180
+// how long it takes to unload level data
+#macro GAME_LOAD_TIME_PREP 240
 
