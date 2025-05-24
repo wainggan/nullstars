@@ -825,17 +825,38 @@ function Level(_id, _x, _y, _width, _height) constructor {
 		
 		if !loaded return;
 		loaded = false;
-		
-		//if shadow_vb != -1 {
-		//	vertex_delete_buffer(shadow_vb);
-		//	shadow_vb = -1;
-		//}
 	
 	}
 	
 	/// destroys tile data.
 	static destroy = function() {
+		if shadow_vb == -1 {
+			vertex_delete_buffer(shadow_vb);
+		}
 		
+		layer_destroy(layer);
+		layer_tilemap_destroy(tiles);
+		
+		vertex_delete_buffer(vb_front);
+		vertex_delete_buffer(vb_tiles_below);
+		
+		layer_destroy(layer_back);
+		layer_tilemap_destroy(tiles_back);
+		
+		layer_destroy(layer_back_glass);
+		layer_tilemap_destroy(tiles_back_glass);
+		
+		layer_destroy(layer_tiles_above);
+		layer_tilemap_destroy(tiles_tiles_above);
+		
+		layer_destroy(layer_decor);
+		layer_tilemap_destroy(tiles_decor);
+		
+		layer_destroy(layer_decor_under);
+		layer_tilemap_destroy(tiles_decor_under);
+		
+		layer_destroy(layer_spike);
+		layer_tilemap_destroy(tiles_spike);
 	}
 	
 	
