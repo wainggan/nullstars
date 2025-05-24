@@ -209,9 +209,9 @@
 					"defUid": 265,
 					"px": [368,384],
 					"fieldInstances": [
-						{ "__identifier": "text", "__type": "String", "__value": "omega\ncount how many sand is in this desert\nOKAY\nONE. TWO. THREE. FOUR", "__tile": null, "defUid": 266, "realEditorValues": [{
+						{ "__identifier": "text", "__type": "String", "__value": "game-tablet-1", "__tile": null, "defUid": 266, "realEditorValues": [{
 							"id": "V_String",
-							"params": ["omega\ncount how many sand is in this desert\nOKAY\nONE. TWO. THREE. FOUR"]
+							"params": ["game-tablet-1"]
 						}] },
 						{ "__identifier": "color", "__type": "Color", "__value": "#FFFFFF", "__tile": null, "defUid": 602, "realEditorValues": [] }
 					],
