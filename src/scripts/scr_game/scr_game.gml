@@ -47,6 +47,8 @@ function Game() constructor {
 	
 	menu = new GameMenu();
 	
+	music = new Music();
+	
 	
 	timelines = [];
 	
@@ -77,6 +79,7 @@ function Game() constructor {
 		
 		self.level.update();
 		self.state.update();
+		self.music.update();
 	}
 	
 	static step_begin = function() {
