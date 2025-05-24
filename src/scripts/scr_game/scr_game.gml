@@ -46,6 +46,14 @@ function Game() constructor {
 	news_sound = new News();
 	
 	
+	timelines = [];
+	
+	/// @arg {struct.Timeline} _timeline
+	static add_timeline = function (_timeline) {
+		array_push(timelines, _timeline);
+	};
+	
+	
 	static update_begin = function() {
 		global.logger.update();
 		input.update();
@@ -76,6 +84,14 @@ function Game() constructor {
 		
 	};
 	static step_end = function() {
+		for (var i = 0; i < array_length(timelines); i++) {
+			var _t = timelines[i];
+			_t.tick();
+			if _t.complete() {
+				array_delete(timelines, i--, 1);
+			}
+		}
+		
 		camera.update(self);
 	};
 	
@@ -95,7 +111,24 @@ function Game() constructor {
 	level.setup();
 	unpack();
 	
-	// instance_create_layer(0, 0, "Instances", obj_cutscene_respawn);
+	// @todo: this fucking sucks
+	var _checkpoint = game_checkpoint_ref();
+	var _x_target = _checkpoint.x;
+	var _y_target = _checkpoint.y;
+	var _constrain = camera.constrain(_x_target, _y_target);
+	camera.move(_constrain.x, _constrain.y, false);
+	
+	add_timeline(
+		new Timeline()
+			.add(new KeyframeTimedCallback(1, function () {
+				var _checkpoint = game_checkpoint_ref();
+				var _x_target = _checkpoint.x;
+				var _y_target = _checkpoint.y;
+				var _constrain = camera.constrain(_x_target, _y_target);
+				camera.move(_constrain.x, _constrain.y, false);
+			}))
+			.add(new KeyframeRespawn())
+	);
 	
 	LOG(Log.user, $"running nullstars! build {date_datetime_string(GM_build_date)} {GM_build_type} - {GM_version}");
 }
