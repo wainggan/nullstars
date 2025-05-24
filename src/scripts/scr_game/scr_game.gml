@@ -156,7 +156,7 @@ function GameState() constructor {
 	timer_active = false;
 	timer_length = 0;
 	timer_current = 0;
-	timer_target = 0;
+	timer_target = noone;
 	
 	
 	static update = function () {
@@ -201,7 +201,7 @@ function GameState() constructor {
 	};
 	
 	
-	static timer_start = function (_length, _target = undefined) {
+	static timer_start = function (_length, _target = noone) {
 		timer_current = 0;
 		timer_length = _length;
 		timer_target = _target;
