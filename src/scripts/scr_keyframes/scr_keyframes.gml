@@ -35,7 +35,7 @@ function Keyframe() constructor {
 }
 
 function KeyframeCallback(_callback) : Keyframe() constructor {
-	assert(is_callable(_callback));
+	ASSERT(is_callable(_callback));
 	callback = _callback;
 	static process = function () {
 		return callback() ?? true;
@@ -43,9 +43,9 @@ function KeyframeCallback(_callback) : Keyframe() constructor {
 }
 
 function KeyframeTimedCallback(_time, _callback) : Keyframe() constructor {
-	assert(is_real(_time));
-	assert(_time >= 0);
-	assert(is_callable(_callback));
+	ASSERT(is_real(_time));
+	ASSERT(_time >= 0);
+	ASSERT(is_callable(_callback));
 	time = _time;
 	callback = _callback;
 	static process = function () {

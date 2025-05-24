@@ -22,7 +22,7 @@
  * command is created, which will destroy the room's resources.
  * 
  * this is a very delicate process with lots of room for
- * error. pay attention to `assert()` where used.
+ * error. pay attention to `ASSERT()` where used.
  */
 
 
@@ -38,9 +38,9 @@ function Loader() constructor {
 	
 	var _buffer = buffer_load("world.bin");
 	if _buffer == -1 {
-		log(Log.error, $"Loader(): file 'world.bin' doesn't exist");
-		log(Log.error, "what do you even do about this?");
-		assert(false);
+		LOG(Log.error, $"Loader(): file 'world.bin' doesn't exist");
+		LOG(Log.error, "what do you even do about this?");
+		ASSERT(false);
 	}
 	file = level_unpack_bin_main(_buffer);
 	buffer_delete(_buffer);
@@ -104,7 +104,7 @@ function Loader() constructor {
 				// keep processing it until it is complete
 				while true {
 					_status = _item.process(self);
-					assert(_status != undefined);
+					ASSERT(_status != undefined);
 					
 					if _status == LoaderOptionStatus.complete {
 						break;
@@ -124,7 +124,7 @@ function Loader() constructor {
 			} else if _budget_runs > 0 && _budget_time > 0 {
 				// this item can be processed over multiple frames.
 				_status = _item.process(self);
-				assert(_status != undefined);
+				ASSERT(_status != undefined);
 				
 				if _status != LoaderOptionStatus.complete {
 					// whatever
@@ -132,14 +132,14 @@ function Loader() constructor {
 				}
 			}
 			
-			assert(_status == LoaderOptionStatus.complete);
+			ASSERT(_status == LoaderOptionStatus.complete);
 			
 			var _out = _item.collect(self);
 			
-			assert(is_array(_out));
+			ASSERT(is_array(_out));
 			
 			for (var i = 0; i < array_length(_out); i++) {
-				assert(is_instanceof(_out[i], LoaderOption));
+				ASSERT(is_instanceof(_out[i], LoaderOption));
 				
 				// if we recieve a loaderoption, we need to add it to
 				// the queue *and* todo list. this ensures that if it turns
@@ -231,9 +231,9 @@ function Loader() constructor {
 				
 			} else {
 				if _level.loaded == LoaderProgress.prepared {
-					// assert(false);
+					// ASSERT(false);
 				} else if _level.loaded == LoaderProgress.loaded {
-					// assert(false);
+					// ASSERT(false);
 				}
 			}
 		}
@@ -312,19 +312,19 @@ function LoaderOptionFile(_level) : LoaderOption(_level, 0) constructor {
 	
 	level.loaded = LoaderProgress.prepping;
 	
-	log(Log.note, $"Loader(): created LoaderOptionFile {level.id}");
+	LOG(Log.note, $"Loader(): created LoaderOptionFile {level.id}");
 	
 	static process = function (_loader) {
 		bin = buffer_load(level.name);
 		if bin == -1 {
-			log(Log.error, $"Loader(): file '{level.name}' doesn't exist");
-			assert(false);
+			LOG(Log.error, $"Loader(): file '{level.name}' doesn't exist");
+			ASSERT(false);
 		}
 		return LoaderOptionStatus.complete;
 	};
 
 	static collect = function (_loader) {
-		assert(buffer_exists(bin));
+		ASSERT(buffer_exists(bin));
 		
 		array_push(_loader.bins, [bin, 1]);
 		var _bin_id = array_length(_loader.bins) - 1;
@@ -337,7 +337,7 @@ function LoaderOptionFile(_level) : LoaderOption(_level, 0) constructor {
 function LoaderOptionParse(_level, _bin_id) : LoaderOption(_level, 0) constructor {
 	bin_id = _bin_id;
 	
-	log(Log.note, $"Loader(): created LoaderOptionParse {level.id}");
+	LOG(Log.note, $"Loader(): created LoaderOptionParse {level.id}");
 	
 	static process = function (_loader) {
 
@@ -364,10 +364,10 @@ function LoaderOptionParse(_level, _bin_id) : LoaderOption(_level, 0) constructo
 
 /// creates level entities.
 function LoaderOptionLoad(_level) : LoaderOption(_level, 0) constructor {
-	log(Log.note, $"Loader(): created LoaderOptionLoad {level.id}");
+	LOG(Log.note, $"Loader(): created LoaderOptionLoad {level.id}");
 	
 	static process = function (_loader) {
-		assert(level.loaded == LoaderProgress.prepared);
+		ASSERT(level.loaded == LoaderProgress.prepared);
 		level.data.load();
 		level.loaded = LoaderProgress.loaded;
 		array_push(_loader.loaded, level.data);
@@ -377,10 +377,10 @@ function LoaderOptionLoad(_level) : LoaderOption(_level, 0) constructor {
 
 /// destroy level.
 function LoaderOptionDestroy(_level) : LoaderOption(_level, 0) constructor {
-	log(Log.note, $"Loader(): created LoaderOptionDestroy {level.id}");
+	LOG(Log.note, $"Loader(): created LoaderOptionDestroy {level.id}");
 	
 	static process = function (_loader) {
-		assert(false);
+		ASSERT(false);
 	};
 }
 

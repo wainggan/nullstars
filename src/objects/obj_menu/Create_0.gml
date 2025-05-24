@@ -12,7 +12,7 @@ page_none = new MenuPageList()
 	system.open(page_settings)
 }))
 .add(new MenuButton(global.strings[$ "menu-i-debug"], function(){
-	log(Log.warn, "good luck");
+	LOG(Log.warn, "good luck");
 	system.open(page_debug);
 }))
 .add(new MenuButton(global.strings[$ "menu-i-exit"], function(){
@@ -229,7 +229,7 @@ page_debug = new MenuPageList()
 .add(new MenuButton("gc", function(){
 	var _stats = gc_get_stats();
 	var _text = $"{_stats}";
-	log(Log.note, _text);
+	LOG(Log.note, _text);
 	gc_collect();
 }, @"force run the gc."))
 .add(new MenuRadio("gc time", 
@@ -253,7 +253,7 @@ page_debug = new MenuPageList()
 		global.settings.debug.log,
 		function(_) {
 	global.settings.debug.log = _;
-	log(Log.user, $"log level set to {_}")
+	LOG(Log.user, $"log level set to {_}")
 	game_update_log(global.settings.debug.log);
 	game_file_save();
 }))
