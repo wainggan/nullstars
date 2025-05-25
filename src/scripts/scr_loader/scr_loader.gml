@@ -262,7 +262,8 @@ function Loader() constructor {
 					}
 				
 				} else if _level.loaded == LoaderProgress.loaded {
-					if _level.time_load-- <= 0 {
+					_level.time_load -= 4;
+					if _level.time_load <= 0 {
 						self.queue_add(new LoaderOptionUnload(_level));
 					}
 				
