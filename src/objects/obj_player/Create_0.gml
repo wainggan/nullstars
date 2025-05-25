@@ -83,10 +83,18 @@ nat_crouch = function(_value = undefined) {
 nat_crouch(false);
 
 get_can_uncrouch = function() {
-	if !nat_crouch() return true;
+	if !nat_crouch() {
+		return true;
+	}
 	var _pre = mask_index;
 	mask_index = spr_debug_player;
+	
 	var _collide = actor_collision(x, y);
+	var _inst = instance_place(x, y, obj_ss_down);
+	if _inst != noone {
+		_collide = true;
+	}
+	
 	mask_index = _pre;
 	return !_collide;
 };
@@ -113,11 +121,6 @@ walljump_grace_dir = 0;
 walljump_solid = noone;
 walljump_solid_x = 0;
 walljump_solid_y = 0;
-
-ledge_key = 0;
-ledge_buffer_dir = 0;
-ledge_buffer_dir_timer = 0;
-ledge_stick = 0;
 
 dash_dir_x = 0;
 dash_dir_y = 0;
@@ -173,17 +176,17 @@ var _s_stand = 0,
 	_s_run_fall = 24;
 
 anim = new AnimController();
-anim.add("idle", new AnimLevel([_s_stand]))
-.add("walk", new AnimLevel([
+anim.add("idle", new AnimLevel([_s_stand]));
+anim.add("walk", new AnimLevel([
 		_s_walk_a1, _s_walk_b1,
 		_s_walk_a2, _s_walk_b2
-	], 12))
-.add("jump", new AnimLevel([_s_jump]))
-.add("fall", new AnimLevel([_s_fall]))
-.add("dive", new AnimLevel([_s_dive]))
-.add("jab", new AnimLevel([_s_dash]))
-.add("longjump", new AnimLevel([_s_long]))
-.add("swim", new AnimLevel([_s_swim_idle_1, _s_swim_idle_2], 1 / 60))
+	], 12));
+anim.add("jump", new AnimLevel([_s_jump]));
+anim.add("fall", new AnimLevel([_s_fall]));
+anim.add("dive", new AnimLevel([_s_dive]));
+anim.add("jab", new AnimLevel([_s_dash]));
+anim.add("longjump", new AnimLevel([_s_long]));
+anim.add("swim", new AnimLevel([_s_swim_idle_1, _s_swim_idle_2], 1 / 60))
 .add("swimming", new AnimLevel([_s_swim_1, _s_swim_2], 1 / 60))
 .add("ledge", new AnimLevel([_s_ledge]))
 .add("crouch", new AnimLevel([_s_crouch]))
@@ -403,11 +406,12 @@ get_check_death = function(_x, _y) {
 	var _right = (bbox_right - x) + _x - 1;
 	var _bottom = (bbox_bottom - y) + _y - 1;
 	
-	for (var i_level = 0; i_level < array_length(level.loaded); i_level++) {
+	for (var i_level = 0; i_level < array_length(global.game.level.loaded); i_level++) {
 		
-		var _tm = level.loaded[i_level].tiles_spike;
-		var _l_x = level.loaded[i_level].x;
-		var _l_y = level.loaded[i_level].y;
+		var _lvl = global.game.level.loaded[i_level].data;
+		var _tm = _lvl.tiles_spike;
+		var _l_x = _lvl.x;
+		var _l_y = _lvl.y;
 		var _width = tilemap_get_width(_tm);
 		var _height = tilemap_get_height(_tm);
 		
@@ -570,7 +574,7 @@ action_walljump = function() {
 	
 	anim_runjump_timer = 0;
 	
-	hold_jump_key_timer = defs.jump_time;
+	hold_jump_key_timer = 5;
 	
 	walljump_grace = defs.walljump_grace;
 	walljump_grace_dir = dir;
@@ -672,7 +676,7 @@ action_dashjump_wall = function(_key_dir, _wall_dir) {
 	
 };
 
-action_jump_bounce = function(_dir, _from_x, _from_y) {
+impl_jump_bounce = function(_dir, _from_x, _from_y) {
 	
 	actor_move_y(_from_y - y);
 	
@@ -693,15 +697,15 @@ action_jump_bounce = function(_dir, _from_x, _from_y) {
 	
 }
 
-event.add("bounce", action_jump_bounce);
+event.add("bounce", impl_jump_bounce);
 
 #endregion
 
 
 state = new State();
 
-state_stuck = state.add()
-.set("step", function() {
+state_stuck = state.add();
+state_stuck.set("step", function() {
 	if game_paused() {
 		return;
 	}
@@ -716,8 +720,8 @@ state_stuck = state.add()
 	}
 });
 
-state_base = state.add()
-.set("step", function () {
+state_base = state.add();
+state_base.set("step", function () {
 	
 	var _kh = INPUT.check("right") - INPUT.check("left");
 	var _kv = INPUT.check("down") - INPUT.check("up");
@@ -782,37 +786,54 @@ state_base = state.add()
 	
 	state.child();
 	
-	var _d = 0, _amount = 0;
-	var _shifted = false;
-	
-	if (y_vel < 0 ||
-		(dash_grace > 0 && dash_dir_y == 1 && dash_dir_x == 0)) &&
-		!_shifted {
-		_d = 0;
-		_amount = 8;
-		if actor_collision(x, y + y_vel)
-			for (_d = 1; _d < _amount; _d++) {
-				if actor_collision(x - _d, y + y_vel) {
-				} else break;
-			}
-		if _d != _amount {
-			actor_move_x(-_d)
-			_shifted = true;
+	static __collide_x = function() {
+		var _amount = 0;
+		if state.is(state_dash) {
+			_amount = 12;
+		} else {
+			_amount = 0;
 		}
 		
-		_d = 0;
-		if actor_collision(x, y + y_vel)
-			for (_d = 1; _d < _amount; _d++) {
-				if actor_collision(x + _d, y + y_vel) {
-				} else break;
+		for (var i = 0; i < _amount * 2 + 1; i++) {
+			var _d = (i % 2 == 0 ? 1 : -1) * floor((i + 2) / 2);
+			if !actor_collision(x + sign(x_vel), y + _d) {
+				actor_move_y(_d);
+				// avoid getting stuck
+				// it's probably fine...
+				actor_move_x(sign(x_vel));
+				return;
 			}
-		if _d != _amount {
-			actor_move_x(_d)
-			_shifted = true;
 		}
-	}
+		
+		if vel_grace_timer <= 0 || abs(x_vel) > abs(vel_grace) { // bad idea
+			vel_grace_timer = 14;
+			vel_grace = x_vel;
+		}
+		if state.is(state_swim_bullet) {
+			swim_dir = point_direction(0, 0, -x_vel, y_vel);
+		} else {
+			x_vel = 0;
+		}
+	};
+	actor_move_x(x_vel, __collide_x);
 	
 	static __collide_y = function() {
+		var _amount = 0;
+		if y_vel < 0 || (dash_grace > 0 && dash_dir_y == 1 && dash_dir_x == 0) {
+			_amount = 8;
+		} else {
+			_amount = 2;
+		}
+		
+		for (var i = 0; i < _amount * 2 + 1; i++) {
+			var _d = (i % 2 == 0 ? 1 : -1) * floor((i + 2) / 2);
+			if !actor_collision(x + _d, y + sign(y_vel)) {
+				actor_move_x(_d);
+				actor_move_y(sign(y_vel));
+				return;
+			}
+		}
+		
 		if y_vel > 0 {
 			if y_vel > 1 {
 				scale_x = 1.2;
@@ -828,45 +849,6 @@ state_base = state.add()
 	};
 	actor_move_y(y_vel, __collide_y);
 	
-	if !_shifted {
-		_d = 0;
-		_amount = state.is(state_dash) ? 16 : 4;
-		if actor_collision(x + x_vel, y)
-			for (_d = 1; _d < _amount; _d++) {
-				if actor_collision(x + x_vel, y + _d) {
-				} else break;
-			}
-		if _d != _amount {
-			actor_move_y(_d)
-			_shifted = true;
-		}
-			
-		_d = 0;
-		_amount = state.is(state_dash) ? 10 : 2;
-		if actor_collision(x + x_vel, y)
-			for (_d = 1; _d < _amount; _d++) {
-				if actor_collision(x + x_vel, y - _d) {
-				} else break;
-			}
-		if _d != _amount {
-			actor_move_y(-_d)
-			_shifted = true;
-		}
-	}
-	
-	static __collide_x = function() {
-		if vel_grace_timer <= 0 || abs(x_vel) > abs(vel_grace) { // bad idea
-			vel_grace_timer = 14;
-			vel_grace = x_vel;
-		}
-		if state.is(state_swim_bullet) {
-			swim_dir = point_direction(0, 0, -x_vel, y_vel);
-		} else {
-			x_vel = 0;
-		}
-	};
-	actor_move_x(x_vel, __collide_x);
-	
 	var _inst = instance_place(x, y, obj_dash)
 	if dash_left < defs.dash_total && _inst && _inst.state.is(_inst.state_active) {
 		game_set_pause(4);
@@ -877,20 +859,12 @@ state_base = state.add()
 	// this is horrible
 	if state.is(state_free) {
 		if y_vel > -1 {
-			if (
-				!onground && get_check_wall(_kh, 1) && !INPUT.check("down")
-			) && (
-				(ledge_buffer_dir_timer > 0 && ledge_buffer_dir == dir) ||
-				ledge_key == dir ||
-				(dash_grace > 0 && _kh == dash_dir_x)
-			) {
-				ledge_buffer_dir_timer = 0;
-				ledge_key = 0;
-				state.change(state_ledge);
-				return;
-			} else {
-				if y_vel > 2 {
-					ledge_key = 0;
+			if get_check_wall(dir, 1) && INPUT.check("grab") {
+				var _crouched = nat_crouch();
+				if !_crouched || (_crouched && get_can_uncrouch()) {
+					nat_crouch(false);
+					state.change(state_ledge);
+					return;
 				}
 			}
 		}
@@ -945,8 +919,8 @@ state_stuck = state_base.add()
 	}
 });
 
-state_free = state_base.add()
-.set("step", function () {
+state_free = state_base.add();
+state_free.set("step", function () {
 	
 	var _kh = INPUT.check("right") - INPUT.check("left");
 	var _kv = INPUT.check("down") - INPUT.check("up");
@@ -1147,26 +1121,15 @@ state_free = state_base.add()
 		return;
 	}
 	
-	var _kh_p = INPUT.check_pressed("right") - INPUT.check_pressed("left");
-	
-	ledge_buffer_dir_timer -= 1;
-	if _kh_p != 0 {
-		ledge_buffer_dir = _kh_p;
-		ledge_buffer_dir_timer = 4;
-	}
-	
-	if y_vel <= -1 && _kh != 0 {
-		ledge_key = _kh;
-	}
-	
 });
 
-state_ledge = state_base.add()
-.set("enter", function(){
-	ledge_stick = 1;
+state_ledge = state_base.add();
+state_ledge.set("enter", function(){
+	hold_jump_key_timer = 0;
+	hold_jump_vel = defs.terminal_vel;
+	hold_jump_vel_timer = 0;
 })
 .set("leave", function(){
-	ledge_stick = 0;
 })
 .set("step", function() {
 	
@@ -1203,21 +1166,8 @@ state_ledge = state_base.add()
 		state.change(state_free);
 		return;
 	}
-	if onground {
-		x_vel += get_lift_x();
-		y_vel += get_lift_y();
-		state.change(state_free);
-		return;
-	}
 	
-	if _kh != dir {
-		ledge_stick -= 1;
-	} else {
-		ledge_stick = 4;
-	}
-	if _kh != dir && ledge_stick <= 0 {
-		x_vel += get_lift_x();
-		y_vel += get_lift_y();
+	if !INPUT.check("grab") {
 		state.change(state_free);
 		return;
 	}
@@ -1253,8 +1203,8 @@ action_dash_end = function() {
 	
 };
 
-state_dash = state_base.add()
-.set("enter", function() {
+state_dash = state_base.add();
+state_dash.set("enter", function() {
 	
 	game_set_pause(3);
 	
@@ -1393,8 +1343,10 @@ state_dash = state_base.add()
 	
 });
 
-state_swim = state_base.add()
-.set("step", function() {
+state_swim = state_base.add();
+state_swim.set("enter", function() {
+})
+state_swim.set("step", function() {
 	
 	var _kh = INPUT.check("right") - INPUT.check("left");
 	var _kv = INPUT.check("down") - INPUT.check("up");
@@ -1454,15 +1406,17 @@ state_swim = state_base.add()
 	
 });
 
-state_swim_bullet = state_base.add()
-.set("enter", function() {
-	
+state_swim_bullet = state_base.add();
+state_swim_bullet.set("enter", function() {
 	game_set_pause(4);
 	
 	buffer_dash = 0;
 	
 	swim_pre_x_vel = x_vel;
 	swim_pre_y_vel = y_vel;
+	
+	// for anim
+	swim_dir = point_direction(0, 0, x_vel, y_vel);
 	
 	x_vel = 0;
 	y_vel = 0;
@@ -1542,9 +1496,9 @@ state_swim_bullet = state_base.add()
 	
 });
 
-state_menu = state_base.add()
-.set("enter", function() {
-	with obj_menu system.open(page_none);
+state_menu = state_base.add();
+state_menu.set("enter", function() {
+	with global.game.menu system.open(page_none);
 })
 .set("step", function() {
 	x_vel = approach(x_vel, 0, defs.move_accel);
@@ -1553,25 +1507,98 @@ state_menu = state_base.add()
 	buffer_dash = 0;
 	buffer_jump = 0;
 	
-	with obj_menu {
-		system.update();
-	}
+	// @todo: this kinda sucks
+	// die
+	global.game.menu.system.update();
 	
-	if array_length(obj_menu.system.stack) == 0 {
-		obj_menu.system.stop();
+	if array_length(global.game.menu.system.stack) == 0 {
+		global.game.menu.system.stop();
 		state.change(state_free);
 		return;
 	}
 	
 	if !place_meeting(x, y, obj_checkpoint) {
-		obj_menu.system.stop();
+		global.game.menu.system.stop();
 		state.change(state_free);
 		return;
 	}
 	
 });
 
-squish = function() {
+squish = function(_data) {
+	
+	if !instance_exists(_data.pusher) {
+		game_player_kill();
+		return;
+	}
+	
+	// since squish only gets calls when solids push actors, _data.pusher.collidable must be false.
+	// it's safe to re-enable it so long as it is set back to false at the end of the function
+	
+	_data.pusher.collidable = true;
+	
+	var _crouched = false;
+	if !nat_crouch() && state.is(state_free) {
+		nat_crouch(true);
+		_crouched = true;
+		
+		// this looks so fucking stupid
+		if !actor_collision(x, y) {
+			scale_x = 1.2;
+			scale_y = 0.8;
+			_data.pusher.collidable = false;
+			return;
+		}
+		if !actor_collision(_data.target_x, _data.target_y) {
+			x = _data.target_x;
+			y = _data.target_y;
+			scale_x = 1.2;
+			scale_y = 0.8;
+			_data.pusher.collidable = false;
+			return;
+		}
+	}
+	
+	var _amount = 12;
+	
+	var _out = false;
+	
+	// todo: a particular edge case happens sometimes due to this not detecting diagonal escape positions
+	for (var i = 0; i < _amount * 2; i++) {
+		var _d = (i % 2 == 0 ? 1 : -1) * floor((i + 2) / 2);
+		if !actor_collision(x + _d, y) {
+			x += _d;
+			_out = true;
+			break;
+		}
+		if !actor_collision(x, y + _d) {
+			y += _d;
+			_out = true;
+			break;
+		}
+		if !actor_collision(_data.target_x + _d, _data.target_y) {
+			x = _data.target_x + _d;
+			y = _data.target_y;
+			_out = true;
+			break;
+		}
+		if !actor_collision(_data.target_x, _data.target_y + _d) {
+			x = _data.target_x;
+			y = _data.target_y + _d;
+			_out = true;
+			break;
+		}
+	}
+	
+	if _out {
+		if !_crouched && get_can_uncrouch() {
+			nat_crouch(false);
+		}
+		_data.pusher.collidable = false;
+		return;
+	}
+	
+	_data.pusher.collidable = false;
 	game_player_kill();
 };
 
@@ -1580,7 +1607,7 @@ riding = function(_solid) {
 		(state.is(state_ledge) && place_meeting(x + dir, y, _solid));
 };
 
-cam = function(_out) {
+cam = function(_cam) {
 	
 	if state.is(state_free) && onground {
 		cam_ground_x = x + dir * 64;
@@ -1598,9 +1625,11 @@ cam = function(_out) {
 		_y += -4;
 	}*/
 	
-	_out.x = lerp(cam_ground_x, _x, 1 - max(0, 1 - power(_dist / 64, 2)) * 0.0);
-	_out.y = lerp(cam_ground_y, _y, 1 - max(0, 1 - power(_dist / 128, 2)) * 0.8);
+	_x = lerp(cam_ground_x, _x, 1 - max(0, 1 - power(_dist / 64, 2)) * 0.0);
+	_y = lerp(cam_ground_y, _y, 1 - max(0, 1 - power(_dist / 128, 2)) * 0.8);
 	
+	var _ = _cam.constrain(_x, _y);
+	_cam.move(_.x, _.y);
 }
 
 outside = function() { return false; };

@@ -1,4 +1,7 @@
 
+#macro ASSERT if RELEASE {} else for (var __check__ = true;; { if !__check__ { throw $"assertion failed @ {_GMFILE_}:{_GMLINE_} :: found {__check__}"; } break; }) __check__ =
+
+
 /// moves `a` to `b` by `amount` without overshooting
 /// @arg {real} _a starting value
 /// @arg {real} _b ending value
@@ -45,6 +48,7 @@ function mod_euclidean(_value, _by) {
 
 /// @pure
 function map(_value, _start_low, _start_high, _target_low, _target_high) {
+	gml_pragma("forceinline");
     return ((_value - _start_low) / (_start_high - _start_low)) * (_target_high - _target_low) + _target_low;
 }
 
@@ -58,12 +62,14 @@ function map(_value, _start_low, _start_high, _target_low, _target_high) {
 /// @return {real}
 /// @pure
 function wave(_from, _to, _duration, _offset = 0, _time = global.time / 60) {
+	gml_pragma("forceinline");
 	var _a4 = (_from - _to) * 0.5;
 	return _to + _a4 + sin(((_time + _duration) / _duration + _offset) * (pi*2)) * _a4;
 }
 
 /// @pure
 function wrap(_value, _min, _max) {
+	gml_pragma("forceinline");
 	_value = floor(_value);
 	var _low = floor(min(_min, _max));
 	var _high = floor(max(_min, _max));
@@ -80,15 +86,18 @@ function chance(_percent) {
 
 /// @pure
 function parabola(_p1, _p2, _height, _off) {
-  return -(_height / power((_p1 - _p2) / 2, 2)) * (_off - _p1) * (_off - _p2)
+	gml_pragma("forceinline");
+	return -(_height / power((_p1 - _p2) / 2, 2)) * (_off - _p1) * (_off - _p2)
 }
 /// @pure
 function parabola_mid(_center, _size, _height, _off) {
-  return parabola(_center - _size, _center + _size, _height, _off)
+	gml_pragma("forceinline");
+	return parabola(_center - _size, _center + _size, _height, _off)
 }
 /// @pure
 function parabola_mid_edge(_center, _p, _height, _off) {
-  return parabola(_center - (_p - _center), _p, _height, _off)
+	gml_pragma("forceinline");
+	return parabola(_center - (_p - _center), _p, _height, _off)
 }
 
 /// smoothstep-style interpolation
@@ -102,6 +111,7 @@ function hermite(_t) {
 /// smoothstep
 /// @pure
 function herp(_a, _b, _t) {
+	gml_pragma("forceinline");
 	return lerp(_a, _b, hermite(_t));
 }
 
@@ -113,6 +123,8 @@ function struct_assign(_target, _assign) {
 	return _target;
 }
 
+/// @arg {id.DsList} _list
+/// @return Array<Any>
 function array_from_list(_list) {
 	var _array = array_create(ds_list_size(_list));
 	for (var i = 0; i < ds_list_size(_list); i++) {
@@ -121,11 +133,16 @@ function array_from_list(_list) {
 	return _array;
 }
 
+/// @arg {Real} _x
+/// @arg {Real} _y
+/// @arg {Any} _obj
+/// @arg {Bool} _ordered
+/// @return Array<Any>
 function instance_place_array(_x, _y, _obj, _ordered) {
-	var _list = ds_list_create();
-	instance_place_list(_x, _y, _obj, _list, _ordered);
+	static __list = ds_list_create();
+	ds_list_clear(__list);
+	instance_place_list(_x, _y, _obj, __list, _ordered);
 	var _array = array_from_list(_list);
-	ds_list_destroy(_list);
 	return _array;
 }
 
@@ -149,6 +166,7 @@ function hex_to_dec(_hex) {
 }
 
 function array_kick(_array, _index) {
+	gml_pragma("forceinline");
 	_array[_index] = _array[array_length(_array) - 1];
 	array_pop(_array);
 }
@@ -168,3 +186,123 @@ function array_ref_create(_array, _index) {
 		} else return _array[_index];
 	}
 }
+
+/// smooth min.
+/// finds the minimum between _a and _b, smoothed by _k.
+/// 
+/// returns 2 values. [0] is the minimum, and [1] is a number
+/// from 0-1 representing how much of _a or _b is in the minimum.
+/// array must be used before another call to smin().
+/// @arg {Real} _a
+/// @arg {Real} _b
+/// @arg {Real} _k
+/// @return Array<Real>
+function smin(_a, _b, _k) {
+	static __out = array_create(2);
+	
+	var _h = 1 - min(abs(_a - _b) / (6 * _k), 1);
+	var _w = power(_h, 3);
+	var _m = _w * 0.5;
+	var _s = _w * _k;
+	
+	if _a < _b {
+		__out[0] = _a - _s;
+		__out[1] = _m;
+		return __out;
+	} else {
+		__out[0] = _b - _s;
+		__out[1] = 1 - _m;
+		return __out;
+	}
+}
+
+/// hard min.
+/// finds the minimum between _a and _b
+/// 
+/// similar api to smin(), for utility.
+/// 
+/// @arg {Real} _a
+/// @arg {Real} _b
+/// 
+/// @return Array<Real>
+function hmin(_a, _b) {
+	static __out = array_create(2);
+	
+	if _a < _b {
+		__out[0] = _a;
+		__out[1] = 0;
+		return __out;
+	} else {
+		__out[0] = _b;
+		__out[1] = 1;
+		return __out;
+	}
+}
+
+/// rectangle sdf function.
+/// 
+/// @arg {Real} _px point x
+/// @arg {Real} _py point y
+/// @arg {Real} _rx0 rectangle left x
+/// @arg {Real} _ry0 rectangle upper y
+/// @arg {Real} _rx1 rectangle right x
+/// @arg {Real} _ry1 rectangle lower y
+/// 
+/// @return Real
+function sdf(_px, _py, _rx0, _ry0, _rx1, _ry1) {
+	var _dx = max(_rx0 - _px, _px - _rx1);
+	var _dy = max(_ry0 - _py, _py - _ry1);
+	var _dd = min(0.0, max(_dx, _dy));
+	return sqrt(power(max(0, _dx), 2) + power(max(0, _dy), 2)) + _dd;
+}
+
+function draw_sprite_tiled_area(_sprite, _subimg, _xx, _yy, _x1, _y1, _x2, _y2) {
+	draw_sprite_tiled_area_ext(_sprite, _subimg, _xx, _yy, _x1, _y1, _x2, _y2, c_white, 1);
+}
+
+// https://gmlscripts.com/script/draw_sprite_tiled_area
+function draw_sprite_tiled_area_ext(_sprite, _subimg, _xx, _yy, _x1, _y1, _x2, _y2, _colour, _alpha) {
+	
+	var _sw = sprite_get_width(_sprite);
+	var _sh = sprite_get_height(_sprite);
+
+	var i = _x1 - ((_x1 mod _sw) - (_xx mod _sw)) - _sw * +((_x1 mod _sw) < (_xx mod _sw));
+	var j = _y1 - ((_y1 mod _sh) - (_yy mod _sh)) - _sh * +((_y1 mod _sh) < (_yy mod _sh)); 
+	var jj = j;
+
+	for(; i <= _x2; i += _sw) {
+		for(; j <= _y2; j += _sh) {
+
+			var _left = 0;
+			if i <= _x1
+				_left = _x1 - i;
+			else
+				_left = 0;
+			var _x = i + _left;
+
+			var _top = 0;
+			if j <= _y1
+				_top = _y1 - j;
+			else
+				_top = 0;
+			var _y = j + _top;
+
+			var _width = 0;
+			if _x2 <= i + _sw
+				_width = ((_sw) - (i + _sw - _x2) + 1) - _left;
+			else
+				_width = _sw - _left;
+
+			var _height = 0;
+			if _y2 <= j + _sh
+				_height = ((_sh) - (j + _sh - _y2) + 1) - _top;
+			else
+				_height = _sh - _top;
+
+			draw_sprite_part_ext(_sprite, _subimg, _left, _top, _width, _height, _x, _y, 1, 1, _colour, _alpha);
+		}
+		j = jj;
+	}
+	
+}
+

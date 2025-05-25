@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_keyframes",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_keyframes",
+  "parent":{
+    "name":"util",
+    "path":"folders/game/util.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

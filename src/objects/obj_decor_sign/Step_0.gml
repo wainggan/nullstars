@@ -11,7 +11,7 @@ anim_off = lerp(anim_off, _off, 0.05)
 if _touching {
 	anim_open = approach(anim_open, 1, 0.08);
 	if anim_open == 1 {
-		anim_text = approach(anim_text, string_length(text), 8);
+		anim_text = approach(anim_text, string_length(global.strings[$ text]), 8);
 	}
 } else {
 	anim_text = approach(anim_text, 0, 12);

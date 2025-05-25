@@ -7,7 +7,7 @@ var _cam_x = camera_get_view_x(view_camera[0]),
 	_cam_h = camera_get_view_height(view_camera[0]);
 
 
-var _biome = game_level_get_biome(camera.x, camera.y);
+var _biome = game_level_get_biome(global.game.camera.x, global.game.camera.y);
 var _amparts = -1;
 switch _biome {
 	case "dust":
@@ -39,7 +39,7 @@ part_system_update(particles_layer);
 part_system_update(particles_water);
 
 
-var _lut = game_level_get_lut(camera.x, camera.y);
+var _lut = game_level_get_lut(global.game.camera.x, global.game.camera.y);
 
 if _lut {
 	lut_mode_grade.set(asset_get_index("spr_grade_" + _lut.grade));

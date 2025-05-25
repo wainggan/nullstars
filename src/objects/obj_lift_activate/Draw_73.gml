@@ -15,7 +15,7 @@ draw_sprite_stretched_ext(
 	#444455, 1
 );
 
-_pad = 5;
+_pad = 7;
 draw_sprite_stretched(
 	spr_debug_lift_activate_rail, 0,
 	x + _pad, y + _pad, sprite_width - _pad - _pad, sprite_height - _pad - _pad

@@ -1,5 +1,8 @@
 
-function Sod(f = 1, z = 1, r = 0) constructor {
+/// @arg {real} _f frequency
+/// @arg {real} _z bounce
+/// @arg {real} _r response
+function Sod(_f = 1, _z = 1, _r = 0) constructor {
 	self.k1 = 0;
 	self.k2 = 0;
 	self.k3 = 0;
@@ -11,63 +14,66 @@ function Sod(f = 1, z = 1, r = 0) constructor {
 	self.accurate = false;
 	self._crit = 0;
 	
-	self.set_weights(f, z, r);
+	self.set_weights(_f, _z, _r);
 	
-	static set_k = function(k1 = self.k1, k2 = self.k2, k3 = self.k3) {
-		self.k1 = k1;
-		self.k2 = k2;
-		self.k3 = k3;
+	static set_k = function(_k1 = self.k1, _k2 = self.k2, _k3 = self.k3) {
+		self.k1 = _k1;
+		self.k2 = _k2;
+		self.k3 = _k3;
 		self._crit = 
 		    self.accurate ? 0.8 * (sqrt(4 * self.k2 + power(self.k1, 2)) - self.k1) : undefined;
 		return self;
 	}
 	
-	static set_weights = function(f, z, r) {
-		self.k1 = z / (pi * f);
-		self.k2 = 1 / power(2 * pi * f, 2);
-		self.k3 = (r * z) / (2 * pi * f);
+	/// @arg {real} _f frequency
+	/// @arg {real} _z bounce
+	/// @arg {real} _r response
+	static set_weights = function(_f, _z, _r) {
+		self.k1 = _z / (pi * _f);
+		self.k2 = 1 / power(2 * pi * _f, 2);
+		self.k3 = (_r * _z) / (2 * pi * _f);
 		self._crit = 
 			self.accurate ? 0.8 * (sqrt(4 * self.k2 + power(self.k1, 2)) - self.k1) : undefined;
 		return self;
 	}
-	static set_accuracy = function(v = true) {
-		self.accurate = v;
+	static set_accuracy = function(_v = true) {
+		self.accurate = _v;
 		self._crit = 
 			self.accurate ? 0.8 * (sqrt(4 * self.k2 + power(self.k1, 2)) - self.k1) : undefined;
 		return self;
 	}
-	static set_value = function(value) {
-		self.value = value;
-		self._lastX = value;
+	static set_value = function(_value) {
+		self.value = _value;
+		self._lastX = _value;
 		self.value_vel = 0;
 		return self;
 	}
 	static get_value = function() {
 		return self.value;
 	}
-	static update = function(x, time = 1, x_vel = undefined) {
-		if time <= 0 return self.value;
+	static update = function(_x, _time = 1, _x_vel = undefined) {
+		if _time <= 0 return self.value;
 		
-		if (x_vel == undefined) {
-		    x_vel = (x - self._lastX) / time;
-		    self._lastX = x;
+		if (_x_vel == undefined) {
+		    _x_vel = (_x - self._lastX) / _time;
+		    self._lastX = _x;
 		}
 		if (self.accurate) {
-		    var iterations = ceil(time / self._crit);
-		    time = time / iterations;
+		    var iterations = ceil(_time / self._crit);
+		    _time = _time / iterations;
 		    for (var i = 0; i < iterations; i++) {
-			    self.value += self.value_vel * time;
+			    self.value += self.value_vel * _time;
 			    var value_accel = 
-					(x + self.k3 * x_vel - self.value - self.k1 * self.value_vel) / self.k2 ;
-				self.value_vel += time * value_accel;
+					(_x + self.k3 * _x_vel - self.value - self.k1 * self.value_vel) / self.k2 ;
+				self.value_vel += _time * value_accel;
 		    }
 		} else {
-		    self.value += self.value_vel * time;
+		    self.value += self.value_vel * _time;
 		    var newk2 = 
-				max(self.k2, 1.1 * (time * time / 4 + time * self.k1 / 2)) ;
+				max(self.k2, 1.1 * (_time * _time / 4 + _time * self.k1 / 2)) ;
 			var value_accel = 
-				(x + self.k3 * x_vel - self.value - self.k1 * self.value_vel) / newk2 ;
-		    self.value_vel += time * value_accel;
+				(_x + self.k3 * _x_vel - self.value - self.k1 * self.value_vel) / newk2 ;
+		    self.value_vel += _time * value_accel;
 		}
 		return self.value;
 	}

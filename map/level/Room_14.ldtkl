@@ -62,7 +62,7 @@
 			"autoLayerTiles": [],
 			"seed": 6059444,
 			"overrideTilesetUid": null,
-			"gridTiles": [],
+			"gridTiles": [{ "px": [4688,208], "src": [0,0], "f": 0, "t": 0, "d": [4713], "a": 1 }],
 			"entityInstances": []
 		},
 		{
@@ -88,7 +88,56 @@
 			"seed": 1523283,
 			"overrideTilesetUid": null,
 			"gridTiles": [],
-			"entityInstances": []
+			"entityInstances": [
+				{
+					"__identifier": "obj_camera_room",
+					"__grid": [213,2],
+					"__pivot": [0,0],
+					"__tags": [ "SIZE_TILE", "camera", "flag" ],
+					"__tile": { "tilesetUid": 8, "x": 288, "y": 256, "w": 16, "h": 16 },
+					"__smartColor": "#D77643",
+					"iid": "31a005a0-e920-11ef-a4bb-69db1e04d10d",
+					"width": 768,
+					"height": 480,
+					"defUid": 6,
+					"px": [3408,32],
+					"fieldInstances": [
+						{ "__identifier": "crop_x1", "__type": "Int", "__value": 0, "__tile": null, "defUid": 48, "realEditorValues": [] },
+						{ "__identifier": "crop_x2", "__type": "Int", "__value": 0, "__tile": null, "defUid": 52, "realEditorValues": [] },
+						{ "__identifier": "crop_y1", "__type": "Int", "__value": 0, "__tile": null, "defUid": 50, "realEditorValues": [] },
+						{ "__identifier": "crop_y2", "__type": "Int", "__value": 0, "__tile": null, "defUid": 51, "realEditorValues": [] },
+						{ "__identifier": "unlock_x", "__type": "Bool", "__value": true, "__tile": null, "defUid": 59, "realEditorValues": [] },
+						{ "__identifier": "unlock_y", "__type": "Bool", "__value": true, "__tile": null, "defUid": 60, "realEditorValues": [] },
+						{ "__identifier": "weight", "__type": "Float", "__value": 0.5, "__tile": null, "defUid": 617, "realEditorValues": [] }
+					],
+					"__worldX": 9472,
+					"__worldY": 64
+				},
+				{
+					"__identifier": "obj_camera_room",
+					"__grid": [261,2],
+					"__pivot": [0,0],
+					"__tags": [ "SIZE_TILE", "camera", "flag" ],
+					"__tile": { "tilesetUid": 8, "x": 288, "y": 256, "w": 16, "h": 16 },
+					"__smartColor": "#D77643",
+					"iid": "3b9045c0-e920-11ef-a4bb-13abc5622c5c",
+					"width": 752,
+					"height": 480,
+					"defUid": 6,
+					"px": [4176,32],
+					"fieldInstances": [
+						{ "__identifier": "crop_x1", "__type": "Int", "__value": 0, "__tile": null, "defUid": 48, "realEditorValues": [] },
+						{ "__identifier": "crop_x2", "__type": "Int", "__value": 0, "__tile": null, "defUid": 52, "realEditorValues": [] },
+						{ "__identifier": "crop_y1", "__type": "Int", "__value": 0, "__tile": null, "defUid": 50, "realEditorValues": [] },
+						{ "__identifier": "crop_y2", "__type": "Int", "__value": 0, "__tile": null, "defUid": 51, "realEditorValues": [] },
+						{ "__identifier": "unlock_x", "__type": "Bool", "__value": true, "__tile": null, "defUid": 59, "realEditorValues": [] },
+						{ "__identifier": "unlock_y", "__type": "Bool", "__value": true, "__tile": null, "defUid": 60, "realEditorValues": [] },
+						{ "__identifier": "weight", "__type": "Float", "__value": 0.5, "__tile": null, "defUid": 617, "realEditorValues": [] }
+					],
+					"__worldX": 10240,
+					"__worldY": 64
+				}
+			]
 		},
 		{
 			"__identifier": "Instances",
@@ -129,6 +178,282 @@
 					"fieldInstances": [],
 					"__worldX": 6656,
 					"__worldY": 112
+				},
+				{
+					"__identifier": "obj_lift_activate",
+					"__grid": [217,29],
+					"__pivot": [0,0],
+					"__tags": [ "object", "SIZE_TILE", "trigger", "glue_parent", "lift" ],
+					"__tile": null,
+					"__smartColor": "#6C7F7C",
+					"iid": "4868d8c0-e920-11ef-a4bb-fdce95239fcf",
+					"width": 144,
+					"height": 32,
+					"defUid": 16,
+					"px": [3472,464],
+					"fieldInstances": [
+						{ "__identifier": "target", "__type": "Point", "__value": { "cx": 217, "cy": 21 }, "__tile": null, "defUid": 17, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["217,21"]
+						}] },
+						{ "__identifier": "spd", "__type": "Float", "__value": 6, "__tile": null, "defUid": 18, "realEditorValues": [] },
+						{ "__identifier": "reliant", "__type": "Bool", "__value": false, "__tile": null, "defUid": 203, "realEditorValues": [] }
+					],
+					"__worldX": 9536,
+					"__worldY": 496
+				},
+				{
+					"__identifier": "obj_lift_activate",
+					"__grid": [228,7],
+					"__pivot": [0,0],
+					"__tags": [ "object", "SIZE_TILE", "trigger", "glue_parent", "lift" ],
+					"__tile": null,
+					"__smartColor": "#6C7F7C",
+					"iid": "50b0e720-e920-11ef-a4bb-7be50520e97e",
+					"width": 32,
+					"height": 128,
+					"defUid": 16,
+					"px": [3648,112],
+					"fieldInstances": [
+						{ "__identifier": "target", "__type": "Point", "__value": { "cx": 243, "cy": 10 }, "__tile": null, "defUid": 17, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["243,10"]
+						}] },
+						{ "__identifier": "spd", "__type": "Float", "__value": 6, "__tile": null, "defUid": 18, "realEditorValues": [] },
+						{ "__identifier": "reliant", "__type": "Bool", "__value": false, "__tile": null, "defUid": 203, "realEditorValues": [] }
+					],
+					"__worldX": 9712,
+					"__worldY": 144
+				},
+				{
+					"__identifier": "obj_lift_attack",
+					"__grid": [247,15],
+					"__pivot": [0,0],
+					"__tags": [ "lift", "object", "SIZE_TILE", "trigger", "glue_parent" ],
+					"__tile": null,
+					"__smartColor": "#B55088",
+					"iid": "5c986360-e920-11ef-a4bb-05c2883b5f51",
+					"width": 96,
+					"height": 64,
+					"defUid": 267,
+					"px": [3952,240],
+					"fieldInstances": [
+						{ "__identifier": "dir", "__type": "LocalEnum.Direction_4", "__value": "down", "__tile": null, "defUid": 268, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["down"]
+						}] },
+						{ "__identifier": "spd", "__type": "Float", "__value": 6, "__tile": null, "defUid": 269, "realEditorValues": [] },
+						{ "__identifier": "reliant", "__type": "Bool", "__value": false, "__tile": null, "defUid": 270, "realEditorValues": [] }
+					],
+					"__worldX": 10016,
+					"__worldY": 272
+				},
+				{
+					"__identifier": "obj_lift_attack",
+					"__grid": [268,22],
+					"__pivot": [0,0],
+					"__tags": [ "lift", "object", "SIZE_TILE", "trigger", "glue_parent" ],
+					"__tile": null,
+					"__smartColor": "#B55088",
+					"iid": "78f373b0-e920-11ef-a4bb-1774e88f3122",
+					"width": 16,
+					"height": 16,
+					"defUid": 267,
+					"px": [4288,352],
+					"fieldInstances": [
+						{ "__identifier": "dir", "__type": "LocalEnum.Direction_4", "__value": "down", "__tile": null, "defUid": 268, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["down"]
+						}] },
+						{ "__identifier": "spd", "__type": "Float", "__value": 6, "__tile": null, "defUid": 269, "realEditorValues": [] },
+						{ "__identifier": "reliant", "__type": "Bool", "__value": false, "__tile": null, "defUid": 270, "realEditorValues": [] }
+					],
+					"__worldX": 10352,
+					"__worldY": 384
+				},
+				{
+					"__identifier": "obj_lift_attack",
+					"__grid": [271,18],
+					"__pivot": [0,0],
+					"__tags": [ "lift", "object", "SIZE_TILE", "trigger", "glue_parent" ],
+					"__tile": null,
+					"__smartColor": "#B55088",
+					"iid": "7c1489d0-e920-11ef-a4bb-9f4a3df55082",
+					"width": 16,
+					"height": 80,
+					"defUid": 267,
+					"px": [4336,288],
+					"fieldInstances": [
+						{ "__identifier": "dir", "__type": "LocalEnum.Direction_4", "__value": "down", "__tile": null, "defUid": 268, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["down"]
+						}] },
+						{ "__identifier": "spd", "__type": "Float", "__value": 6, "__tile": null, "defUid": 269, "realEditorValues": [] },
+						{ "__identifier": "reliant", "__type": "Bool", "__value": false, "__tile": null, "defUid": 270, "realEditorValues": [] }
+					],
+					"__worldX": 10400,
+					"__worldY": 320
+				},
+				{
+					"__identifier": "obj_lift_attack",
+					"__grid": [274,20],
+					"__pivot": [0,0],
+					"__tags": [ "lift", "object", "SIZE_TILE", "trigger", "glue_parent" ],
+					"__tile": null,
+					"__smartColor": "#B55088",
+					"iid": "7eecfe30-e920-11ef-a4bb-3bb8d4ca9b6c",
+					"width": 80,
+					"height": 16,
+					"defUid": 267,
+					"px": [4384,320],
+					"fieldInstances": [
+						{ "__identifier": "dir", "__type": "LocalEnum.Direction_4", "__value": "down", "__tile": null, "defUid": 268, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["down"]
+						}] },
+						{ "__identifier": "spd", "__type": "Float", "__value": 6, "__tile": null, "defUid": 269, "realEditorValues": [] },
+						{ "__identifier": "reliant", "__type": "Bool", "__value": false, "__tile": null, "defUid": 270, "realEditorValues": [] }
+					],
+					"__worldX": 10448,
+					"__worldY": 352
+				},
+				{
+					"__identifier": "obj_lift_attack",
+					"__grid": [267,9],
+					"__pivot": [0,0],
+					"__tags": [ "lift", "object", "SIZE_TILE", "trigger", "glue_parent" ],
+					"__tile": null,
+					"__smartColor": "#B55088",
+					"iid": "822dd150-e920-11ef-a4bb-97ab52176a96",
+					"width": 64,
+					"height": 64,
+					"defUid": 267,
+					"px": [4272,144],
+					"fieldInstances": [
+						{ "__identifier": "dir", "__type": "LocalEnum.Direction_4", "__value": "down", "__tile": null, "defUid": 268, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["down"]
+						}] },
+						{ "__identifier": "spd", "__type": "Float", "__value": 6, "__tile": null, "defUid": 269, "realEditorValues": [] },
+						{ "__identifier": "reliant", "__type": "Bool", "__value": false, "__tile": null, "defUid": 270, "realEditorValues": [] }
+					],
+					"__worldX": 10336,
+					"__worldY": 176
+				},
+				{
+					"__identifier": "obj_lift_attack",
+					"__grid": [273,9],
+					"__pivot": [0,0],
+					"__tags": [ "lift", "object", "SIZE_TILE", "trigger", "glue_parent" ],
+					"__tile": null,
+					"__smartColor": "#B55088",
+					"iid": "86317f40-e920-11ef-a4bb-f735dc7a26cc",
+					"width": 64,
+					"height": 64,
+					"defUid": 267,
+					"px": [4368,144],
+					"fieldInstances": [
+						{ "__identifier": "dir", "__type": "LocalEnum.Direction_4", "__value": "right", "__tile": null, "defUid": 268, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["right"]
+						}] },
+						{ "__identifier": "spd", "__type": "Float", "__value": 6, "__tile": null, "defUid": 269, "realEditorValues": [] },
+						{ "__identifier": "reliant", "__type": "Bool", "__value": false, "__tile": null, "defUid": 270, "realEditorValues": [] }
+					],
+					"__worldX": 10432,
+					"__worldY": 176
+				},
+				{
+					"__identifier": "obj_lift_activate",
+					"__grid": [286,22],
+					"__pivot": [0,0],
+					"__tags": [ "object", "SIZE_TILE", "trigger", "glue_parent", "lift" ],
+					"__tile": null,
+					"__smartColor": "#6C7F7C",
+					"iid": "91228d90-e920-11ef-a4bb-13f35b0fc597",
+					"width": 16,
+					"height": 16,
+					"defUid": 16,
+					"px": [4576,352],
+					"fieldInstances": [
+						{ "__identifier": "target", "__type": "Point", "__value": { "cx": 286, "cy": 15 }, "__tile": null, "defUid": 17, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["286,15"]
+						}] },
+						{ "__identifier": "spd", "__type": "Float", "__value": 6, "__tile": null, "defUid": 18, "realEditorValues": [] },
+						{ "__identifier": "reliant", "__type": "Bool", "__value": false, "__tile": null, "defUid": 203, "realEditorValues": [] }
+					],
+					"__worldX": 10640,
+					"__worldY": 384
+				},
+				{
+					"__identifier": "obj_lift_activate",
+					"__grid": [289,18],
+					"__pivot": [0,0],
+					"__tags": [ "object", "SIZE_TILE", "trigger", "glue_parent", "lift" ],
+					"__tile": null,
+					"__smartColor": "#6C7F7C",
+					"iid": "97ab38b0-e920-11ef-a4bb-9fd8966bcc05",
+					"width": 16,
+					"height": 80,
+					"defUid": 16,
+					"px": [4624,288],
+					"fieldInstances": [
+						{ "__identifier": "target", "__type": "Point", "__value": { "cx": 289, "cy": 15 }, "__tile": null, "defUid": 17, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["289,15"]
+						}] },
+						{ "__identifier": "spd", "__type": "Float", "__value": 6, "__tile": null, "defUid": 18, "realEditorValues": [] },
+						{ "__identifier": "reliant", "__type": "Bool", "__value": false, "__tile": null, "defUid": 203, "realEditorValues": [] }
+					],
+					"__worldX": 10688,
+					"__worldY": 320
+				},
+				{
+					"__identifier": "obj_lift_activate",
+					"__grid": [292,19],
+					"__pivot": [0,0],
+					"__tags": [ "object", "SIZE_TILE", "trigger", "glue_parent", "lift" ],
+					"__tile": null,
+					"__smartColor": "#6C7F7C",
+					"iid": "9d830a60-e920-11ef-a4bb-ff8c9df58170",
+					"width": 80,
+					"height": 16,
+					"defUid": 16,
+					"px": [4672,304],
+					"fieldInstances": [
+						{ "__identifier": "target", "__type": "Point", "__value": { "cx": 292, "cy": 15 }, "__tile": null, "defUid": 17, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["292,15"]
+						}] },
+						{ "__identifier": "spd", "__type": "Float", "__value": 6, "__tile": null, "defUid": 18, "realEditorValues": [] },
+						{ "__identifier": "reliant", "__type": "Bool", "__value": false, "__tile": null, "defUid": 203, "realEditorValues": [] }
+					],
+					"__worldX": 10736,
+					"__worldY": 336
+				},
+				{
+					"__identifier": "obj_lift_activate",
+					"__grid": [283,9],
+					"__pivot": [0,0],
+					"__tags": [ "object", "SIZE_TILE", "trigger", "glue_parent", "lift" ],
+					"__tile": null,
+					"__smartColor": "#6C7F7C",
+					"iid": "a1da7da0-e920-11ef-a4bb-ebe25ce954a9",
+					"width": 64,
+					"height": 64,
+					"defUid": 16,
+					"px": [4528,144],
+					"fieldInstances": [
+						{ "__identifier": "target", "__type": "Point", "__value": { "cx": 293, "cy": 9 }, "__tile": null, "defUid": 17, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["293,9"]
+						}] },
+						{ "__identifier": "spd", "__type": "Float", "__value": 6, "__tile": null, "defUid": 18, "realEditorValues": [] },
+						{ "__identifier": "reliant", "__type": "Bool", "__value": false, "__tile": null, "defUid": 203, "realEditorValues": [] }
+					],
+					"__worldX": 10592,
+					"__worldY": 176
 				}
 			]
 		},

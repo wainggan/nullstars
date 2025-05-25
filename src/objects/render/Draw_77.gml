@@ -18,12 +18,14 @@ if global.config.graphics_post_outline {
 	
 	gpu_set_blendmode(bm_subtract);
 		for (var i = 0; i < array_length(_lvl_onscreen); i++) {
-			var _lvl = _lvl_onscreen[i]
-			draw_tilemap(
-				_lvl.tiles_back_glass, 
-				tilemap_get_x(_lvl.tiles_back_glass) - _cam_x,
-				tilemap_get_y(_lvl.tiles_back_glass) - _cam_y
-			);
+			var _lvl = _lvl_onscreen[i];
+			if _lvl.tiles_back_glass != -1 {
+				draw_tilemap(
+					_lvl.tiles_back_glass, 
+					tilemap_get_x(_lvl.tiles_back_glass) - _cam_x,
+					tilemap_get_y(_lvl.tiles_back_glass) - _cam_y
+				);
+			}
 		}
 	gpu_set_blendmode(bm_normal);
 	

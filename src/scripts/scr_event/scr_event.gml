@@ -16,6 +16,13 @@ function Event() constructor {
 		return self;
 	}
 	
+	/// checks if a callback has been implemented
+	/// @arg {string} _name
+	/// @return bool
+	static has = function(_name) {
+		return events[$ _name] != undefined;
+	}
+	
 	/// runs a callback
 	/// @arg {string} _name
 	/// @arg {any} _arg0
@@ -30,7 +37,7 @@ function Event() constructor {
 			_arg2 = undefined,
 			_arg3 = undefined,
 			) {
-		if events[$ _name] != undefined {
+		if has(_name) {
 			events[$ _name](_arg0, _arg1, _arg2, _arg3);
 		}
 	}

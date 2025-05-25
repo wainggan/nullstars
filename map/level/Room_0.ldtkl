@@ -114,7 +114,7 @@
 						{ "__identifier": "crop_y2", "__type": "Int", "__value": 0, "__tile": null, "defUid": 51, "realEditorValues": [] },
 						{ "__identifier": "unlock_x", "__type": "Bool", "__value": true, "__tile": null, "defUid": 59, "realEditorValues": [null] },
 						{ "__identifier": "unlock_y", "__type": "Bool", "__value": true, "__tile": null, "defUid": 60, "realEditorValues": [null] },
-						{ "__identifier": "priority", "__type": "Int", "__value": 0, "__tile": null, "defUid": 477, "realEditorValues": [] }
+						{ "__identifier": "weight", "__type": "Float", "__value": 0.5, "__tile": null, "defUid": 617, "realEditorValues": [] }
 					],
 					"__worldX": 464,
 					"__worldY": 16
@@ -176,7 +176,7 @@
 						{ "__identifier": "crop_y2", "__type": "Int", "__value": 0, "__tile": null, "defUid": 51, "realEditorValues": [] },
 						{ "__identifier": "unlock_x", "__type": "Bool", "__value": true, "__tile": null, "defUid": 59, "realEditorValues": [] },
 						{ "__identifier": "unlock_y", "__type": "Bool", "__value": true, "__tile": null, "defUid": 60, "realEditorValues": [] },
-						{ "__identifier": "priority", "__type": "Int", "__value": 0, "__tile": null, "defUid": 477, "realEditorValues": [] }
+						{ "__identifier": "weight", "__type": "Float", "__value": 0.5, "__tile": null, "defUid": 617, "realEditorValues": [] }
 					],
 					"__worldX": 16,
 					"__worldY": 16
@@ -200,7 +200,7 @@
 						{ "__identifier": "crop_y2", "__type": "Int", "__value": 0, "__tile": null, "defUid": 51, "realEditorValues": [null] },
 						{ "__identifier": "unlock_x", "__type": "Bool", "__value": true, "__tile": null, "defUid": 59, "realEditorValues": [null] },
 						{ "__identifier": "unlock_y", "__type": "Bool", "__value": true, "__tile": null, "defUid": 60, "realEditorValues": [null] },
-						{ "__identifier": "priority", "__type": "Int", "__value": 0, "__tile": null, "defUid": 477, "realEditorValues": [] }
+						{ "__identifier": "weight", "__type": "Float", "__value": 0.5, "__tile": null, "defUid": 617, "realEditorValues": [] }
 					],
 					"__worldX": 560,
 					"__worldY": 560
@@ -278,7 +278,7 @@
 						{ "__identifier": "crop_y2", "__type": "Int", "__value": 0, "__tile": null, "defUid": 51, "realEditorValues": [] },
 						{ "__identifier": "unlock_x", "__type": "Bool", "__value": true, "__tile": null, "defUid": 59, "realEditorValues": [] },
 						{ "__identifier": "unlock_y", "__type": "Bool", "__value": true, "__tile": null, "defUid": 60, "realEditorValues": [] },
-						{ "__identifier": "priority", "__type": "Int", "__value": 0, "__tile": null, "defUid": 477, "realEditorValues": [] }
+						{ "__identifier": "weight", "__type": "Float", "__value": 0.5, "__tile": null, "defUid": 617, "realEditorValues": [] }
 					],
 					"__worldX": 1296,
 					"__worldY": 832
@@ -423,11 +423,9 @@
 					"defUid": 265,
 					"px": [1312,912],
 					"fieldInstances": [
-						{ "__identifier": "text", "__type": "String", "__value": "-- crystals\n* it is said that their glow will bring the end of times. \n* time has already ended. this legend is meaningless.", "__tile": null, "defUid": 266, "realEditorValues": [{
+						{ "__identifier": "text", "__type": "String", "__value": "game-tablet-0", "__tile": null, "defUid": 266, "realEditorValues": [{
 							"id": "V_String",
-							"params": [
-								"-- crystals\n* it is said that their glow will bring the end of times. \n* time has already ended. this legend is meaningless."
-							]
+							"params": ["game-tablet-0"]
 						}] },
 						{ "__identifier": "color", "__type": "Color", "__value": "#FFFFFF", "__tile": null, "defUid": 602, "realEditorValues": [] }
 					],
@@ -447,9 +445,9 @@
 					"defUid": 265,
 					"px": [208,464],
 					"fieldInstances": [
-						{ "__identifier": "text", "__type": "String", "__value": "<-- exit\n\nsorry you didn't enjoy what was here. you may leave.", "__tile": null, "defUid": 266, "realEditorValues": [{
+						{ "__identifier": "text", "__type": "String", "__value": "game-tablet-2", "__tile": null, "defUid": 266, "realEditorValues": [{
 							"id": "V_String",
-							"params": ["<-- exit\n\nsorry you didn't enjoy what was here. you may leave."]
+							"params": ["game-tablet-2"]
 						}] },
 						{ "__identifier": "color", "__type": "Color", "__value": "#FFFFFF", "__tile": null, "defUid": 602, "realEditorValues": [] }
 					],
@@ -457,20 +455,23 @@
 					"__worldY": 464
 				},
 				{
-					"__identifier": "obj_player",
-					"__grid": [34,30],
-					"__pivot": [0.5,1],
-					"__tags": [],
-					"__tile": { "tilesetUid": 8, "x": 384, "y": 176, "w": 16, "h": 16 },
-					"__smartColor": "#EAD4AA",
-					"iid": "ea488d30-73f0-11ef-9991-336a9f74e15a",
+					"__identifier": "obj_decor_showbutton",
+					"__grid": [77,57],
+					"__pivot": [0.5,0.5],
+					"__tags": ["decor"],
+					"__tile": null,
+					"__smartColor": "#8B9BB4",
+					"iid": "f18e0480-9b00-11ef-b45a-1348383d2da2",
 					"width": 16,
 					"height": 16,
-					"defUid": 11,
-					"px": [552,496],
-					"fieldInstances": [],
-					"__worldX": 552,
-					"__worldY": 496
+					"defUid": 192,
+					"px": [1240,920],
+					"fieldInstances": [{ "__identifier": "button", "__type": "LocalEnum.Control", "__value": "grab", "__tile": null, "defUid": 193, "realEditorValues": [{
+						"id": "V_String",
+						"params": ["grab"]
+					}] }],
+					"__worldX": 1240,
+					"__worldY": 920
 				}
 			]
 		},

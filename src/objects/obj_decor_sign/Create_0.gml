@@ -20,7 +20,7 @@ text_pad = 10;
 width = 164;
 
 draw_set_font(ft_sign)
-height = string_height_ext(text, text_pad, width - pad_x * 2) + pad_y * 2;
+height = string_height_ext(global.strings[$ text], text_pad, width - pad_x * 2) + pad_y * 2;
 
 anim_x = x
 anim_y = y

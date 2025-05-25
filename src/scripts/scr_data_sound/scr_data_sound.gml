@@ -27,6 +27,6 @@ function data_sound_add(_asset = "", _priority = 0, _gain = 1) {
 data_sound_add(nameof(sfx_pop_0), 10, 0.4);
 data_sound_add(nameof(sfx_pop_1), 10, 0.4);
 data_sound_add(nameof(sfx_pop_2), 8, 0.4);
-data_sound_add(nameof(sfx_dash), 10, 0.8);
-data_sound_add(nameof(sfx_death), 0, 1);
+data_sound_add(nameof(sfx_dash), 10, 0.6);
+data_sound_add(nameof(sfx_death), 0, 0.8);
 

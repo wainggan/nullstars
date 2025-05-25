@@ -5,7 +5,13 @@
 gml_release_mode(RELEASE);
 
 global.defs = {
-	terminal_vel: 5
+	// global terminal velocity
+	terminal_vel: 5,
+	// speed of lifts when returning back to normal positions
+	lift_spd_return: 2,
+	// how long lifts get stunned after reaching their final position in frames
+	// note: this effects how long momentum retention is as well
+	lift_stun_time: 10,
 }
 
 global.config = {
@@ -30,11 +36,22 @@ global.config = {
 
 #macro TILESIZE 16
 
+#macro ENABLE_LOG true
+
 #macro GAME_BUBBLE_PARITY 8
 
 #macro GAME_RENDER_LIGHT_SIZE 2048
 #macro GAME_RENDER_LIGHT_KERNEL 256
 
-#macro GAME_LOAD_RADIUS_FILE 1024
-#macro GAME_LOAD_RADIUS_ENTITY 64
+// amount of time loader may spend working during a frame in ms
+#macro GAME_LOAD_BUDGET_TIME 2
+// amount of jobs loader may complete in one frame
+#macro GAME_LOAD_BUDGET_COUNT 6
+
+#macro GAME_LOAD_RADIUS_FILE 512
+#macro GAME_LOAD_RADIUS_ENTITY 128
+// how long it takes to unload the entities of a level
+#macro GAME_LOAD_TIME_FILE 180
+// how long it takes to unload level data
+#macro GAME_LOAD_TIME_PREP 240
 

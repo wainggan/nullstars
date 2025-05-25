@@ -117,7 +117,7 @@
 						{ "__identifier": "crop_y2", "__type": "Int", "__value": 0, "__tile": null, "defUid": 51, "realEditorValues": [] },
 						{ "__identifier": "unlock_x", "__type": "Bool", "__value": true, "__tile": null, "defUid": 59, "realEditorValues": [null] },
 						{ "__identifier": "unlock_y", "__type": "Bool", "__value": true, "__tile": null, "defUid": 60, "realEditorValues": [null] },
-						{ "__identifier": "priority", "__type": "Int", "__value": 0, "__tile": null, "defUid": 477, "realEditorValues": [] }
+						{ "__identifier": "weight", "__type": "Float", "__value": 0.5, "__tile": null, "defUid": 617, "realEditorValues": [] }
 					],
 					"__worldX": 12560,
 					"__worldY": 6768
@@ -163,7 +163,7 @@
 							"params": [ false ]
 						}] },
 						{ "__identifier": "unlock_y", "__type": "Bool", "__value": true, "__tile": null, "defUid": 60, "realEditorValues": [null] },
-						{ "__identifier": "priority", "__type": "Int", "__value": 0, "__tile": null, "defUid": 477, "realEditorValues": [] }
+						{ "__identifier": "weight", "__type": "Float", "__value": 0.5, "__tile": null, "defUid": 617, "realEditorValues": [] }
 					],
 					"__worldX": 12656,
 					"__worldY": 7312
@@ -222,7 +222,7 @@
 						{ "__identifier": "crop_y2", "__type": "Int", "__value": 0, "__tile": null, "defUid": 51, "realEditorValues": [] },
 						{ "__identifier": "unlock_x", "__type": "Bool", "__value": true, "__tile": null, "defUid": 59, "realEditorValues": [] },
 						{ "__identifier": "unlock_y", "__type": "Bool", "__value": true, "__tile": null, "defUid": 60, "realEditorValues": [] },
-						{ "__identifier": "priority", "__type": "Int", "__value": 0, "__tile": null, "defUid": 477, "realEditorValues": [] }
+						{ "__identifier": "weight", "__type": "Float", "__value": 0.5, "__tile": null, "defUid": 617, "realEditorValues": [] }
 					],
 					"__worldX": 13392,
 					"__worldY": 7584

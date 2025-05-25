@@ -33,7 +33,13 @@ function actor_lift_update() {
 }
 
 
-function actor_move_x(_amount, _callback = undefined) {
+function actor_move_x(_amount, _callback = undefined, _pusher = noone) {
+	
+	static __data = {
+		target_x: 0,
+		target_y: 0,
+		pusher: noone,
+	};
 	
 	x_rem += _amount;
 	
@@ -48,8 +54,12 @@ function actor_move_x(_amount, _callback = undefined) {
 				x += _sign;
 				_move -= _sign;
 			} else {
-				if _callback != undefined
-					_callback();
+				if _callback != undefined {
+					__data.pusher = _pusher;
+					__data.target_x = x + _sign;
+					__data.target_y = y;
+					_callback(__data);
+				}
 				break;
 			}
 		}
@@ -59,7 +69,13 @@ function actor_move_x(_amount, _callback = undefined) {
 }
 
 
-function actor_move_y(_amount, _callback = undefined) {
+function actor_move_y(_amount, _callback = undefined, _pusher = noone) {
+	
+	static __data = {
+		target_x: 0,
+		target_y: 0,
+		pusher: noone,
+	};
 	
 	y_rem += _amount;
 	
@@ -74,8 +90,12 @@ function actor_move_y(_amount, _callback = undefined) {
 				y += _sign;
 				_move -= _sign;
 			} else {
-				if _callback != undefined
-					_callback();
+				if _callback != undefined {
+					__data.pusher = _pusher;
+					__data.target_x = x;
+					__data.target_y = y + _sign;
+					_callback(__data);
+				}
 				break;
 			}
 		}
@@ -86,10 +106,10 @@ function actor_move_y(_amount, _callback = undefined) {
 
 function actor_collision(_x, _y) {
 	
-	static __list = ds_list_create()
+	static __list = ds_list_create();
 	
-	for (var i = 0; i < array_length(level.loaded); i++) {
-		if place_meeting(_x, _y, level.loaded[i].tiles) return true;
+	for (var i = 0; i < array_length(global.game.level.loaded); i++) {
+		if place_meeting(_x, _y, global.game.level.loaded[i].data.tiles) return true;
 	}
 	
 	ds_list_clear(__list)
