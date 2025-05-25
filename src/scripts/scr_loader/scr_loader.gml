@@ -224,7 +224,7 @@ function Loader() constructor {
 	static update = function () {
 		var _cam = game_camera_get();
 		
-		for (var i = 0; i < array_length(levels); i++) {
+		for (var i = 0, _len = array_length(levels); i < _len; i++) {
 			var _level = levels[i];
 			
 			if util_check_level_zone_load(_cam, _level) {
