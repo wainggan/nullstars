@@ -957,8 +957,10 @@ function Level(_id, _x, _y, _width, _height) constructor {
 			vertex_delete_buffer(shadow_vb);
 		}
 		
-		layer_destroy(layer);
-		layer_tilemap_destroy(tiles);
+		if layer != -1 {
+			layer_destroy(layer);
+			layer_tilemap_destroy(tiles);
+		}
 		
 		if vb_front != -1 {
 			vertex_delete_buffer(vb_front);
@@ -967,23 +969,35 @@ function Level(_id, _x, _y, _width, _height) constructor {
 			vertex_delete_buffer(vb_tiles_below);
 		}
 		
-		layer_destroy(layer_back);
-		layer_tilemap_destroy(tiles_back);
+		if layer_back != -1 {
+			layer_destroy(layer_back);
+			layer_tilemap_destroy(tiles_back);
+		}
 		
-		layer_destroy(layer_back_glass);
-		layer_tilemap_destroy(tiles_back_glass);
+		if layer_back_glass != -1 {
+			layer_destroy(layer_back_glass);
+			layer_tilemap_destroy(tiles_back_glass);
+		}
 		
-		layer_destroy(layer_tiles_above);
-		layer_tilemap_destroy(tiles_tiles_above);
+		if layer_tiles_above != -1 {
+			layer_destroy(layer_tiles_above);
+			layer_tilemap_destroy(tiles_tiles_above);
+		}
 		
-		layer_destroy(layer_decor);
-		layer_tilemap_destroy(tiles_decor);
+		if layer_decor != -1 {
+			layer_destroy(layer_decor);
+			layer_tilemap_destroy(tiles_decor);
+		}
 		
-		layer_destroy(layer_decor_under);
-		layer_tilemap_destroy(tiles_decor_under);
+		if layer_decor_under != -1 {
+			layer_destroy(layer_decor_under);
+			layer_tilemap_destroy(tiles_decor_under);
+		}
 		
-		layer_destroy(layer_spike);
-		layer_tilemap_destroy(tiles_spike);
+		if layer_spike != -1 {
+			layer_destroy(layer_spike);
+			layer_tilemap_destroy(tiles_spike);
+		}
 	}
 	
 	
