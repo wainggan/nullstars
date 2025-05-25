@@ -128,8 +128,8 @@ function MenuPageList(_width = 200) : MenuPage() constructor {
 					_x + _width - 8 + 4 + _pad_x,
 					_y + 8 + _pad_y,
 					list[current].description,
-					-1, (_width_t - 8 - 8 - 4) / _scale,
-					_scale, _scale, 0,
+					-1, (_width_t - 8 - 8) / _scale - _pad_x,
+					_scale, _scale, 0
 				);
 			}
 		}
@@ -149,7 +149,7 @@ function MenuPageList(_width = 200) : MenuPage() constructor {
 					_x + _pad_x,
 					_y + _pad_y + j * _option_pad,
 					">",
-					_scale, _scale, 0,
+					_scale, _scale, 0
 				);
 			_e.draw(
 				_x + _pad_x + 12 * _scale,
@@ -215,9 +215,8 @@ function MenuPageMap() : MenuPage() constructor {
 			game_set_pause(2)
 		
 			game_checkpoint_set(_c.index);
-		
-			instance_create_layer(obj_player.x, obj_player.y, "Instances", obj_player_death);
-			instance_destroy(obj_player);
+			
+			global.game.add_timeline(new Timeline().add(new KeyframeRespawn()));
 		
 			return;
 		}
@@ -252,8 +251,8 @@ function MenuPageMap() : MenuPage() constructor {
 		
 		var _pad = 16 * 8;
 		
-		for (var i = 0; i < array_length(level.levels); i++) {
-			var _lvl = level.levels[i];
+		for (var i = 0; i < array_length(global.game.level.levels); i++) {
+			var _lvl = global.game.level.levels[i];
 			var _c_x = (_lvl.x - _pad - _cam_x) * cam_scale;
 			var _c_y = (_lvl.y - _pad - _cam_y) * cam_scale;
 			var _c_w = (_lvl.width + _pad * 2) * cam_scale;
@@ -261,17 +260,20 @@ function MenuPageMap() : MenuPage() constructor {
 			
 			var _col = #666666;
 			
-			switch game_level_grab_data(_lvl).area {
-				case "hub":
-					_col = #777788;
-					break;
-				case "area0":
-					_col = #009999;
-					break;
-				case "area1":
-					_col = #996699;
-					break;
-			}
+			// @todo: currently, the Loader() level data struct
+			// does not keep track of any fields, which makes this
+			// invalid. make this work pls
+			//switch game_level_grab_data(_lvl).area {
+				//case "hub":
+					//_col = #777788;
+					//break;
+				//case "area0":
+					//_col = #009999;
+					//break;
+				//case "area1":
+					//_col = #996699;
+					//break;
+			//}
 			
 			draw_sprite_ext(
 				spr_pixel, 0,
@@ -295,7 +297,7 @@ function MenuPageMap() : MenuPage() constructor {
 				HEIGHT / 2 + 0 + _c_y,
 				tween(Tween.Circ, other.anim),
 				tween(Tween.Circ, other.anim),
-				0, c_white, 1,
+				0, c_white, 1
 			);
 		}
 	

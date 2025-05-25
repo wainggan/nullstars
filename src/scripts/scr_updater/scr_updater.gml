@@ -8,13 +8,17 @@ function Variable(_default) {
 	static start = function() {
 		value = def;
 		priority = 0;
-	}
+	};
+	
+	static set = function(_priority, _value) {
+		if priority >= _priority return;
+		priority = _priority;
+		value = _value;
+	};
 	
 	static edit = function(_priority, _callback) {
-		if priority < _priority return;
-		priority = _priority;
-		value = _callback(value);
-	}
+		self.set(_priority, _callback(value));
+	};
 	
 }
 

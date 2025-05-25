@@ -46,6 +46,7 @@ function string_mask(_mask) {
 	return string_repeat("0", abs(string_length(_str) - 31)) + _str
 }
 
+/// @arg {string} _uid
 function level_get_instance(_uid) {
 	return global.entities[$ _uid];
 }
@@ -92,15 +93,18 @@ function level_ldtk_field(_field, _x = 0, _y = 0) {
 	if string_starts_with(_field.__type, "Array") {
 		static __cut = ["Array<", ">"];
 		var _innertype = string_trim(_field.__type, __cut);
-		var _arr = [];
-		for (var i = 0; i < array_length(_field.__value); i++) {
+		
+		var _arr = array_create(array_length(_field.__value));
+		
+		for (var i = 0; i < array_length(_arr); i++) {
 			var _item_arr = level_ldtk_field_item(_field.__value[i], _innertype);
 			if _innertype == "Point" {
 				_item_arr.x += _x;
 				_item_arr.y += _y;
 			}
-			array_push(_arr, _item_arr);
+			_arr[i] = _item_arr;
 		}
+		
 		_item = _arr;
 	}
 	return _item;
@@ -278,6 +282,8 @@ function level_unpack_bin_field_value(_buffer) {
 }
 
 function level_unpack_bin_room(_buffer) {
+	buffer_seek(_buffer, buffer_seek_start, 0);
+	
 	var _header = level_unpack_bin_room_header(_buffer);
 	var _content = level_unpack_bin_room_content(_buffer);
 	
@@ -353,6 +359,7 @@ function level_unpack_bin_toc(_buffer) {
 }
 
 function level_unpack_bin_main(_buffer) {
+	buffer_seek(_buffer, buffer_seek_start, 0);
 	
 	var _room_count = buffer_read(_buffer, buffer_u32);
 	var _rooms = array_create(_room_count);
@@ -592,14 +599,15 @@ function level_get_vf_shadows() {
 global.entities_toc = {}
 global.entities = {}
 
-function Level() constructor {
+function Level(_id, _x, _y, _width, _height) constructor {
 	
 	loaded = false;
 	
-	x = 0;
-	y = 0;
-	width = 0;
-	height = 0;
+	id = _id;
+	x = _x;
+	y = _y;
+	width = _width;
+	height = _height;
 	
 	file = -1;
 	
@@ -642,89 +650,30 @@ function Level() constructor {
 	shadow_vb = -1;
 	
 	/// run once after having created Level()
-	static init = function(_level, _file) {
+	static init = function(_buffer) {
 		
-		var _lv_x = _level.x div TILESIZE,
-			_lv_y = _level.y div TILESIZE,
-			_lv_w = _level.width div TILESIZE,
-			_lv_h = _level.height div TILESIZE;
-	
-		x = _lv_x * TILESIZE;
-		y = _lv_y * TILESIZE;
-		width = _lv_w * TILESIZE;
-		height = _lv_h * TILESIZE;
+		var _lv_x = x div TILESIZE,
+			_lv_y = y div TILESIZE,
+			_lv_w = width div TILESIZE,
+			_lv_h = height div TILESIZE;
 		
 		var _time = get_timer();
-		
-		var _buffer = buffer_load(_file);
-			
-		show_debug_message("level: file: {0}", (get_timer() - _time) / 1000)
-		
-		_time = get_timer();
 		
 		global.UNPACKPOINTOFFSET_X = x;
 		global.UNPACKPOINTOFFSET_Y = y;
 		var _info = level_unpack_bin_room(_buffer);
+		file = _info;
 		global.UNPACKPOINTOFFSET_X = 0;
 		global.UNPACKPOINTOFFSET_Y = 0;
 		
-		show_debug_message("level: unpack: {0}", (get_timer() - _time) / 1000)
-		
+		LOG(Log.note, $"level: unpack: {(get_timer() - _time) / 1000}");
 		_time = get_timer();
 
-		fields = _info.content.fields;
-		
-		layer = layer_create(0);
-		layer_set_visible(layer, false);
-		tiles = layer_tilemap_create(layer, x, y, tl_debug, _lv_w, _lv_h);
-		level_unpack_bin_layer_grid(_buffer, _info.content.layers[$ "Collisions"].pointer, tiles);
-		
-		vb_front = vertex_create_buffer();
-		level_unpack_bin_layer_free_vertex(_buffer, _info.content.layers[$ "Tiles"].pointer, vb_front);
-		if vertex_get_number(vb_front) > 0 vertex_freeze(vb_front);
-		
-		vb_tiles_below = vertex_create_buffer();
-		level_unpack_bin_layer_free_vertex(_buffer, _info.content.layers[$ "TilesBelow"].pointer, vb_tiles_below);
-		if vertex_get_number(vb_tiles_below) > 0 vertex_freeze(vb_tiles_below);
-		
-		layer_back = layer_create(0);
-		layer_set_visible(layer_back, false);
-		tiles_back = layer_tilemap_create(layer_back, x, y, tl_tiles, _lv_w, _lv_h);
-		
-		layer_back_glass = layer_create(0);
-		layer_set_visible(layer_back_glass, false);
-		tiles_back_glass = layer_tilemap_create(layer_back_glass, x, y, tl_tiles, _lv_w, _lv_h);
-		
-		level_unpack_bin_layer_free_map_filtered(
-			_buffer, _info.content.layers[$ "Background"].pointer,
-			tiles_back, tiles_back_glass
-		);
-		
-		layer_tiles_above = layer_create(0);
-		layer_set_visible(layer_tiles_above, false);
-		tiles_tiles_above = layer_tilemap_create(layer_tiles_above, x, y, tl_tiles, _lv_w, _lv_h);
-		level_unpack_bin_layer_free_map(_buffer, _info.content.layers[$ "TilesAbove"].pointer, tiles_tiles_above);
-		
-		layer_decor = layer_create(0);
-		layer_set_visible(layer_decor, false);
-		tiles_decor = layer_tilemap_create(layer_decor, x, y, tl_tiles, _lv_w, _lv_h);
-		level_unpack_bin_layer_free_map(_buffer, _info.content.layers[$ "Decor"].pointer, tiles_decor);
-		
-		layer_decor_under = layer_create(0);
-		layer_set_visible(layer_decor_under, false);
-		tiles_decor_under = layer_tilemap_create(layer_decor_under, x, y, tl_tiles, _lv_w, _lv_h);
-		level_unpack_bin_layer_free_map(_buffer, _info.content.layers[$ "DecorUnder"].pointer, tiles_decor_under);
-		
-		layer_spike = layer_create(0);
-		layer_set_visible(layer_spike, false);
-		tiles_spike = layer_tilemap_create(layer_spike, x, y, tl_debug_spikes, _lv_w, _lv_h);
-		level_unpack_bin_layer_grid(_buffer, _info.content.layers[$ "Spikes"].pointer, tiles_spike);
-		
-		buffer_delete(_buffer);
+		fields = file.content.fields;
 		
 		entities = [];
 		
-		var _layernames = struct_get_names(_info.content.layers);
+		var _layernames = struct_get_names(file.content.layers);
 		for (var i_layer = 0; i_layer < array_length(_layernames); i_layer++) {
 			switch _layernames[i_layer] {
 				case "Bubbles":
@@ -732,7 +681,7 @@ function Level() constructor {
 				case "Lights":
 				case "Meta":
 				case "Instances": {
-					var _entities = _info.content.layers[$ _layernames[i_layer]].entities;
+					var _entities = file.content.layers[$ _layernames[i_layer]].entities;
 					for (var i_entity = 0; i_entity < array_length(_entities); i_entity++) {
 						var _e = _entities[i_entity];
 						
@@ -744,6 +693,7 @@ function Level() constructor {
 						
 						var _field = _e.fields; // this just seems like such a good idea!
 						_field.uid = _e.id;
+						_field.rid = self.id;
 						
 						// @todo: rewrite
 						if array_contains(_e.tags, "SIZE_TILE") {
@@ -776,12 +726,182 @@ function Level() constructor {
 			}
 		}
 		
-		show_debug_message("level: parse: {0}", (get_timer() - _time) / 1000)
-	}
+		LOG(Log.note, $"level: parse: {(get_timer() - _time) / 1000}");
+	};
 	
 	/// creates tile data from file
-	static prepare = function() {
+	static prepare = function(_out, _level, _loader, _bin_id) {
 		
+		static __fn_tiles = function (_self, _buffer) {
+			with _self {
+				layer = layer_create(0);
+				layer_set_visible(layer, false);
+				tiles = layer_tilemap_create(
+					layer,
+					x, y,
+					tl_debug,
+					width div TILESIZE,
+					height div TILESIZE
+				);
+				level_unpack_bin_layer_grid(
+					_buffer, file.content.layers[$ "Collisions"].pointer,
+					tiles
+				);
+			}
+		};
+		
+		array_push(_out, new LoaderOptionParsePart(0, _loader, _level, _bin_id, self, __fn_tiles));
+		
+		
+		static __fn_spike = function (_self, _buffer) {
+			with _self {
+				layer_spike = layer_create(0);
+				layer_set_visible(layer_spike, false);
+				tiles_spike = layer_tilemap_create(
+					layer_spike,
+					x, y,
+					tl_debug_spikes,
+					width div TILESIZE,
+					height div TILESIZE
+				);
+				level_unpack_bin_layer_grid(
+					_buffer, file.content.layers[$ "Spikes"].pointer,
+					tiles_spike
+				);
+			}
+		};
+		
+		array_push(_out, new LoaderOptionParsePart(0, _loader, _level, _bin_id, self, __fn_spike));
+		
+		
+		static __fn_front = function (_self, _buffer) {
+			with _self {
+				vb_front = vertex_create_buffer();
+				level_unpack_bin_layer_free_vertex(
+					_buffer, file.content.layers[$ "Tiles"].pointer,
+					vb_front
+				);
+				if vertex_get_number(vb_front) > 0 {
+					vertex_freeze(vb_front);
+				}
+			}
+		};
+		
+		array_push(_out, new LoaderOptionParsePart(0, _loader, _level, _bin_id, self, __fn_front));
+		
+		
+		static __fn_tiles_below = function (_self, _buffer) {
+			with _self {
+				vb_tiles_below = vertex_create_buffer();
+				level_unpack_bin_layer_free_vertex(
+					_buffer,
+					file.content.layers[$ "TilesBelow"].pointer,
+					vb_tiles_below
+				);
+				if vertex_get_number(vb_tiles_below) > 0 {
+					vertex_freeze(vb_tiles_below);
+				}
+			}
+		};
+		
+		array_push(_out, new LoaderOptionParsePart(4, _loader, _level, _bin_id, self, __fn_tiles_below));
+		
+		
+		static __fn_back = function (_self, _buffer) {
+			with _self {
+				layer_back = layer_create(0);
+				layer_set_visible(layer_back, false);
+				tiles_back = layer_tilemap_create(
+					layer_back,
+					x,
+					y,
+					tl_tiles,
+					width div TILESIZE,
+					height div TILESIZE
+				);
+				
+				layer_back_glass = layer_create(0);
+				layer_set_visible(layer_back_glass, false);
+				tiles_back_glass = layer_tilemap_create(
+					layer_back_glass,
+					x, y,
+					tl_tiles,
+					width div TILESIZE,
+					height div TILESIZE
+				);
+				
+				level_unpack_bin_layer_free_map_filtered(
+					_buffer, file.content.layers[$ "Background"].pointer,
+					tiles_back, tiles_back_glass
+				);
+			}
+		};
+		
+		array_push(_out, new LoaderOptionParsePart(5, _loader, _level, _bin_id, self, __fn_back));
+		
+		
+		static __fn_tiles_above = function (_self, _buffer) {
+			with _self {
+				layer_tiles_above = layer_create(0);
+				layer_set_visible(layer_tiles_above, false);
+				tiles_tiles_above = layer_tilemap_create(
+					layer_tiles_above,
+					x, y,
+					tl_tiles,
+					width div TILESIZE,
+					height div TILESIZE
+				);
+				level_unpack_bin_layer_free_map(
+					_buffer, file.content.layers[$ "TilesAbove"].pointer,
+					tiles_tiles_above
+				);
+			}
+		};
+		
+		array_push(_out, new LoaderOptionParsePart(3, _loader, _level, _bin_id, self, __fn_tiles_above));
+		
+		
+		static __fn_decor = function (_self, _buffer) {
+			with _self {
+				layer_decor = layer_create(0);
+				layer_set_visible(layer_decor, false);
+				tiles_decor = layer_tilemap_create(
+					layer_decor,
+					x, y,
+					tl_tiles,
+					width div TILESIZE,
+					height div TILESIZE
+				);
+				level_unpack_bin_layer_free_map(
+					_buffer, file.content.layers[$ "Decor"].pointer,
+					tiles_decor
+				);
+			}
+		};
+		
+		array_push(_out, new LoaderOptionParsePart(3, _loader, _level, _bin_id, self, __fn_decor));
+		
+		
+		static __fn_decor_under = function (_self, _buffer) {
+			with _self {
+				layer_decor_under = layer_create(0);
+				layer_set_visible(layer_decor_under, false);
+				tiles_decor_under = layer_tilemap_create(
+					layer_decor_under,
+					x, y,
+					tl_tiles,
+					width div TILESIZE,
+					height div TILESIZE
+				);
+				level_unpack_bin_layer_free_map(
+					_buffer, file.content.layers[$ "DecorUnder"].pointer,
+					tiles_decor_under
+				);
+			}
+		};
+		
+		array_push(_out, new LoaderOptionParsePart(3, _loader, _level, _bin_id, self, __fn_decor_under));
+
 	}
 	
 	/// flags level as loaded, loads entities
@@ -791,7 +911,7 @@ function Level() constructor {
 		loaded = true;
 		
 		for (var i_entity = 0; i_entity < array_length(entities); i_entity++) {
-			var _e = entities[i_entity]
+			var _e = entities[i_entity];
 			
 			var _exists = false;
 
@@ -823,38 +943,77 @@ function Level() constructor {
 	}
 	
 	/// flags level as 'unloaded', probably destroying 
-	/// it's associated entities in the process.
+	/// its associated entities in the process.
 	static unload = function() {
 		
 		if !loaded return;
 		loaded = false;
-		
-		//if shadow_vb != -1 {
-		//	vertex_delete_buffer(shadow_vb);
-		//	shadow_vb = -1;
-		//}
 	
 	}
 	
 	/// destroys tile data.
 	static destroy = function() {
+		if shadow_vb != -1 {
+			vertex_delete_buffer(shadow_vb);
+		}
 		
+		if layer != -1 {
+			layer_destroy(layer);
+			layer_tilemap_destroy(tiles);
+		}
+		
+		if vb_front != -1 {
+			vertex_delete_buffer(vb_front);
+		}
+		if vb_tiles_below != -1 {
+			vertex_delete_buffer(vb_tiles_below);
+		}
+		
+		if layer_back != -1 {
+			layer_destroy(layer_back);
+			layer_tilemap_destroy(tiles_back);
+		}
+		
+		if layer_back_glass != -1 {
+			layer_destroy(layer_back_glass);
+			layer_tilemap_destroy(tiles_back_glass);
+		}
+		
+		if layer_tiles_above != -1 {
+			layer_destroy(layer_tiles_above);
+			layer_tilemap_destroy(tiles_tiles_above);
+		}
+		
+		if layer_decor != -1 {
+			layer_destroy(layer_decor);
+			layer_tilemap_destroy(tiles_decor);
+		}
+		
+		if layer_decor_under != -1 {
+			layer_destroy(layer_decor_under);
+			layer_tilemap_destroy(tiles_decor_under);
+		}
+		
+		if layer_spike != -1 {
+			layer_destroy(layer_spike);
+			layer_tilemap_destroy(tiles_spike);
+		}
 	}
 	
 	
 }
 
-function game_level_setup_light(_level) {
+function util_vertex_buffer_quad(_vb, _x1, _y1, _x2, _y2) {
+	vertex_position_3d(_vb, _x1, _y1, 0);
+	vertex_position_3d(_vb, _x1, _y1, 1);
+	vertex_position_3d(_vb, _x2, _y2, 0);
 	
-	static _Quad = function(_vb, _x1, _y1, _x2, _y2) {
-		vertex_position_3d(_vb, _x1, _y1, 0);
-		vertex_position_3d(_vb, _x1, _y1, 1);
-		vertex_position_3d(_vb, _x2, _y2, 0);
-		
-		vertex_position_3d(_vb, _x1, _y1, 1);
-		vertex_position_3d(_vb, _x2, _y2, 0);
-		vertex_position_3d(_vb, _x2, _y2, 1);
-	};
+	vertex_position_3d(_vb, _x1, _y1, 1);
+	vertex_position_3d(_vb, _x2, _y2, 0);
+	vertex_position_3d(_vb, _x2, _y2, 1);
+}
+
+function game_level_setup_light(_level) {
 	
 	var _tiles = _level.tiles;
 	var _x_off = _level.x;
@@ -880,11 +1039,11 @@ function game_level_setup_light(_level) {
 				_y++;
 			}
 			
-			_Quad(
+			util_vertex_buffer_quad(
 				_vb, 
 				_cx, _cy, _cx + TILESIZE, _cy + _h
 			);
-			_Quad(
+			util_vertex_buffer_quad(
 				_vb, 
 				_cx + TILESIZE, _cy, _cx, _cy + _h
 			);
@@ -898,59 +1057,60 @@ function game_level_setup_light(_level) {
 	
 	if _count > 0 vertex_freeze(_vb);
 	
-	show_debug_message($"{_count} shadow tiles")
-	
+	LOG(Log.note, $"{_count} shadow tiles");
+
 	_level.shadow_vb = _vb;
 	
 }
 
-
+/// @return {struct.Level | undefined}
 function game_level_get(_x, _y) {
-	for (var i = 0; i < array_length(level.levels); i++) {
-		var _lvl = level.levels[i];
+	for (var i = 0; i < array_length(global.game.level.levels); i++) {
+		var _lvl = global.game.level.levels[i];
 		if point_in_rectangle(
 				_x, _y, 
 				_lvl.x, _lvl.y,
 				_lvl.x + _lvl.width,
 				_lvl.y + _lvl.height) {
-			return _lvl;
+			return _lvl.data;
 		}
 	}
 	return undefined;
 }
+/// @return {struct.Level | undefined}
 function game_level_get_safe_rect(_x1, _y1, _x2, _y2) {
-	for (var i = 0; i < array_length(level.loaded); i++) {
-		var _lvl = level.loaded[i];
+	for (var i = 0; i < array_length(global.game.level.loaded); i++) {
+		var _lvl = global.game.level.loaded[i];
 		if rectangle_in_rectangle(
 				_x1, _y1, _x2, _y2,
 				_lvl.x, _lvl.y,
 				_lvl.x + _lvl.width,
 				_lvl.y + _lvl.height) {
-			return _lvl;
+			return _lvl.data;
 		}
 	}
 	return undefined;
 }
 function game_level_get_safe(_x, _y) {
-	return game_level_get_safe_rect(_x, _y, _x + 1, _y + 1)
+	return game_level_get_safe_rect(_x, _y, _x + 1, _y + 1);
 }
 
 function game_level_onscreen() {
 	var _cam = game_camera_get();
 	
-	static _pad = 16
+	static _pad = 16;
 	
-	static __out = []
-	static __cache_x = 0
-	static __cache_y = 0
+	static __out = [];
+	static __cache_x = 0;
+	static __cache_y = 0;
 	
 	if __cache_x != _cam.x || __cache_y != _cam.y {
 		array_delete(__out, 0, array_length(__out)); // hopefully this is fine
-		__cache_x = _cam.x
-		__cache_y = _cam.y
+		__cache_x = _cam.x;
+		__cache_y = _cam.y;
 		
-		for (var i = 0; i < array_length(level.loaded); i++) {
-			var _lvl = level.loaded[i];
+		for (var i = 0; i < array_length(global.game.level.loaded); i++) {
+			var _lvl = global.game.level.loaded[i];
 			if rectangle_in_rectangle(
 					_cam.x - _pad, _cam.y - _pad,
 					_cam.x + _cam.w + _pad, _cam.y + _cam.h + _pad,
@@ -958,7 +1118,7 @@ function game_level_onscreen() {
 					_lvl.x, _lvl.y,
 					_lvl.x + _lvl.width,
 					_lvl.y + _lvl.height) {
-				array_push(__out, _lvl)
+				array_push(__out, _lvl.data);
 			}
 		}
 	}
@@ -1038,8 +1198,11 @@ function game_level_grab_data(_lvl) {
 	__return.biome = _lvl.fields.biome ?? __return.biome;
 	__return.background = _lvl.fields.background ?? __return.background;
 	__return.music =
-		(_lvl.fields.music != undefined && _lvl.fields.music != "null")
-		? _lvl.fields.music : __return.music;
+		_lvl.fields.music == undefined
+			? __return.music
+			: (_lvl.fields.music == "null"
+				? undefined
+				: _lvl.fields.music);
 	__return.lut_grade = _lvl.fields.lut_grade ?? __return.lut_grade;
 	__return.lut_mix = _lvl.fields.lut_mix ?? __return.lut_mix;
 	for (var i = 0; i < array_length(_lvl.fields.flags); i++) {

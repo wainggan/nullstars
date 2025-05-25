@@ -9,7 +9,7 @@
   "bitRate":128,
   "compression":0,
   "conversionMode":0,
-  "duration":0.124989,
+  "duration":0.12498866,
   "name":"sfx_pop_0",
   "parent":{
     "name":"sfx",

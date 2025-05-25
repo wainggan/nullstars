@@ -29,6 +29,7 @@ reset = function(){
 	state.change(state_idle);
 	x = xstart;
 	y = ystart;
+	glue_parent_moved(x, y);
 }
 
 state = new State();
@@ -40,6 +41,9 @@ state_idle = state.add()
 .set("step", function(){
 	
 	var _activate = false;
+	
+	lift_x = 0;
+	lift_y = 0;
 	
 	time -= 1;
 	if time < 0 with obj_player {
@@ -59,6 +63,13 @@ state_active = state.add()
 .set("enter", function(){
 	vel = 0;
 	accel = 0;
+	
+	instance_create_layer(x, y, layer, obj_effects_rectpop, {
+		width: sprite_width,
+		height: sprite_height,
+		pad: 16,
+		spd: 0.04,
+	});
 })
 .set("step", function(){
 	
@@ -95,7 +106,7 @@ state_retract = state.add()
 	time -= 1;
 	if time < 0 {
 		accel = approach(accel, 0.04, 0.002);
-		vel = approach(vel, 2, accel);
+		vel = approach(vel, global.defs.lift_spd_return, accel);
 		
 		anim_vel -= vel;
 		

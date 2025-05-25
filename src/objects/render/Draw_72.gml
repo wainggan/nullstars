@@ -5,7 +5,7 @@ var _cam_x = camera_get_view_x(view_camera[0]),
 	_cam_h = camera_get_view_height(view_camera[0]);
 
 
-var _lvl_onscreen = game_level_onscreen()
+var _lvl_onscreen = game_level_onscreen();
 
 
 // clear screen
@@ -210,22 +210,84 @@ draw_clear_alpha(c_black, 0);
 
 // draw level backgrounds
 for (var i = 0; i < array_length(_lvl_onscreen); i++) {
+	var _lvl = _lvl_onscreen[i];
+	if _lvl.tiles_back != -1 {
+		draw_tilemap(
+			_lvl.tiles_back, 
+			tilemap_get_x(_lvl.tiles_back) - _cam_x,
+			tilemap_get_y(_lvl.tiles_back) - _cam_y
+		);
+	}
+	if _lvl.tiles_back_glass != -1 {
+		draw_tilemap(
+			_lvl.tiles_back_glass, 
+			tilemap_get_x(_lvl.tiles_back_glass) - _cam_x,
+			tilemap_get_y(_lvl.tiles_back_glass) - _cam_y
+		);
+	}
+	if _lvl.tiles_decor_under != -1 {
+		draw_tilemap(
+			_lvl.tiles_decor_under, 
+			tilemap_get_x(_lvl.tiles_decor_under) - _cam_x,
+			tilemap_get_y(_lvl.tiles_decor_under) - _cam_y
+		);
+	}
+}
+
+surface_reset_target();
+
+if !surface_exists(surf_tiles) {
+	surf_tiles = surface_create(WIDTH, HEIGHT);
+}
+surface_set_target(surf_tiles);
+draw_clear_alpha(c_black, 0);
+
+// draw tile layer
+
+shader_set(shd_tiles);
+
+var _matrix = matrix_build_identity();
+var _matrix_ind = util_matrix_get_alignment();
+
+for (var i = 0; i < array_length(_lvl_onscreen); i++) {
 	var _lvl = _lvl_onscreen[i]
-	draw_tilemap(
-		_lvl.tiles_back, 
-		tilemap_get_x(_lvl.tiles_back) - _cam_x,
-		tilemap_get_y(_lvl.tiles_back) - _cam_y
-	);
-	draw_tilemap(
-		_lvl.tiles_back_glass, 
-		tilemap_get_x(_lvl.tiles_back_glass) - _cam_x,
-		tilemap_get_y(_lvl.tiles_back_glass) - _cam_y
-	);
-	draw_tilemap(
-		_lvl.tiles_decor_under, 
-		tilemap_get_x(_lvl.tiles_decor_under) - _cam_x,
-		tilemap_get_y(_lvl.tiles_decor_under) - _cam_y
-	);
+	_matrix[_matrix_ind.x] = _lvl.x - _cam_x;
+	_matrix[_matrix_ind.y] = _lvl.y - _cam_y;
+	matrix_set(matrix_world, _matrix);
+	if _lvl.vb_tiles_below != -1 {
+		vertex_submit(_lvl.vb_tiles_below, pr_trianglelist, tileset_get_texture(tl_tiles));
+	}
+	if _lvl.vb_front != -1 {
+		vertex_submit(_lvl.vb_front, pr_trianglelist, tileset_get_texture(tl_tiles));
+	}
+}
+matrix_set(matrix_world, matrix_identity);
+
+shader_reset();
+
+for (var i = 0; i < array_length(_lvl_onscreen); i++) {
+	var _lvl = _lvl_onscreen[i];
+	if _lvl.tiles_tiles_above != -1 {
+		draw_tilemap(
+			_lvl.tiles_tiles_above, 
+			tilemap_get_x(_lvl.tiles_tiles_above) - _cam_x,
+			tilemap_get_y(_lvl.tiles_tiles_above) - _cam_y
+		);
+	}
+	if _lvl.tiles_decor != -1 {
+		draw_tilemap(
+			_lvl.tiles_decor, 
+			tilemap_get_x(_lvl.tiles_decor) - _cam_x,
+			tilemap_get_y(_lvl.tiles_decor) - _cam_y
+		);
+	}
+	if _lvl.tiles_spike != -1 {
+		draw_tilemap(
+			_lvl.tiles_spike, 
+			tilemap_get_x(_lvl.tiles_spike) - _cam_x,
+			tilemap_get_y(_lvl.tiles_spike) - _cam_y
+		);
+	}
 }
 
 surface_reset_target();

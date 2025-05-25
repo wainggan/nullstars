@@ -1,6 +1,13 @@
 {
   "$GMWindowsOptions":"",
   "%Name":"Windows",
+  "ConfigValues":{
+    "Release":{
+      "option_windows_sleep_margin":"10",
+      "option_windows_icon":"icons/icon.ico",
+      "option_windows_license":"${base_options_dir}/windows/installer/license.txt",
+    },
+  },
   "name":"Windows",
   "option_windows_allow_fullscreen_switching":false,
   "option_windows_borderless":false,
