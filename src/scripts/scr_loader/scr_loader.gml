@@ -89,10 +89,11 @@ function Loader() constructor {
 		
 		var _cam = game_camera_get();
 		
-		var _budget_runs = 4;
-		var _budget_time = 60; // ms
+		var _budget_runs = GAME_LOAD_BUDGET_COUNT;
+		var _budget_time = GAME_LOAD_BUDGET_TIME; // ms
 		
 		while array_length(_todo) != 0 {
+			var _time = get_timer();
 			
 			var _index = array_pop(_todo);
 			var _item = queue[_index];
@@ -157,6 +158,7 @@ function Loader() constructor {
 			
 			// deal with budget
 			_budget_runs -= 1;
+			_budget_time -= (get_timer() - _time) / 1000;
 		}
 		
 		// remove elements without screwing up indicies
@@ -363,7 +365,12 @@ function LoaderOptionFile(_level) : LoaderOption(_level, 0) constructor {
 	LOG(Log.note, $"Loader(): created LoaderOptionFile {level.id}");
 	
 	static process = function (_loader) {
+		var _time = get_timer();
+		
 		bin = buffer_load(level.name);
+		
+		LOG(Log.note, $"level: file: {(get_timer() - _time) / 1000}");
+		
 		if bin == -1 {
 			LOG(Log.error, $"Loader(): file '{level.name}' doesn't exist");
 			ASSERT(false);

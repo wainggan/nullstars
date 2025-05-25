@@ -658,10 +658,6 @@ function Level(_id, _x, _y, _width, _height) constructor {
 			_lv_h = height div TILESIZE;
 		
 		var _time = get_timer();
-			
-		LOG(Log.note, $"level: file: {(get_timer() - _time) / 1000}");
-		
-		_time = get_timer();
 		
 		global.UNPACKPOINTOFFSET_X = x;
 		global.UNPACKPOINTOFFSET_Y = y;
@@ -670,7 +666,6 @@ function Level(_id, _x, _y, _width, _height) constructor {
 		global.UNPACKPOINTOFFSET_Y = 0;
 		
 		LOG(Log.note, $"level: unpack: {(get_timer() - _time) / 1000}");
-		
 		_time = get_timer();
 
 		fields = _info.content.fields;
