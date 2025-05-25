@@ -1345,7 +1345,6 @@ state_dash.set("enter", function() {
 
 state_swim = state_base.add();
 state_swim.set("enter", function() {
-	show_debug_message("yes")
 })
 state_swim.set("step", function() {
 	
@@ -1408,9 +1407,7 @@ state_swim.set("step", function() {
 });
 
 state_swim_bullet = state_base.add();
-state_swim.set("enter", function() {
-	show_debug_message("no")
-	
+state_swim_bullet.set("enter", function() {
 	game_set_pause(4);
 	
 	buffer_dash = 0;
