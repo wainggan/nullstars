@@ -43,6 +43,11 @@ global.config = {
 #macro GAME_RENDER_LIGHT_SIZE 2048
 #macro GAME_RENDER_LIGHT_KERNEL 256
 
+// amount of time loader may spend working during a frame in ms
+#macro GAME_LOAD_BUDGET_TIME 2
+// amount of jobs loader may complete in one frame
+#macro GAME_LOAD_BUDGET_COUNT 6
+
 #macro GAME_LOAD_RADIUS_FILE 512
 #macro GAME_LOAD_RADIUS_ENTITY 128
 // how long it takes to unload the entities of a level
