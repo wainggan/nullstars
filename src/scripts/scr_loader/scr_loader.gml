@@ -161,6 +161,10 @@ function Loader() constructor {
 			_budget_time -= (get_timer() - _time) / 1000;
 		}
 		
+		if array_length(_remove) != 0 {
+			LOG(Log.note, $"{array_length(_remove)} processed; {_budget_runs} {_budget_time}");
+		}
+		
 		// remove elements without screwing up indicies
 		array_sort(_remove, true);
 		repeat array_length(_remove) {
@@ -168,6 +172,11 @@ function Loader() constructor {
 			array_delete(queue, _index, 1);
 		}
 		
+	};
+	
+	/// @arg {struct.LoaderOption} _option
+	static queue_add = function (_option) {
+		array_push(self.queue, _option);
 	};
 	
 	static setup = function () {
@@ -220,10 +229,10 @@ function Loader() constructor {
 			
 			if util_check_level_zone_load(_cam, _level) {
 				if _level.loaded == LoaderProgress.out && _level.data == undefined {
-					array_push(self.queue, new LoaderOptionFile(_level));
+					self.queue_add(new LoaderOptionFile(_level));
 				
 				} else if _level.loaded == LoaderProgress.prepared {
-					array_push(self.queue, new LoaderOptionLoad(_level));
+					self.queue_add(new LoaderOptionLoad(_level));
 				
 				} else if _level.loaded == LoaderProgress.loaded {
 					_level.time_load = GAME_LOAD_TIME_FILE;
@@ -233,12 +242,12 @@ function Loader() constructor {
 				
 			} else if util_check_level_zone_prep(_cam, _level) {
 				if _level.loaded == LoaderProgress.out && _level.data == undefined {
-					array_push(self.queue, new LoaderOptionFile(_level));
+					self.queue_add(new LoaderOptionFile(_level));
 				
 				} else if _level.loaded == LoaderProgress.loaded {
 					if _level.time_load-- <= 0 {
 						// entities inside the level should automatically be destroyed now
-						array_push(self.queue, new LoaderOptionUnload(_level));
+						self.queue_add(new LoaderOptionUnload(_level));
 					}
 				
 				} else if _level.loaded == LoaderProgress.prepared {
@@ -249,12 +258,12 @@ function Loader() constructor {
 			} else {
 				if _level.loaded == LoaderProgress.prepared {
 					if _level.time_prep-- <= 0 {
-						array_push(self.queue, new LoaderOptionDestroy(_level));
+						self.queue_add(new LoaderOptionDestroy(_level));
 					}
 				
 				} else if _level.loaded == LoaderProgress.loaded {
 					if _level.time_load-- <= 0 {
-						array_push(self.queue, new LoaderOptionUnload(_level));
+						self.queue_add(new LoaderOptionUnload(_level));
 					}
 				
 				}
@@ -352,7 +361,8 @@ function LoaderOption(_level, _priority) constructor {
 	};
 	/// @arg {struct.Loader} _loader
 	static collect = function (_loader) {
-		return [];
+		static __out = [];
+		return __out;
 	};
 }
 
@@ -386,7 +396,10 @@ function LoaderOptionFile(_level) : LoaderOption(_level, 0) constructor {
 		
 		LOG(Log.note, $"Loader(): producing LoaderOptionParse with {_bin_id}");
 		
-		return [new LoaderOptionParse(level, _bin_id)];
+		static __out = array_create(1);
+		__out[0] = new LoaderOptionParse(level, _bin_id);
+		
+		return __out;
 	};
 }
 
@@ -412,13 +425,38 @@ function LoaderOptionParse(_level, _bin_id) : LoaderOption(_level, 0) constructo
 	
 	static collect = function (_loader) {
 		var _cam = game_camera_get();
+		
+		var __out = [];
+		array_delete(__out, 0, array_length(__out));
+		
 		if util_check_level_zone_load(_cam, level) {
-			return [new LoaderOptionLoad(level)];
-		} else {
-			return [];
+			array_push(__out, new LoaderOptionLoad(level));
 		}
+		
+		level.data.prepare(__out, level, _loader, bin_id);
+		
+		return __out;
 	};
 }
+
+function LoaderOptionParsePart(_priority, _loader, _level, _bin_id, _self, _callback) : LoaderOption(_level, _priority) constructor {
+	_loader.bins[$ _bin_id][1] += 1;
+	
+	LOG(Log.note, $"Loader(): created LoaderOptionParsePart {level.id}");
+	
+	bin_id = _bin_id;
+	this = _self;
+	callback = _callback;
+	
+	static process = function (_loader) {
+		callback(this, _loader.bins[$ bin_id][0]);
+		
+		_loader.bins[$ bin_id][1] -= 1;
+		
+		return LoaderOptionStatus.complete;
+	};
+}
+
 
 /// creates level entities.
 function LoaderOptionLoad(_level) : LoaderOption(_level, 0) constructor {
