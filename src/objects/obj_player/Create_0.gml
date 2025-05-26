@@ -852,9 +852,8 @@ state_base.set("step", function () {
 	// if still colliding, your inside a wall...
 	// escape!!
 	if actor_collision(x, y) {
-		var _amount = 16;
 		var _out = false;
-		for (var i = 0; i < _amount * 2; i++) {
+		for (var i = 0; i < 16 * 2; i++) {
 			var _d = (i % 2 == 0 ? 1 : -1) * floor((i + 2) / 2);
 			if !actor_collision(x + _d, y) {
 				x += _d;
