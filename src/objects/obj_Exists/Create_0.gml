@@ -8,16 +8,12 @@
  * not much else
  */
 
+/// used for staggering bounds checks. probably a bad idea to change this
+parity = irandom(GAME_PARITY_ENTITY);
+
 /// figure out if an obj_Exists is inside the camera bounds. used to figure out when to delete
 /// the instance.
 /// 
 /// THIS SHOULD NEVER LIE. IF IT DOESN'T RETURN A CORRECT VALUE, DISASTROUS CONSEQUENCES ARE IN ORDER.
-outside = function(_cam = game_camera_get()) {
-	static __pad = 64;
-	return !rectangle_in_rectangle(
-		bbox_right, bbox_top, bbox_left, bbox_bottom,
-		_cam.x - __pad, _cam.y - __pad,
-		_cam.x + _cam.w + __pad,
-		_cam.y + _cam.h + __pad
-	);
-}
+outside = exists_outside_default();
+

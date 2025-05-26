@@ -38,7 +38,8 @@ global.config = {
 
 #macro ENABLE_LOG true
 
-#macro GAME_BUBBLE_PARITY 8
+#macro GAME_PARITY_BUBBLE 8
+#macro GAME_PARITY_ENTITY 6
 
 #macro GAME_RENDER_LIGHT_SIZE 2048
 #macro GAME_RENDER_LIGHT_KERNEL 256

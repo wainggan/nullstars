@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_exists",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_exists",
+  "parent":{
+    "name":"entities",
+    "path":"folders/entities.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

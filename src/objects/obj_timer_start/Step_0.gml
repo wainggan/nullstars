@@ -96,19 +96,22 @@ with level_get_instance(ref) {
 					image_xscale: sprite_width,
 					image_yscale: sprite_height
 				});
+				other.pet.outside = exists_outside_empty;
 			}
 		}
 	} else {
-		if instance_exists(other.pet) instance_destroy(other.pet)
+		if instance_exists(other.pet) {
+			instance_destroy(other.pet);
+		}
 	}
 	
 	if !_letsgoo {
 		break;
 	}
 	
-	var _touch = place_meeting(x, y, obj_player)
+	var _touch = place_meeting(x, y, obj_player);
 	var _cond = _touch && !lastTouch;
-	lastTouch = _touch
+	lastTouch = _touch;
 
 	if _cond {
 		var _pop = false;
@@ -125,7 +128,7 @@ with level_get_instance(ref) {
 				sprite: spr_timer_pop,
 				index: 1,
 				spd: 0.02
-			})
+			});
 		
 			_pop = true;
 		}
@@ -136,14 +139,14 @@ with level_get_instance(ref) {
 		}
 	
 		if _pop {
-			game_set_pause(4)
+			game_set_pause(4);
 	
 			instance_create_layer(x, y, layer, obj_effects_rectpop, {
 				width: sprite_width,
 				height: sprite_height,
 				pad: 16,
 				spd: 0.04
-			})
+			});
 		}
 	
 	}

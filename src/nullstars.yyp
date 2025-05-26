@@ -231,6 +231,7 @@
     {"id":{"name":"scr_draw","path":"scripts/scr_draw/scr_draw.yy",},},
     {"id":{"name":"scr_entity","path":"scripts/scr_entity/scr_entity.yy",},},
     {"id":{"name":"scr_event","path":"scripts/scr_event/scr_event.yy",},},
+    {"id":{"name":"scr_exists","path":"scripts/scr_exists/scr_exists.yy",},},
     {"id":{"name":"scr_file","path":"scripts/scr_file/scr_file.yy",},},
     {"id":{"name":"scr_future","path":"scripts/scr_future/scr_future.yy",},},
     {"id":{"name":"scr_game","path":"scripts/scr_game/scr_game.yy",},},

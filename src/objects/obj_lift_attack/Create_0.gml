@@ -5,10 +5,13 @@ trigger_setup();
 glue_parent_setup();
 
 pet = instance_create_layer(x, y, layer, obj_Solid, {
-	image_xscale: sprite_width, image_yscale: sprite_height
-})
+	image_xscale: sprite_width, image_yscale: sprite_height,
+});
+pet.outside = exists_outside_empty();
 
-riding = function(){ return false; }
+riding = function(){
+	return false;
+};
 mask_index = spr_none;
 
 accel = 0;
