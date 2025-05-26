@@ -849,7 +849,31 @@ state_base.set("step", function () {
 	};
 	actor_move_y(y_vel, __collide_y);
 	
-	var _inst = instance_place(x, y, obj_dash)
+	// if still colliding, your inside a wall...
+	// escape!!
+	if actor_collision(x, y) {
+		var _amount = 16;
+		var _out = false;
+		for (var i = 0; i < _amount * 2; i++) {
+			var _d = (i % 2 == 0 ? 1 : -1) * floor((i + 2) / 2);
+			if !actor_collision(x + _d, y) {
+				x += _d;
+				_out = true;
+				break;
+			}
+			if !actor_collision(x, y + _d) {
+				y += _d;
+				_out = true;
+				break;
+			}
+		}
+		if !_out {
+			game_player_kill();
+			return;
+		}
+	}
+	
+	var _inst = instance_place(x, y, obj_dash);
 	if dash_left < defs.dash_total && _inst && _inst.state.is(_inst.state_active) {
 		game_set_pause(4);
 		dash_left = defs.dash_total;
