@@ -1,6 +1,15 @@
 
-if global.onoff == polarity {
-	collidable = true;
+if oo {
+	if global.game.state.oo_onoff == polarity {
+		collidable = true;
+	} else {
+		collidable = false;
+	}
 } else {
-	collidable = false;
+	if global.game.state.oo_updown == polarity {
+		collidable = true;
+	} else {
+		collidable = false;
+	}
 }
+

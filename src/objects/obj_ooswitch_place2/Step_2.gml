@@ -10,7 +10,7 @@ if _inst && array_contains(target, _inst.object_index) {
 	if !hit && !hit_buffer {
 		game_set_pause(4);
 	
-		global.game.state.oo_onoff = !global.game.state.oo_onoff;
+		global.game.state.oo_updown = !global.game.state.oo_updown;
 		
 		anim_hit = 1;
 		

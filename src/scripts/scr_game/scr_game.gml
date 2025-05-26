@@ -153,7 +153,7 @@ function GameState() constructor {
 	
 	// on/off switches
 	oo_onoff = true;
-	oo_flipflop = true;
+	oo_updown = true;
 	
 	// timer state
 	timer_active = false;
@@ -187,7 +187,7 @@ function GameState() constructor {
 	
 	static reset = function () {
 		oo_onoff = true;
-		oo_flipflop = true;
+		oo_updown = true;
 	};
 	
 	// game_get_pause() and game_pause() only change once game_pause_update() is run

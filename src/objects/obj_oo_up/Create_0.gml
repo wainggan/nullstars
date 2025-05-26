@@ -1,5 +1,4 @@
 
 event_inherited();
 
-polarity = false;
 oo = false;

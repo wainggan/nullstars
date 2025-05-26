@@ -12,4 +12,3 @@ light = instance_create_layer(x, y, "Lights", obj_light, {
 	size: 64,
 	intensity: 0.6
 });
-
