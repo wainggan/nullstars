@@ -162,6 +162,7 @@
     {"id":{"name":"obj_Entity","path":"objects/obj_Entity/obj_Entity.yy",},},
     {"id":{"name":"obj_Exists","path":"objects/obj_Exists/obj_Exists.yy",},},
     {"id":{"name":"obj_eye","path":"objects/obj_eye/obj_eye.yy",},},
+    {"id":{"name":"obj_flag_blackout","path":"objects/obj_flag_blackout/obj_flag_blackout.yy",},},
     {"id":{"name":"obj_flag_stop","path":"objects/obj_flag_stop/obj_flag_stop.yy",},},
     {"id":{"name":"obj_glue","path":"objects/obj_glue/obj_glue.yy",},},
     {"id":{"name":"obj_kaizo","path":"objects/obj_kaizo/obj_kaizo.yy",},},

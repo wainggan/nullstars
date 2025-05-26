@@ -125,14 +125,7 @@ function Game() constructor {
 	
 	add_timeline(
 		new Timeline()
-			.add(new KeyframeTimedCallback(1, function () {
-				var _checkpoint = game_checkpoint_ref();
-				var _x_target = _checkpoint.x;
-				var _y_target = _checkpoint.y;
-				var _constrain = camera.constrain(_x_target, _y_target);
-				camera.move(_constrain.x, _constrain.y, false);
-			}))
-			.add(new KeyframeRespawn())
+			.add(new KeyframeRespawn(true, true))
 	);
 	
 	LOG(Log.user, $"running nullstars! build {date_datetime_string(GM_build_date)} {GM_build_type} - {GM_version}");

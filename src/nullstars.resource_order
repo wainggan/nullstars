@@ -60,6 +60,7 @@
     {"name":"obj_effects_rectpop","order":1,"path":"objects/obj_effects_rectpop/obj_effects_rectpop.yy",},
     {"name":"obj_Entity","order":1,"path":"objects/obj_Entity/obj_Entity.yy",},
     {"name":"obj_Exists","order":7,"path":"objects/obj_Exists/obj_Exists.yy",},
+    {"name":"obj_flag_blackout","order":1,"path":"objects/obj_flag_blackout/obj_flag_blackout.yy",},
     {"name":"obj_flag_stop","order":3,"path":"objects/obj_flag_stop/obj_flag_stop.yy",},
     {"name":"obj_glue","order":2,"path":"objects/obj_glue/obj_glue.yy",},
     {"name":"obj_kaizo","order":37,"path":"objects/obj_kaizo/obj_kaizo.yy",},

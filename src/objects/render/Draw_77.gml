@@ -217,7 +217,11 @@ if global.settings.graphic.abberation != 0 {
 	surface_reset_target();
 }
 
-
+with obj_flag_blackout {
+	surface_set_target(other.surf_compose);
+	draw_sprite_ext(spr_pixel, 0, 0, 0, WIDTH, HEIGHT, 0, c_black, time);
+	surface_reset_target();
+}
 
 if global.config.graphics_post_grading {
 

@@ -33,7 +33,7 @@ function game_player_kill() {
 				global.onoff = 1;
 			})))
 			.add(new KeyframeTimed(10))
-			.add(new KeyframeRespawn())
+			.add(new KeyframeRespawn().set_pos(_x, _y))
 	);
 }
 

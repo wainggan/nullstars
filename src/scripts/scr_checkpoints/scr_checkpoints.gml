@@ -13,6 +13,7 @@ function game_checkpoint_get() {
 	return global.game.checkpoint.get();
 }
 
+/// @return {id.Instance}
 function game_checkpoint_ref() {
 	return global.game.checkpoint.ref(global.game.checkpoint.get());
 }
