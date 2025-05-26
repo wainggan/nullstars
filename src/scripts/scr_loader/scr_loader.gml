@@ -373,22 +373,27 @@ function LoaderOption(_level, _priority) constructor {
 /// loads a file into a buffer
 function LoaderOptionFile(_level) : LoaderOption(_level, 0) constructor {
 	bin = -1;
+	load_id = -1;
+	complete = false;
+	state = 0;
 	
 	level.loaded = LoaderProgress.prepping;
 	
 	LOG(Log.note, $"Loader(): created LoaderOptionFile {level.id}");
 	
 	static process = function (_loader) {
-		var _time = get_timer();
-		
-		bin = buffer_load(level.name);
-		
-		LOG(Log.note, $"level: file: {(get_timer() - _time) / 1000}");
-		
-		if bin == -1 {
-			LOG(Log.error, $"Loader(): file '{level.name}' doesn't exist");
-			ASSERT(false);
+
+		if state == 0 {
+			bin = buffer_create(0xffff, buffer_grow, 1);
+			load_id = buffer_load_async(bin, level.name, 0, -1);
+			array_push(obj_root.async_listen, self);
+			state = 1;
 		}
+		
+		if !complete {
+			return LoaderOptionStatus.wait;
+		}
+		
 		return LoaderOptionStatus.complete;
 	};
 
