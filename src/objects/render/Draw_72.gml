@@ -149,12 +149,12 @@ if global.config.graphics_up_bubble_spike {
 		var _off_x = 0;
 		var _off_y = 0;
 		if global.config.graphics_up_bubble_wobble {
-			_size = round_ext(wave(0.8, 2, 18, offset + 1000), 0.05)
-			_off_x = round_ext(wave(-6, 6, 23, offset * 2), 1)
-			_off_y = round_ext(wave(-6, 6, 24, offset * 3), 1)
+			_size = round_ext(wave(0.8, 2, 18, offset + 1000), 0.05);
+			_off_x = round_ext(wave(-6, 6, 23, offset * 2), 1);
+			_off_y = round_ext(wave(-6, 6, 24, offset * 3), 1);
 		}
 	
-		draw_sprite_ext(spr_spike_x, 0, x + _off_x - _cam_x, y + _off_y - _cam_y, _size, _size, 0, _col, 1)
+		draw_sprite_ext(spr_spike_x, 0, x + _off_x - _cam_x, y + _off_y - _cam_y, _size, _size, 0, _col, 1);
 	}
 
 	var _scissor = gpu_get_scissor();
@@ -162,8 +162,8 @@ if global.config.graphics_up_bubble_spike {
 		var _off_0 = 0;
 		var _off_1 = 0;
 		if global.config.graphics_up_bubble_wobble {
-			_off_0 = round_ext(wave(-96, 96, 30, offset * 2), 1)
-			_off_1 = round_ext(wave(-128, 128, 36, offset * 3), 1)
+			_off_0 = round_ext(wave(-96, 96, 30, offset * 2), 1);
+			_off_1 = round_ext(wave(-128, 128, 36, offset * 3), 1);
 		}
 		gpu_set_scissor(x - _cam_x + 2, y - _cam_y + 2, sprite_width - 4, sprite_height - 4);
 		draw_sprite_tiled_ext(spr_spike_pond_fill, 0, -_cam_x * 0.9, _off_0 - _cam_y * 0.9, 1, 1, _col, 1);
