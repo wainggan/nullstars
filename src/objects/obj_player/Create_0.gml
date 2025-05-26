@@ -886,8 +886,8 @@ state_base.set("step", function () {
 	dash_grace_kick -= 1;
 	vel_grace_timer -= 1;
 	
-	if state.is(state_free) && !nat_crouch() {
-		if INPUT.check_pressed("menu") && place_meeting(x, y, obj_checkpoint) {
+	if state.is(state_free) {
+		if INPUT.check_pressed("menu") && place_meeting(x, y, obj_checkpoint) && !nat_crouch() {
 			state.change(state_menu);
 			return;
 		} else if INPUT.check("menu") {
