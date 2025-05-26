@@ -11,8 +11,8 @@
 	"identifier": "Room_28",
 	"iid": "f516cee0-73f0-11ef-88f4-4bdae5616029",
 	"uid": 513,
-	"worldX": 12096,
-	"worldY": 3600,
+	"worldX": 13424,
+	"worldY": 3552,
 	"worldDepth": 0,
 	"pxWid": 512,
 	"pxHei": 480,
@@ -1424,5 +1424,5 @@
 			"entityInstances": []
 		}
 	],
-	"__neighbours": [{ "levelIid": "a62ae070-b0a0-11ee-a053-5947c7fb5896", "dir": "w" }]
+	"__neighbours": [{ "levelIid": "20af7010-8990-11ee-8d28-01157ecfb08d", "dir": "w" }]
 }
