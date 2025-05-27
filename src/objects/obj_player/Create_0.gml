@@ -1143,11 +1143,7 @@ state_free.set("step", function () {
 	}
 	
 	if get_check_water(x, y) {
-		if dash_grace > 0 && buffer_jump <= 0 {
-			state.change(state_swim_bullet);
-		} else {
-			state.change(state_swim);
-		}
+		state.change(state_swim);
 		return;
 	}
 	
@@ -1387,11 +1383,7 @@ state_dash.set("enter", function() {
 	
 	if dash_timer <= 0 {
 		action_dash_end();
-		if get_check_water(x, y) && buffer_jump <= 0  {
-			state.change(state_swim_bullet);
-		} else {
-			state.change(state_free);
-		}
+		state.change(state_free);
 		return;
 	}
 	
