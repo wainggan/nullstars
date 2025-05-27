@@ -211,9 +211,6 @@ function MenuPageMap() : MenuPage() constructor {
 		if _click && _c != noone {
 			_menu.stop();
 		
-			game_camera_set_shake(2, 0.5);
-			game_set_pause(2)
-		
 			game_checkpoint_set(_c.index);
 			
 			global.game.add_timeline(new Timeline().add(new KeyframeRespawn()));
