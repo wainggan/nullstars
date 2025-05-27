@@ -240,6 +240,7 @@
     {"id":{"name":"scr_globals","path":"scripts/scr_globals/scr_globals.yy",},},
     {"id":{"name":"scr_glue","path":"scripts/scr_glue/scr_glue.yy",},},
     {"id":{"name":"scr_input_manager","path":"scripts/scr_input_manager/scr_input_manager.yy",},},
+    {"id":{"name":"scr_iterator","path":"scripts/scr_iterator/scr_iterator.yy",},},
     {"id":{"name":"scr_keyframes","path":"scripts/scr_keyframes/scr_keyframes.yy",},},
     {"id":{"name":"scr_level","path":"scripts/scr_level/scr_level.yy",},},
     {"id":{"name":"scr_loader","path":"scripts/scr_loader/scr_loader.yy",},},

@@ -129,6 +129,7 @@
     {"name":"scr_globals","order":62,"path":"scripts/scr_globals/scr_globals.yy",},
     {"name":"scr_glue","order":3,"path":"scripts/scr_glue/scr_glue.yy",},
     {"name":"scr_input_manager","order":4,"path":"scripts/scr_input_manager/scr_input_manager.yy",},
+    {"name":"scr_iterator","order":9,"path":"scripts/scr_iterator/scr_iterator.yy",},
     {"name":"scr_keyframes","order":7,"path":"scripts/scr_keyframes/scr_keyframes.yy",},
     {"name":"scr_level","order":16,"path":"scripts/scr_level/scr_level.yy",},
     {"name":"scr_loader","order":34,"path":"scripts/scr_loader/scr_loader.yy",},
