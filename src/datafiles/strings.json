@@ -1,0 +1,55 @@
+{
+	"_": "null",
+	"game-name": "nullstars",
+	
+	"menu-i-close": "close",
+	"menu-i-back": "back",
+	"menu-i-map": "map",
+	"menu-i-setting": "settings",
+	"menu-i-debug": "debug",
+	"menu-i-exit": "exit",
+	
+	"menu_setting-i-graphics": "graphics",
+	"menu_setting-i-performance": "performance",
+	"menu_setting-i-accessibility": "accessibility",
+	"menu_setting-i-sound": "sound",
+	
+	"menu_setting-i-common-on": "on",
+	"menu_setting-i-common-off": "off",
+	"menu_setting-i-common-none": "none",
+	
+	"menu_setting_graphic-i-winscale": "window scale",
+	"menu_setting_graphic-h-winscale": "allows you to set the window scale.",
+	
+	"menu_setting_graphic-i-fullscreen": "fullscreen",
+	"menu_setting_graphic-i-fullscreen-exclusive": "exclusive",
+	"menu_setting_graphic-i-fullscreen-borderless": "borderless",
+	"menu_setting_graphic-h-fullscreen": "set the fullscreen.\n'exclusive' may run faster than 'borderless'.",
+	
+	"menu_setting_graphic-i-screenshake": "screen shake",
+	"menu_setting_graphic-h-screenshake": "set the camera screen shake modifier.",
+	
+	"menu_setting_graphic-i-light": "lights",
+	"menu_setting_graphic-i-light-simple": "simple",
+	"menu_setting_graphic-i-light-shadow": "shadow",
+	"menu_setting_graphic-h-light": "in weaker graphics cards, lights may be the primary cause of high gpu usage.\n- 'shadows' enables all lights.\n- 'simple' keeps lights, but disables shadow casting. if you have performance problems, this is often good enough.\n- 'none' disables lights entirely.",
+	
+	"menu_setting_graphic-i-reflection": "reflections",
+	"menu_setting_graphic-h-reflection": "toggles background and puddle reflections.\ndisabling can save some gpu usage.",
+	
+	"menu_setting_graphic-i-bloom": "bloom",
+	"menu_setting_graphic-h-bloom": "toggles the bloom post-processing pass.\ndisabling can save some gpu usage.",
+	
+	"game-tablet-0": "-- crystals\n* insert words here",
+	"game-tablet-1": "omega count how many sand is in this desert\nOKAY ONE. TWO. THREE. FOUR",
+	"game-tablet-2": "<-- exit\n\nsorry you didn't enjoy what was here. you may leave.",
+	
+	"game-tablet-dialog0-0": "Do you think any of this is worth it? Worth the time, energy? I'm tired.",
+	"game-tablet-dialog0-1": "So you want to give up? That's that?",
+	"game-tablet-dialog0-2": "Yes.",
+	"game-tablet-dialog0-3": "I do think living is worth the energy. We get to talk to people we love, and look at sunsets, and eat cherries. The burden of thought is miniscule to these pleasures.\nYou agree.",
+	"game-tablet-dialog0-4": "But you're happy; I'm not. Maybe I will be. But what say you, if I concluded that giving up now and avoiding this pain outweighed the potential excellence of happiness?",
+	"game-tablet-dialog0-5": "I don't know if I could say anything.",
+	"game-tablet-dialog0-6": "Which scares me.",
+	"game-tablet-dialog0-7": "I'm going to the market to get cherries.\nEven across the room, in the dark, I can see your eyes perk up. Let's go.",
+}

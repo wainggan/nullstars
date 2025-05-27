@@ -1,5 +1,5 @@
-*/level-backups/*
-assets/sounds/*.wav
-src/datafiles/*
+map/backup/*
+assets/export/*
+src/datafiles/world/*
 src/Build/*
 bin/*

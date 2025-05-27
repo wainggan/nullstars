@@ -36,7 +36,7 @@ enum LoaderProgress {
 /// responsible for all level loading related operations
 function Loader() constructor {
 	
-	var _buffer = buffer_load("world.bin");
+	var _buffer = buffer_load("world/world.bin");
 	if _buffer == -1 {
 		LOG(Log.error, $"Loader(): file 'world.bin' doesn't exist");
 		LOG(Log.error, "what do you even do about this?");
@@ -59,7 +59,7 @@ function Loader() constructor {
 			y: _room.y,
 			width: _room.width,
 			height: _room.height,
-			name: $"room/{_room.name}.bin",
+			name: $"world/room/{_room.name}.bin",
 			data: undefined,
 		};
 	}
