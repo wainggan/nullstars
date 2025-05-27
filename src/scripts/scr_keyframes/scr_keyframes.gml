@@ -196,7 +196,7 @@ function KeyframeRespawn(_force = false, _pre = false) : Keyframe() constructor 
 				state = 5;
 			}
 		} else if state == 5 {
-			instance_create_layer(_x_target, _y_target - 16, "Instances", obj_player);
+			instance_create_layer(_x_target, _y_target, "Instances", obj_player);
 			state = 6;
 		} else if state == 6 {
 			pet.time = approach(pet.time, 0, 0.1);
