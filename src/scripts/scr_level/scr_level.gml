@@ -788,7 +788,7 @@ function Level(_id, _x, _y, _width, _height) constructor {
 			}
 		};
 		
-		array_push(_out, new LoaderOptionParsePart(0, _loader, _level, _bin_id, self, __fn_front));
+		array_push(_out, new LoaderOptionParsePart(1, _loader, _level, _bin_id, self, __fn_front));
 		
 		
 		static __fn_tiles_below = function (_self, _buffer) {
