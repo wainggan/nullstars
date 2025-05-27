@@ -842,7 +842,7 @@ state_base.set("step", function () {
 		}
 		
 		if y_vel > 0 {
-			if y_vel > 1 {
+			if y_vel > 1 && !state.is(state_dash) {
 				scale_x = 1.2;
 				scale_y = 0.8;
 				game_sound_play(sfx_pop_1);
@@ -1207,7 +1207,7 @@ state_ledge.set("enter", function(){
 
 action_dash_end = function() {
 
-	if y_vel <= 0 {
+	if y_vel < 0 {
 		y_vel = dash_dir_y * 3;
 	}
 	
