@@ -188,7 +188,7 @@ function KeyframeRespawn(_force = false, _pre = false) : Keyframe() constructor 
 				state = 3;
 			}
 		} else if state == 3 {
-			var _constrain = global.game.camera.constrain(_x_target, _y_target);
+			var _constrain = global.game.camera.constrain(_x_target, _y_target - 33);
 			global.game.camera.move(_constrain.x, _constrain.y, false);
 			state = 4;
 		} else if state == 4 {
