@@ -204,6 +204,9 @@ function KeyframeRespawn(_force = false, _pre = false) : Keyframe() constructor 
 				return true;
 			}
 		} else if state == 7 {
+			// fuck me
+			state = 8;
+		} else if state == 8 {
 			instance_create_layer(_x_target, _y_target, "Instances", obj_player);
 			return true;
 		} else {
