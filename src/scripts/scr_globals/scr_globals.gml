@@ -59,3 +59,8 @@ global.config = {
 // if the distance between player and checkpoint is larger than this, respawning will cause a screenfade
 #macro GAME_RESPAWN_FADE_THRESHOLD 3072
 
+// slows down level loading
+#macro DEBUG_LOAD_SLOW_ENABLE false 
+#macro DEBUG_LOAD_SLOW_FILE 30
+#macro DEBUG_LOAD_SLOW_PARSE 50
+

@@ -377,6 +377,10 @@ function LoaderOptionFile(_level) : LoaderOption(_level, 0) constructor {
 	complete = false;
 	state = 0;
 	
+	if DEBUG_LOAD_SLOW_ENABLE {
+		slowdown = DEBUG_LOAD_SLOW_FILE;
+	}
+	
 	level.loaded = LoaderProgress.prepping;
 	
 	LOG(Log.note, $"Loader(): created LoaderOptionFile {level.id}");
@@ -394,6 +398,12 @@ function LoaderOptionFile(_level) : LoaderOption(_level, 0) constructor {
 			return LoaderOptionStatus.wait;
 		}
 		
+		if DEBUG_LOAD_SLOW_ENABLE {
+			if slowdown-- > 0 {
+				return LoaderOptionStatus.wait;
+			}
+		}
+		
 		return LoaderOptionStatus.complete;
 	};
 
@@ -402,8 +412,6 @@ function LoaderOptionFile(_level) : LoaderOption(_level, 0) constructor {
 		
 		var _bin_id = _loader.bin_top++;
 		_loader.bins[$ _bin_id] = [bin, 1];
-		
-		LOG(Log.note, $"Loader(): producing LoaderOptionParse with {_bin_id}");
 		
 		static __out = array_create(1);
 		__out[0] = new LoaderOptionParse(level, _bin_id);
@@ -457,7 +465,17 @@ function LoaderOptionParsePart(_priority, _loader, _level, _bin_id, _self, _call
 	this = _self;
 	callback = _callback;
 	
+	if DEBUG_LOAD_SLOW_ENABLE {
+		slowdown = DEBUG_LOAD_SLOW_PARSE;
+	}
+	
 	static process = function (_loader) {
+		if DEBUG_LOAD_SLOW_ENABLE {
+			if slowdown-- > 0 {
+				return LoaderOptionStatus.running;
+			}
+		}
+		
 		callback(this, _loader.bins[$ bin_id][0]);
 		
 		_loader.bins[$ bin_id][1] -= 1;
