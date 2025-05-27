@@ -47,8 +47,9 @@ function string_mask(_mask) {
 }
 
 /// @arg {string} _uid
+/// @return {id.Instance} description
 function level_get_instance(_uid) {
-	return global.entities[$ _uid];
+	return global.entities[$ _uid] ?? noone;
 }
 
 function level_ldtk_field_item(_val, _type) {

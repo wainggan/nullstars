@@ -849,7 +849,7 @@ state_base.set("step", function () {
 	};
 	actor_move_y(y_vel, __collide_y);
 	
-	// if still colliding, your inside a wall...
+	// if still colliding, you're inside a wall...
 	// escape!!
 	if actor_collision(x, y) {
 		var _out = false;

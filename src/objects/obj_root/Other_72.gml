@@ -1,4 +1,4 @@
-show_debug_message("goo")
+
 for (var i = 0; i < array_length(async_listen); i++) {
 	var _item = async_listen[i];
 	if ds_map_find_value(async_load, "id") == _item.load_id {
