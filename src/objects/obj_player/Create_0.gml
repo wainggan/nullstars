@@ -122,17 +122,24 @@ walljump_solid = noone;
 walljump_solid_x = 0;
 walljump_solid_y = 0;
 
+// direction of dash (-1 | 0 | 1)
 dash_dir_x = 0;
 dash_dir_y = 0;
+// speed of dash
 dash_dir_x_vel = 0;
 dash_dir_y_vel = 0;
+// speed before dash
 dash_pre_x_vel = 0;
 dash_pre_y_vel = 0;
+// frames left to dash
 dash_timer = 0;
+// how long has dash been happening?
 dash_frame = 0;
 dash_grace = 0;
 dash_grace_kick = 0;
 dash_recover = 0;
+// player should long jump on the next frame
+dash_jump = false;
 
 swim_dir = 0;
 swim_spd = 0;
@@ -1255,6 +1262,8 @@ state_dash.set("enter", function() {
 	dash_grace = 14;
 	dash_recover = 10;
 	
+	dash_jump = false;
+	
 	game_sound_play(sfx_dash);
 	
 })
@@ -1326,7 +1335,9 @@ state_dash.set("enter", function() {
 	dash_frame += 1;
 	dash_timer -= 1;
 	
-	if buffer_jump > 0 {
+	
+	// @todo: maybe this sucks
+	if dash_jump {
 		if grace > 0 {
 			if dash_dir_y != -1 {
 				action_dash_end();
@@ -1334,22 +1345,42 @@ state_dash.set("enter", function() {
 				state.change(state_free);
 				return;
 			}
-		} else {
-			if get_check_wall(dir) {
-				action_dash_end();
-				if dash_dir_y == -1 {
-					action_dashjump_wall(_kh, dir);
-				} else {
-					action_walljump();
-				}
-				state.change(state_free);
-				return;
+		} else if get_check_wall(dir) { 
+			action_dash_end();
+			if dash_dir_y == -1 {
+				action_dashjump_wall(_kh, dir);
+			} else {
+				action_walljump();
 			}
+			state.change(state_free);
+			return;
+		} else {
 			if dash_timer <= 0 && (dash_dir_y != -1 || _kh != dir) {
 				action_dash_end();
 				action_dashjump(_kh == 0 && dash_dir_y == 1 ? dir : _kh);
 				state.change(state_free);
 				return;
+			}
+		}
+		dash_jump = false;
+	}
+	
+	if buffer_jump > 0 {
+		if grace > 0 {
+			if dash_dir_y != -1 {
+				dash_jump = true;
+				dash_timer += 1;
+				game_set_pause(2);
+			}
+		} else if get_check_wall(dir) { 
+			dash_jump = true;
+			dash_timer += 1;
+			game_set_pause(2);
+		} else {
+			if dash_timer <= 0 && (dash_dir_y != -1 || _kh != dir) {
+				dash_jump = true;
+				dash_timer += 1;
+				game_set_pause(2);
 			}
 		}
 	}
