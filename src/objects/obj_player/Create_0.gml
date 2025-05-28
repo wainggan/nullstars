@@ -923,8 +923,11 @@ state_base.set("step", function () {
 	dash_grace_kick -= 1;
 	vel_grace_timer -= 1;
 	
-	if state.is(state_free) {
-		if INPUT.check_pressed("menu") && (place_meeting(x, y, obj_checkpoint) || place_meeting(x, y, obj_checkpoint_dyn)) && !nat_crouch() {
+	if state.is(state_free) || state.is(state_swim) {
+		if INPUT.check_pressed("menu") &&
+			(place_meeting(x, y, obj_checkpoint) || place_meeting(x, y, obj_checkpoint_dyn)) &&
+		!nat_crouch() &&
+		!state.is(state_swim) {
 			state.change(state_menu);
 			return;
 		} else if INPUT.check("menu") {
@@ -933,7 +936,7 @@ state_base.set("step", function () {
 				game_player_kill();
 			}
 			
-			if INPUT.check_pressed("menu") && onground {
+			if INPUT.check_pressed("menu") && (onground || state.is(state_swim)) {
 				if respawn_dyn <= 0 {
 					respawn_dyn = 17;
 				} else {
