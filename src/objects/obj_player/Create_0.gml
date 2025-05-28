@@ -157,6 +157,7 @@ cam_ground_x = x;
 cam_ground_y = y;
 
 respawn_timer = 0;
+respawn_dyn = 0;
 
 
 #region animation
@@ -923,13 +924,28 @@ state_base.set("step", function () {
 	vel_grace_timer -= 1;
 	
 	if state.is(state_free) {
-		if INPUT.check_pressed("menu") && place_meeting(x, y, obj_checkpoint) && !nat_crouch() {
+		if INPUT.check_pressed("menu") && (place_meeting(x, y, obj_checkpoint) || place_meeting(x, y, obj_checkpoint_dyn)) && !nat_crouch() {
 			state.change(state_menu);
 			return;
 		} else if INPUT.check("menu") {
 			respawn_timer += 1;
 			if respawn_timer > 17 {
 				game_player_kill();
+			}
+			
+			if INPUT.check_pressed("menu") && onground {
+				if respawn_dyn <= 0 {
+					respawn_dyn = 17;
+				} else {
+					respawn_timer = 0;
+					respawn_dyn = 0;
+					game_checkpoint_set_dyn(x, y);
+					
+					game_set_pause(4);
+					game_render_particle(x, y - 16, ps_player_death_1);
+					
+					game_render_wave(x, y - 16, 256, 60, 0.8, spr_wave_sphere);
+				}
 			}
 		} else {
 			respawn_timer = approach(respawn_timer, 0, 2);
@@ -938,6 +954,7 @@ state_base.set("step", function () {
 	} else {
 		respawn_timer = approach(respawn_timer, 0, 2);
 	}
+	respawn_dyn -= 1;
 	
 	if place_meeting(x, y, obj_flag_stop) {
 		state.change(state_stuck);
@@ -1571,7 +1588,7 @@ state_menu.set("enter", function() {
 		return;
 	}
 	
-	if !place_meeting(x, y, obj_checkpoint) {
+	if !place_meeting(x, y, obj_checkpoint) && !place_meeting(x, y, obj_checkpoint_dyn) {
 		global.game.menu.system.stop();
 		state.change(state_free);
 		return;

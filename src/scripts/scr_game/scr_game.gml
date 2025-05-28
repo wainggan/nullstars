@@ -98,6 +98,18 @@ function Game() constructor {
 		}
 		
 		camera.update(self);
+		
+		if !game_checkpoint_get_is_index() {
+			var _dyn = game_checkpoint_get_dyn();
+			if !instance_exists(obj_checkpoint_dyn) {
+				instance_create_layer(_dyn.x, _dyn.y - 20, "Instances", obj_checkpoint_dyn);
+			} else {
+				obj_checkpoint_dyn.x = _dyn.x;
+				obj_checkpoint_dyn.y = _dyn.y - 20;
+			}
+		} else {
+			instance_destroy(obj_checkpoint_dyn);
+		}
 	};
 	
 	static unpack = function() {
@@ -115,13 +127,6 @@ function Game() constructor {
 	
 	level.setup();
 	unpack();
-	
-	// @todo: this fucking sucks
-	var _checkpoint = game_checkpoint_ref();
-	var _x_target = _checkpoint.x;
-	var _y_target = _checkpoint.y;
-	var _constrain = camera.constrain(_x_target, _y_target);
-	camera.move(_constrain.x, _constrain.y, false);
 	
 	add_timeline(
 		new Timeline()
@@ -228,7 +233,14 @@ function GameState() constructor {
 
 function GameHandleCheckpoints() constructor {
 	list = {};
+	
+	// 0 | 1
+	current_type = 0;
+	// current_type == 0
 	current = "intro-0";
+	// current_type == 1
+	current_x = 0;
+	current_y = 0;
 	
 	static unpack = function() {
 		current = global.data.location;
@@ -269,19 +281,52 @@ function GameHandleCheckpoints() constructor {
 			collected: false,
 			deaths: 0,
 		};
-	}
-	static get = function() {
-		return current;
-	}
-	static ref = function(_index) {
+	};
+	static get_index = function () {
+		return current_type == 0 ? current : undefined;
+	};
+	static get_dyn = function () {
+		static __out = {
+			x: 0,
+			y: 0,
+		};
+		__out.x = current_x;
+		__out.y = current_y;
+		return current_type == 1 ? __out : undefined;
+	};
+	static ref = function (_index) {
 		return list[$ _index].object;
-	}
-	static data = function(_index) {
+	};
+	static data = function (_index) {
 		return list[$ _index];
-	}
-	static set = function(_index) {
+	};
+	static set_index = function (_index) {
+		current_type = 0;
 		current = _index;
-	}
+	};
+	static set_dyn = function (_x, _y) {
+		current_type = 1;
+		current_x = _x;
+		current_y = _y;
+	};
+	
+	static pos = function () {
+		static __out = {
+			x: 0,
+			y: 0,
+		};
+		if current_type == 0 {
+			var _ref = self.ref(self.get_index());
+			__out.x = _ref.x;
+			__out.y = _ref.y;
+		} else {
+			ASSERT(current_type == 1);
+			var _dyn = self.get_dyn();
+			__out.x = _dyn.x;
+			__out.y = _dyn.y;
+		}
+		return __out;
+	};
 	
 }
 function GameHandleGates() constructor {

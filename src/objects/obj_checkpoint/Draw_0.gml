@@ -11,7 +11,7 @@ if instance_exists(light) {
 		light.color = #ddddff
 		light.intensity = 0.6
 	}
-	if game_checkpoint_get() == index {
+	if game_checkpoint_get_index() == index {
 		_image = 1;
 		light.color = #ee99ff
 		light.intensity = 1

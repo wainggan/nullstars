@@ -47,6 +47,7 @@
     {"name":"obj_button","order":26,"path":"objects/obj_button/obj_button.yy",},
     {"name":"obj_camera_parent","order":1,"path":"objects/obj_camera_parent/obj_camera_parent.yy",},
     {"name":"obj_camera_room","order":2,"path":"objects/obj_camera_room/obj_camera_room.yy",},
+    {"name":"obj_checkpoint_dyn","order":38,"path":"objects/obj_checkpoint_dyn/obj_checkpoint_dyn.yy",},
     {"name":"obj_checkpoint","order":10,"path":"objects/obj_checkpoint/obj_checkpoint.yy",},
     {"name":"obj_dash","order":7,"path":"objects/obj_dash/obj_dash.yy",},
     {"name":"obj_decor_dripping","order":6,"path":"objects/obj_decor_dripping/obj_decor_dripping.yy",},

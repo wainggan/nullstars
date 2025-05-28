@@ -120,7 +120,7 @@ function KeyframeCamera(_from_x, _from_y, _to_x, _to_y, _speed) : Keyframe() con
 }
 
 function KeyframeRespawn(_force = false, _pre = false) : Keyframe() constructor {
-	checkpoint = noone;
+	checkpoint = undefined;
 	state = 0;
 	pet = noone;
 	force = _force;
@@ -136,8 +136,8 @@ function KeyframeRespawn(_force = false, _pre = false) : Keyframe() constructor 
 	};
 	
 	static init = function () {
-		checkpoint = game_checkpoint_ref();
-		ASSERT(instance_exists(checkpoint));
+		checkpoint = game_checkpoint_pos();
+		ASSERT(checkpoint != undefined);
 		
 		var _fade = false;
 		

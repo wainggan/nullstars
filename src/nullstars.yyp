@@ -145,6 +145,7 @@
     {"id":{"name":"obj_camera_focus","path":"objects/obj_camera_focus/obj_camera_focus.yy",},},
     {"id":{"name":"obj_camera_parent","path":"objects/obj_camera_parent/obj_camera_parent.yy",},},
     {"id":{"name":"obj_camera_room","path":"objects/obj_camera_room/obj_camera_room.yy",},},
+    {"id":{"name":"obj_checkpoint_dyn","path":"objects/obj_checkpoint_dyn/obj_checkpoint_dyn.yy",},},
     {"id":{"name":"obj_checkpoint","path":"objects/obj_checkpoint/obj_checkpoint.yy",},},
     {"id":{"name":"obj_dash","path":"objects/obj_dash/obj_dash.yy",},},
     {"id":{"name":"obj_decor_dripping","path":"objects/obj_decor_dripping/obj_decor_dripping.yy",},},
