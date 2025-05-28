@@ -848,7 +848,7 @@ state_base.set("step", function () {
 		}
 		
 		if y_vel > 0 {
-			if y_vel > 1 && !state.is(state_dash) {
+			if state.is(state_free) && y_vel > 1 {
 				scale_x = 1.2;
 				scale_y = 0.8;
 				game_sound_play(sfx_pop_1);
