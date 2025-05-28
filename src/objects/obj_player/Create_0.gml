@@ -140,6 +140,9 @@ dash_grace_kick = 0;
 dash_recover = 0;
 // player should long jump on the next frame
 dash_jump = false;
+// increases when dashing on the ground, lowers when not dashing, reset after jumping
+// reduces the effectiveness of reverse dashing
+dash_stale = 0;
 
 swim_dir = 0;
 swim_spd = 0;
@@ -512,6 +515,7 @@ action_jump_shared = function() {
 	
 	dash_grace = 0;
 	dash_grace_kick = 0;
+	dash_stale = 0;
 	
 	hold_jump_key_timer = 0;
 	hold_jump_vel = defs.terminal_vel;
@@ -790,6 +794,8 @@ state_base.set("step", function () {
 	if (grace > 0 && dash_recover <= 0) || (state.is(state_ledge)) {
 		dash_left = defs.dash_total;
 	}
+	
+	dash_stale = approach(dash_stale, 0, 3 / 60);
 	
 	state.child();
 	
@@ -1223,7 +1229,7 @@ action_dash_end = function() {
 		if sign(dash_dir_x_vel) == sign(dash_pre_x_vel) {
 			x_vel = max(lerp(abs(dash_pre_x_vel), abs(dash_dir_x_vel) - 1, 0.1), 8) * sign(x_vel);
 		} else {
-			x_vel = max(lerp(abs(dash_pre_x_vel), abs(dash_dir_x_vel) - 1, 0.9), 8) * sign(x_vel);
+			x_vel = max(lerp(abs(dash_pre_x_vel), abs(dash_dir_x_vel) - 1, 0.1 + 0.8 * clamp(1 - (dash_stale - 2) / 3, 0, 1)), 8) * sign(x_vel);
 		}
 	}
 	
@@ -1257,6 +1263,8 @@ state_dash.set("enter", function() {
 	dash_frame = 0; // this is stupid
 	dash_grace = 14;
 	dash_recover = 10;
+	
+	dash_stale += 1;
 	
 	dash_jump = false;
 	
