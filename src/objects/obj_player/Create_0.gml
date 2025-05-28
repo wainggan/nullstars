@@ -1422,6 +1422,10 @@ state_swim.set("step", function() {
 	var _kh = INPUT.check("right") - INPUT.check("left");
 	var _kv = INPUT.check("down") - INPUT.check("up");
 	
+	if get_can_uncrouch() {
+		nat_crouch(false);
+	}
+	
 	if _kh != 0 {
 		dir = _kh;
 	}
