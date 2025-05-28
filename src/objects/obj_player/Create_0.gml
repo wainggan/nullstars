@@ -926,8 +926,9 @@ state_base.set("step", function () {
 	if state.is(state_free) || state.is(state_swim) {
 		if INPUT.check_pressed("menu") &&
 			(place_meeting(x, y, obj_checkpoint) || place_meeting(x, y, obj_checkpoint_dyn)) &&
-		!nat_crouch() &&
-		!state.is(state_swim) {
+			!nat_crouch() &&
+			!state.is(state_swim)
+		{
 			state.change(state_menu);
 			return;
 		} else if INPUT.check("menu") {
