@@ -2,16 +2,17 @@
 var _cam = game_camera_get();
 
 
-if anim_time > 0 {
+if anim_time_main > 0 {
 	
 	var _pos_x = WIDTH / 2,
 		_pos_y = 40;
 	
 	// terp(1, 0, Tween.Quart, anim_time) * 80
 	
-	var _anim0 = tween(Tween.Quart, anim_time);
-	var _anim1 = tween(Tween.Quart, clamp(2 * (anim_time - 0.5), 0, 1));
-	var _anim2 = tween(Tween.Back, anim_time);
+	var _anim0 = tween(Tween.Quart, anim_time_main);
+	var _anim1 = tween(Tween.Quart, clamp(2 * (anim_time_main - 0.5), 0, 1));
+	var _anim2 = tween(Tween.Back, anim_time_main);
+	var _animc = hermite(anim_time_close);
 	
 	surface_set_target(surf_ping);
 	draw_clear_alpha(c_black, 0);
@@ -32,12 +33,16 @@ if anim_time > 0 {
 	draw_sprite_stretched_ext(spr_timer_background, 0, _pos_x - 256 - 16, _pos_y + 8 - 1, (256 - 16) * _com, 16, #333344, 1);
 	draw_sprite_stretched_ext(spr_timer_background, 0, _pos_x + 32 + (256 - 16)* (1 - _com), _pos_y + 8 - 1, 256, 16, #333344, 1);
 	
-	draw_sprite_tiled_area_ext(spr_timer_water, 0, wave(-24, 24, 11), _pos_y, _pos_x - 256, _pos_y, _pos_x + 256, _pos_y + 48, #111126, 1);
+	draw_sprite_ext(spr_timer_background, 0, _pos_x, _pos_y + 16, 32 * _animc, 4, 0, #ffffff, 1);
+	
+	var _colw = merge_color(#111126, #eeeeff, _animc);
+	draw_sprite_tiled_area_ext(spr_timer_water, 0, wave(-24, 24, 11), _pos_y, _pos_x - 256, _pos_y, _pos_x + 256, _pos_y + 48, _colw, 1);
 	
 	draw_set_halign(fa_center);
 	draw_set_font(ft_timer);
 	
-	draw_text_ext_transformed(_pos_x, _pos_y - 2, cache_time_str, -1, -1, 2, 2, 0);
+	var _colt = merge_color(#ffffff, #000000, _animc);
+	draw_text_ext_transformed_color(_pos_x, _pos_y - 2, cache_time_str, -1, -1, 2, 2, 0, _colt, _colt, _colt, _colt, 1);
 	
 	draw_set_halign(fa_left);
 	
