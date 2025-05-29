@@ -87,18 +87,29 @@ if config.background_timer && game_timer_running() {
 	draw_set_valign(fa_middle);
 	draw_set_font(ft_timer);
 	
-	var _col = #aaaaaa;
+	var _col = #111111;
 	
-	draw_text_ext_transformed_color(WIDTH / 2, HEIGHT / 2, cache_time_str, -1, -1, 5, 5, 0, _col, _col, _col, _col, 1);
+	draw_text_ext_transformed_color(WIDTH / 2, HEIGHT / 2, cache_time_str, -1, -1, 18, 18, 0, _col, _col, _col, _col, 1);
 	
-	_col = #cccccc;
+	_col = #444444;
+	var _inc = 256;
+	
+	for (var _y = -_inc + global.time % _inc; _y < HEIGHT + _inc; _y += _inc) {
+		draw_text_ext_transformed_color(WIDTH / 2, _y, cache_time_str, -1, -1, 10, 10, 0, _col, _col, _col, _col, 1);
+	}
+	
+	_col = #bbbbbb;
+	
+	draw_text_ext_transformed_color(WIDTH / 2, HEIGHT / 2, cache_time_str, -1, -1, 6, 6, 0, _col, _col, _col, _col, 1);
+	
+	_col = #aaaaaa;
 	
 	draw_sprite_ext(spr_pixel, 0, 0, HEIGHT / 2 - 120 - 20, WIDTH, 20, 0, _col, 1);
 	draw_sprite_ext(spr_pixel, 0, 0, HEIGHT / 2 + 120, WIDTH, 20, 0, _col, 1);
 	
 	gpu_set_blendmode(bm_subtract);
 	
-	var _inc = 48;
+	_inc = 48;
 	var _off = global.time div _inc;
 	
 	for (var _x = -_inc, i = 0; _x < WIDTH + _inc; {
@@ -106,8 +117,9 @@ if config.background_timer && game_timer_running() {
 		i++;
 	}) {
 		var _rad0 = wave(22, 30, 12, (i - _off) / pi);
+		var _rad1 = wave(22, 30, 12, (i + _off) / pi);
 		draw_circle_sprite(_x + global.time % _inc, HEIGHT / 2 - 120 - 10, _rad0, c_white, 1);
-		draw_circle_sprite(_x + -global.time % _inc, HEIGHT / 2 + 120 + 10, _rad0, c_white, 1);
+		draw_circle_sprite(_x + -global.time % _inc, HEIGHT / 2 + 120 + 10, _rad1, c_white, 1);
 	}
 	
 	gpu_set_blendmode(bm_normal);
