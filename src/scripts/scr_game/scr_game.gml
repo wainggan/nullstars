@@ -212,8 +212,6 @@ function GameState() constructor {
 		with obj_Entity {
 			reset();
 		}
-		
-		instance_create_layer(0, 0, "Instances", obj_show_timer);
 	};
 	
 	static timer_stop = function () {

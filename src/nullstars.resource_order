@@ -81,7 +81,6 @@
     {"name":"obj_root","order":1,"path":"objects/obj_root/obj_root.yy",},
     {"name":"obj_show_name_area","order":18,"path":"objects/obj_show_name_area/obj_show_name_area.yy",},
     {"name":"obj_show_name_music","order":19,"path":"objects/obj_show_name_music/obj_show_name_music.yy",},
-    {"name":"obj_show_timer","order":15,"path":"objects/obj_show_timer/obj_show_timer.yy",},
     {"name":"obj_Solid","order":2,"path":"objects/obj_Solid/obj_Solid.yy",},
     {"name":"obj_speed_base","order":17,"path":"objects/obj_speed_base/obj_speed_base.yy",},
     {"name":"obj_speed_left","order":18,"path":"objects/obj_speed_left/obj_speed_left.yy",},

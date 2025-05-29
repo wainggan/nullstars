@@ -1,6 +1,21 @@
 
 var _cam = game_camera_get();
 
+
+if anim_time > 0 {
+	var _pos_x = _cam.w / 2,
+		_pos_y = 40;
+	_pos_y -= terp(1, 0, Tween.Quart, anim_time) * 80;
+	
+	draw_set_halign(fa_center);
+	draw_set_font(ft_timer);
+	
+	draw_text_ext_transformed(_pos_x, _pos_y, cache_time_str, -1, -1, 2, 2, 0);
+	
+	draw_set_halign(fa_left);
+}
+
+
 // holy shit please fucking kill me
 // ??????????
 var _x = 0;
