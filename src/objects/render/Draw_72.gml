@@ -79,7 +79,7 @@ if array_length(_lvl_onscreen) > 0 {
 	
 }
 
-if config.background_timer && anim_time > 0 {
+if config.background_timer && (anim_time > 0 || anim_time_main > 0) {
 	surface_set_target(surf_ping);
 	draw_clear_alpha(c_black, 0);
 	
@@ -132,6 +132,15 @@ if config.background_timer && anim_time > 0 {
 	game_render_blendmode_set(shd_blend_colordodge);
 	draw_surface(surf_ping, 0, 0);
 	game_render_blendmode_reset();
+	
+	var _anim3 = hermite(min(1 - anim_time_close, anim_time_main));
+	var _hei = 54;
+	_col = #68666a;
+	
+	gpu_set_blendmode_ext(bm_dest_color, bm_zero);
+	draw_sprite_ext(spr_pixel, 0, 0, 0, WIDTH, _hei * _anim3, 0, _col, 1);
+	draw_sprite_ext(spr_pixel, 0, 0, HEIGHT - _hei * _anim3, WIDTH, _hei, 0, _col, 1);
+	gpu_set_blendmode(bm_normal);
 	
 	surface_reset_target();
 }
