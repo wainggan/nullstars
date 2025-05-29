@@ -10,6 +10,9 @@
 
 event_inherited()
 
+x += 16;
+y += 32;
+
 glue_child_setup();
 glue_child_set_move(function (_x, _y) {
 	x = _x;

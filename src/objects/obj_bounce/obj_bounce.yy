@@ -36,8 +36,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_debug_bounce",
-    "path":"sprites/spr_debug_bounce/spr_debug_bounce.yy",
+    "name":"spr_bounce",
+    "path":"sprites/spr_bounce/spr_bounce.yy",
   },
   "spriteMaskId":null,
   "visible":true,

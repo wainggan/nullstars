@@ -189,6 +189,7 @@
     {"name":"spr_background_city0_lines","order":4,"path":"sprites/spr_background_city0_lines/spr_background_city0_lines.yy",},
     {"name":"spr_background_city0","order":3,"path":"sprites/spr_background_city0/spr_background_city0.yy",},
     {"name":"spr_background_star","order":2,"path":"sprites/spr_background_star/spr_background_star.yy",},
+    {"name":"spr_bounce","order":65,"path":"sprites/spr_bounce/spr_bounce.yy",},
     {"name":"spr_button","order":35,"path":"sprites/spr_button/spr_button.yy",},
     {"name":"spr_checkpoint","order":26,"path":"sprites/spr_checkpoint/spr_checkpoint.yy",},
     {"name":"spr_circle","order":51,"path":"sprites/spr_circle/spr_circle.yy",},

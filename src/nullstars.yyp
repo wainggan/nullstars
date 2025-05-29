@@ -309,6 +309,7 @@
     {"id":{"name":"spr_background_city0","path":"sprites/spr_background_city0/spr_background_city0.yy",},},
     {"id":{"name":"spr_background_clouds","path":"sprites/spr_background_clouds/spr_background_clouds.yy",},},
     {"id":{"name":"spr_background_star","path":"sprites/spr_background_star/spr_background_star.yy",},},
+    {"id":{"name":"spr_bounce","path":"sprites/spr_bounce/spr_bounce.yy",},},
     {"id":{"name":"spr_button","path":"sprites/spr_button/spr_button.yy",},},
     {"id":{"name":"spr_checkpoint","path":"sprites/spr_checkpoint/spr_checkpoint.yy",},},
     {"id":{"name":"spr_circle","path":"sprites/spr_circle/spr_circle.yy",},},
