@@ -21,3 +21,6 @@ glue_child_set_move(function (_x, _y) {
 
 cache_actors = ds_list_create();
 
+anim_bounce = 0;
+anim_vel = 0;
+
