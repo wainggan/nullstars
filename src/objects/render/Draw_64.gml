@@ -9,19 +9,37 @@ if anim_time > 0 {
 	
 	// terp(1, 0, Tween.Quart, anim_time) * 80
 	
+	var _anim0 = tween(Tween.Quart, anim_time);
+	var _anim1 = tween(Tween.Quart, clamp(2 * (anim_time - 0.5), 0, 1));
+	var _anim2 = tween(Tween.Back, anim_time);
+	
 	surface_set_target(surf_ping);
 	draw_clear_alpha(c_black, 0);
 	
-	draw_sprite_ext(spr_timer_background, 0, _pos_x, _pos_y + 16, 32, 1.5, 0, #000000, 1);
-	draw_sprite_ext(spr_timer_background, 0, _pos_x, _pos_y + 16, 10, 3, 0, #000000, 1);
+	draw_sprite_ext(spr_timer_background, 0, _pos_x, _pos_y + 16, 32 * _anim0, 1.5, 0, #000000, 1);
+	draw_sprite_ext(spr_timer_background, 0, _pos_x, _pos_y + 16, 10 * _anim0, 3 * _anim2, 0, #000000, 1);
 	
 	
 	gpu_set_colorwriteenable(true, true, true, false);
 	
-	draw_sprite_stretched_ext(spr_timer_background, 0, _pos_x - 256 - 16, _pos_y + 8 - 1, 256 - 16, 16, #444455, 1);
-	draw_sprite_stretched_ext(spr_timer_background, 0, _pos_x + 32, _pos_y + 8 - 1, 256, 16, #444455, 1);
+	var _com = 0;
+	if game_timer_running() {
+		_com = global.game.state.timer_current / global.game.state.timer_length;
+	} else {
+		_com = 1;
+	}
+	
+	draw_sprite_stretched_ext(spr_timer_background, 0, _pos_x - 256 - 16, _pos_y + 8 - 1, (256 - 16) * _com, 16, #333344, 1);
+	draw_sprite_stretched_ext(spr_timer_background, 0, _pos_x + 32 + (256 - 16)* (1 - _com), _pos_y + 8 - 1, 256, 16, #333344, 1);
+	
 	draw_sprite_tiled_area_ext(spr_timer_water, 0, wave(-24, 24, 11), _pos_y, _pos_x - 256, _pos_y, _pos_x + 256, _pos_y + 48, #111126, 1);
 	
+	draw_set_halign(fa_center);
+	draw_set_font(ft_timer);
+	
+	draw_text_ext_transformed(_pos_x, _pos_y - 2, cache_time_str, -1, -1, 2, 2, 0);
+	
+	draw_set_halign(fa_left);
 	
 	gpu_set_colorwriteenable(true, true, true, true);
 	
@@ -34,13 +52,6 @@ if anim_time > 0 {
 	shader_set_uniform_f(_u_texel, 1 / WIDTH, 1 / HEIGHT);
 	draw_surface_ext(surf_ping, 0, 0, 1, 1, 0, #ffffff, 1);
 	shader_reset();
-	
-	draw_set_halign(fa_center);
-	draw_set_font(ft_timer);
-	
-	draw_text_ext_transformed(_pos_x, _pos_y - 2, cache_time_str, -1, -1, 2, 2, 0);
-	
-	draw_set_halign(fa_left);
 	
 	
 }
