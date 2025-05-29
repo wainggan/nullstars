@@ -32,6 +32,19 @@ function draw_circle_sprite_outline(_x, _y, _r, _width = 1, _col = draw_get_colo
 	
 }
 
+/**
+draw an outline of a circle with thickness
+@arg {real} _x center of circle
+@arg {real} _y center of circle
+@arg {real} _radius the radius of the circle in pixels
+@arg {real} _thick thickness of the circle in pixels
+@arg {real} _percentage from 0 to 1, how much of the circle to draw
+@arg {real} _start angle to start drawing from
+@arg {bool} _anti true for counter-clockwise, false for clockwise
+@arg {constant.Color} _color color to use
+@arg {real} _alpha alpha to use
+@arg {real} _res resolution of the circle
+*/
 function draw_circle_outline_part(_x, _y, _radius, _thick, _percentage, _start, _anti, _color = draw_get_color(), _alpha = draw_get_alpha(), _res = 32) {
 
 	var _interval = 360 / _res;
@@ -43,20 +56,20 @@ function draw_circle_outline_part(_x, _y, _radius, _thick, _percentage, _start, 
 	draw_primitive_begin(pr_trianglestrip);
     
 	for (var i = 0; i < _percentage * _res; i++) {
-		var angle = _start + _interval * i * _anti;
-		var dir_x = dcos(angle);
-		var dir_y = -dsin(angle);
+		var _angle = _start + _interval * i * _anti;
+		var _dir_x = dcos(_angle);
+		var _dir_y = -dsin(_angle);
         
-		draw_vertex_color(_x + (_radius + _hthick) * dir_x, _y + (_radius + _hthick) * dir_y, _color, _alpha);
-		draw_vertex_color(_x + (_radius - _hthick) * dir_x, _y + (_radius - _hthick) * dir_y, _color, _alpha);
+		draw_vertex_color(_x + (_radius + _hthick) * _dir_x, _y + (_radius + _hthick) * _dir_y, _color, _alpha);
+		draw_vertex_color(_x + (_radius - _hthick) * _dir_x, _y + (_radius - _hthick) * _dir_y, _color, _alpha);
 	}
 	
-	var angle = _start + _interval * _percentage * _res * _anti;
-	var dir_x = dcos(angle);
-	var dir_y = -dsin(angle);
+	var _angle = _start + _interval * _percentage * _res * _anti;
+	var _dir_x = dcos(_angle);
+	var _dir_y = -dsin(_angle);
 	
-	draw_vertex_color(_x + (_radius + _hthick) * dir_x, _y + (_radius + _hthick) * dir_y, _color, _alpha);
-	draw_vertex_color(_x + (_radius - _hthick) * dir_x, _y + (_radius - _hthick) * dir_y, _color, _alpha);
+	draw_vertex_color(_x + (_radius + _hthick) * _dir_x, _y + (_radius + _hthick) * _dir_y, _color, _alpha);
+	draw_vertex_color(_x + (_radius - _hthick) * _dir_x, _y + (_radius - _hthick) * _dir_y, _color, _alpha);
 	
 	draw_primitive_end();
 }
