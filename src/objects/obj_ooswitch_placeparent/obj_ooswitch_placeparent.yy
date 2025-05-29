@@ -1,19 +1,23 @@
 {
   "$GMObject":"",
-  "%Name":"obj_ooswitch_place",
+  "%Name":"obj_ooswitch_placeparent",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":12,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":2,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":73,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_ooswitch_place",
+  "name":"obj_ooswitch_placeparent",
   "overriddenProperties":[],
   "parent":{
     "name":"oo",
     "path":"folders/objects/oo.yy",
   },
   "parentObjectId":{
-    "name":"obj_ooswitch_placeparent",
-    "path":"objects/obj_ooswitch_placeparent/obj_ooswitch_placeparent.yy",
+    "name":"obj_Exists",
+    "path":"objects/obj_Exists/obj_Exists.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

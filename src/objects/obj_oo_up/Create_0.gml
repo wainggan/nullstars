@@ -1,4 +1,4 @@
 
 event_inherited();
 
-oo = false;
+oo = 1;
