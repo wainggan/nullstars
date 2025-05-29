@@ -4,7 +4,7 @@ var _cam = game_camera_get();
 
 if anim_time_main > 0 {
 	var _pos_x = WIDTH / 2,
-		_pos_y = 40;
+		_pos_y = 0;
 	
 	// terp(1, 0, Tween.Quart, anim_time) * 80
 	
@@ -17,9 +17,9 @@ if anim_time_main > 0 {
 	draw_clear_alpha(c_black, 0);
 	
 	// long bar
-	draw_sprite_ext(spr_timer_background, 0, _pos_x, _pos_y + 16, 32 * _anim0, 1.5, 0, #000000, 1);
+	draw_sprite_ext(spr_timer_background, 0, WIDTH / 2, 0, 32 * _anim0, 3, 0, #000000, 1);
 	// main background
-	draw_sprite_ext(spr_timer_background, 0, _pos_x, _pos_y + 16, 11 * _anim0, 3 * _anim2, 0, #000000, 1);
+	draw_sprite_ext(spr_timer_background, 0, WIDTH / 2, 0, 12 * _anim0, 6 * _anim2, 0, #000000, 1);
 	
 	
 	gpu_set_colorwriteenable(true, true, true, false);
@@ -36,7 +36,7 @@ if anim_time_main > 0 {
 	draw_sprite_stretched_ext(spr_timer_background, 0, _pos_x + 32 + (256 - 16)* (1 - _com), _pos_y + 8 - 1, 256, 16, #333344, 1);
 	
 	// time close cover up
-	draw_sprite_ext(spr_timer_background, 0, _pos_x, _pos_y + 16, 32 * _animc, 4, 0, #ffffff, 1);
+	draw_sprite_ext(spr_timer_background, 0, _pos_x, _pos_y + 16, 32 * _animc, 6, 0, #ffffff, 1);
 	
 	// waves
 	var _colw = merge_color(#111126, #eeeeff, _animc);
@@ -47,7 +47,7 @@ if anim_time_main > 0 {
 	
 	// text
 	var _colt = merge_color(#ffffff, #000000, _animc);
-	draw_text_ext_transformed_color(_pos_x, _pos_y - 2, cache_time_str, -1, -1, 2, 2, 0, _colt, _colt, _colt, _colt, 1);
+	draw_text_ext_transformed_color(_pos_x, _pos_y + 5 - (1 - _anim2) * 16, cache_time_str, -1, -1, 2, 2, 0, _colt, _colt, _colt, _colt, 1);
 	
 	draw_set_halign(fa_left);
 	

@@ -135,7 +135,7 @@ if config.background_timer && (anim_time > 0 || anim_time_main > 0) {
 	
 	var _anim3 = hermite(min(1 - anim_time_close, anim_time_main));
 	var _hei = 54;
-	_col = #68666a;
+	_col = #78777a;
 	
 	gpu_set_blendmode_ext(bm_dest_color, bm_zero);
 	draw_sprite_ext(spr_pixel, 0, 0, 0, WIDTH, _hei * _anim3, 0, _col, 1);
