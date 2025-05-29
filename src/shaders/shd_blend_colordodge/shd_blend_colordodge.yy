@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_blend_colordodge",
+  "name":"shd_blend_colordodge",
+  "parent":{
+    "name":"blendmodes",
+    "path":"folders/graphics/shaders/blendmodes.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

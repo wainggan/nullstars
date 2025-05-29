@@ -9,7 +9,7 @@ var _pos_x = _cam_w / 2,
 
 _pos_y -= terp(1, 0, Tween.Quart, anim) * 80;
 
-draw_set_halign(fa_middle);
+draw_set_halign(fa_center);
 draw_set_font(ft_timer);
 
 var _seconds = floor(time / 60);

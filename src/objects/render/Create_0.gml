@@ -67,9 +67,13 @@ game_update_fullscreen(global.settings.graphic.fullscreen);
 
 matrix_identity = matrix_build_identity();
 
+cache_time = 0;
+cache_time_str = "";
+
 
 config = {
 	background: true,
+	background_timer: true,
 	tiles_decor: true,
 	
 	particles_atmosphere: true,

@@ -79,6 +79,41 @@ if array_length(_lvl_onscreen) > 0 {
 	
 }
 
+if config.background_timer && game_timer_running() {
+	surface_set_target(surf_ping);
+	draw_clear_alpha(c_black, 0);
+	
+	draw_set_halign(fa_center);
+	draw_set_valign(fa_middle);
+	draw_set_font(ft_timer);
+	
+	var _col = #aaaaaa;
+	
+	draw_text_ext_transformed_color(WIDTH / 2, HEIGHT / 2, cache_time_str, -1, -1, 5, 5, 0, _col, _col, _col, _col, 1);
+	
+	_col = #cccccc;
+	
+	draw_sprite_ext(spr_pixel, 0, 0, HEIGHT / 2 - 120 - 20, WIDTH, 20, 0, _col, 1);
+	draw_sprite_ext(spr_pixel, 0, 0, HEIGHT / 2 + 120, WIDTH, 20, 0, _col, 1);
+	
+
+	draw_set_halign(fa_left);
+	draw_set_valign(fa_top);
+	
+	
+	surface_reset_target();
+	
+	surface_set_target(surf_background);
+	
+	game_render_refresh();
+	game_render_blendmode_set(shd_blend_colordodge);
+	draw_surface(surf_ping, 0, 0);
+	game_render_blendmode_reset();
+	
+	surface_reset_target();
+}
+
+
 
 // -- set up background lights --
 

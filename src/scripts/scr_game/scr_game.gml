@@ -213,7 +213,7 @@ function GameState() constructor {
 			reset();
 		}
 		
-		instance_create_layer(0, 0, "Instances", obj_timer_render);
+		instance_create_layer(0, 0, "Instances", obj_show_timer);
 	};
 	
 	static timer_stop = function () {
