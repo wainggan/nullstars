@@ -3,16 +3,46 @@ var _cam = game_camera_get();
 
 
 if anim_time > 0 {
-	var _pos_x = _cam.w / 2,
+	
+	var _pos_x = WIDTH / 2,
 		_pos_y = 40;
-	_pos_y -= terp(1, 0, Tween.Quart, anim_time) * 80;
+	
+	// terp(1, 0, Tween.Quart, anim_time) * 80
+	
+	surface_set_target(surf_ping);
+	draw_clear_alpha(c_black, 0);
+	
+	draw_sprite_ext(spr_timer_background, 0, _pos_x, _pos_y + 16, 32, 1.5, 0, #000000, 1);
+	draw_sprite_ext(spr_timer_background, 0, _pos_x, _pos_y + 16, 10, 3, 0, #000000, 1);
+	
+	
+	gpu_set_colorwriteenable(true, true, true, false);
+	
+	draw_sprite_stretched_ext(spr_timer_background, 0, _pos_x - 256 - 16, _pos_y + 8 - 1, 256 - 16, 16, #444455, 1);
+	draw_sprite_stretched_ext(spr_timer_background, 0, _pos_x + 32, _pos_y + 8 - 1, 256, 16, #444455, 1);
+	draw_sprite_tiled_area_ext(spr_timer_water, 0, wave(-24, 24, 11), _pos_y, _pos_x - 256, _pos_y, _pos_x + 256, _pos_y + 48, #111126, 1);
+	
+	
+	gpu_set_colorwriteenable(true, true, true, true);
+	
+	surface_reset_target();
+	
+	draw_surface(surf_ping, 0, 0);
+	
+	shader_set(shd_outline)
+	var _u_texel = shader_get_uniform(shd_outline, "u_texel");
+	shader_set_uniform_f(_u_texel, 1 / WIDTH, 1 / HEIGHT);
+	draw_surface_ext(surf_ping, 0, 0, 1, 1, 0, #ffffff, 1);
+	shader_reset();
 	
 	draw_set_halign(fa_center);
 	draw_set_font(ft_timer);
 	
-	draw_text_ext_transformed(_pos_x, _pos_y, cache_time_str, -1, -1, 2, 2, 0);
+	draw_text_ext_transformed(_pos_x, _pos_y - 2, cache_time_str, -1, -1, 2, 2, 0);
 	
 	draw_set_halign(fa_left);
+	
+	
 }
 
 
