@@ -18,10 +18,6 @@ if _inst != noone && array_contains(target, _inst.object_index) {
 		
 		
 		anim_hit = 1;
-		
-		if _inst.object_index == obj_player with _inst {
-			dash_left = defs.dash_total;
-		}
 	}
 	hit = true;
 	hit_buffer = 12;
