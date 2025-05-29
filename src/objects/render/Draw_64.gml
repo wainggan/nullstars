@@ -32,14 +32,17 @@ if anim_time_main > 0 {
 	}
 	
 	// bar timer
-	draw_sprite_stretched_ext(spr_timer_background, 0, _pos_x - 256 - 16, _pos_y + 8 - 1, (256 - 16) * _com, 16, #333344, 1);
-	draw_sprite_stretched_ext(spr_timer_background, 0, _pos_x + 32 + (256 - 16)* (1 - _com), _pos_y + 8 - 1, 256, 16, #333344, 1);
+	//gpu_set_blendmode(bm_add);
+	var _colb = merge_color(#44444f, #000000, _animc);
+	draw_sprite_stretched_ext(spr_timer_background, 0, _pos_x - 256 - 16, _pos_y + 8 - 2, (256 + 16) * _com, 16, _colb, 1);
+	draw_sprite_stretched_ext(spr_timer_background, 0, _pos_x + (256 + 16) * (1 - _com), _pos_y + 8 - 2, 256 + 16, 16, _colb, 1);
+	//gpu_set_blendmode(bm_normal);
 	
 	// time close cover up
 	draw_sprite_ext(spr_timer_background, 0, _pos_x, _pos_y + 16, 32 * _animc, 6, 0, #ffffff, 1);
 	
 	// waves
-	var _colw = merge_color(#111126, #eeeeff, _animc);
+	var _colw = merge_color(#000000, #eeeef0, _animc);
 	draw_sprite_tiled_area_ext(spr_timer_water, 0, wave(-24, 24, 11), _pos_y, _pos_x - 256, _pos_y, _pos_x + 256, _pos_y + 48, _colw, 1);
 	
 	draw_set_halign(fa_center);
@@ -60,7 +63,8 @@ if anim_time_main > 0 {
 	shader_set(shd_outline)
 	var _u_texel = shader_get_uniform(shd_outline, "u_texel");
 	shader_set_uniform_f(_u_texel, 1 / WIDTH, 1 / HEIGHT);
-	draw_surface_ext(surf_ping, 0, 0, 1, 1, 0, #ffffff, 1);
+	var _colo = merge_color(#ffffff, #000000, _animc);
+	draw_surface_ext(surf_ping, 0, 0, 1, 1, 0, _colo, 1);
 	shader_reset();
 }
 
