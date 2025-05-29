@@ -314,7 +314,6 @@
     {"id":{"name":"spr_checkpoint","path":"sprites/spr_checkpoint/spr_checkpoint.yy",},},
     {"id":{"name":"spr_circle","path":"sprites/spr_circle/spr_circle.yy",},},
     {"id":{"name":"spr_debug_ball","path":"sprites/spr_debug_ball/spr_debug_ball.yy",},},
-    {"id":{"name":"spr_debug_bounce","path":"sprites/spr_debug_bounce/spr_debug_bounce.yy",},},
     {"id":{"name":"spr_debug_box","path":"sprites/spr_debug_box/spr_debug_box.yy",},},
     {"id":{"name":"spr_debug_camera_focus","path":"sprites/spr_debug_camera_focus/spr_debug_camera_focus.yy",},},
     {"id":{"name":"spr_debug_camera_room","path":"sprites/spr_debug_camera_room/spr_debug_camera_room.yy",},},

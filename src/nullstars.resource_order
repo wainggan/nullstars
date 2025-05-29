@@ -194,7 +194,6 @@
     {"name":"spr_checkpoint","order":26,"path":"sprites/spr_checkpoint/spr_checkpoint.yy",},
     {"name":"spr_circle","order":51,"path":"sprites/spr_circle/spr_circle.yy",},
     {"name":"spr_debug_ball","order":17,"path":"sprites/spr_debug_ball/spr_debug_ball.yy",},
-    {"name":"spr_debug_bounce","order":33,"path":"sprites/spr_debug_bounce/spr_debug_bounce.yy",},
     {"name":"spr_debug_box","order":9,"path":"sprites/spr_debug_box/spr_debug_box.yy",},
     {"name":"spr_debug_camera_room","order":1,"path":"sprites/spr_debug_camera_room/spr_debug_camera_room.yy",},
     {"name":"spr_debug_checkpoint","order":18,"path":"sprites/spr_debug_checkpoint/spr_debug_checkpoint.yy",},
