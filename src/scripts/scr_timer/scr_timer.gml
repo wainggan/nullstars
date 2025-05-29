@@ -23,7 +23,7 @@ function game_string_timer(_number) {
 	var _milliseconds = floor((_number / 60 * 1000) % 1000);
 	var _milliseconds_str = string(_milliseconds);
 	
-	while string_length(_milliseconds_str) < 3 _milliseconds_str += "0";
+	while string_length(_milliseconds_str) < 3 _milliseconds_str = "0" + _milliseconds_str;
 	
 	var _str = $"{_seconds_str} . {_milliseconds_str}";
 	
