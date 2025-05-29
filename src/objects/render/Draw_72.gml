@@ -93,31 +93,27 @@ if config.background_timer && anim_time > 0 {
 	
 	var _col = 0;
 	
+	_col = #222222;
+	var _inc = 256;
+	for (var _y = -_inc + global.time % _inc; _y < HEIGHT + _inc; _y += _inc) {
+		draw_text_ext_transformed_color(WIDTH / 2, _y, cache_time_str, -1, -1, 10, 10, 0, _col, _col, _col, _col, _anim1);
+	}
+	
 	_col = #aaaaaa;
 	draw_sprite_ext(spr_pixel, 0, 0, HEIGHT / 2 - 120 - 10 - 10 * _anim2, WIDTH, 20 * _anim2, 0, _col, 1);
 	draw_sprite_ext(spr_pixel, 0, 0, HEIGHT / 2 + 120 + 10 * (1 - _anim2), WIDTH, 20 * _anim2, 0, _col, 1);
 	
-	gpu_set_blendmode(bm_subtract);
-	
-	var _inc = 48;
+	_inc = 48;
 	var _off = global.time div _inc;
 	
 	for (var _x = -_inc, i = 0; _x < WIDTH + _inc; {
 		_x += _inc;
 		i++;
 	}) {
-		var _rad0 = wave(22, 32, 12, (i - _off) / pi);
-		var _rad1 = wave(22, 32, 12, (i + _off) / pi);
-		draw_circle_sprite(_x + global.time % _inc, HEIGHT / 2 - 120 - 10, _rad0, c_white, 1);
-		draw_circle_sprite(_x + -global.time % _inc, HEIGHT / 2 + 120 + 10, _rad1, c_white, 1);
-	}
-	
-	gpu_set_blendmode(bm_normal);
-
-	_col = #111111;
-	_inc = 256;
-	for (var _y = -_inc + global.time % _inc; _y < HEIGHT + _inc; _y += _inc) {
-		draw_text_ext_transformed_color(WIDTH / 2, _y, cache_time_str, -1, -1, 10, 10, 0, _col, _col, _col, _col, _anim0);
+		var _rad0 = round_ext(wave(6, 18, 12, (i - _off) / (pi * 2)), 2);
+		var _rad1 = round_ext(wave(6, 18, 12, (i + _off) / (pi * 2)), 2);
+		draw_circle_sprite(_x + global.time % _inc, HEIGHT / 2 - 120 - 10, _rad0, c_black, 1);
+		draw_circle_sprite(_x + -global.time % _inc, HEIGHT / 2 + 120 + 10, _rad1, c_black, 1);
 	}
 	
 	_col = #bbbbbb;
