@@ -1,2 +1,2 @@
 
-draw_sprite(sprite_index, touching, x, y)
+draw_sprite(sprite_index, touching, x, y);
