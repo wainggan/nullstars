@@ -24,6 +24,7 @@ if anim_time_main > 0 {
 	
 	gpu_set_colorwriteenable(true, true, true, false);
 	
+	
 	var _com = 0;
 	if game_timer_running() {
 		_com = global.game.state.timer_current / global.game.state.timer_length;

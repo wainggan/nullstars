@@ -73,19 +73,14 @@ if global.config.graphics_post_outline {
 
 gpu_set_tex_filter(true);
 
-if !keyboard_check(ord("1")) {
-
 gpu_set_blendmode(bm_add);
 draw_sprite_tiled_ext(spr_atmosphere_clouds, 0, -_cam_x * 0.5, -_cam_y * 0.5 + (global.time / 4), 18, 18, #070707, 1);
 gpu_set_blendmode(bm_normal);
-}
 
-if !keyboard_check(ord("2")) {
 game_render_refresh();
 game_render_blendmode_set(shd_blend_overlay);
 draw_sprite_tiled_ext(spr_atmosphere_clouds, 0, -_cam_x * 0.6, -_cam_y * 0.6 + (global.time / 2), 18, 18, #ffffff, 0.4);
 game_render_blendmode_reset();
-}
 
 gpu_set_tex_filter(false);
 
