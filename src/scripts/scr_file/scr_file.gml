@@ -60,8 +60,8 @@ global.file_default = {
 		@todo: move to global file
 		*/
 		"player": {
-			"cloth": 0,
-			"accessory": 0,
+			"cloth": "none",
+			"accessory": "none",
 			"ears": 0,
 			"tail": 0,
 			"color": 0,

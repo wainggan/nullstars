@@ -314,11 +314,11 @@ function MenuPageChar(_kind) : MenuPage() constructor {
 		anim = 0;
 		
 		if kind == 0 {
-			list = global.data_char.cloth;
-			current = global.data.player.cloth;
+			list = global.data_char_refs.cloth;
+			current = array_get_index(list, global.data.player.cloth);
 		} else {
-			list = global.data_char.accessory;
-			current = global.data.player.accessory;
+			list = global.data_char_refs.accessory;
+			current = array_get_index(list, global.data.player.accessory);
 		}
 		
 		anim_current = current;
@@ -342,9 +342,9 @@ function MenuPageChar(_kind) : MenuPage() constructor {
 		if _click {
 			LOG(Log.note, $"MenuPageChar(): selected {current}");
 			if kind == 0 {
-				global.data.player.cloth = current;
+				global.data.player.cloth = list[current];
 			} else {
-				global.data.player.accessory = current;
+				global.data.player.accessory = list[current];
 			}
 			game_file_save();
 			return;
@@ -381,13 +381,14 @@ function MenuPageChar(_kind) : MenuPage() constructor {
 		
 		for (var i = 0; i < array_length(list); i++) {
 			var _item = list[i];
+			var _asset = global.data_char[$ _item];
 			var _xx = WIDTH / 2 + (i - anim_current) * 64;
-			if _item = undefined {
+			if _asset == undefined {
 				draw_circle_outline(_xx, HEIGHT / 2, 6, 1, c_white, clamp(abs(i - anim_current), 0, 1), 12);
 				draw_text(_xx, HEIGHT / 2 + 48, "none");
 			} else {
-				draw_sprite_ext(_item.asset, 0, _xx, HEIGHT / 2 + 32, 2, 2, 0, c_white, 1);
-				draw_text(_xx, HEIGHT / 2 + 48, _item.name);
+				draw_sprite_ext(_asset, 0, _xx, HEIGHT / 2 + 32, 2, 2, 0, c_white, 1);
+				draw_text(_xx, HEIGHT / 2 + 48, _item);
 			}
 		}
 		

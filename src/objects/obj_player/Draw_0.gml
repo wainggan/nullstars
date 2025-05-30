@@ -123,18 +123,18 @@ draw_sprite_ext(
 	_angle, _mult, 1
 );
 
-if global.data.player.cloth != 0 {
+if global.data_char[$ global.data.player.cloth] != undefined {
 	draw_sprite_ext(
-		global.data_char.cloth[global.data.player.cloth].asset,
+		global.data_char[$ global.data.player.cloth],
 		_frame, _pos_x, _pos_y,
 		scale_x * _dir, scale_y,
 		_angle, _mult, 1
 	);
 }
 
-if global.data.player.accessory != 0 {
+if global.data_char[$ global.data.player.accessory] != undefined {
 	draw_sprite_ext(
-		global.data_char.accessory[global.data.player.accessory].asset,
+		global.data_char[$ global.data.player.accessory],
 		_frame, _pos_x, _pos_y,
 		scale_x * _dir, scale_y,
 		_angle, _mult, 1
