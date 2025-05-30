@@ -304,6 +304,7 @@
     {"id":{"name":"sfx_pop_1","path":"sounds/sfx_pop_1/sfx_pop_1.yy",},},
     {"id":{"name":"sfx_pop_2","path":"sounds/sfx_pop_2/sfx_pop_2.yy",},},
     {"id":{"name":"spr_atmoshpere","path":"sprites/spr_atmoshpere/spr_atmoshpere.yy",},},
+    {"id":{"name":"spr_atmosphere_clouds","path":"sprites/spr_atmosphere_clouds/spr_atmosphere_clouds.yy",},},
     {"id":{"name":"spr_atmosphere_overlay","path":"sprites/spr_atmosphere_overlay/spr_atmosphere_overlay.yy",},},
     {"id":{"name":"spr_background_city0_lines","path":"sprites/spr_background_city0_lines/spr_background_city0_lines.yy",},},
     {"id":{"name":"spr_background_city0","path":"sprites/spr_background_city0/spr_background_city0.yy",},},

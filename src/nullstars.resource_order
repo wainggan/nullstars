@@ -185,6 +185,7 @@
     {"name":"sfx_pop_1","order":3,"path":"sounds/sfx_pop_1/sfx_pop_1.yy",},
     {"name":"sfx_pop_2","order":1,"path":"sounds/sfx_pop_2/sfx_pop_2.yy",},
     {"name":"spr_atmoshpere","order":28,"path":"sprites/spr_atmoshpere/spr_atmoshpere.yy",},
+    {"name":"spr_atmosphere_clouds","order":68,"path":"sprites/spr_atmosphere_clouds/spr_atmosphere_clouds.yy",},
     {"name":"spr_atmosphere_overlay","order":34,"path":"sprites/spr_atmosphere_overlay/spr_atmosphere_overlay.yy",},
     {"name":"spr_background_city0_lines","order":4,"path":"sprites/spr_background_city0_lines/spr_background_city0_lines.yy",},
     {"name":"spr_background_city0","order":3,"path":"sprites/spr_background_city0/spr_background_city0.yy",},
