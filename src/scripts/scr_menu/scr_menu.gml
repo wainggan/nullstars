@@ -304,6 +304,76 @@ function MenuPageMap() : MenuPage() constructor {
 
 }
 
+function MenuPageChar(_kind) : MenuPage() constructor {
+	kind = _kind;
+	current = 0;
+	
+	// @todo: this is about to suck
+	static __cloth = [
+		undefined,
+		spr_player_layer_shirt,
+	];
+	static __acc = [
+		undefined,
+		spr_player_layer_flower,
+	];
+	
+	static init = function () {
+		anim = 0;
+		anim_desc = 0;
+		current = 0;
+	};
+	
+	static update = function (_menu) {
+		
+		var _list = undefined;
+		if kind == 0 {
+			_list = __cloth;
+		} else {
+			_list = __acc;
+		}
+		
+		var _kh = 
+			INPUT.check_stutter("right", 8, 4) -
+			INPUT.check_stutter("left", 8, 4);
+			
+		var _kv = 
+			INPUT.check_stutter("down", 8, 5) -
+			INPUT.check_stutter("up", 8, 5);
+			
+		var _click = INPUT.check_pressed("jump");
+		var _close = INPUT.check_pressed("dash");
+		
+		current = mod_euclidean(current + _kv, array_length(_list));
+		
+		if _click || _kh != 0 {
+			LOG(Log.user, "uhoh");
+			return;
+		}
+		
+		if _close {
+			_menu.close();
+		}
+		
+	};
+	
+	static draw = function (_x, _y, _active) {
+		
+		anim = approach(anim, _active, 1 / 10);
+		
+		var _w = 512 * tween(Tween.Circ, anim);
+		var _h = 320 * tween(Tween.Circ, anim);
+		
+		draw_sprite_stretched(
+			spr_sign_board, 0,
+			WIDTH / 2 - _w / 2, HEIGHT / 2 - _h / 2,
+			_w, _h
+		);
+		
+	};
+	
+	
+}
 
 function MenuOption() constructor {
 	

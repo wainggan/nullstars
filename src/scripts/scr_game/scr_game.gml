@@ -385,23 +385,36 @@ function GameMenu() constructor {
 	
 	page_none = new MenuPageList()
 	.add(new MenuButton(global.strings[$ "menu-i-close"], function(){
-		system.close()
+		system.close();
 	}))
 	.add(new MenuButton(global.strings[$ "menu-i-map"], function(){
-		system.open(page_map)
+		system.open(page_map);
 	}))
 	.add(new MenuButton(global.strings[$ "menu-i-setting"], function(){
-		system.open(page_settings)
+		system.open(page_settings);
+	}))
+	.add(new MenuButton("char", function(){
+		system.open(page_char);
 	}))
 	.add(new MenuButton(global.strings[$ "menu-i-debug"], function(){
 		LOG(Log.warn, "good luck");
 		system.open(page_debug);
 	}))
 	.add(new MenuButton(global.strings[$ "menu-i-exit"], function(){
-		game_end()
-	}))
+		game_end();
+	}));
 	
-	page_map = new MenuPageMap()
+	page_map = new MenuPageMap();
+	
+	page_char = new MenuPageList()
+	.add(new MenuButton(global.strings[$ "menu-i-close"], function () {
+		system.close();
+	}))
+	.add(new MenuButton("cloth", function () {
+		system.open(page_char_cloth);
+	}));
+	
+	page_char_cloth = new MenuPageChar(0);
 	
 	page_settings = new MenuPageList()
 	.add(new MenuButton("back", function(){
@@ -418,7 +431,7 @@ function GameMenu() constructor {
 	}))
 	.add(new MenuButton("sound", function(){
 		system.open(page_settings_sound);
-	}))
+	}));
 	
 	page_settings_graphics = new MenuPageList(260)
 	.add(new MenuButton("back", function(){
