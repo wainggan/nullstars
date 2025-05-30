@@ -310,30 +310,14 @@ function MenuPageChar(_kind) : MenuPage() constructor {
 	anim_current = 0;
 	list = undefined;
 	
-	// @todo: this is about to suck
-	static __cloth = [
-		undefined,
-		{
-			name: "shirt",
-			spr: spr_player_layer_shirt,
-		},
-	];
-	static __acc = [
-		undefined,
-		{
-			name: "flower",
-			spr: spr_player_layer_flower,
-		},
-	];
-	
 	static init = function () {
 		anim = 0;
 		
 		if kind == 0 {
-			list = __cloth;
+			list = global.data_char.cloth;
 			current = global.data.player.cloth;
 		} else {
-			list = __acc;
+			list = global.data_char.accessory;
 			current = global.data.player.accessory;
 		}
 		
