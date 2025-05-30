@@ -24,7 +24,6 @@ if anim_time_main > 0 {
 	
 	gpu_set_colorwriteenable(true, true, true, false);
 	
-	
 	var _com = 0;
 	if game_timer_running() {
 		_com = global.game.state.timer_current / global.game.state.timer_length;
@@ -38,6 +37,12 @@ if anim_time_main > 0 {
 	draw_sprite_stretched_ext(spr_timer_background, 0, _pos_x - 256 - 16, _pos_y + 8 - 2, (256 + 16) * _com, 16, _colb, 1);
 	draw_sprite_stretched_ext(spr_timer_background, 0, _pos_x + (256 + 16) * (1 - _com), _pos_y + 8 - 2, 256 + 16, 16, _colb, 1);
 	//gpu_set_blendmode(bm_normal);
+	
+	gpu_set_texfilter(true);
+	gpu_set_blendmode(bm_max);
+	draw_sprite_tiled_ext(spr_atmosphere_clouds, 0, 0, global.time / 4, 8, 8, #444444, 1);
+	gpu_set_blendmode(bm_normal);
+	gpu_set_texfilter(false);
 	
 	// time close cover up
 	draw_sprite_ext(spr_timer_background, 0, _pos_x, _pos_y + 16, 32 * _animc, 6, 0, #ffffff, 1);
