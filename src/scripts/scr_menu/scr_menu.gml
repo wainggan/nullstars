@@ -307,31 +307,39 @@ function MenuPageMap() : MenuPage() constructor {
 function MenuPageChar(_kind) : MenuPage() constructor {
 	kind = _kind;
 	current = 0;
+	anim_current = 0;
+	list = undefined;
 	
 	// @todo: this is about to suck
 	static __cloth = [
 		undefined,
-		spr_player_layer_shirt,
+		{
+			name: "shirt",
+			spr: spr_player_layer_shirt,
+		},
 	];
 	static __acc = [
 		undefined,
-		spr_player_layer_flower,
+		{
+			name: "flower",
+			spr: spr_player_layer_flower,
+		},
 	];
 	
 	static init = function () {
 		anim = 0;
-		anim_desc = 0;
+		
 		current = 0;
+		anim_current = current;
+		
+		if kind == 0 {
+			list = __cloth;
+		} else {
+			list = __acc;
+		}
 	};
 	
 	static update = function (_menu) {
-		
-		var _list = undefined;
-		if kind == 0 {
-			_list = __cloth;
-		} else {
-			_list = __acc;
-		}
 		
 		var _kh = 
 			INPUT.check_stutter("right", 8, 4) -
@@ -344,10 +352,10 @@ function MenuPageChar(_kind) : MenuPage() constructor {
 		var _click = INPUT.check_pressed("jump");
 		var _close = INPUT.check_pressed("dash");
 		
-		current = mod_euclidean(current + _kv, array_length(_list));
+		current = mod_euclidean(current + _kh, array_length(list));
 		
-		if _click || _kh != 0 {
-			LOG(Log.user, "uhoh");
+		if _click {
+			LOG(Log.user, $"selected {current}");
 			return;
 		}
 		
@@ -370,9 +378,31 @@ function MenuPageChar(_kind) : MenuPage() constructor {
 			_w, _h
 		);
 		
+		if anim < 1 {
+			return;
+		}
+		
+		anim_current = lerp(anim_current, current, 0.6);
+		
+		draw_sprite_ext(spr_player, 0, WIDTH / 2, HEIGHT / 2 + 32, 2, 2, 0, c_white, 1);
+		
+		draw_set_halign(fa_center);
+		
+		for (var i = 0; i < array_length(list); i++) {
+			var _item = list[i];
+			var _xx = WIDTH / 2 + (i - anim_current) * 64;
+			if _item = undefined {
+				draw_circle_outline(_xx, HEIGHT / 2, 6, 1, c_white, clamp(abs(i - anim_current), 0, 1), 12);
+				draw_text(_xx, HEIGHT / 2 + 48, "none");
+			} else {
+				draw_sprite_ext(_item.spr, 0, _xx, HEIGHT / 2 + 32, 2, 2, 0, c_white, 1);
+				draw_text(_xx, HEIGHT / 2 + 48, _item.name);
+			}
+		}
+		
+		draw_set_halign(fa_left);
+		
 	};
-	
-	
 }
 
 function MenuOption() constructor {

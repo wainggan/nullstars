@@ -412,6 +412,15 @@ function GameMenu() constructor {
 	}))
 	.add(new MenuButton("cloth", function () {
 		system.open(page_char_cloth);
+	}))
+	.add(new MenuButton("accessory", function () {
+		// system.open(page_char_cloth);
+	}))
+	.add(new MenuButton("ears", function () {
+		// system.open(page_char_cloth);
+	}))
+	.add(new MenuButton("tail", function () {
+		// system.open(page_char_cloth);
 	}));
 	
 	page_char_cloth = new MenuPageChar(0);
