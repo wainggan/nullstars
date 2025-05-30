@@ -329,14 +329,15 @@ function MenuPageChar(_kind) : MenuPage() constructor {
 	static init = function () {
 		anim = 0;
 		
-		current = 0;
-		anim_current = current;
-		
 		if kind == 0 {
 			list = __cloth;
+			current = global.data.player.cloth;
 		} else {
 			list = __acc;
+			current = global.data.player.accessory;
 		}
+		
+		anim_current = current;
 	};
 	
 	static update = function (_menu) {
@@ -355,7 +356,13 @@ function MenuPageChar(_kind) : MenuPage() constructor {
 		current = mod_euclidean(current + _kh, array_length(list));
 		
 		if _click {
-			LOG(Log.user, $"selected {current}");
+			LOG(Log.note, $"MenuPageChar(): selected {current}");
+			if kind == 0 {
+				global.data.player.cloth = current;
+			} else {
+				global.data.player.accessory = current;
+			}
+			game_file_save();
 			return;
 		}
 		

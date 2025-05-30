@@ -123,19 +123,23 @@ draw_sprite_ext(
 	_angle, _mult, 1
 );
 
-draw_sprite_ext(
-	spr_player_layer_shirt,
-	_frame, _pos_x, _pos_y,
-	scale_x * _dir, scale_y,
-	_angle, _mult, 1
-);
+if global.data.player.cloth != 0 {
+	draw_sprite_ext(
+		spr_player_layer_shirt,
+		_frame, _pos_x, _pos_y,
+		scale_x * _dir, scale_y,
+		_angle, _mult, 1
+	);
+}
 
-draw_sprite_ext(
-	spr_player_layer_flower,
-	_frame, _pos_x, _pos_y,
-	scale_x * _dir, scale_y,
-	_angle, _mult, 1
-);
+if global.data.player.accessory != 0 {
+	draw_sprite_ext(
+		spr_player_layer_flower,
+		_frame, _pos_x, _pos_y,
+		scale_x * _dir, scale_y,
+		_angle, _mult, 1
+	);
+}
 
 if _meta.front {
 	action_tail_draw(_color, _mult);
