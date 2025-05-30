@@ -125,7 +125,7 @@ draw_sprite_ext(
 
 if global.data.player.cloth != 0 {
 	draw_sprite_ext(
-		global.data_char.cloth[global.data.player.accessory].asset,
+		global.data_char.cloth[global.data.player.cloth].asset,
 		_frame, _pos_x, _pos_y,
 		scale_x * _dir, scale_y,
 		_angle, _mult, 1

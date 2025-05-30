@@ -12,7 +12,7 @@ function data_char_add_cloth(_asset, _name = "") {
 }
 
 function data_char_add_acc(_asset, _name = "") {
-	array_push(global.data_char.cloth, {
+	array_push(global.data_char.accessory, {
 		asset: _asset,
 		name: _name,
 	});

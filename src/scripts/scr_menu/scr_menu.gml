@@ -386,7 +386,7 @@ function MenuPageChar(_kind) : MenuPage() constructor {
 				draw_circle_outline(_xx, HEIGHT / 2, 6, 1, c_white, clamp(abs(i - anim_current), 0, 1), 12);
 				draw_text(_xx, HEIGHT / 2 + 48, "none");
 			} else {
-				draw_sprite_ext(_item.spr, 0, _xx, HEIGHT / 2 + 32, 2, 2, 0, c_white, 1);
+				draw_sprite_ext(_item.asset, 0, _xx, HEIGHT / 2 + 32, 2, 2, 0, c_white, 1);
 				draw_text(_xx, HEIGHT / 2 + 48, _item.name);
 			}
 		}

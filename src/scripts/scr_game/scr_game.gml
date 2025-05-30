@@ -414,7 +414,7 @@ function GameMenu() constructor {
 		system.open(page_char_cloth);
 	}))
 	.add(new MenuButton("accessory", function () {
-		// system.open(page_char_cloth);
+		system.open(page_char_acc);
 	}))
 	.add(new MenuButton("ears", function () {
 		// system.open(page_char_cloth);
@@ -424,6 +424,7 @@ function GameMenu() constructor {
 	}));
 	
 	page_char_cloth = new MenuPageChar(0);
+	page_char_acc = new MenuPageChar(1);
 	
 	page_settings = new MenuPageList()
 	.add(new MenuButton("back", function(){
