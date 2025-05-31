@@ -162,7 +162,7 @@ function Loader() constructor {
 		}
 		
 		if array_length(_remove) != 0 {
-			LOG(Log.note, $"{array_length(_remove)} processed; {_budget_runs} {_budget_time}");
+			LOG(_budget_runs < 0 || _budget_time < 0 ? Log.warn : Log.note, $"{array_length(_remove)} processed; {_budget_runs} {_budget_time}");
 		}
 		
 		// remove elements without screwing up indicies
