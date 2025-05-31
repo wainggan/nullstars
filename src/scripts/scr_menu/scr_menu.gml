@@ -390,6 +390,13 @@ function MenuPageChar(_kind) : MenuPage() constructor {
 				draw_sprite_ext(_asset, 0, _xx, HEIGHT / 2 + 32, 2, 2, 0, c_white, 1);
 				draw_text(_xx, HEIGHT / 2 + 48, _item);
 			}
+			var _check = false;
+			_check = _check || _item == global.data.player.cloth;
+			_check = _check || _item == global.data.player.accessory;
+			if _check {
+				var _width = string_width(_item);
+				draw_line_sprite(_xx - _width / 2, HEIGHT / 2 + 48 + 9, _xx + _width / 2, HEIGHT / 2 + 48 + 9, 1, #ffffff, 1);
+			}
 		}
 		
 		draw_set_halign(fa_left);
