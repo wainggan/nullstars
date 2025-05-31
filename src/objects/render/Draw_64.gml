@@ -13,6 +13,8 @@ if anim_time_main > 0 {
 	var _anim2 = tween(Tween.Back, anim_time_main);
 	var _animc = hermite(anim_time_close);
 	
+	var _colo = merge_color(#ffffff, #000000, _animc);
+	
 	surface_set_target(surf_ping);
 	draw_clear_alpha(c_black, 0);
 	
@@ -65,14 +67,20 @@ if anim_time_main > 0 {
 	
 	surface_reset_target();
 	
+	// outline
+	// long bar
+	draw_sprite_ext(spr_timer_background, 0, WIDTH / 2, 2, 32 * _anim0, 3, 0, _colo, 1);
+	// main background
+	draw_sprite_ext(spr_timer_background, 0, WIDTH / 2, 2, 12 * _anim0, 6 * _anim2, 0, _colo, 1);
+	
 	draw_surface(surf_ping, 0, 0);
 	
-	shader_set(shd_outline)
-	var _u_texel = shader_get_uniform(shd_outline, "u_texel");
-	shader_set_uniform_f(_u_texel, 1 / WIDTH, 1 / HEIGHT);
-	var _colo = merge_color(#ffffff, #000000, _animc);
-	draw_surface_ext(surf_ping, 0, 0, 1, 1, 0, _colo, 1);
-	shader_reset();
+	//shader_set(shd_outline)
+	//var _u_texel = shader_get_uniform(shd_outline, "u_texel");
+	//shader_set_uniform_f(_u_texel, 1 / WIDTH, 1 / HEIGHT);
+	//var _colo = merge_color(#ffffff, #000000, _animc);
+	//draw_surface_ext(surf_ping, 0, 0, 1, 1, 0, _colo, 1);
+	//shader_reset();
 }
 
 
