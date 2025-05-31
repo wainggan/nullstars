@@ -6,6 +6,7 @@ if game_timer_running() {
 	anim_time_stop = 0;
 	
 	cache_time = global.game.state.timer_length - global.game.state.timer_current;
+	cache_elapse = global.game.state.timer_current;
 } else {
 	// cache_time = 0;
 	
@@ -24,4 +25,5 @@ if game_timer_running() {
 }
 
 cache_time_str = game_string_timer(cache_time);
+cache_elapse_str = game_string_timer(cache_elapse);
 

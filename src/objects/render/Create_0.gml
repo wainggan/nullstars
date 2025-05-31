@@ -69,6 +69,8 @@ matrix_identity = matrix_build_identity();
 
 cache_time = 0;
 cache_time_str = "";
+cache_elapse = 0;
+cache_elapse_str = "";
 anim_time = 0;
 anim_time_main = 0;
 anim_time_stop = 0;
