@@ -172,7 +172,7 @@ function GameState() constructor {
 		// update timer
 		if timer_active {
 			timer_current += 1;
-			if timer_length - timer_current <= 0 {
+			if timer_length - timer_current < 0 {
 				self.timer_stop();
 			}
 		}
