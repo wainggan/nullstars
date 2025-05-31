@@ -14,6 +14,11 @@ dir_dir = 1;
 
 anim_hit = 0;
 
+reset = function(){
+	state.change(state_active);
+	recover_timer = 0;
+};
+
 
 state = new State()
 
