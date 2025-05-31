@@ -57,7 +57,7 @@ if anim_time_main > 0 {
 	// text
 	var _colt = merge_color(#ffffff, #000000, _animc);
 	draw_text_ext_transformed_color(_pos_x, _pos_y + 5 - (1 - _anim2) * 16, cache_time_str, -1, -1, 2, 2, 0, _colt, _colt, _colt, _colt, 1);
-	draw_text_ext_transformed_color(_pos_x + 128, _pos_y + 3 - (1 - _anim1) * 24, cache_elapse_str, -1, -1, 0.8, 0.8, 0, _colt, _colt, _colt, _colt, 1);
+	draw_text_ext_transformed_color(_pos_x + 128, _pos_y + 4 - (1 - _anim1) * 24, cache_elapse_str, -1, -1, 0.8, 0.8, 0, _colt, _colt, _colt, _colt, 1);
 	
 	draw_set_halign(fa_left);
 	

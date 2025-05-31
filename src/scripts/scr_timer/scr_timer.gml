@@ -20,6 +20,8 @@ function game_string_timer(_number) {
 	var _seconds = floor(_number / 60);
 	var _seconds_str = string(_seconds);
 	
+	// while string_length(_seconds_str) < 2 _seconds_str = "0" + _seconds_str;
+	
 	var _milliseconds = floor((_number / 60 * 1000) % 1000);
 	var _milliseconds_str = string(_milliseconds);
 	
