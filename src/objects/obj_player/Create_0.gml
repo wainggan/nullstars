@@ -198,7 +198,8 @@ anim.add("dive", new AnimLevel([_s_dive]));
 anim.add("jab", new AnimLevel([_s_dash]));
 anim.add("longjump", new AnimLevel([_s_long]));
 anim.add("swim", new AnimLevel([_s_swim_idle_1, _s_swim_idle_2], 1 / 60))
-.add("swimming", new AnimLevel([_s_swim_1, _s_swim_2], 1 / 60))
+anim.add("swimming", new AnimLevel([_s_swim_1, _s_swim_2], 1 / 60))
+.add("swimbullet", new AnimLevel([PlayerFrame.swim_bullet], 1))
 .add("ledge", new AnimLevel([_s_ledge]))
 .add("crouch", new AnimLevel([_s_crouch]))
 .add("flip", new AnimLevel([_s_flip_1, _s_flip_2], 1 / 14, 0))
@@ -241,6 +242,9 @@ anim.add("swim", new AnimLevel([_s_swim_idle_1, _s_swim_idle_2], 1 / 60))
 })
 .meta_items([_s_swim_2], {
 	x: -4, y: -17,
+})
+.meta_items([PlayerFrame.swim_bullet], {
+	x: 0, y: 0,
 })
 .meta_items([_s_ledge], {
 	x: -4, y: -17,
