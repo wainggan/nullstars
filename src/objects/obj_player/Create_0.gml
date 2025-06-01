@@ -187,84 +187,84 @@ var _s_stand = 0,
 	_s_run_fall = 24;
 
 anim = new AnimController();
-anim.add("idle", new AnimLevel([_s_stand]));
+anim.add("idle", new AnimLevel([PlayerFrame.stand]));
 anim.add("walk", new AnimLevel([
-		_s_walk_a1, _s_walk_b1,
-		_s_walk_a2, _s_walk_b2
+		PlayerFrame.walk_1a, PlayerFrame.walk_2a,
+		PlayerFrame.walk_1b, PlayerFrame.walk_2b,
 	], 12));
-anim.add("jump", new AnimLevel([_s_jump]));
-anim.add("fall", new AnimLevel([_s_fall]));
-anim.add("dive", new AnimLevel([_s_dive]));
-anim.add("jab", new AnimLevel([_s_dash]));
-anim.add("longjump", new AnimLevel([_s_long]));
-anim.add("swim", new AnimLevel([_s_swim_idle_1, _s_swim_idle_2], 1 / 60))
-anim.add("swimming", new AnimLevel([_s_swim_1, _s_swim_2], 1 / 60))
-.add("swimbullet", new AnimLevel([PlayerFrame.swim_bullet], 1))
-.add("ledge", new AnimLevel([_s_ledge]))
-.add("crouch", new AnimLevel([_s_crouch]))
-.add("flip", new AnimLevel([_s_flip_1, _s_flip_2], 1 / 14, 0))
-.add("run", new AnimLevel([
-		_s_run_1, _s_run_1,
-		_s_run_2, _s_run_2, _s_run_2,
-		_s_run_3, _s_run_3
+anim.add("jump", new AnimLevel([PlayerFrame.jump]));
+anim.add("fall", new AnimLevel([PlayerFrame.fall]));
+anim.add("dive", new AnimLevel([PlayerFrame.dive]));
+anim.add("jab", new AnimLevel([PlayerFrame.dash]));
+anim.add("longjump", new AnimLevel([PlayerFrame.long]));
+anim.add("swim", new AnimLevel([PlayerFrame.swim_idle_1, PlayerFrame.swim_idle_2], 1 / 60))
+anim.add("swimming", new AnimLevel([PlayerFrame.swim_1, PlayerFrame.swim_2], 1 / 60))
+anim.add("swimbullet", new AnimLevel([PlayerFrame.swim_bullet], 1))
+anim.add("ledge", new AnimLevel([PlayerFrame.ledge]))
+anim.add("crouch", new AnimLevel([PlayerFrame.crouch]))
+anim.add("flip", new AnimLevel([PlayerFrame.flip_1, PlayerFrame.flip_2], 1 / 14, 0))
+anim.add("run", new AnimLevel([
+		PlayerFrame.run_1, PlayerFrame.run_1,
+		PlayerFrame.run_2, PlayerFrame.run_2, PlayerFrame.run_2,
+		PlayerFrame.run_3, PlayerFrame.run_3
 	], 1/12))
-.add("runjump", new AnimLevel([_s_run_jump]))
-.add("runfall", new AnimLevel([_s_run_fall]))
+.add("runjump", new AnimLevel([PlayerFrame.run_jump]))
+.add("runfall", new AnimLevel([PlayerFrame.run_fall]))
 
 .meta_default({
 	x: -2, y: -16,
 	front: false,
 })
-.meta_items([_s_walk_a1, _s_walk_a2], {
+.meta_items([PlayerFrame.walk_1a, PlayerFrame.walk_1b], {
 	y: -15,
 })
-.meta_items([_s_jump, _s_fall], {
+.meta_items([PlayerFrame.jump, PlayerFrame.fall], {
 	y: -17,
 })
-.meta_items([_s_dive], {
+.meta_items([PlayerFrame.dive], {
 	x: -4, y: -21,
 	front: true,
 })
-.meta_items([_s_long], {
+.meta_items([PlayerFrame.long], {
 	x: -8, y: -16,
 })
-.meta_items([_s_dash], {
+.meta_items([PlayerFrame.dash], {
 	x: 3, y: -11,
 })
-.meta_items([_s_swim_idle_1], {
+.meta_items([PlayerFrame.swim_idle_1], {
 	x: -4, y: -17,
 })
-.meta_items([_s_swim_idle_2], {
+.meta_items([PlayerFrame.swim_idle_2], {
 	x: -5, y: -15,
 })
-.meta_items([_s_swim_1], {
+.meta_items([PlayerFrame.swim_1], {
 	x: -4, y: -16,
 })
-.meta_items([_s_swim_2], {
+.meta_items([PlayerFrame.swim_2], {
 	x: -4, y: -17,
 })
 .meta_items([PlayerFrame.swim_bullet], {
 	x: 0, y: 0,
 })
-.meta_items([_s_ledge], {
+.meta_items([PlayerFrame.ledge], {
 	x: -4, y: -17,
 })
-.meta_items([_s_crouch], {
+.meta_items([PlayerFrame.crouch], {
 	x: -5, y: -6,
 })
-.meta_items([_s_flip_1, _s_flip_2], {
+.meta_items([PlayerFrame.flip_1, PlayerFrame.flip_2], {
 	x: -2, y: -15,
 })
-.meta_items([_s_run_2], {
+.meta_items([PlayerFrame.run_2], {
 	x: -5, y: -13,
 })
-.meta_items([_s_run_3], {
+.meta_items([PlayerFrame.run_3], {
 	x: -8, y: -16,
 })
-.meta_items([_s_run_1], {
+.meta_items([PlayerFrame.run_1], {
 	x: -8, y: -16,
 })
-.meta_items([_s_run_fall], {
+.meta_items([PlayerFrame.run_fall], {
 	x: -3, y: -15,
 });
 
