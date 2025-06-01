@@ -375,10 +375,15 @@ function MenuPageChar(_kind) : MenuPage() constructor {
 		
 		anim_current = lerp(anim_current, current, 0.6);
 		
-		draw_sprite_ext(spr_player, 0, WIDTH / 2, HEIGHT / 2 + 32, 2, 2, 0, c_white, 1);
-		if list != global.data_char_refs.cloth {
-			draw_sprite_ext(spr_player, 0, WIDTH / 2, HEIGHT / 2 + 32, 2, 2, 0, c_white, 1);
-		}
+		draw_player(
+			0,
+			WIDTH / 2,
+			HEIGHT / 2 + 32,
+			2, 2,
+			0, c_white,
+			list == global.data_char_refs.cloth ? "none" : global.data.player.cloth,
+			list == global.data_char_refs.accessory ? "none" : global.data.player.accessory
+		);
 		
 		draw_set_halign(fa_center);
 		
