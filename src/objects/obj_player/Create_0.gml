@@ -162,30 +162,6 @@ respawn_dyn = 0;
 
 #region animation
 
-var _s_stand = 0,
-	_s_walk_a1 = 3,
-	_s_walk_a2 = 4,
-	_s_walk_b1 = 1,
-	_s_walk_b2 = 2,
-	_s_jump = 5,
-	_s_fall = 6,
-	_s_dive = 7,
-	_s_dash = 9,
-	_s_long = 8,
-	_s_swim_idle_1 = 11,
-	_s_swim_idle_2 = 12,
-	_s_swim_1 = 13,
-	_s_swim_2 = 14,
-	_s_ledge = 16,
-	_s_crouch = 17,
-	_s_flip_1 = 18,
-	_s_flip_2 = 19,
-	_s_run_1 = 21,
-	_s_run_2 = 22,
-	_s_run_3 = 23,
-	_s_run_jump = 21,
-	_s_run_fall = 24;
-
 anim = new AnimController();
 anim.add("idle", new AnimLevel([PlayerFrame.stand]));
 anim.add("walk", new AnimLevel([
