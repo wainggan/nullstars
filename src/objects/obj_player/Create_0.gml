@@ -287,17 +287,7 @@ action_anim_dash = function() {
 
 #region tail
 
-tail_length = 12;
-tail = yarn_create(tail_length, function(_p, i) {
-	//_p.len = min(power(max(i - 4, 0) , 1.12) + 4, 8)
-	_p.length = 4;
-	
-	_p.x = x;
-	_p.y = y + i * 6;
-		
-	_p.size = max(parabola_mid(3, 7, 6, i) + 3, 6);
-	_p.round = floor(clamp(i / (tail_length / 3), 1, 1));
-});
+tail = new PlayerTail();
 
 
 action_tail_update_point = function(_p, i, _points) {

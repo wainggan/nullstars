@@ -114,3 +114,69 @@ function draw_player(_frame, _x, _y, _x_scale, _y_scale, _angle, _blend, _cloth 
 	}
 }
 
+/// manages the player's tail
+function PlayerTail() constructor {
+	points = [];
+	repeat 30 {
+		array_push(points, new Yarn());
+	}
+	
+	// _state == 0 : normal
+	// _state == 1 : swim_bullet
+	static update = function (_x, _y, _dir, _state, _mode) {
+		ASSERT(0 <= _state && _state <= 1);
+		
+		points[0].x = _x;
+		points[0].y = _y;
+		points[0].update(, _dir == -1 ? 180 : 0, 1);
+		
+		for (var i = 1; i < array_length(points); i++) {
+			
+			var _len = array_length(points);
+			var _scale_nor = (i / _len);
+			var _scale_inv = (_len - i) / _len;
+			
+			var _x_move = 0;
+			var _y_move = 0;
+			var _weight = 1;
+			var _damp = 0.8;
+			
+			if _state == 0 {
+				var _d = sin(global.time / 60 - i * 0.6);
+				_x_move = -_dir * (power(_scale_inv, 6) * 6 + 0.1);
+				_y_move = _d * (_scale_inv * 0.2 + 0.1) + 0.3 * _scale_inv;
+			} else if _state == 1 {
+				_damp = 0.5;
+			}
+			
+			points[i].update(points[i - 1], , 4, _x_move, _y_move, _weight, _damp, 0);
+		}
+	};
+	
+	static draw = function (_dash, _mode, _blend = c_white) {
+		var _len = array_length(points);
+		
+		var _dash_0 = #00ffff;
+		var _dash_1 = #ff00ff;
+		var _dash_current = _dash == 0 ? _dash_0 : _dash_1;
+		
+		for (var i = array_length(points); i >= 0; i--) {
+			var _c = merge_color(c_white, _dash_current, clamp(i - 3, 0, _len) / _len);
+			_c = multiply_color(_c, _blend);
+			
+			var _size = max(parabola_mid(3, 7, 6, i) + 3, 6);
+			var _round = floor(clamp(i / (_len / 3), 1, 1));
+			
+			var _p = points[i];
+			
+			draw_sprite_ext(
+				spr_player_tail, 0, 
+				round_ext(_p.x, _round), round_ext(_p.y, _round), 
+				//round_ext(_p.x, 0), round_ext(_p.y, 0), 
+				_size / 16, _size / 16, 
+				0, _c, 1
+			);
+		}
+	};
+}
+

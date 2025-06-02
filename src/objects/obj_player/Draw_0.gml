@@ -96,17 +96,18 @@ anim.update();
 
 var _meta = anim.meta();
 
-tail.position(
+tail.update(
 	_pos_x + (_meta.x ?? 0) * _dir,
 	_pos_y + (_meta.y ?? 0),
+	dir,
+	state.is(state_swim) ? 1 : 0,
+	""
 );
-
-tail.update(, action_tail_update_point);
 
 var _color = dash_left == 0 ? #00ffff : #ff00ff;
 
 if !(_meta.front ?? true) {
-	action_tail_draw(_color, c_white);
+	tail.draw(dash_left, "", c_white);
 }
 
 var _frame = anim.get();
@@ -114,6 +115,6 @@ var _frame = anim.get();
 draw_player(_frame, _pos_x, _pos_y, scale_x * _dir, scale_y, _angle, c_white, global.data.player.cloth, global.data.player.accessory);
 
 if _meta.front ?? true {
-	action_tail_draw(_color, c_white);
+	tail.draw(dash_left, "", c_white);
 }
 

@@ -1,116 +1,67 @@
 
-function YarnPoint() constructor {
-	
-	x = 0;
-	y = 0;
-	
-	x_move = 0;
-	y_move = 0;
+function Yarn(_x = 0, _y = 0) constructor {
+	x = _x;
+	y = _y;
 	
 	direction = 0;
-	weight = 1;
-	length = 10;
 	
-	damp = 1;
-	leeway = 0;
-	
-}
-
-function Yarn() constructor {
-	
-	points = []
-	
-	static add = function(_p) {
-		array_push(points, _p)
-	}
-	
-	static position = function(_x, _y) {
-		if array_length(points) == 0 return;
-		points[0].x = _x;
-		points[0].y = _y;
-	}
-	
-	static shift = function(_offX, _offY) {
-		for (var i = 0; i < array_length(points); i++) {
-			points[i].x += _offX;
-			points[i].y += _offY;
-		}
-	}
-	
-	static update = function(_delta = 1, _callback = undefined) {
-		if array_length(points) == 0 return;
-	
-		var _last_x = points[0].x;
-		var _last_y = points[0].y;
-		var _last_dir = undefined;
-	
-		for (var i = 1; i < array_length(points); i++) {
-			var _p = points[i];
+	/// @arg {struct.Yarn} _previous
+	/// @arg {real} _dir
+	/// @arg {real} _length
+	/// @arg {real} _x_move
+	/// @arg {real} _y_move
+	/// @arg {real} _weight
+	/// @arg {real} _damp
+	/// @arg {real} _leeway
+	static update = function (
+		_previous = undefined,
+		_dir = undefined,
+		_length = 1,
+		_x_move = 0,
+		_y_move = 0,
+		_weight = 1,
+		_damp = 1,
+		_leeway = 0,
+	) {
+		var _last_x = _previous != undefined ? _previous.x : x;
+		var _last_y = _previous != undefined ? _previous.y : y;
+		var _last_dir = _previous != undefined ? _previous.direction : undefined;
+		
+		var _target_x = x;
+		var _target_y = y;
+		
+		if _last_dir != undefined {
+			// direction to previous point
+			direction = point_direction(x, y, _last_x, _last_y);
 			
-			var _target_x = _p.x;
-			var _target_y = _p.y;
+			// then we lerp towards the previous point's direction
+			var _diff = angle_difference(direction, _last_dir);
+			_diff *= _damp;
+			direction = _last_dir + _diff;
 			
-			_p.direction = point_direction(_p.x, _p.y, _last_x, _last_y);
-			
-			if _last_dir != undefined {
-				var _diff = angle_difference(_p.direction, _last_dir);
-				_diff *= _p.damp;
-				_p.direction = _last_dir + _diff;
+			if _dir != undefined {
+				direction = _dir;
 			}
 			
-			if _callback _callback(_p, i, points)
-			
-			_target_x -= lengthdir_x(_p.weight, _p.direction);
-			_target_y -= lengthdir_y(_p.weight, _p.direction);
-			
-			_target_x += _p.x_move;
-			_target_y += _p.y_move;
-			
-			var _angle_snap = point_direction(_target_x, _target_y, _last_x, _last_y);
-			
-			var _new_x = _last_x - lengthdir_x(_p.length, _angle_snap);
-			var _new_y = _last_y - lengthdir_y(_p.length, _angle_snap);
-			
-			_p.x = lerp(_new_x, _target_x, _p.leeway);
-			_p.y = lerp(_new_y, _target_y, _p.leeway);
-			
-			_last_x = _p.x;
-			_last_y = _p.y;
-			_last_dir = _p.direction;
-		}
-	}
-	
-	static each = function(_callback) {
-		
-		for (var i = 0; i < array_length(points); i++) {
-			var _p = points[i];
-			if _callback _callback(_p, i, points)
+			// force into place
+			_target_x -= lengthdir_x(_weight, direction);
+			_target_y -= lengthdir_y(_weight, direction);
+		} else {
+			if _dir != undefined {
+				direction = _dir;
+			}
 		}
 		
-	}
-	
-	static each_reverse = function(_callback) {
+		_target_x += _x_move;
+		_target_y += _y_move;
 		
-		for (var i = array_length(points) - 1; i >= 0; i--) {
-			var _p = points[i];
-			if _callback _callback(_p, i, points)
-		}
+		var _angle_snap = point_direction(_target_x, _target_y, _last_x, _last_y);
 		
-	}
-	
+		var _new_x = _last_x - lengthdir_x(_length, _angle_snap);
+		var _new_y = _last_y - lengthdir_y(_length, _angle_snap);
+		
+		x = lerp(_new_x, _target_x, _leeway);
+		y = lerp(_new_y, _target_y, _leeway);
+	};
 }
-
-function yarn_create(_length, _callback) {
-	var _yarn = new Yarn()
-	for (var i = 0; i < _length; i++) {
-		var _p = new YarnPoint();
-		
-		if _callback _callback(_p, i)
-		
-		_yarn.add(_p)
-	}
-	return _yarn
-}
-
-
 
