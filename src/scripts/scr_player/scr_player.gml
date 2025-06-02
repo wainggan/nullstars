@@ -152,7 +152,6 @@ function PlayerTail() constructor {
 	// _state == 0 : normal
 	// _state == 1 : swim_bullet
 	static update = function (_x, _y, _dir, _state, _mode) {
-		_mode = PlayerCharTail.dots;
 		ASSERT(0 <= _state && _state <= 1);
 		
 		points[0].x = _x;
@@ -223,8 +222,6 @@ function PlayerTail() constructor {
 	};
 	
 	static draw = function (_dash, _mode, _blend = c_white) {
-		_mode = PlayerCharTail.dots;
-		
 		var _len = get_len(_mode);
 		
 		var _dash_0 = #00ffff;

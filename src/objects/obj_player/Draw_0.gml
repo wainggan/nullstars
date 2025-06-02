@@ -94,20 +94,24 @@ else if state.is(state_free) {
 
 anim.update();
 
+var _mode = PlayerCharTail.halo;
+
 var _meta = anim.meta();
 
-tail.update(
-	_pos_x + (_meta.x ?? 0) * _dir,
-	_pos_y + (_meta.y ?? 0),
-	dir,
-	state.is(state_swim) ? 1 : 0,
-	""
-);
+if !game_paused() {
+	tail.update(
+		_pos_x + (_meta.x ?? 0) * _dir,
+		_pos_y + (_meta.y ?? 0),
+		dir,
+		state.is(state_swim) ? 1 : 0,
+		_mode
+	);
+}
 
 var _color = dash_left == 0 ? #00ffff : #ff00ff;
 
 if !(_meta.front ?? true) {
-	tail.draw(dash_left, "", c_white);
+	tail.draw(dash_left, _mode, c_white);
 }
 
 var _frame = anim.get();
@@ -115,6 +119,6 @@ var _frame = anim.get();
 draw_player(_frame, _pos_x, _pos_y, scale_x * _dir, scale_y, _angle, c_white, global.data.player.cloth, global.data.player.accessory);
 
 if _meta.front ?? true {
-	tail.draw(dash_left, "", c_white);
+	tail.draw(dash_left, _mode, c_white);
 }
 
