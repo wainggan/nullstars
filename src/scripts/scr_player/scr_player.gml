@@ -74,6 +74,8 @@ enum PlayerCharTail {
 	//       | . . . . . . . .
 	fork = 4,
 	geared = 5,
+	bunny = 6,
+	fox = 7,
 }
 
 /// draw the player.
@@ -146,6 +148,12 @@ function PlayerTail() constructor {
 		if _mode == PlayerCharTail.geared {
 			return 14;
 		}
+		if _mode == PlayerCharTail.bunny {
+			return 3;
+		}
+		if _mode == PlayerCharTail.fox {
+			return 10;
+		}
 		return 12;
 	};
 	
@@ -182,17 +190,24 @@ function PlayerTail() constructor {
 			}
 			
 			if _state == 0 {
-				var _offset = i * 0.6;
-				if _mode = PlayerCharTail.fork {
-					_offset = i * 0.5;
-				}
-				
-				var _d = sin(global.time / 60 - _offset);
-				_x_move = -_dir * (power(_scale_inv, 6) * 6 + 0.1);
-				_y_move = _d * (_scale_inv * 0.2 + 0.1) + 0.3 * _scale_inv;
-				
-				if _mode = PlayerCharTail.fork && i > 12 {
-					_y_move *= 1.1;
+				if _mode == PlayerCharTail.bunny {
+					_x_move = -_dir * 0.5;
+					_y_move = -0.1;
+					_damp = 0.4;
+					_length = 3;
+				} else {
+					var _offset = i * 0.6;
+					if _mode = PlayerCharTail.fork {
+						_offset = i * 0.5;
+					}
+					
+					var _d = sin(global.time / 60 - _offset);
+					_x_move = -_dir * (power(_scale_inv, 6) * 6 + 0.1);
+					_y_move = _d * (_scale_inv * 0.2 + 0.1) + 0.3 * _scale_inv;
+					
+					if _mode = PlayerCharTail.fork && i > 12 {
+						_y_move *= 1.1;
+					}
 				}
 			} else if _state == 1 {
 				_damp = 0.5;
@@ -252,7 +267,14 @@ function PlayerTail() constructor {
 			_c = multiply_color(_c, _blend);
 			
 			var _size = 8;
-			_size = max(parabola_mid(3, 7, 6, _local_i) + 3, 6);
+			if _mode == PlayerCharTail.bunny {
+				_size = 10;
+			} else if _mode == PlayerCharTail.fox {
+				_size = max(parabola_mid(5, 7, 8, _local_i) + 3, 6);
+			} else {
+				_size = max(parabola_mid(3, 7, 6, _local_i) + 3, 6);
+			}
+			
 			
 			var _round = floor(clamp(_local_i / (_local_len / 3), 1, 1));
 			

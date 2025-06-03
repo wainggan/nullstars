@@ -94,7 +94,7 @@ else if state.is(state_free) {
 
 anim.update();
 
-var _mode = PlayerCharTail.halo;
+var _mode = PlayerCharTail.fox;
 
 var _meta = anim.meta();
 
