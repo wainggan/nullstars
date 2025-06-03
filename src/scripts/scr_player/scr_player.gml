@@ -270,7 +270,7 @@ function PlayerTail() constructor {
 			if _mode == PlayerCharTail.bunny {
 				_size = 10;
 			} else if _mode == PlayerCharTail.fox {
-				_size = max(parabola_mid(5, 7, 8, _local_i) + 3, 6);
+				_size = max(parabola_mid(4, 6, 11, _local_i) + 3, 5);
 			} else {
 				_size = max(parabola_mid(3, 7, 6, _local_i) + 3, 6);
 			}
