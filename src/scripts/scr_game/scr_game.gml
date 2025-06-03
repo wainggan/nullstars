@@ -417,7 +417,7 @@ function GameMenu() constructor {
 		system.open(page_char_acc);
 	}))
 	.add(new MenuButton("ears", function () {
-		system.open(page_char_ears);
+		// system.open(page_char_ears);
 	}))
 	.add(new MenuButton("tail", function () {
 		system.open(page_char_tail);

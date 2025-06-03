@@ -284,69 +284,8 @@ action_anim_dash = function() {
 
 #endregion
 
+tail = new PlayerTail(x, y);
 
-#region tail
-
-tail = new PlayerTail();
-
-
-action_tail_update_point = function(_p, i, _points) {
-	var _len = array_length(_points);
-	var _scale_nor = (i / _len);
-	var _scale_inv = (_len - i) / _len;
-	
-	_p.weight = 0;
-	_p.x_move = 0;
-	_p.y_move = 0;
-	
-	if state.is(state_swim_bullet) {
-		_p.damp = 0.5;
-	//	
-	//} else 
-	//if holding {
-		//_p.damp = 0.8;
-		//_p.weight = 6;
-		//
-		//var _t1 = floor(_len * 0.5);
-		//var _t2 = floor(_len * 0.75);
-		//
-		//_p.direction = (90 + 80 * -dir);
-		//if i > _t1 {
-			//_p.direction += (i - _t1) * -30 * dir;
-			//if i > _t2 {
-				//_p.direction += (i - _t2) * 60 * dir;
-			//}
-		//} else {
-			//
-		//}
-	} else {
-		_p.damp = 0.8;
-		
-		var _d = sin(global.time / 60 - i * 0.6);
-		_p.x_move = -dir * (power(_scale_inv, 6) * 6 + 0.1);
-		_p.y_move = _d * (_scale_inv * 0.2 + 0.1) + 0.3 * _scale_inv;
-	}
-};
-
-action_tail_draw_point = function(_p, i, _points, _tip, _blend) {
-	var _c = merge_color(c_white, _tip, clamp(i - 3, 0, tail_length) / tail_length);
-	_c = multiply_color(_c, _blend);
-	draw_sprite_ext(
-		spr_player_tail, 0, 
-		round_ext(_p.x, _p.round), round_ext(_p.y, _p.round), 
-		//round_ext(_p.x, 0), round_ext(_p.y, 0), 
-		_p.size / 16, _p.size / 16, 
-		0, _c, 1
-	);
-};
-
-action_tail_draw = function(_color, _mult) {
-	for (var i = array_length(tail.points) - 1; i >= 0; i--) {
-		action_tail_draw_point(tail.points[i], i, tail.points, _color, _mult);
-	}
-};
-
-#endregion
 
 #region methods
 

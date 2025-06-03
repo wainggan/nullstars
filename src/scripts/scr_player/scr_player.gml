@@ -139,14 +139,14 @@ function draw_player(_frame, _x, _y, _x_scale, _y_scale, _angle, _blend, _cloth 
 }
 
 /// manages the player's tail
-function PlayerTail() constructor {
+function PlayerTail(_x = 0, _y = 0) constructor {
 	points = [];
-	repeat 30 {
-		array_push(points, new Yarn());
+	for (var i = 0; i < 30; i++) {
+		array_push(points, new Yarn(-i + _x, _y));
 	}
 	
-	friend_x = 0;
-	friend_y = 0;
+	friend_x = _x;
+	friend_y = _y;
 	
 	static get_len = function (_mode) {
 		if _mode == PlayerCharTail.dots {

@@ -310,6 +310,8 @@ function MenuPageChar(_kind) : MenuPage() constructor {
 	anim_current = 0;
 	list = undefined;
 	
+	tail = new PlayerTail();
+	
 	static init = function () {
 		anim = 0;
 		
@@ -393,6 +395,17 @@ function MenuPageChar(_kind) : MenuPage() constructor {
 		
 		anim_current = lerp(anim_current, current, 0.6);
 		
+		var _tail = list == global.data_char_refs.tail ? list[current] : global.data.player.tail;
+		var _color = list == global.data_char_refs.color ? list[current] : global.data.player.color;
+		tail.update(0, 0, 1, 0, _tail);
+		
+		matrix_set(matrix_world, matrix_build(WIDTH / 2, HEIGHT / 2, 0, 0, 0, 0, 2, 2, 1));
+		
+		tail.draw(1, _tail, _color, c_white);
+		
+		matrix_set(matrix_world, matrix_build_identity());
+		
+		
 		draw_player(
 			0,
 			WIDTH / 2,
@@ -401,7 +414,7 @@ function MenuPageChar(_kind) : MenuPage() constructor {
 			0, c_white,
 			list == global.data_char_refs.cloth ? "none" : global.data.player.cloth,
 			list == global.data_char_refs.accessory ? "none" : global.data.player.accessory,
-			list == global.data_char_refs.color ? list[current] : global.data.player.color
+			_color
 		);
 		
 		draw_set_halign(fa_center);
