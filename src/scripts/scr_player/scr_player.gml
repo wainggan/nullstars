@@ -152,7 +152,7 @@ function PlayerTail() constructor {
 			return 3;
 		}
 		if _mode == PlayerCharTail.fox {
-			return 10;
+			return 9;
 		}
 		return 12;
 	};
@@ -270,7 +270,7 @@ function PlayerTail() constructor {
 			if _mode == PlayerCharTail.bunny {
 				_size = 10;
 			} else if _mode == PlayerCharTail.fox {
-				_size = max(parabola_mid(4, 6, 11, _local_i) + 3, 5);
+				_size = max(parabola_mid(4, 5, 11, _local_i) + 3, 5);
 			} else {
 				_size = max(parabola_mid(3, 7, 6, _local_i) + 3, 6);
 			}
