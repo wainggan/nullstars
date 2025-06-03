@@ -108,9 +108,6 @@ function draw_player(_frame, _x, _y, _x_scale, _y_scale, _angle, _blend, _cloth 
 	
 	var _check;
 	_check = global.data_char.color[$ _color];
-	show_debug_message(global.data_char.color)
-	show_debug_message(_color)
-	show_debug_message(_check)
 	if _check != undefined {
 		draw_sprite_ext(
 			spr_player_eyes,
