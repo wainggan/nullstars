@@ -60,6 +60,7 @@ function Game() constructor {
 	
 	static update_begin = function() {
 		global.logger.update();
+		self.state.update();
 		input.update();
 		
 		if !self.state.get_pause() {
@@ -78,7 +79,6 @@ function Game() constructor {
 		}
 		
 		self.level.update();
-		self.state.update();
 		self.music.update();
 	}
 	
