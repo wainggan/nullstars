@@ -62,9 +62,9 @@ global.file_default = {
 		"player": {
 			"cloth": "none",
 			"accessory": "none",
-			"ears": 0,
-			"tail": 0,
-			"color": 0,
+			"ears": "nova",
+			"tail": "nova",
+			"color": "main",
 		},
 	
 	},

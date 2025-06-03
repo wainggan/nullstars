@@ -417,14 +417,20 @@ function GameMenu() constructor {
 		system.open(page_char_acc);
 	}))
 	.add(new MenuButton("ears", function () {
-		// system.open(page_char_cloth);
+		system.open(page_char_ears);
 	}))
 	.add(new MenuButton("tail", function () {
-		// system.open(page_char_cloth);
+		system.open(page_char_tail);
+	}))
+	.add(new MenuButton("color", function () {
+		system.open(page_char_color);
 	}));
 	
 	page_char_cloth = new MenuPageChar(0);
 	page_char_acc = new MenuPageChar(1);
+	page_char_ears = new MenuPageChar(2);
+	page_char_tail = new MenuPageChar(3);
+	page_char_color = new MenuPageChar(4);
 	
 	page_settings = new MenuPageList()
 	.add(new MenuButton("back", function(){

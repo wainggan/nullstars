@@ -88,7 +88,7 @@ enum PlayerCharTail {
 /// @arg {constant.Color} _blend
 /// @arg {string} _cloth
 /// @arg {string} _accessory
-function draw_player(_frame, _x, _y, _x_scale, _y_scale, _angle, _blend, _cloth = "none", _accessory = "none") {
+function draw_player(_frame, _x, _y, _x_scale, _y_scale, _angle, _blend, _cloth = "none", _accessory = "none", _color = "main") {
 	if _frame == PlayerFrame.swim_bullet {
 		draw_sprite_ext(
 			spr_player_bullet,
@@ -107,7 +107,20 @@ function draw_player(_frame, _x, _y, _x_scale, _y_scale, _angle, _blend, _cloth 
 	);
 	
 	var _check;
-	_check = global.data_char[$ _cloth];
+	_check = global.data_char.color[$ _color];
+	show_debug_message(global.data_char.color)
+	show_debug_message(_color)
+	show_debug_message(_check)
+	if _check != undefined {
+		draw_sprite_ext(
+			spr_player_eyes,
+			_frame, _x, _y,
+			_x_scale, _y_scale,
+			_angle, multiply_color(_blend, array_length(_check) != 0 ? _check[0] : c_white), 1
+		);
+	}
+	
+	_check = global.data_char.cloth[$ _cloth];
 	if _check != undefined {
 		draw_sprite_ext(
 			_check,
@@ -117,7 +130,7 @@ function draw_player(_frame, _x, _y, _x_scale, _y_scale, _angle, _blend, _cloth 
 		);
 	}
 	
-	_check = global.data_char[$ _accessory];
+	_check = global.data_char.accessory[$ _accessory];
 	if _check != undefined {
 		draw_sprite_ext(
 			_check,
@@ -161,6 +174,7 @@ function PlayerTail() constructor {
 	// _state == 1 : swim_bullet
 	static update = function (_x, _y, _dir, _state, _mode) {
 		ASSERT(0 <= _state && _state <= 1);
+		_mode = global.data_char.tail[$ _mode];
 		
 		points[0].x = _x;
 		points[0].y = _y;
@@ -236,12 +250,13 @@ function PlayerTail() constructor {
 		}
 	};
 	
-	static draw = function (_dash, _mode, _blend = c_white) {
+	static draw = function (_dash, _mode, _color, _blend = c_white) {
+		_mode = global.data_char.tail[$ _mode];
+		_color = global.data_char.color[$ _color];
+		
 		var _len = get_len(_mode);
 		
-		var _dash_0 = #00ffff;
-		var _dash_1 = #ff00ff;
-		var _dash_current = _dash == 0 ? _dash_0 : _dash_1;
+		var _dash_current = _color[min(_dash + 1, array_length(_color) - 1)];
 		
 		if _mode == PlayerCharTail.halo {
 			var _p = points[9];
