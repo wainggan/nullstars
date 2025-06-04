@@ -110,7 +110,7 @@ var _x = 20,
 draw_set_font(ft_sign);
 draw_set_color(c_white);
 
-for (var i = array_length(global.logger.messages) - 1; i >= 0; i--) {
+for (var i = 0; i < array_length(global.logger.messages); i++) {
 	draw_text_ext_transformed(
 		_x, _y, 
 		global.logger.messages[i], 

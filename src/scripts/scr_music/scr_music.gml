@@ -60,7 +60,11 @@ function Music() constructor {
 		if bgm_asset != -1 audio_sound_gain(bgm, 0, 2000);
 	})
 	.set("leave", function() {
-		if bgm_asset != -1 audio_sound_gain(bgm, game_sound_get_bgm(), 2000);
+		if bgm_asset != -1 {
+			audio_sound_gain(bgm, game_sound_get_bgm(), 2000);
+			var _meta = global.data_music[$ audio_get_name(bgm_asset)];
+			LOG(Log.user, $"playing: {_meta.name} - {_meta.artist}");
+		}
 	})
 	.set("step", function() {
 		if bgm_asset == -1 {

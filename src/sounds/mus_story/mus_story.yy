@@ -9,7 +9,7 @@
   "bitRate":192,
   "compression":3,
   "conversionMode":0,
-  "duration":0.0,
+  "duration":17.126167,
   "name":"mus_story",
   "parent":{
     "name":"bgm",
