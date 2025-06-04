@@ -610,7 +610,7 @@ function Level(_id, _x, _y, _width, _height) constructor {
 	width = _width;
 	height = _height;
 	
-	file = -1;
+	file = undefined;
 	
 	fields = {}
 	

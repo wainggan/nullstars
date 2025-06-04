@@ -400,11 +400,13 @@ function MenuPageChar(_kind) : MenuPage() constructor {
 		var _color = list == global.data_char_refs.color ? list[current] : global.data.player.color;
 		tail.update(0, 0, 1, 0, _tail);
 		
-		matrix_set(matrix_world, matrix_build(WIDTH / 2, HEIGHT / 2, 0, 0, 0, 0, 2, 2, 1));
+		static __mat_scale = matrix_build(WIDTH / 2, HEIGHT / 2, 0, 0, 0, 0, 2, 2, 1);
+		matrix_set(matrix_world, __mat_scale);
 		
 		tail.draw(1, _tail, _color, c_white);
 		
-		matrix_set(matrix_world, matrix_build_identity());
+		static __mat_ident = matrix_build_identity();
+		matrix_set(matrix_world, __mat_ident);
 		
 		
 		draw_player(
