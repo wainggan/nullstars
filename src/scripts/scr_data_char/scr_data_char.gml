@@ -83,6 +83,8 @@ data_char_add_acc("band", spr_player_layer_band);
 
 data_char_add_ears("nova", spr_player_ears_normal);
 data_char_add_ears("cat", spr_player_ears_cat);
+data_char_add_ears("dog", spr_player_ears_dog);
+data_char_add_ears("bunny", spr_player_ears_bunny);
 
 data_char_add_tail("nova", PlayerCharTail.normal);
 data_char_add_tail("fox", PlayerCharTail.fox);
