@@ -53,6 +53,15 @@ function Music() constructor {
 		state.child();
 		
 		bgm_ref_last = _bgm_ref;
+		
+		var _meta = global.data_music[$ global.data_music_refs[$ bgm_ref]];
+		bpm += _meta.bpm / 60;
+		if bpm >= 1 {
+			bpm -= 1;
+			bpm_frame = true;
+		} else {
+			bpm_frame = false;
+		}
 	});
 	
 	state_idle = state_base.add();
@@ -110,5 +119,21 @@ function Music() constructor {
 		state.run();
 	};
 
+}
+
+function game_music_get_data() {
+	return global.data_music[$ global.data_music_refs[$ global.game.music.bgm_ref]];
+}
+/// @return {real}
+function game_music_get_bpm() {
+	return game_music_get_data().bpm;
+}
+/// @return {real}
+function game_music_get_beat() {
+	return global.game.music.bpm;
+}
+/// @return {bool}
+function game_music_get_beat_frame() {
+	return global.game.music.bpm_frame;
 }
 
