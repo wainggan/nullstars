@@ -54,8 +54,13 @@ function Music() constructor {
 		
 		bgm_ref_last = _bgm_ref;
 		
-		var _meta = global.data_music[$ global.data_music_refs[$ bgm_ref]];
-		bpm += _meta.bpm / 60;
+		var _bpm = 60;
+		if bgm_ref != undefined {
+			var _meta = global.data_music[$ global.data_music_refs[$ bgm_ref]];
+			_bpm = _meta.bpm;
+		}
+		
+		bpm += _bpm / 60;
 		if bpm >= 1 {
 			bpm -= 1;
 			bpm_frame = true;

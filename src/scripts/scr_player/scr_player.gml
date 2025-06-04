@@ -269,7 +269,7 @@ function PlayerTail(_x = 0, _y = 0) constructor {
 		if _mode == PlayerCharTail.halo {
 			var _p = points[9];
 			draw_sprite_ext(
-				spr_player_tail, 2, 
+				spr_player_tail, 3,
 				round_ext(friend_x, 2), round_ext(friend_y, 2),
 				10 / 16, 16 / 16, 
 				round_ext(_p.direction, 5), c_white, 1
@@ -339,7 +339,7 @@ function PlayerTail(_x = 0, _y = 0) constructor {
 		if _mode == PlayerCharTail.halo {
 			var _p = points[9];
 			draw_sprite_ext(
-				spr_player_tail, 3, 
+				spr_player_tail, 2,
 				round_ext(friend_x, 2), round_ext(friend_y, 2),
 				10 / 16, 16 / 16,
 				round_ext(_p.direction, 5), c_white, 1
