@@ -184,8 +184,6 @@
     {"id":{"name":"obj_Position","path":"objects/obj_Position/obj_Position.yy",},},
     {"id":{"name":"obj_room_portal","path":"objects/obj_room_portal/obj_room_portal.yy",},},
     {"id":{"name":"obj_root","path":"objects/obj_root/obj_root.yy",},},
-    {"id":{"name":"obj_show_name_area","path":"objects/obj_show_name_area/obj_show_name_area.yy",},},
-    {"id":{"name":"obj_show_name_music","path":"objects/obj_show_name_music/obj_show_name_music.yy",},},
     {"id":{"name":"obj_Solid","path":"objects/obj_Solid/obj_Solid.yy",},},
     {"id":{"name":"obj_speed_base","path":"objects/obj_speed_base/obj_speed_base.yy",},},
     {"id":{"name":"obj_speed_left","path":"objects/obj_speed_left/obj_speed_left.yy",},},
