@@ -8501,7 +8501,7 @@
 		{
 			"identifier": "obj_camera_room",
 			"uid": 6,
-			"tags": [ "SIZE_TILE", "camera", "flag" ],
+			"tags": [ "camera", "flag" ],
 			"exportToToc": false,
 			"allowOutOfBounds": true,
 			"doc": "causes the camera to stay inside the bounds of the object. crop_# will crop the collision of the bounds, but keeps the camera within the object bounds as long as unlock_# is checked.",
@@ -8802,7 +8802,7 @@
 		{
 			"identifier": "obj_camera_focus",
 			"uid": 15,
-			"tags": [ "SIZE_TILE", "camera", "flag" ],
+			"tags": [ "camera", "flag" ],
 			"exportToToc": false,
 			"allowOutOfBounds": true,
 			"doc": "will gravitate the camera towards the camera",
@@ -8912,7 +8912,7 @@
 		{
 			"identifier": "obj_dash",
 			"uid": 21,
-			"tags": [ "object", "CENTERED" ],
+			"tags": ["object"],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": null,
@@ -9058,7 +9058,7 @@
 		{
 			"identifier": "obj_ooswitch_block",
 			"uid": 26,
-			"tags": [ "object", "on_off", "SIZE_TILE", "glue_target" ],
+			"tags": [ "object", "on_off", "glue_target" ],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "toggles the on-off state, activates when dashed into, hit by a box, etc",
@@ -9093,7 +9093,7 @@
 		{
 			"identifier": "obj_ooswitch_block2",
 			"uid": 650,
-			"tags": [ "object", "on_off", "SIZE_TILE", "glue_target" ],
+			"tags": [ "object", "on_off", "glue_target" ],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "toggles the up-down state, activates when dashed into, hit by a box, etc",
@@ -9128,7 +9128,7 @@
 		{
 			"identifier": "obj_oo_on",
 			"uid": 27,
-			"tags": [ "object", "on_off", "SIZE_TILE", "glue_target", "wall" ],
+			"tags": [ "object", "on_off", "glue_target", "wall" ],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "\"on\" block",
@@ -9163,7 +9163,7 @@
 		{
 			"identifier": "obj_oo_up",
 			"uid": 647,
-			"tags": [ "object", "on_off", "SIZE_TILE", "glue_target", "wall" ],
+			"tags": [ "object", "on_off", "glue_target", "wall" ],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "\"up\" block",
@@ -9198,7 +9198,7 @@
 		{
 			"identifier": "obj_oo_off",
 			"uid": 28,
-			"tags": [ "object", "on_off", "SIZE_TILE", "glue_target", "wall" ],
+			"tags": [ "object", "on_off", "glue_target", "wall" ],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "\"off\" block",
@@ -9233,7 +9233,7 @@
 		{
 			"identifier": "obj_oo_down",
 			"uid": 648,
-			"tags": [ "object", "on_off", "SIZE_TILE", "glue_target", "wall" ],
+			"tags": [ "object", "on_off", "glue_target", "wall" ],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "\"down\" block",
@@ -9268,7 +9268,7 @@
 		{
 			"identifier": "obj_spike_up",
 			"uid": 29,
-			"tags": [ "spike", "SIZE_TILE" ],
+			"tags": ["spike"],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "a spike, used to stick to moving platforms.",
@@ -9344,7 +9344,7 @@
 		{
 			"identifier": "obj_spike_left",
 			"uid": 33,
-			"tags": [ "spike", "SIZE_TILE" ],
+			"tags": ["spike"],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "a spike, used to stick to moving platforms.",
@@ -9420,7 +9420,7 @@
 		{
 			"identifier": "obj_spike_right",
 			"uid": 35,
-			"tags": [ "spike", "SIZE_TILE" ],
+			"tags": ["spike"],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "a spike, used to stick to moving platforms.",
@@ -9496,7 +9496,7 @@
 		{
 			"identifier": "obj_spike_down",
 			"uid": 31,
-			"tags": [ "spike", "SIZE_TILE" ],
+			"tags": ["spike"],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "a spike, used to stick to moving platforms.",
@@ -9572,7 +9572,7 @@
 		{
 			"identifier": "obj_box",
 			"uid": 62,
-			"tags": [ "holdable", "CENTERED" ],
+			"tags": ["holdable"],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "Can be picked up and thrown by the player.",
@@ -9607,7 +9607,7 @@
 		{
 			"identifier": "obj_ball",
 			"uid": 63,
-			"tags": [ "holdable", "CENTERED" ],
+			"tags": ["holdable"],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "Similar to obj_box, except it does not slow down when touching the ground, and reverses direction when hits a wall.",
@@ -9642,7 +9642,7 @@
 		{
 			"identifier": "obj_flag_stop",
 			"uid": 64,
-			"tags": [ "SIZE_TILE", "flag" ],
+			"tags": ["flag"],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "Stops the player from moving.",
@@ -9940,7 +9940,7 @@
 		{
 			"identifier": "obj_timer_start",
 			"uid": 156,
-			"tags": [ "SIZE_TILE", "timer" ],
+			"tags": ["timer"],
 			"exportToToc": true,
 			"allowOutOfBounds": false,
 			"doc": "starts the timer.",
@@ -10167,7 +10167,7 @@
 		{
 			"identifier": "obj_timer_end",
 			"uid": 157,
-			"tags": [ "SIZE_TILE", "timer" ],
+			"tags": ["timer"],
 			"exportToToc": true,
 			"allowOutOfBounds": false,
 			"doc": "ends the timer, and causes a global reset.",
@@ -10275,7 +10275,7 @@
 		{
 			"identifier": "obj_speed_left",
 			"uid": 195,
-			"tags": [ "object", "SIZE_TILE", "glue_target" ],
+			"tags": [ "object", "glue_target" ],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": null,
@@ -10310,7 +10310,7 @@
 		{
 			"identifier": "obj_speed_right",
 			"uid": 197,
-			"tags": [ "object", "SIZE_TILE", "glue_target" ],
+			"tags": [ "object", "glue_target" ],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": null,
@@ -10345,7 +10345,7 @@
 		{
 			"identifier": "obj_water",
 			"uid": 198,
-			"tags": [ "SIZE_TILE", "water" ],
+			"tags": ["water"],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "causes most moving objects to move at half speed. the player can swim in it. when hit with a laser, it will solidify.",
@@ -10700,7 +10700,7 @@
 		{
 			"identifier": "obj_star",
 			"uid": 211,
-			"tags": [ "holdable", "CENTERED" ],
+			"tags": ["holdable"],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "Similar to obj_box, except will disappear after [] seconds.",
@@ -10843,7 +10843,7 @@
 		{
 			"identifier": "obj_key",
 			"uid": 217,
-			"tags": [ "holdable", "CENTERED" ],
+			"tags": ["holdable"],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "similar to obj_box, except it is used to activate a obj_lock. explodes when successful.",
@@ -10878,7 +10878,7 @@
 		{
 			"identifier": "obj_lock",
 			"uid": 218,
-			"tags": [ "trigger", "SIZE_TILE" ],
+			"tags": ["trigger"],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "an empty field. activates when a obj_key touches it",
@@ -11388,7 +11388,7 @@
 		{
 			"identifier": "obj_launcher",
 			"uid": 235,
-			"tags": [ "SIZE_TILE", "trigger", "glue_parent" ],
+			"tags": [ "trigger", "glue_parent" ],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "shoots out an object. when the object is destroyed, it will shoot out another object.",
@@ -11724,7 +11724,7 @@
 		{
 			"identifier": "obj_ss_up",
 			"uid": 244,
-			"tags": [ "semisolid", "SIZE_TILE" ],
+			"tags": ["semisolid"],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "semisolid",
@@ -11759,7 +11759,7 @@
 		{
 			"identifier": "obj_ss_down",
 			"uid": 245,
-			"tags": [ "semisolid", "SIZE_TILE" ],
+			"tags": ["semisolid"],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "semisolid",
@@ -11794,7 +11794,7 @@
 		{
 			"identifier": "obj_ss_left",
 			"uid": 246,
-			"tags": [ "semisolid", "SIZE_TILE" ],
+			"tags": ["semisolid"],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "semisolid",
@@ -11829,7 +11829,7 @@
 		{
 			"identifier": "obj_ss_right",
 			"uid": 247,
-			"tags": [ "semisolid", "SIZE_TILE" ],
+			"tags": ["semisolid"],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "semisolid",
@@ -11940,7 +11940,7 @@
 		{
 			"identifier": "obj_lift_activate",
 			"uid": 16,
-			"tags": [ "object", "SIZE_TILE", "trigger", "glue_parent", "lift" ],
+			"tags": [ "object", "trigger", "glue_parent", "lift" ],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "a lift. activates when stood on by the player.",
@@ -12197,7 +12197,7 @@
 		{
 			"identifier": "obj_decor_flag",
 			"uid": 256,
-			"tags": [ "decor", "SIZE_TILE" ],
+			"tags": ["decor"],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "creates a small pole, and a banner on top of the pole.",
@@ -12564,7 +12564,7 @@
 		{
 			"identifier": "obj_lift_attack",
 			"uid": 267,
-			"tags": [ "lift", "object", "SIZE_TILE", "trigger", "glue_parent" ],
+			"tags": [ "lift", "object", "trigger", "glue_parent" ],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "scans for a player or box in its line of sight, activates when found. when activated, it moves into its direction until it hits a solid wall, then it moves back.",
@@ -12746,7 +12746,7 @@
 		{
 			"identifier": "obj_spike_pond",
 			"uid": 560,
-			"tags": [ "spike", "SIZE_TILE" ],
+			"tags": ["spike"],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "rectangle spike",
@@ -12781,7 +12781,7 @@
 		{
 			"identifier": "obj_wall",
 			"uid": 528,
-			"tags": [ "SIZE_TILE", "glue_target" ],
+			"tags": ["glue_target"],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "a normal, collidable wall.",
@@ -12857,7 +12857,7 @@
 		{
 			"identifier": "obj_room_portal",
 			"uid": 579,
-			"tags": [ "SIZE_TILE", "flag" ],
+			"tags": ["flag"],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "allows a second background to be drawn on top of the current background",
@@ -12933,7 +12933,7 @@
 		{
 			"identifier": "obj_decor_dripping",
 			"uid": 594,
-			"tags": [ "SIZE_TILE", "decor" ],
+			"tags": ["decor"],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": null,
@@ -12968,7 +12968,7 @@
 		{
 			"identifier": "obj_decor_pouring",
 			"uid": 595,
-			"tags": [ "SIZE_TILE", "decor" ],
+			"tags": ["decor"],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": null,
@@ -13003,7 +13003,7 @@
 		{
 			"identifier": "obj_kaizo",
 			"uid": 599,
-			"tags": [ "SIZE_TILE", "object" ],
+			"tags": ["object"],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": null,
@@ -13038,7 +13038,7 @@
 		{
 			"identifier": "obj_decor_lantern",
 			"uid": 618,
-			"tags": [ "SIZE_TILE", "decor", "glue_target", "light" ],
+			"tags": [ "decor", "glue_target", "light" ],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": null,

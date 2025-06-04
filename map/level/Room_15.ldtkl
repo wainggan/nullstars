@@ -96,7 +96,7 @@
 					"__identifier": "obj_camera_room",
 					"__grid": [365,1],
 					"__pivot": [0,0],
-					"__tags": [ "SIZE_TILE", "camera", "flag" ],
+					"__tags": [ "camera", "flag" ],
 					"__tile": { "tilesetUid": 8, "x": 288, "y": 256, "w": 16, "h": 16 },
 					"__smartColor": "#D77643",
 					"iid": "aa176bd0-b0a0-11ee-ab8f-2fbb9f3c080d",
