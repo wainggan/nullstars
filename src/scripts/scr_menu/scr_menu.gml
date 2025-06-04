@@ -310,7 +310,7 @@ function MenuPageChar(_kind) : MenuPage() constructor {
 	anim_current = 0;
 	list = undefined;
 	
-	tail = new PlayerTail();
+	static tail = new PlayerTail();
 	
 	static init = function () {
 		anim = 0;

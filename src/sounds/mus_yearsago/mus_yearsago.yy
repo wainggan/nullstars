@@ -9,7 +9,7 @@
   "bitRate":192,
   "compression":3,
   "conversionMode":0,
-  "duration":309.67743,
+  "duration":131.40898,
   "name":"mus_yearsago",
   "parent":{
     "name":"bgm",
