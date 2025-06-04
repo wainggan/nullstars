@@ -244,6 +244,8 @@
     {"name":"spr_none","order":15,"path":"sprites/spr_none/spr_none.yy",},
     {"name":"spr_pixel","order":16,"path":"sprites/spr_pixel/spr_pixel.yy",},
     {"name":"spr_player_bullet","order":7,"path":"sprites/spr_player_bullet/spr_player_bullet.yy",},
+    {"name":"spr_player_ears_cat","order":11,"path":"sprites/spr_player_ears_cat/spr_player_ears_cat.yy",},
+    {"name":"spr_player_ears_normal","order":10,"path":"sprites/spr_player_ears_normal/spr_player_ears_normal.yy",},
     {"name":"spr_player_eyes","order":3,"path":"sprites/spr_player_eyes/spr_player_eyes.yy",},
     {"name":"spr_player_layer_band","order":8,"path":"sprites/spr_player_layer_band/spr_player_layer_band.yy",},
     {"name":"spr_player_layer_flower","order":5,"path":"sprites/spr_player_layer_flower/spr_player_layer_flower.yy",},

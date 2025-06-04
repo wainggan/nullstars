@@ -322,7 +322,8 @@ function MenuPageChar(_kind) : MenuPage() constructor {
 			list = global.data_char_refs.accessory;
 			current = array_get_index(list, global.data.player.accessory);
 		} else if kind == 2 {
-			ASSERT(false);
+			list = global.data_char_refs.ears;
+			current = array_get_index(list, global.data.player.ears);
 		} else if kind == 3 {
 			list = global.data_char_refs.tail;
 			current = array_get_index(list, global.data.player.tail);
@@ -358,7 +359,7 @@ function MenuPageChar(_kind) : MenuPage() constructor {
 			} else if kind == 1 {
 				global.data.player.accessory = list[current];
 			} else if kind == 2 {
-				ASSERT(false);
+				global.data.player.ears = list[current];
 			} else if kind == 3 {
 				global.data.player.tail = list[current];
 			} else if kind == 4 {

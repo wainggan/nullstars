@@ -367,6 +367,8 @@
     {"id":{"name":"spr_none","path":"sprites/spr_none/spr_none.yy",},},
     {"id":{"name":"spr_pixel","path":"sprites/spr_pixel/spr_pixel.yy",},},
     {"id":{"name":"spr_player_bullet","path":"sprites/spr_player_bullet/spr_player_bullet.yy",},},
+    {"id":{"name":"spr_player_ears_cat","path":"sprites/spr_player_ears_cat/spr_player_ears_cat.yy",},},
+    {"id":{"name":"spr_player_ears_normal","path":"sprites/spr_player_ears_normal/spr_player_ears_normal.yy",},},
     {"id":{"name":"spr_player_eyes","path":"sprites/spr_player_eyes/spr_player_eyes.yy",},},
     {"id":{"name":"spr_player_layer_band","path":"sprites/spr_player_layer_band/spr_player_layer_band.yy",},},
     {"id":{"name":"spr_player_layer_flower","path":"sprites/spr_player_layer_flower/spr_player_layer_flower.yy",},},
