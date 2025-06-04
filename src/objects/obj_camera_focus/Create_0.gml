@@ -4,4 +4,3 @@ image_yscale = jorp_h;
 
 event_inherited();
 
-// depth = 20;

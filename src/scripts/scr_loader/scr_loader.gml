@@ -196,18 +196,18 @@ function Loader() constructor {
 					_field.time = _val.time;
 					_field.dir = _val.dir;
 					_field.ref = _val.ref;
-					
-					_field.image_xscale = floor(_item.width / TILESIZE);
-					_field.image_yscale = floor(_item.height / TILESIZE);
 					break;
 				case nameof(obj_timer_end):
-					_field.image_xscale = floor(_item.width / TILESIZE);
-					_field.image_yscale = floor(_item.height / TILESIZE);
 					break;
 			}
 			
 			_field.uid = _item.id;
 			_field.rid = -1;
+			
+			_field.jorp_x = _item.x;
+			_field.jorp_y = _item.y;
+			_field.jorp_w = _item.width div TILESIZE;
+			_field.jorp_h = _item.height div TILESIZE;
 			
 			var _inst = instance_create_layer(
 				_item.x, _item.y,

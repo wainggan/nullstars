@@ -696,19 +696,13 @@ function Level(_id, _x, _y, _width, _height) constructor {
 						_field.uid = _e.id;
 						_field.rid = self.id;
 						
-						// @todo: rewrite
-						if array_contains(_e.tags, "SIZE_TILE") {
-							_field.image_xscale = floor(_e.width / TILESIZE);
-							_field.image_yscale = floor(_e.height / TILESIZE);
-						}
-						
 						var _pos_x = _e.x,
 							_pos_y = _e.y;
 						
-						if array_contains(_e.tags, "CENTERED") {
-							_pos_x += 8;
-							_pos_y += 8;
-						}
+						_field.jorp_x = _e.x;
+						_field.jorp_y = _e.y;
+						_field.jorp_w = _e.width div TILESIZE;
+						_field.jorp_h = _e.height div TILESIZE;
 						
 						var _collect = {
 							id: _e.id,

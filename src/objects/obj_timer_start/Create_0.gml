@@ -1,4 +1,7 @@
 
+image_xscale = jorp_w;
+image_yscale = jorp_h;
+
 last_check = false;
 last_able = false;
 last_alive = false;

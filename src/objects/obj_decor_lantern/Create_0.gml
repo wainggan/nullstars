@@ -1,4 +1,6 @@
 
+image_yscale = jorp_h;
+
 event_inherited();
 
 glue_child_setup();
