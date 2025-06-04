@@ -415,6 +415,7 @@ function MenuPageChar(_kind) : MenuPage() constructor {
 			0, c_white,
 			list == global.data_char_refs.cloth ? "none" : global.data.player.cloth,
 			list == global.data_char_refs.accessory ? "none" : global.data.player.accessory,
+			list == global.data_char_refs.ears ? "none" : global.data.player.ears,
 			_color
 		);
 		

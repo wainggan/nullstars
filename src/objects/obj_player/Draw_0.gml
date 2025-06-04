@@ -114,7 +114,7 @@ if !(_meta.front ?? true) {
 
 var _frame = anim.get();
 
-draw_player(_frame, _pos_x, _pos_y, scale_x * _dir, scale_y, _angle, c_white, global.data.player.cloth, global.data.player.accessory, global.data.player.color);
+draw_player(_frame, _pos_x, _pos_y, scale_x * _dir, scale_y, _angle, c_white, global.data.player.cloth, global.data.player.accessory, global.data.player.ears, global.data.player.color);
 
 if _meta.front ?? true {
 	tail.draw(dash_left, global.data.player.tail, global.data.player.color, c_white);

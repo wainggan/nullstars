@@ -46,6 +46,16 @@ function data_char_add_acc(_name, _asset) {
 }
 
 /// @arg {string} _name 
+/// @arg {asset.GMSprite} _asset
+function data_char_add_ears(_name, _asset) {
+	if global.data_char.ears[$ _name] != undefined {
+		LOG(Log.error, $"data_char.ears: {_name} already exists");
+	}
+	global.data_char.ears[$ _name] = _asset;
+	array_push(global.data_char_refs.ears, _name);
+}
+
+/// @arg {string} _name 
 /// @arg {enum.PlayerCharTail} _ref
 function data_char_add_tail(_name, _ref) {
 	if global.data_char.tail[$ _name] != undefined {
@@ -54,7 +64,6 @@ function data_char_add_tail(_name, _ref) {
 	global.data_char.tail[$ _name] = _ref;
 	array_push(global.data_char_refs.tail, _name);
 }
-
 
 /// @arg {string} _name 
 /// @arg {array<real>} _color [eye color, 0 dashes, 1 dash, 2 dashes, etc...]
@@ -71,6 +80,9 @@ data_char_add_cloth("classic", spr_player_layer_shine);
 
 data_char_add_acc("flower", spr_player_layer_flower);
 data_char_add_acc("band", spr_player_layer_band);
+
+data_char_add_ears("nova", spr_player_ears_normal);
+data_char_add_ears("cat", spr_player_ears_cat);
 
 data_char_add_tail("nova", PlayerCharTail.normal);
 data_char_add_tail("fox", PlayerCharTail.fox);

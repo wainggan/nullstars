@@ -88,7 +88,7 @@ enum PlayerCharTail {
 /// @arg {constant.Color} _blend
 /// @arg {string} _cloth
 /// @arg {string} _accessory
-function draw_player(_frame, _x, _y, _x_scale, _y_scale, _angle, _blend, _cloth = "none", _accessory = "none", _color = "main") {
+function draw_player(_frame, _x, _y, _x_scale, _y_scale, _angle, _blend, _cloth = "none", _accessory = "none", _ears = "nova", _color = "main") {
 	if _frame == PlayerFrame.swim_bullet {
 		draw_sprite_ext(
 			spr_player_bullet,
@@ -107,6 +107,17 @@ function draw_player(_frame, _x, _y, _x_scale, _y_scale, _angle, _blend, _cloth 
 	);
 	
 	var _check;
+	
+	_check = global.data_char.ears[$ _ears];
+	if _check != undefined {
+		draw_sprite_ext(
+			_check,
+			_frame, _x, _y,
+			_x_scale, _y_scale,
+			_angle, _blend, 1
+		);
+	}
+	
 	_check = global.data_char.color[$ _color];
 	if _check != undefined {
 		draw_sprite_ext(
