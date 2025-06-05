@@ -1,6 +1,6 @@
 
 var _c = state.is(state_active) ? c_white : #aaaaaa;
-var _d = round_ext(dir, 9)
+var _d = round_ext(dir, 9);
 
 var _scale = 1 + anim_hit * 0.5;
 

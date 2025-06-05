@@ -26,6 +26,7 @@ data_music_add(nameof(mus_wind), "wind", {});
 data_music_add(nameof(mus_questionthestars), "stars", {
 	name: "Love Letter",
 	artist: "parchment",
+	bpm: 130,
 });
 data_music_add(nameof(mus_yearsago), "lava", {
 	name: "Skies and Nightmares",
