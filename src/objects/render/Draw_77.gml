@@ -93,7 +93,7 @@ if global.config.graphics_post_outline {
 gpu_set_tex_filter(true);
 
 gpu_set_blendmode(bm_add);
-draw_sprite_tiled_ext(spr_atmosphere_clouds, 0, -_cam_x * 0.5, -_cam_y * 0.5 + (global.time / 4), 18, 18, #0a0a0a, 1);
+draw_sprite_tiled_ext(spr_atmosphere_clouds, 0, -_cam_x * 0.5, -_cam_y * 0.5 + (global.time / 4), 24, 24, #111111, 1);
 gpu_set_blendmode(bm_normal);
 
 game_render_refresh();

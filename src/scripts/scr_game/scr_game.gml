@@ -216,6 +216,8 @@ function GameState() constructor {
 	
 	static timer_stop = function () {
 		timer_current = 0;
+		timer_length = 0;
+		timer_target = noone;
 		timer_active = false;
 	};
 	

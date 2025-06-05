@@ -123,6 +123,9 @@ with level_get_instance(ref) {
 			game_file_save();
 			
 			game_timer_stop();
+			other.anim_pop = true;
+			
+			game_render_wave(x + sprite_width / 2, y + sprite_height / 2, 960, 120, 0.5, spr_wave_ripple);
 		
 			instance_create_layer(x + sprite_width / 2, y + sprite_height / 2, layer, obj_effects_spritepop, {
 				sprite: spr_timer_pop,
@@ -151,5 +154,14 @@ with level_get_instance(ref) {
 	
 	}
 
+}
+
+anim_running = approach(anim_running, _letsgoo, 0.08);
+var _last_is_complete = anim_is_complete;
+anim_is_complete = global.game.gate.data(other.name).complete;
+anim_wall = approach(anim_wall, anim_is_complete || _letsgoo ? 1 : 0, 0.1);
+
+if anim_pop {
+	anim_running = 0;
 }
 
