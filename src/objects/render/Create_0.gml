@@ -66,6 +66,8 @@ game_update_windowscale(global.settings.graphic.windowscale + 1);
 game_update_fullscreen(global.settings.graphic.fullscreen);
 
 matrix_identity = matrix_build_identity();
+matrix_scratch = matrix_build_identity();
+matrix_ind = util_matrix_get_alignment();
 
 cache_time = 0;
 cache_time_str = "";

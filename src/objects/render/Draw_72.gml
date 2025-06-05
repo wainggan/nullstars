@@ -318,9 +318,9 @@ var _matrix_ind = util_matrix_get_alignment();
 
 for (var i = 0; i < array_length(_lvl_onscreen); i++) {
 	var _lvl = _lvl_onscreen[i]
-	_matrix[_matrix_ind.x] = _lvl.x - _cam_x;
-	_matrix[_matrix_ind.y] = _lvl.y - _cam_y;
-	matrix_set(matrix_world, _matrix);
+	matrix_scratch[matrix_ind.x] = _lvl.x - _cam_x;
+	matrix_scratch[matrix_ind.y] = _lvl.y - _cam_y;
+	matrix_set(matrix_world, matrix_scratch);
 	if _lvl.vb_tiles_below != -1 {
 		vertex_submit(_lvl.vb_tiles_below, pr_trianglelist, tileset_get_texture(tl_tiles));
 	}
@@ -329,6 +329,9 @@ for (var i = 0; i < array_length(_lvl_onscreen); i++) {
 	}
 }
 matrix_set(matrix_world, matrix_identity);
+
+matrix_scratch[matrix_ind.x] = 0;
+matrix_scratch[matrix_ind.y] = 0;
 
 shader_reset();
 
