@@ -65,22 +65,25 @@ if anim_time_main > 0 {
 	
 	gpu_set_colorwriteenable(true, true, true, true);
 	
-	surface_reset_target();
-	
 	// outline
+	gpu_set_blendmode_ext(bm_inv_dest_alpha, bm_one);
 	// long bar
 	draw_sprite_ext(spr_timer_background, 0, WIDTH / 2, 2, 32 * _anim0, 3, 0, _colo, 1);
 	// main background
 	draw_sprite_ext(spr_timer_background, 0, WIDTH / 2, 2, 12 * _anim0, 6 * _anim2, 0, _colo, 1);
+	gpu_set_blendmode(bm_normal);
+	
+	// cut hole in timer display if player is behind it
+	// i wonder if anyone will notice this?
+	with obj_player {
+		gpu_set_blendequation(bm_eq_subtract);
+		draw_circle_sprite(x - _cam.x, y - _cam.y - 20, clamp(64 - (y - _cam.y - 20), 0, 64), c_white, 1);
+		gpu_set_blendequation(bm_eq_add);
+	}
+	
+	surface_reset_target();
 	
 	draw_surface(surf_ping, 0, 0);
-	
-	//shader_set(shd_outline)
-	//var _u_texel = shader_get_uniform(shd_outline, "u_texel");
-	//shader_set_uniform_f(_u_texel, 1 / WIDTH, 1 / HEIGHT);
-	//var _colo = merge_color(#ffffff, #000000, _animc);
-	//draw_surface_ext(surf_ping, 0, 0, 1, 1, 0, _colo, 1);
-	//shader_reset();
 }
 
 
