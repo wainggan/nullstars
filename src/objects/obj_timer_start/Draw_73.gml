@@ -8,8 +8,8 @@ if anim_running < 1 {
 		var _sc = hermite(min(2 * (1 - abs(_san)), 1) * (1 - anim_running));
 		draw_sprite_ext(
 			spr_timer_arrow, 0,
-			(bbox_left + bbox_right) / 2 + lengthdir_x(_mag, _dir),
-			(bbox_top + bbox_bottom) / 2 + lengthdir_y(_mag, _dir),
+			(bbox_left + bbox_right) / 2 + lengthdir_x(_mag - 8, _dir),
+			(bbox_top + bbox_bottom) / 2 + lengthdir_y(_mag - 8, _dir),
 			_sc, _sc,
 			_dir, c_white, 1
 		);
@@ -17,10 +17,11 @@ if anim_running < 1 {
 }
 if anim_running > 0 {
 	var _sc = 0.4 * game_music_get_beat_lead();
+	var _dir = anim_dir * 90;
 	draw_sprite_ext(
 		spr_timer_arrow, 1,
-		(bbox_left + bbox_right) / 2,
-		(bbox_top + bbox_bottom) / 2,
+		(bbox_left + bbox_right) / 2 - lengthdir_x(8, _dir),
+		(bbox_top + bbox_bottom) / 2 - lengthdir_y(8, _dir),
 		(1 + _sc) * anim_running, (1 + _sc) * anim_running,
 		0, c_white, 1
 	);

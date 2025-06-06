@@ -119,12 +119,6 @@ with level_get_instance(ref) {
 			
 			game_render_wave(x + sprite_width / 2, y + sprite_height / 2, 960, 120, 0.5, spr_wave_ripple);
 		
-			instance_create_layer(x + sprite_width / 2, y + sprite_height / 2, layer, obj_effects_spritepop, {
-				sprite: spr_timer_pop,
-				index: 1,
-				spd: 0.02
-			});
-		
 			_pop = true;
 		}
 
@@ -143,9 +137,7 @@ with level_get_instance(ref) {
 				spd: 0.04
 			});
 		}
-	
 	}
-
 }
 
 anim_running = approach(anim_running, _letsgoo, 0.08);
