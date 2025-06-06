@@ -42,17 +42,14 @@ if !game_timer_running() && _start {
 	game_set_pause(4)
 	game_camera_set_shake(3, 0.5)
 	
-	instance_create_layer(x + sprite_width / 2, y + sprite_height / 2, layer, obj_effects_spritepop, {
-		sprite: spr_timer_pop,
-		index: 0,
-		spd: 0.02
-	})
 	instance_create_layer(x, y, layer, obj_effects_rectpop, {
 		width: sprite_width,
 		height: sprite_height,
 		pad: 16,
 		spd: 0.04
-	})
+	});
+	game_render_wave(x + sprite_width / 2, y + sprite_height / 2, 512, 60, 0.2, spr_wave_ripple);
+	game_render_particle_ambient(x + sprite_width / 2, y + sprite_height / 2, ps_timer_start);
 }
 
 if _end {
@@ -64,18 +61,13 @@ if _end {
 	}
 	
 	if _cond {
-		game_set_pause(4)
-		instance_create_layer(x + sprite_width / 2, y + sprite_height / 2, layer, obj_effects_spritepop, {
-			sprite: spr_timer_pop,
-			index: 1,
-			spd: 0.02
-		})
+		game_set_pause(4);
 		instance_create_layer(x, y, layer, obj_effects_rectpop, {
 			width: sprite_width,
 			height: sprite_height,
 			pad: 16,
 			spd: 0.04
-		})
+		});
 	}
 	
 }

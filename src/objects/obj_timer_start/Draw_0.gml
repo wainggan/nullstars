@@ -1,6 +1,13 @@
 
 draw_sprite_ext(
-	spr_debug_timer_start, global.time / 20,
+	spr_timer_start, anim_dir,
+	x, y,
+	image_xscale, image_yscale,
+	0, c_white, 1
+);
+
+draw_sprite_ext(
+	spr_timer_start, 4,
 	x, y,
 	image_xscale, image_yscale,
 	0, c_white, 1

@@ -17,3 +17,17 @@ anim_wall = 0;
 anim_running = 0;
 anim_is_complete = false;
 anim_pop = false;
+
+anim_dir = 0;
+if dir == "right" {
+	anim_dir = 0;
+} else if dir == "left" {
+	anim_dir = 2;
+} else if dir == "down" {
+	anim_dir = 3;
+} else if dir == "up" {
+	anim_dir = 1;
+} else {
+	ASSERT(false);
+}
+
