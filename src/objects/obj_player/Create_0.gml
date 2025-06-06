@@ -1064,7 +1064,7 @@ state_free.set("step", function () {
 				(!_close || dash_dir_y == 0) &&
 				!get_check_wall(sign(x_vel), 6) {
 				action_dashjump(_kh == 0 && dash_dir_y == 1 ? dir : _kh);
-			} else if dash_grace_kick > 0 && dash_dir_y == -1 {
+			} else if dash_grace_kick > 0 && dash_dir_y == -1 && _kv == -1 {
 				if get_check_wall(dir) {
 					action_dashjump_wall(_kh, dir);
 				} else if get_check_wall(-dir) {
@@ -1281,7 +1281,7 @@ state_dash.set("enter", function() {
 			}
 		} else if get_check_wall(dir) { 
 			action_dash_end();
-			if dash_dir_y == -1 {
+			if dash_dir_y == -1 && _kv == -1 {
 				action_dashjump_wall(_kh, dir);
 			} else {
 				action_walljump();
