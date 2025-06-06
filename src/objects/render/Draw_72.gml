@@ -124,24 +124,24 @@ if config.background_timer && (anim_time > 0 || anim_time_main > 0) {
 	
 	if anim_target_w != 0 {
 		var _sint = 200;
-		var _san0 = tween(Tween.Cubic, global.time % _sint / _sint);
-		var _san1 = tween(Tween.Cubic, (global.time + (_sint / 2)) % _sint / _sint);
+		var _san0 = 1 - tween(Tween.Cubic, global.time % _sint / _sint);
+		var _san1 = 1 - tween(Tween.Cubic, (global.time + (_sint / 2)) % _sint / _sint);
 		var _cent_x = anim_target_x + anim_target_w / 2 - _cam_x;
 		var _cent_y = anim_target_y + anim_target_h / 2 - _cam_y;
 		draw_sprite_ext(
 			spr_timer_wave, 0,
 			_cent_x,
 			_cent_y,
-			anim_target_w / 16 + _san0 * 96,
-			anim_target_h / 16 + _san0 * 96,
+			_san0 * (96 + anim_target_w / 16),
+			_san0 * (96 + anim_target_h / 16),
 			0, c_white, max(0, 0.6 - 0.6 * power(_san0, 2)) * (1 - anim_time_close)
 		);
 		draw_sprite_ext(
 			spr_timer_wave, 0,
 			_cent_x,
 			_cent_y,
-			anim_target_w / 16 + _san1 * 96,
-			anim_target_h / 16 + _san1 * 96,
+			_san1 * (96 + anim_target_w / 16),
+			_san1 * (96 + anim_target_h / 16),
 			0, c_white, max(0, 0.6 - 0.6 * power(_san1, 2)) * (1 - anim_time_close)
 		);
 	}
