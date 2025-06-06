@@ -78,6 +78,8 @@ function draw_circle_outline(_x, _y, _radius, _thick, _color = undefined, _alpha
 	draw_circle_outline_part(_x, _y, _radius, _thick, 1, 0, false, _color, _alpha, _res)
 }
 
+// in a stroke of genius, i used this `_radius` parameter for diameter.
+// @todo: go through every use of this function and fix it ig
 function draw_circle_sprite(_x, _y, _radius, _color = draw_get_color(), _alpha = draw_get_alpha()) {
 	draw_sprite_ext(spr_circle, 0, _x, _y, _radius / 64, _radius / 64, 0, _color, _alpha);
 }
