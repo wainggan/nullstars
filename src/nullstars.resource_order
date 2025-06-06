@@ -274,6 +274,7 @@
     {"name":"spr_timer_end_wall","order":70,"path":"sprites/spr_timer_end_wall/spr_timer_end_wall.yy",},
     {"name":"spr_timer_pop","order":22,"path":"sprites/spr_timer_pop/spr_timer_pop.yy",},
     {"name":"spr_timer_water","order":67,"path":"sprites/spr_timer_water/spr_timer_water.yy",},
+    {"name":"spr_timer_wave","order":71,"path":"sprites/spr_timer_wave/spr_timer_wave.yy",},
     {"name":"spr_water","order":32,"path":"sprites/spr_water/spr_water.yy",},
     {"name":"spr_wave_diamond","order":1,"path":"sprites/spr_wave_diamond/spr_wave_diamond.yy",},
     {"name":"spr_wave_ripple","order":2,"path":"sprites/spr_wave_ripple/spr_wave_ripple.yy",},

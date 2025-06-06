@@ -77,6 +77,10 @@ anim_time = 0;
 anim_time_main = 0;
 anim_time_stop = 0;
 anim_time_close = 0;
+anim_target_x = 0;
+anim_target_y = 0;
+anim_target_w = 0;
+anim_target_h = 0;
 
 
 config = {
