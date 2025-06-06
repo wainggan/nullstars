@@ -132,16 +132,16 @@ if config.background_timer && (anim_time > 0 || anim_time_main > 0) {
 			spr_timer_wave, 0,
 			_cent_x,
 			_cent_y,
-			_san0 * 96,
-			_san0 * 96,
+			anim_target_w / 16 + _san0 * 96,
+			anim_target_h / 16 + _san0 * 96,
 			0, c_white, max(0, 0.6 - 0.6 * power(_san0, 2)) * (1 - anim_time_close)
 		);
 		draw_sprite_ext(
 			spr_timer_wave, 0,
 			_cent_x,
 			_cent_y,
-			_san1 * 96,
-			_san1 * 96,
+			anim_target_w / 16 + _san1 * 96,
+			anim_target_h / 16 + _san1 * 96,
 			0, c_white, max(0, 0.6 - 0.6 * power(_san1, 2)) * (1 - anim_time_close)
 		);
 	}
