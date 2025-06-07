@@ -44,8 +44,8 @@
   },
   "origin":0,
   "parent":{
-    "name":"graphics",
-    "path":"folders/graphics.yy",
+    "name":"tiles",
+    "path":"folders/graphics/tiles.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

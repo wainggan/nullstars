@@ -12,8 +12,8 @@
   "out_tilehborder":0,
   "out_tilevborder":0,
   "parent":{
-    "name":"graphics",
-    "path":"folders/graphics.yy",
+    "name":"tiles",
+    "path":"folders/graphics/tiles.yy",
   },
   "resourceType":"GMTileSet",
   "resourceVersion":"2.0",
