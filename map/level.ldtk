@@ -730,7 +730,7 @@
 	"pngFilePattern": null,
 	"backupOnSave": true,
 	"backupLimit": 10,
-	"backupRelPath": "backup",
+	"backupRelPath": "../backup",
 	"levelNamePattern": "Room_%idx",
 	"tutorialDesc": null,
 	"customCommands": [],
