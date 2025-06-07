@@ -734,7 +734,10 @@ function Level(_id, _x, _y, _width, _height) constructor {
 				tiles = layer_tilemap_create(
 					layer,
 					x, y,
-					tl_debug,
+					// this is an empty sprite.
+					// it seems gamemaker's place_meeting against a tile layer doesn't
+					// work when a tile's indice is technically larger than the tile layer.
+					tl_collision,
 					width div TILESIZE,
 					height div TILESIZE
 				);
