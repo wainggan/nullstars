@@ -40,8 +40,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_debug_lift_attack",
-    "path":"sprites/spr_debug_lift_attack/spr_debug_lift_attack.yy",
+    "name":"spr_lift_attack",
+    "path":"sprites/spr_lift_attack/spr_lift_attack.yy",
   },
   "spriteMaskId":null,
   "visible":true,

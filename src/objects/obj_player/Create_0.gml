@@ -73,12 +73,12 @@ buffer_dash = 0;
 nat_crouch = function(_value = undefined) {
 	if _value != undefined {
 		if _value {
-			mask_index = spr_debug_player_crouch;
+			mask_index = spr_hitbox_player_crouch;
 		} else {
-			mask_index = spr_debug_player;
+			mask_index = spr_hitbox_player;
 		}
 	}
-	return mask_index == spr_debug_player_crouch;
+	return mask_index == spr_hitbox_player_crouch;
 };
 nat_crouch(false);
 
@@ -87,7 +87,7 @@ get_can_uncrouch = function() {
 		return true;
 	}
 	var _pre = mask_index;
-	mask_index = spr_debug_player;
+	mask_index = spr_hitbox_player;
 	
 	var _collide = actor_collision(x, y);
 	var _inst = instance_place(x, y, obj_ss_down);

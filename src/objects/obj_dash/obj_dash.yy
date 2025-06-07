@@ -38,8 +38,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_debug_dashrefill",
-    "path":"sprites/spr_debug_dashrefill/spr_debug_dashrefill.yy",
+    "name":"spr_dashrefill",
+    "path":"sprites/spr_dashrefill/spr_dashrefill.yy",
   },
   "spriteMaskId":null,
   "visible":true,

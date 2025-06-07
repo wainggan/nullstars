@@ -44,8 +44,8 @@
   },
   "origin":0,
   "parent":{
-    "name":"graphics",
-    "path":"folders/graphics.yy",
+    "name":"spike",
+    "path":"folders/graphics/object/spike.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"graphics",
-    "path":"folders/graphics.yy",
+    "name":"effects",
+    "path":"folders/graphics/effects.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

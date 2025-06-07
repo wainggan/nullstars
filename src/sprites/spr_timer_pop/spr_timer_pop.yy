@@ -26,8 +26,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"graphics",
-    "path":"folders/graphics.yy",
+    "name":"timer",
+    "path":"folders/graphics/object/timer.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

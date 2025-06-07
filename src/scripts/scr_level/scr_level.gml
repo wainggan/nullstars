@@ -755,7 +755,7 @@ function Level(_id, _x, _y, _width, _height) constructor {
 				tiles_spike = layer_tilemap_create(
 					layer_spike,
 					x, y,
-					tl_debug_spikes,
+					tl_spikes,
 					width div TILESIZE,
 					height div TILESIZE
 				);
