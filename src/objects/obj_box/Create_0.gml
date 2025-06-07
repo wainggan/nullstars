@@ -1,7 +1,10 @@
 
-event_inherited()
+x += 8;
+y += 8;
 
-frame = function(){
+event_inherited();
+
+frame = function () {
 	var _y_accel = 0;
 	if abs(y_vel) < 1 {
 		_y_accel = 0.3;
@@ -31,7 +34,7 @@ frame = function(){
 		else y_vel = 0;
 	};
 	actor_move_y(y_vel, __collide_y);
-}
+};
 
 depth = -20;
 

@@ -172,8 +172,8 @@ if config.light_method {
 			vertex_end(dynamic_vb);
 		}
 		
-		var _matrix = matrix_build_identity();
-		var _matrix_ind = util_matrix_get_alignment();
+		var _matrix = matrix_scratch
+		var _matrix_ind = matrix_ind;
 	
 		shader_set(shd_light_shadow_new);
 		for (var i_light = 0; i_light < array_length(lights_array); i_light++) {
@@ -209,6 +209,11 @@ if config.light_method {
 			}
 		}
 		matrix_set(matrix_world, matrix_identity);
+		
+		matrix_scratch[matrix_ind.x] = 0;
+		matrix_scratch[matrix_ind.y] = 0;
+		matrix_scratch[matrix_ind.x_scale] = 1;
+		matrix_scratch[matrix_ind.y_scale] = 1;
 		
 	}
 	shader_reset();

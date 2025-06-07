@@ -1,26 +1,52 @@
 
+var _evil_dir := (anim_dir + 2) % 4;
+
+if _evil_dir != 0 {
+	draw_sprite_ext(
+		spr_timer_start, 0,
+		x, y,
+		image_xscale, image_yscale,
+		0, c_white, 1
+	);
+}
+if _evil_dir != 1 {
+	draw_sprite_ext(
+		spr_timer_start, 1,
+		x, y,
+		image_xscale, image_yscale,
+		0, c_white, 1
+	);
+}
+if _evil_dir != 2 {
+	draw_sprite_ext(
+		spr_timer_start, 2,
+		x, y,
+		image_xscale, image_yscale,
+		0, c_white, 1
+	);
+}
+if _evil_dir != 3 {
+	draw_sprite_ext(
+		spr_timer_start, 3,
+		x, y,
+		image_xscale, image_yscale,
+		0, c_white, 1
+	);
+}
+
 draw_sprite_ext(
-	spr_debug_timer_start, global.time / 20,
+	spr_timer_start, 4,
 	x, y,
 	image_xscale, image_yscale,
-	0, c_white, 1,
+	0, c_white, 1
 );
 
 with level_get_instance(ref) {
-	if instance_exists(other.pet) {
-		draw_sprite_ext(
-			spr_debug_wall, global.time / 20,
-			x, y,
-			image_xscale, image_yscale,
-			0, c_white, 1,
-		);
-	} else {
-		draw_sprite_ext(
-			spr_debug_timer_start, global.time / 20,
-			x, y,
-			image_xscale, image_yscale,
-			0, c_white, 1,
-		);
-	}
+	draw_sprite_ext(
+		spr_outline_dotted, global.time / 20,
+		x, y,
+		image_xscale, image_yscale,
+		0, c_white, 1
+	);
 }
 

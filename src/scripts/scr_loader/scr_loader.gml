@@ -36,7 +36,7 @@ enum LoaderProgress {
 /// responsible for all level loading related operations
 function Loader() constructor {
 	
-	var _buffer = buffer_load("world.bin");
+	var _buffer = buffer_load("world/world.bin");
 	if _buffer == -1 {
 		LOG(Log.error, $"Loader(): file 'world.bin' doesn't exist");
 		LOG(Log.error, "what do you even do about this?");
@@ -59,7 +59,7 @@ function Loader() constructor {
 			y: _room.y,
 			width: _room.width,
 			height: _room.height,
-			name: $"room/{_room.name}.bin",
+			name: $"world/room/{_room.name}.bin",
 			data: undefined,
 		};
 	}
@@ -162,7 +162,7 @@ function Loader() constructor {
 		}
 		
 		if array_length(_remove) != 0 {
-			LOG(Log.note, $"{array_length(_remove)} processed; {_budget_runs} {_budget_time}");
+			LOG(_budget_runs < 0 || _budget_time < 0 ? Log.warn : Log.note, $"{array_length(_remove)} processed; {_budget_runs} {_budget_time}");
 		}
 		
 		// remove elements without screwing up indicies
@@ -196,18 +196,18 @@ function Loader() constructor {
 					_field.time = _val.time;
 					_field.dir = _val.dir;
 					_field.ref = _val.ref;
-					
-					_field.image_xscale = floor(_item.width / TILESIZE);
-					_field.image_yscale = floor(_item.height / TILESIZE);
 					break;
 				case nameof(obj_timer_end):
-					_field.image_xscale = floor(_item.width / TILESIZE);
-					_field.image_yscale = floor(_item.height / TILESIZE);
 					break;
 			}
 			
 			_field.uid = _item.id;
 			_field.rid = -1;
+			
+			_field.jorp_x = _item.x;
+			_field.jorp_y = _item.y;
+			_field.jorp_w = _item.width div TILESIZE;
+			_field.jorp_h = _item.height div TILESIZE;
 			
 			var _inst = instance_create_layer(
 				_item.x, _item.y,
@@ -373,22 +373,37 @@ function LoaderOption(_level, _priority) constructor {
 /// loads a file into a buffer
 function LoaderOptionFile(_level) : LoaderOption(_level, 0) constructor {
 	bin = -1;
+	load_id = -1;
+	complete = false;
+	state = 0;
+	
+	if DEBUG_LOAD_SLOW_ENABLE {
+		slowdown = DEBUG_LOAD_SLOW_FILE;
+	}
 	
 	level.loaded = LoaderProgress.prepping;
 	
 	LOG(Log.note, $"Loader(): created LoaderOptionFile {level.id}");
 	
 	static process = function (_loader) {
-		var _time = get_timer();
-		
-		bin = buffer_load(level.name);
-		
-		LOG(Log.note, $"level: file: {(get_timer() - _time) / 1000}");
-		
-		if bin == -1 {
-			LOG(Log.error, $"Loader(): file '{level.name}' doesn't exist");
-			ASSERT(false);
+
+		if state == 0 {
+			bin = buffer_create(0xffff, buffer_grow, 1);
+			load_id = buffer_load_async(bin, level.name, 0, -1);
+			array_push(obj_root.async_listen, self);
+			state = 1;
 		}
+		
+		if !complete {
+			return LoaderOptionStatus.wait;
+		}
+		
+		if DEBUG_LOAD_SLOW_ENABLE {
+			if slowdown-- > 0 {
+				return LoaderOptionStatus.wait;
+			}
+		}
+		
 		return LoaderOptionStatus.complete;
 	};
 
@@ -397,8 +412,6 @@ function LoaderOptionFile(_level) : LoaderOption(_level, 0) constructor {
 		
 		var _bin_id = _loader.bin_top++;
 		_loader.bins[$ _bin_id] = [bin, 1];
-		
-		LOG(Log.note, $"Loader(): producing LoaderOptionParse with {_bin_id}");
 		
 		static __out = array_create(1);
 		__out[0] = new LoaderOptionParse(level, _bin_id);
@@ -452,7 +465,17 @@ function LoaderOptionParsePart(_priority, _loader, _level, _bin_id, _self, _call
 	this = _self;
 	callback = _callback;
 	
+	if DEBUG_LOAD_SLOW_ENABLE {
+		slowdown = DEBUG_LOAD_SLOW_PARSE;
+	}
+	
 	static process = function (_loader) {
+		if DEBUG_LOAD_SLOW_ENABLE {
+			if slowdown-- > 0 {
+				return LoaderOptionStatus.running;
+			}
+		}
+		
 		callback(this, _loader.bins[$ bin_id][0]);
 		
 		_loader.bins[$ bin_id][1] -= 1;

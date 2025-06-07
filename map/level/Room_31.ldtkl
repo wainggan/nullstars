@@ -1418,7 +1418,7 @@
 					"__identifier": "obj_spike_pond",
 					"__grid": [2,0],
 					"__pivot": [0,0],
-					"__tags": [ "spike", "SIZE_TILE" ],
+					"__tags": ["spike"],
 					"__tile": null,
 					"__smartColor": "#85FF6A",
 					"iid": "300896a0-9b00-11ef-ae8e-85d92651e645",

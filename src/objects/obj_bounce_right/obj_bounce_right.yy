@@ -35,10 +35,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"spr_debug_bounce",
-    "path":"sprites/spr_debug_bounce/spr_debug_bounce.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":true,
 }

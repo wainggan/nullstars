@@ -3,23 +3,22 @@ var _cam = game_camera_get();
 
 var _pad = 6;
 
+var _anim = 0;
 if state.is(state_idle) {
 	// @todo:
 	draw_sprite_tiled_area(
 		spr_spike_pond_fill, 1,
 		wave(-32, 32, 12), wave(-24, 24, 10, 0.5),
 		min(x, anim_sight_x) + 6, min(y, anim_sight_y) + _pad,
-		max(x, anim_sight_x) + sprite_width - 6, max(y, anim_sight_y) + sprite_height - _pad
+		max(x, anim_sight_x) + sprite_width - 6 - 1,
+		max(y, anim_sight_y) + sprite_height - _pad
 	);
-}
-
-var _anim = 0;
-if state.is(state_idle) {
 	_anim = 1;
 } else {
 	anim_line = approach(anim_line, 0, 0.1);
 	_anim = tween(Tween.FastSlow, anim_line);
 }
+
 
 var _di = round(dir / 90);
 switch _di {

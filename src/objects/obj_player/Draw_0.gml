@@ -8,18 +8,14 @@ anim_runjump_timer -= 1;
 var _sprite = spr_player;
 var _pos_x = x;
 var _pos_y = y;
-var _tail_x = undefined;
-var _tail_y = undefined;
 var _angle = 0;
 var _dir = dir;
 
 if state.is(state_swim_bullet) {
-	_sprite = spr_player_bullet;
+	anim.set("swimbullet");
 	_angle = swim_dir;
 	_dir = 1;
 	_pos_y -= 16;
-	_tail_x = 0;
-	_tail_y = 0;
 }
 else if state.is(state_swim) {
 	
@@ -100,30 +96,27 @@ anim.update();
 
 var _meta = anim.meta();
 
-tail.position(
-	_pos_x + (_tail_x ?? _meta.x * dir),
-	_pos_y + (_tail_y ?? _meta.y),
-);
-
-tail.update(, action_tail_update_point);
+if !game_paused() {
+	tail.update(
+		_pos_x + (_meta.x ?? 0) * _dir,
+		_pos_y + (_meta.y ?? 0),
+		dir,
+		state.is(state_swim) ? 1 : 0,
+		global.data.player.tail
+	);
+}
 
 var _color = dash_left == 0 ? #00ffff : #ff00ff;
-var _mult = dash_left == 0 ? #ddccdd : c_white;
 
-if !_meta.front {
-	action_tail_draw(_color, _mult);
+if !(_meta.front ?? true) {
+	tail.draw(dash_left, global.data.player.tail, global.data.player.color, c_white);
 }
 
 var _frame = anim.get();
 
-draw_sprite_ext(
-	_sprite,
-	_frame, _pos_x, _pos_y,
-	scale_x * _dir, scale_y,
-	_angle, _mult, 1
-);
+draw_player(_frame, _pos_x, _pos_y, scale_x * _dir, scale_y, _angle, c_white, global.data.player.cloth, global.data.player.accessory, global.data.player.ears, global.data.player.color);
 
-if _meta.front {
-	action_tail_draw(_color, _mult);
+if _meta.front ?? true {
+	tail.draw(dash_left, global.data.player.tail, global.data.player.color, c_white);
 }
 

@@ -60,6 +60,7 @@ function Game() constructor {
 	
 	static update_begin = function() {
 		global.logger.update();
+		self.state.update();
 		input.update();
 		
 		if !self.state.get_pause() {
@@ -78,7 +79,6 @@ function Game() constructor {
 		}
 		
 		self.level.update();
-		self.state.update();
 		self.music.update();
 	}
 	
@@ -98,6 +98,18 @@ function Game() constructor {
 		}
 		
 		camera.update(self);
+		
+		if !game_checkpoint_get_is_index() {
+			var _dyn = game_checkpoint_get_dyn();
+			if !instance_exists(obj_checkpoint_dyn) {
+				instance_create_layer(_dyn.x, _dyn.y - 20, "Instances", obj_checkpoint_dyn);
+			} else {
+				obj_checkpoint_dyn.x = _dyn.x;
+				obj_checkpoint_dyn.y = _dyn.y - 20;
+			}
+		} else {
+			instance_destroy(obj_checkpoint_dyn);
+		}
 	};
 	
 	static unpack = function() {
@@ -116,23 +128,9 @@ function Game() constructor {
 	level.setup();
 	unpack();
 	
-	// @todo: this fucking sucks
-	var _checkpoint = game_checkpoint_ref();
-	var _x_target = _checkpoint.x;
-	var _y_target = _checkpoint.y;
-	var _constrain = camera.constrain(_x_target, _y_target);
-	camera.move(_constrain.x, _constrain.y, false);
-	
 	add_timeline(
 		new Timeline()
-			.add(new KeyframeTimedCallback(1, function () {
-				var _checkpoint = game_checkpoint_ref();
-				var _x_target = _checkpoint.x;
-				var _y_target = _checkpoint.y;
-				var _constrain = camera.constrain(_x_target, _y_target);
-				camera.move(_constrain.x, _constrain.y, false);
-			}))
-			.add(new KeyframeRespawn())
+			.add(new KeyframeRespawn(true, true))
 	);
 	
 	LOG(Log.user, $"running nullstars! build {date_datetime_string(GM_build_date)} {GM_build_type} - {GM_version}");
@@ -174,7 +172,7 @@ function GameState() constructor {
 		// update timer
 		if timer_active {
 			timer_current += 1;
-			if timer_length - timer_current <= 0 {
+			if timer_length - timer_current < 0 {
 				self.timer_stop();
 			}
 		}
@@ -214,12 +212,12 @@ function GameState() constructor {
 		with obj_Entity {
 			reset();
 		}
-		
-		instance_create_layer(0, 0, "Instances", obj_timer_render);
 	};
 	
 	static timer_stop = function () {
 		timer_current = 0;
+		timer_length = 0;
+		timer_target = noone;
 		timer_active = false;
 	};
 	
@@ -235,7 +233,14 @@ function GameState() constructor {
 
 function GameHandleCheckpoints() constructor {
 	list = {};
+	
+	// 0 | 1
+	current_type = 0;
+	// current_type == 0
 	current = "intro-0";
+	// current_type == 1
+	current_x = 0;
+	current_y = 0;
 	
 	static unpack = function() {
 		current = global.data.location;
@@ -276,19 +281,52 @@ function GameHandleCheckpoints() constructor {
 			collected: false,
 			deaths: 0,
 		};
-	}
-	static get = function() {
-		return current;
-	}
-	static ref = function(_index) {
+	};
+	static get_index = function () {
+		return current_type == 0 ? current : undefined;
+	};
+	static get_dyn = function () {
+		static __out = {
+			x: 0,
+			y: 0,
+		};
+		__out.x = current_x;
+		__out.y = current_y;
+		return current_type == 1 ? __out : undefined;
+	};
+	static ref = function (_index) {
 		return list[$ _index].object;
-	}
-	static data = function(_index) {
+	};
+	static data = function (_index) {
 		return list[$ _index];
-	}
-	static set = function(_index) {
+	};
+	static set_index = function (_index) {
+		current_type = 0;
 		current = _index;
-	}
+	};
+	static set_dyn = function (_x, _y) {
+		current_type = 1;
+		current_x = _x;
+		current_y = _y;
+	};
+	
+	static pos = function () {
+		static __out = {
+			x: 0,
+			y: 0,
+		};
+		if current_type == 0 {
+			var _ref = self.ref(self.get_index());
+			__out.x = _ref.x;
+			__out.y = _ref.y;
+		} else {
+			ASSERT(current_type == 1);
+			var _dyn = self.get_dyn();
+			__out.x = _dyn.x;
+			__out.y = _dyn.y;
+		}
+		return __out;
+	};
 	
 }
 function GameHandleGates() constructor {
@@ -349,23 +387,52 @@ function GameMenu() constructor {
 	
 	page_none = new MenuPageList()
 	.add(new MenuButton(global.strings[$ "menu-i-close"], function(){
-		system.close()
+		system.close();
 	}))
 	.add(new MenuButton(global.strings[$ "menu-i-map"], function(){
-		system.open(page_map)
+		system.open(page_map);
 	}))
 	.add(new MenuButton(global.strings[$ "menu-i-setting"], function(){
-		system.open(page_settings)
+		system.open(page_settings);
+	}))
+	.add(new MenuButton("char", function(){
+		system.open(page_char);
 	}))
 	.add(new MenuButton(global.strings[$ "menu-i-debug"], function(){
 		LOG(Log.warn, "good luck");
 		system.open(page_debug);
 	}))
 	.add(new MenuButton(global.strings[$ "menu-i-exit"], function(){
-		game_end()
-	}))
+		game_end();
+	}));
 	
-	page_map = new MenuPageMap()
+	page_map = new MenuPageMap();
+	
+	page_char = new MenuPageList()
+	.add(new MenuButton(global.strings[$ "menu-i-close"], function () {
+		system.close();
+	}))
+	.add(new MenuButton("cloth", function () {
+		system.open(page_char_cloth);
+	}))
+	.add(new MenuButton("accessory", function () {
+		system.open(page_char_acc);
+	}))
+	.add(new MenuButton("ears", function () {
+		system.open(page_char_ears);
+	}))
+	.add(new MenuButton("tail", function () {
+		system.open(page_char_tail);
+	}))
+	.add(new MenuButton("color", function () {
+		system.open(page_char_color);
+	}));
+	
+	page_char_cloth = new MenuPageChar(0);
+	page_char_acc = new MenuPageChar(1);
+	page_char_ears = new MenuPageChar(2);
+	page_char_tail = new MenuPageChar(3);
+	page_char_color = new MenuPageChar(4);
 	
 	page_settings = new MenuPageList()
 	.add(new MenuButton("back", function(){
@@ -382,7 +449,7 @@ function GameMenu() constructor {
 	}))
 	.add(new MenuButton("sound", function(){
 		system.open(page_settings_sound);
-	}))
+	}));
 	
 	page_settings_graphics = new MenuPageList(260)
 	.add(new MenuButton("back", function(){

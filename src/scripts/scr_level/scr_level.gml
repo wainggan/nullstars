@@ -47,8 +47,9 @@ function string_mask(_mask) {
 }
 
 /// @arg {string} _uid
+/// @return {id.Instance} description
 function level_get_instance(_uid) {
-	return global.entities[$ _uid];
+	return global.entities[$ _uid] ?? noone;
 }
 
 function level_ldtk_field_item(_val, _type) {
@@ -609,7 +610,7 @@ function Level(_id, _x, _y, _width, _height) constructor {
 	width = _width;
 	height = _height;
 	
-	file = -1;
+	file = undefined;
 	
 	fields = {}
 	
@@ -695,19 +696,13 @@ function Level(_id, _x, _y, _width, _height) constructor {
 						_field.uid = _e.id;
 						_field.rid = self.id;
 						
-						// @todo: rewrite
-						if array_contains(_e.tags, "SIZE_TILE") {
-							_field.image_xscale = floor(_e.width / TILESIZE);
-							_field.image_yscale = floor(_e.height / TILESIZE);
-						}
-						
 						var _pos_x = _e.x,
 							_pos_y = _e.y;
 						
-						if array_contains(_e.tags, "CENTERED") {
-							_pos_x += 8;
-							_pos_y += 8;
-						}
+						_field.jorp_x = _e.x;
+						_field.jorp_y = _e.y;
+						_field.jorp_w = _e.width div TILESIZE;
+						_field.jorp_h = _e.height div TILESIZE;
 						
 						var _collect = {
 							id: _e.id,
@@ -739,7 +734,10 @@ function Level(_id, _x, _y, _width, _height) constructor {
 				tiles = layer_tilemap_create(
 					layer,
 					x, y,
-					tl_debug,
+					// this is an empty sprite.
+					// it seems gamemaker's place_meeting against a tile layer doesn't
+					// work when a tile's indice is technically larger than the tile layer.
+					tl_collision,
 					width div TILESIZE,
 					height div TILESIZE
 				);
@@ -760,7 +758,7 @@ function Level(_id, _x, _y, _width, _height) constructor {
 				tiles_spike = layer_tilemap_create(
 					layer_spike,
 					x, y,
-					tl_debug_spikes,
+					tl_spikes,
 					width div TILESIZE,
 					height div TILESIZE
 				);
@@ -787,7 +785,7 @@ function Level(_id, _x, _y, _width, _height) constructor {
 			}
 		};
 		
-		array_push(_out, new LoaderOptionParsePart(0, _loader, _level, _bin_id, self, __fn_front));
+		array_push(_out, new LoaderOptionParsePart(1, _loader, _level, _bin_id, self, __fn_front));
 		
 		
 		static __fn_tiles_below = function (_self, _buffer) {

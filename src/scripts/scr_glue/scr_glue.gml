@@ -16,6 +16,9 @@ function glue_parent_offset() {
 function glue_parent_moved(_x, _y) {
 	for (var i = 0; i < array_length(glue_children); i++) {
 		var _inst = level_get_instance(glue_children[i]);
+		if !instance_exists(_inst) {
+			continue;
+		}
 		_inst.glue_move(_x + _inst.glue_offset_x, _y + _inst.glue_offset_y);
 	}
 }

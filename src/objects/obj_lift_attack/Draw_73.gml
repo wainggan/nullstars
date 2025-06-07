@@ -1,5 +1,5 @@
 
-draw_sprite_ext(spr_debug_lift_attack, 0, x, y, image_xscale, image_yscale, 0, c_white, 1);
+draw_sprite_ext(spr_lift_attack, 0, x, y, image_xscale, image_yscale, 0, c_white, 1);
 
 var _center_x = x + sprite_width / 2;
 var _center_y = y + sprite_height / 2;
@@ -62,7 +62,7 @@ switch _di {
 
 
 draw_sprite_tiled_area_ext(
-	spr_debug_lift_attack_direction, _di,
+	spr_lift_attack_direction, _di,
 	_off_x - 16, _off_y - 16,
 	_bbl, _bbt,
 	_bbr - 1, _bbb - 1,

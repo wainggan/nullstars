@@ -44,13 +44,13 @@ function Camera() constructor {
 			auto_x = x;
 			auto_y = y;
 		} else {
-			var _kh = INPUT.check("right") - INPUT.check("left");
-			var _kv = INPUT.check("down") - INPUT.check("up");
-			
-			auto_x += _kh * 10;
-			auto_y += _kv * 10;
-			
-			self.move(auto_x, auto_y);
+			//var _kh = INPUT.check("right") - INPUT.check("left");
+			//var _kv = INPUT.check("down") - INPUT.check("up");
+			//
+			//auto_x += _kh * 10;
+			//auto_y += _kv * 10;
+			//
+			//self.move(auto_x, auto_y);
 		}
 		
 		var _shake_dir = irandom_range(0, 360);

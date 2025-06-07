@@ -1,5 +1,5 @@
 
-if oo {
+if oo == 0 {
 	if global.game.state.oo_onoff == polarity {
 		collidable = true;
 	} else {

@@ -45,9 +45,9 @@ global.config = {
 #macro GAME_RENDER_LIGHT_KERNEL 256
 
 // amount of time loader may spend working during a frame in ms
-#macro GAME_LOAD_BUDGET_TIME 2
+#macro GAME_LOAD_BUDGET_TIME 1
 // amount of jobs loader may complete in one frame
-#macro GAME_LOAD_BUDGET_COUNT 6
+#macro GAME_LOAD_BUDGET_COUNT 4
 
 #macro GAME_LOAD_RADIUS_FILE 512
 #macro GAME_LOAD_RADIUS_ENTITY 128
@@ -55,4 +55,12 @@ global.config = {
 #macro GAME_LOAD_TIME_FILE 180
 // how long it takes to unload level data
 #macro GAME_LOAD_TIME_PREP 240
+
+// if the distance between player and checkpoint is larger than this, respawning will cause a screenfade
+#macro GAME_RESPAWN_FADE_THRESHOLD 3072
+
+// slows down level loading
+#macro DEBUG_LOAD_SLOW_ENABLE false 
+#macro DEBUG_LOAD_SLOW_FILE 30
+#macro DEBUG_LOAD_SLOW_PARSE 50
 

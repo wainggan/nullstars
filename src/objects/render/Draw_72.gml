@@ -79,6 +79,95 @@ if array_length(_lvl_onscreen) > 0 {
 	
 }
 
+if config.background_timer && (anim_time > 0 || anim_time_main > 0) {
+	surface_set_target(surf_ping);
+	draw_clear_alpha(c_black, 0);
+	
+	draw_set_halign(fa_center);
+	draw_set_valign(fa_middle);
+	draw_set_font(ft_timer);
+	
+	var _anim0 = hermite(anim_time);
+	var _anim1 = hermite(clamp(2 * (anim_time - 0.5), 0, 1));
+	var _anim2 = hermite(clamp(2 * (anim_time), 0, 1));
+	
+	var _col = 0;
+	
+	_col = #222222;
+	var _inc = 256;
+	for (var _y = -_inc + global.time % _inc; _y < HEIGHT + _inc; _y += _inc) {
+		draw_text_ext_transformed_color(WIDTH / 2, _y, cache_time_str, -1, -1, 10, 10, 0, _col, _col, _col, _col, _anim1);
+	}
+	
+	_col = #aaaaaa;
+	draw_sprite_ext(spr_pixel, 0, 0, HEIGHT / 2 - 120 - 10 - 10 * _anim2, WIDTH, 20 * _anim2, 0, _col, 1);
+	draw_sprite_ext(spr_pixel, 0, 0, HEIGHT / 2 + 120 + 10 * (1 - _anim2), WIDTH, 20 * _anim2, 0, _col, 1);
+	
+	_inc = 48;
+	var _off = global.time div _inc;
+	
+	for (var _x = -_inc, i = 0; _x < WIDTH + _inc; {
+		_x += _inc;
+		i++;
+	}) {
+		var _rad0 = round_ext(wave(6, 18, 12, (i - _off) / (pi * 2)), 2);
+		var _rad1 = round_ext(wave(6, 18, 12, (i + _off) / (pi * 2)), 2);
+		draw_circle_sprite(_x + global.time % _inc, HEIGHT / 2 - 120 - 10, _rad0, c_black, 1);
+		draw_circle_sprite(_x + -global.time % _inc, HEIGHT / 2 + 120 + 10, _rad1, c_black, 1);
+	}
+	
+	_col = #bbbbbb;
+	draw_text_ext_transformed_color(WIDTH / 2, HEIGHT / 2, cache_time_str, -1, -1, 6, 6, 0, _col, _col, _col, _col, _anim0);
+
+	draw_set_halign(fa_left);
+	draw_set_valign(fa_top);
+	
+	if anim_target_w != 0 {
+		var _sint = 200;
+		var _san0 = 1 - tween(Tween.Cubic, global.time % _sint / _sint);
+		var _san1 = 1 - tween(Tween.Cubic, (global.time + (_sint / 2)) % _sint / _sint);
+		var _cent_x = anim_target_x + anim_target_w / 2 - _cam_x;
+		var _cent_y = anim_target_y + anim_target_h / 2 - _cam_y;
+		draw_sprite_ext(
+			spr_timer_wave, 0,
+			_cent_x,
+			_cent_y,
+			_san0 * (96 + anim_target_w / 16),
+			_san0 * (96 + anim_target_h / 16),
+			0, c_white, max(0, 0.4 - 0.4 * power(_san0, 2)) * (1 - anim_time_close)
+		);
+		draw_sprite_ext(
+			spr_timer_wave, 0,
+			_cent_x,
+			_cent_y,
+			_san1 * (96 + anim_target_w / 16),
+			_san1 * (96 + anim_target_h / 16),
+			0, c_white, max(0, 0.4 - 0.4 * power(_san1, 2)) * (1 - anim_time_close)
+		);
+	}
+	
+	surface_reset_target();
+	
+	surface_set_target(surf_background);
+	
+	game_render_refresh();
+	game_render_blendmode_set(shd_blend_colordodge);
+	draw_surface(surf_ping, 0, 0);
+	game_render_blendmode_reset();
+	
+	var _anim3 = hermite(min(1 - anim_time_close, anim_time_main));
+	var _hei = 54;
+	_col = #78777a;
+	
+	gpu_set_blendmode_ext(bm_dest_color, bm_zero);
+	draw_sprite_ext(spr_pixel, 0, 0, 0, WIDTH, _hei * _anim3, 0, _col, 1);
+	draw_sprite_ext(spr_pixel, 0, 0, HEIGHT - _hei * _anim3, WIDTH, _hei, 0, _col, 1);
+	gpu_set_blendmode(bm_normal);
+	
+	surface_reset_target();
+}
+
+
 
 // -- set up background lights --
 
@@ -251,9 +340,9 @@ var _matrix_ind = util_matrix_get_alignment();
 
 for (var i = 0; i < array_length(_lvl_onscreen); i++) {
 	var _lvl = _lvl_onscreen[i]
-	_matrix[_matrix_ind.x] = _lvl.x - _cam_x;
-	_matrix[_matrix_ind.y] = _lvl.y - _cam_y;
-	matrix_set(matrix_world, _matrix);
+	matrix_scratch[matrix_ind.x] = _lvl.x - _cam_x;
+	matrix_scratch[matrix_ind.y] = _lvl.y - _cam_y;
+	matrix_set(matrix_world, matrix_scratch);
 	if _lvl.vb_tiles_below != -1 {
 		vertex_submit(_lvl.vb_tiles_below, pr_trianglelist, tileset_get_texture(tl_tiles));
 	}
@@ -262,6 +351,9 @@ for (var i = 0; i < array_length(_lvl_onscreen); i++) {
 	}
 }
 matrix_set(matrix_world, matrix_identity);
+
+matrix_scratch[matrix_ind.x] = 0;
+matrix_scratch[matrix_ind.y] = 0;
 
 shader_reset();
 

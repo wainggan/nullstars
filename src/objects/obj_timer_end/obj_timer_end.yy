@@ -30,8 +30,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_debug_timer_start",
-    "path":"sprites/spr_debug_timer_start/spr_debug_timer_start.yy",
+    "name":"spr_outline_dotted",
+    "path":"sprites/spr_outline_dotted/spr_outline_dotted.yy",
   },
   "spriteMaskId":null,
   "visible":false,

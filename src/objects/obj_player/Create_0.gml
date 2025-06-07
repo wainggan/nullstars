@@ -73,12 +73,12 @@ buffer_dash = 0;
 nat_crouch = function(_value = undefined) {
 	if _value != undefined {
 		if _value {
-			mask_index = spr_debug_player_crouch;
+			mask_index = spr_hitbox_player_crouch;
 		} else {
-			mask_index = spr_debug_player;
+			mask_index = spr_hitbox_player;
 		}
 	}
-	return mask_index == spr_debug_player_crouch;
+	return mask_index == spr_hitbox_player_crouch;
 };
 nat_crouch(false);
 
@@ -87,7 +87,7 @@ get_can_uncrouch = function() {
 		return true;
 	}
 	var _pre = mask_index;
-	mask_index = spr_debug_player;
+	mask_index = spr_hitbox_player;
 	
 	var _collide = actor_collision(x, y);
 	var _inst = instance_place(x, y, obj_ss_down);
@@ -122,17 +122,27 @@ walljump_solid = noone;
 walljump_solid_x = 0;
 walljump_solid_y = 0;
 
+// direction of dash (-1 | 0 | 1)
 dash_dir_x = 0;
 dash_dir_y = 0;
+// speed of dash
 dash_dir_x_vel = 0;
 dash_dir_y_vel = 0;
+// speed before dash
 dash_pre_x_vel = 0;
 dash_pre_y_vel = 0;
+// frames left to dash
 dash_timer = 0;
+// how long has dash been happening?
 dash_frame = 0;
 dash_grace = 0;
 dash_grace_kick = 0;
 dash_recover = 0;
+// player should long jump on the next frame
+dash_jump = false;
+// increases when dashing on the ground, lowers when not dashing, reset after jumping
+// reduces the effectiveness of reverse dashing
+dash_stale = 0;
 
 swim_dir = 0;
 swim_spd = 0;
@@ -147,109 +157,90 @@ cam_ground_x = x;
 cam_ground_y = y;
 
 respawn_timer = 0;
+respawn_dyn = 0;
 
 
 #region animation
 
-var _s_stand = 0,
-	_s_walk_a1 = 3,
-	_s_walk_a2 = 4,
-	_s_walk_b1 = 1,
-	_s_walk_b2 = 2,
-	_s_jump = 5,
-	_s_fall = 6,
-	_s_dive = 7,
-	_s_dash = 9,
-	_s_long = 8,
-	_s_swim_idle_1 = 11,
-	_s_swim_idle_2 = 12,
-	_s_swim_1 = 13,
-	_s_swim_2 = 14,
-	_s_ledge = 16,
-	_s_crouch = 17,
-	_s_flip_1 = 18,
-	_s_flip_2 = 19,
-	_s_run_1 = 21,
-	_s_run_2 = 22,
-	_s_run_3 = 23,
-	_s_run_jump = 21,
-	_s_run_fall = 24;
-
 anim = new AnimController();
-anim.add("idle", new AnimLevel([_s_stand]));
+anim.add("idle", new AnimLevel([PlayerFrame.stand]));
 anim.add("walk", new AnimLevel([
-		_s_walk_a1, _s_walk_b1,
-		_s_walk_a2, _s_walk_b2
+		PlayerFrame.walk_1a, PlayerFrame.walk_2a,
+		PlayerFrame.walk_1b, PlayerFrame.walk_2b,
 	], 12));
-anim.add("jump", new AnimLevel([_s_jump]));
-anim.add("fall", new AnimLevel([_s_fall]));
-anim.add("dive", new AnimLevel([_s_dive]));
-anim.add("jab", new AnimLevel([_s_dash]));
-anim.add("longjump", new AnimLevel([_s_long]));
-anim.add("swim", new AnimLevel([_s_swim_idle_1, _s_swim_idle_2], 1 / 60))
-.add("swimming", new AnimLevel([_s_swim_1, _s_swim_2], 1 / 60))
-.add("ledge", new AnimLevel([_s_ledge]))
-.add("crouch", new AnimLevel([_s_crouch]))
-.add("flip", new AnimLevel([_s_flip_1, _s_flip_2], 1 / 14, 0))
-.add("run", new AnimLevel([
-		_s_run_1, _s_run_1,
-		_s_run_2, _s_run_2, _s_run_2,
-		_s_run_3, _s_run_3
+anim.add("jump", new AnimLevel([PlayerFrame.jump]));
+anim.add("fall", new AnimLevel([PlayerFrame.fall]));
+anim.add("dive", new AnimLevel([PlayerFrame.dive]));
+anim.add("jab", new AnimLevel([PlayerFrame.dash]));
+anim.add("longjump", new AnimLevel([PlayerFrame.long]));
+anim.add("swim", new AnimLevel([PlayerFrame.swim_idle_1, PlayerFrame.swim_idle_2], 1 / 60))
+anim.add("swimming", new AnimLevel([PlayerFrame.swim_1, PlayerFrame.swim_2], 1 / 60))
+anim.add("swimbullet", new AnimLevel([PlayerFrame.swim_bullet], 1))
+anim.add("ledge", new AnimLevel([PlayerFrame.ledge]))
+anim.add("crouch", new AnimLevel([PlayerFrame.crouch]))
+anim.add("flip", new AnimLevel([PlayerFrame.flip_1, PlayerFrame.flip_2], 1 / 14, 0))
+anim.add("run", new AnimLevel([
+		PlayerFrame.run_1, PlayerFrame.run_1,
+		PlayerFrame.run_2, PlayerFrame.run_2, PlayerFrame.run_2,
+		PlayerFrame.run_3, PlayerFrame.run_3
 	], 1/12))
-.add("runjump", new AnimLevel([_s_run_jump]))
-.add("runfall", new AnimLevel([_s_run_fall]))
+.add("runjump", new AnimLevel([PlayerFrame.run_jump]))
+.add("runfall", new AnimLevel([PlayerFrame.run_fall]))
 
 .meta_default({
 	x: -2, y: -16,
 	front: false,
 })
-.meta_items([_s_walk_a1, _s_walk_a2], {
+.meta_items([PlayerFrame.walk_1a, PlayerFrame.walk_1b], {
 	y: -15,
 })
-.meta_items([_s_jump, _s_fall], {
+.meta_items([PlayerFrame.jump, PlayerFrame.fall], {
 	y: -17,
 })
-.meta_items([_s_dive], {
+.meta_items([PlayerFrame.dive], {
 	x: -4, y: -21,
 	front: true,
 })
-.meta_items([_s_long], {
+.meta_items([PlayerFrame.long], {
 	x: -8, y: -16,
 })
-.meta_items([_s_dash], {
+.meta_items([PlayerFrame.dash], {
 	x: 3, y: -11,
 })
-.meta_items([_s_swim_idle_1], {
+.meta_items([PlayerFrame.swim_idle_1], {
 	x: -4, y: -17,
 })
-.meta_items([_s_swim_idle_2], {
+.meta_items([PlayerFrame.swim_idle_2], {
 	x: -5, y: -15,
 })
-.meta_items([_s_swim_1], {
+.meta_items([PlayerFrame.swim_1], {
 	x: -4, y: -16,
 })
-.meta_items([_s_swim_2], {
+.meta_items([PlayerFrame.swim_2], {
 	x: -4, y: -17,
 })
-.meta_items([_s_ledge], {
+.meta_items([PlayerFrame.swim_bullet], {
+	x: 0, y: 0,
+})
+.meta_items([PlayerFrame.ledge], {
 	x: -4, y: -17,
 })
-.meta_items([_s_crouch], {
+.meta_items([PlayerFrame.crouch], {
 	x: -5, y: -6,
 })
-.meta_items([_s_flip_1, _s_flip_2], {
+.meta_items([PlayerFrame.flip_1, PlayerFrame.flip_2], {
 	x: -2, y: -15,
 })
-.meta_items([_s_run_2], {
+.meta_items([PlayerFrame.run_2], {
 	x: -5, y: -13,
 })
-.meta_items([_s_run_3], {
+.meta_items([PlayerFrame.run_3], {
 	x: -8, y: -16,
 })
-.meta_items([_s_run_1], {
+.meta_items([PlayerFrame.run_1], {
 	x: -8, y: -16,
 })
-.meta_items([_s_run_fall], {
+.meta_items([PlayerFrame.run_fall], {
 	x: -3, y: -15,
 });
 
@@ -293,79 +284,8 @@ action_anim_dash = function() {
 
 #endregion
 
+tail = new PlayerTail(x, y);
 
-#region tail
-
-tail_length = 12;
-tail = yarn_create(tail_length, function(_p, i) {
-	//_p.len = min(power(max(i - 4, 0) , 1.12) + 4, 8)
-	_p.length = 4;
-	
-	_p.x = x;
-	_p.y = y + i * 6;
-		
-	_p.size = max(parabola_mid(3, 7, 6, i) + 3, 6);
-	_p.round = floor(clamp(i / (tail_length / 3), 1, 1));
-});
-
-
-action_tail_update_point = function(_p, i, _points) {
-	var _len = array_length(_points);
-	var _scale_nor = (i / _len);
-	var _scale_inv = (_len - i) / _len;
-	
-	_p.weight = 0;
-	_p.x_move = 0;
-	_p.y_move = 0;
-	
-	if state.is(state_swim_bullet) {
-		_p.damp = 0.5;
-	//	
-	//} else 
-	//if holding {
-		//_p.damp = 0.8;
-		//_p.weight = 6;
-		//
-		//var _t1 = floor(_len * 0.5);
-		//var _t2 = floor(_len * 0.75);
-		//
-		//_p.direction = (90 + 80 * -dir);
-		//if i > _t1 {
-			//_p.direction += (i - _t1) * -30 * dir;
-			//if i > _t2 {
-				//_p.direction += (i - _t2) * 60 * dir;
-			//}
-		//} else {
-			//
-		//}
-	} else {
-		_p.damp = 0.8;
-		
-		var _d = sin(global.time / 60 - i * 0.6);
-		_p.x_move = -dir * (power(_scale_inv, 6) * 6 + 0.1);
-		_p.y_move = _d * (_scale_inv * 0.2 + 0.1) + 0.3 * _scale_inv;
-	}
-};
-
-action_tail_draw_point = function(_p, i, _points, _tip, _blend) {
-	var _c = merge_color(c_white, _tip, clamp(i - 3, 0, tail_length) / tail_length);
-	_c = multiply_color(_c, _blend);
-	draw_sprite_ext(
-		spr_player_tail, 0, 
-		round_ext(_p.x, _p.round), round_ext(_p.y, _p.round), 
-		//round_ext(_p.x, 0), round_ext(_p.y, 0), 
-		_p.size / 16, _p.size / 16, 
-		0, _c, 1
-	);
-};
-
-action_tail_draw = function(_color, _mult) {
-	for (var i = array_length(tail.points) - 1; i >= 0; i--) {
-		action_tail_draw_point(tail.points[i], i, tail.points, _color, _mult);
-	}
-};
-
-#endregion
 
 #region methods
 
@@ -505,6 +425,7 @@ action_jump_shared = function() {
 	
 	dash_grace = 0;
 	dash_grace_kick = 0;
+	dash_stale = 0;
 	
 	hold_jump_key_timer = 0;
 	hold_jump_vel = defs.terminal_vel;
@@ -784,6 +705,8 @@ state_base.set("step", function () {
 		dash_left = defs.dash_total;
 	}
 	
+	dash_stale = approach(dash_stale, 0, 3 / 60);
+	
 	state.child();
 	
 	static __collide_x = function() {
@@ -835,7 +758,7 @@ state_base.set("step", function () {
 		}
 		
 		if y_vel > 0 {
-			if y_vel > 1 {
+			if state.is(state_free) && y_vel > 1 {
 				scale_x = 1.2;
 				scale_y = 0.8;
 				game_sound_play(sfx_pop_1);
@@ -849,7 +772,7 @@ state_base.set("step", function () {
 	};
 	actor_move_y(y_vel, __collide_y);
 	
-	// if still colliding, your inside a wall...
+	// if still colliding, you're inside a wall...
 	// escape!!
 	if actor_collision(x, y) {
 		var _out = false;
@@ -909,14 +832,33 @@ state_base.set("step", function () {
 	dash_grace_kick -= 1;
 	vel_grace_timer -= 1;
 	
-	if state.is(state_free) {
-		if INPUT.check_pressed("menu") && place_meeting(x, y, obj_checkpoint) && !nat_crouch() {
+	if state.is(state_free) || state.is(state_swim) {
+		if INPUT.check_pressed("menu") &&
+			(place_meeting(x, y, obj_checkpoint) || place_meeting(x, y, obj_checkpoint_dyn)) &&
+			!nat_crouch() &&
+			!state.is(state_swim)
+		{
 			state.change(state_menu);
 			return;
 		} else if INPUT.check("menu") {
 			respawn_timer += 1;
 			if respawn_timer > 17 {
 				game_player_kill();
+			}
+			
+			if INPUT.check_pressed("menu") && (onground || state.is(state_swim)) {
+				if respawn_dyn <= 0 {
+					respawn_dyn = 17;
+				} else {
+					respawn_timer = 0;
+					respawn_dyn = 0;
+					game_checkpoint_set_dyn(x, y);
+					
+					game_set_pause(4);
+					game_render_particle(x, y - 16, ps_player_death_1);
+					
+					game_render_wave(x, y - 16, 256, 60, 0.8, spr_wave_sphere);
+				}
 			}
 		} else {
 			respawn_timer = approach(respawn_timer, 0, 2);
@@ -925,6 +867,7 @@ state_base.set("step", function () {
 	} else {
 		respawn_timer = approach(respawn_timer, 0, 2);
 	}
+	respawn_dyn -= 1;
 	
 	if place_meeting(x, y, obj_flag_stop) {
 		state.change(state_stuck);
@@ -1121,7 +1064,7 @@ state_free.set("step", function () {
 				(!_close || dash_dir_y == 0) &&
 				!get_check_wall(sign(x_vel), 6) {
 				action_dashjump(_kh == 0 && dash_dir_y == 1 ? dir : _kh);
-			} else if dash_grace_kick > 0 && dash_dir_y == -1 {
+			} else if dash_grace_kick > 0 && dash_dir_y == -1 && _kv == -1 {
 				if get_check_wall(dir) {
 					action_dashjump_wall(_kh, dir);
 				} else if get_check_wall(-dir) {
@@ -1136,11 +1079,7 @@ state_free.set("step", function () {
 	}
 	
 	if get_check_water(x, y) {
-		if dash_grace > 0 && buffer_jump <= 0 {
-			state.change(state_swim_bullet);
-		} else {
-			state.change(state_swim);
-		}
+		state.change(state_swim);
 		return;
 	}
 	
@@ -1200,7 +1139,7 @@ state_ledge.set("enter", function(){
 
 action_dash_end = function() {
 
-	if y_vel <= 0 {
+	if y_vel < 0 {
 		y_vel = dash_dir_y * 3;
 	}
 	
@@ -1220,7 +1159,7 @@ action_dash_end = function() {
 		if sign(dash_dir_x_vel) == sign(dash_pre_x_vel) {
 			x_vel = max(lerp(abs(dash_pre_x_vel), abs(dash_dir_x_vel) - 1, 0.1), 8) * sign(x_vel);
 		} else {
-			x_vel = max(lerp(abs(dash_pre_x_vel), abs(dash_dir_x_vel) - 1, 0.9), 8) * sign(x_vel);
+			x_vel = max(lerp(abs(dash_pre_x_vel), abs(dash_dir_x_vel) - 1, 0.1 + 0.8 * clamp(1 - (dash_stale - 2) / 3, 0, 1)), 8) * sign(x_vel);
 		}
 	}
 	
@@ -1254,6 +1193,10 @@ state_dash.set("enter", function() {
 	dash_frame = 0; // this is stupid
 	dash_grace = 14;
 	dash_recover = 10;
+	
+	dash_stale += 1;
+	
+	dash_jump = false;
 	
 	game_sound_play(sfx_dash);
 	
@@ -1326,7 +1269,9 @@ state_dash.set("enter", function() {
 	dash_frame += 1;
 	dash_timer -= 1;
 	
-	if buffer_jump > 0 {
+	
+	// @todo: maybe this sucks
+	if dash_jump {
 		if grace > 0 {
 			if dash_dir_y != -1 {
 				action_dash_end();
@@ -1334,17 +1279,16 @@ state_dash.set("enter", function() {
 				state.change(state_free);
 				return;
 			}
-		} else {
-			if get_check_wall(dir) {
-				action_dash_end();
-				if dash_dir_y == -1 {
-					action_dashjump_wall(_kh, dir);
-				} else {
-					action_walljump();
-				}
-				state.change(state_free);
-				return;
+		} else if get_check_wall(dir) { 
+			action_dash_end();
+			if dash_dir_y == -1 && _kv == -1 {
+				action_dashjump_wall(_kh, dir);
+			} else {
+				action_walljump();
 			}
+			state.change(state_free);
+			return;
+		} else {
 			if dash_timer <= 0 && (dash_dir_y != -1 || _kh != dir) {
 				action_dash_end();
 				action_dashjump(_kh == 0 && dash_dir_y == 1 ? dir : _kh);
@@ -1352,15 +1296,32 @@ state_dash.set("enter", function() {
 				return;
 			}
 		}
+		dash_jump = false;
+	}
+	
+	if buffer_jump > 0 {
+		if grace > 0 {
+			if dash_dir_y != -1 {
+				dash_jump = true;
+				dash_timer += 1;
+				game_set_pause(2);
+			}
+		} else if get_check_wall(dir) { 
+			dash_jump = true;
+			dash_timer += 1;
+			game_set_pause(2);
+		} else {
+			if dash_timer <= 0 && (dash_dir_y != -1 || _kh != dir) {
+				dash_jump = true;
+				dash_timer += 1;
+				game_set_pause(2);
+			}
+		}
 	}
 	
 	if dash_timer <= 0 {
 		action_dash_end();
-		if get_check_water(x, y) && buffer_jump <= 0  {
-			state.change(state_swim_bullet);
-		} else {
-			state.change(state_free);
-		}
+		state.change(state_free);
 		return;
 	}
 	
@@ -1373,6 +1334,10 @@ state_swim.set("step", function() {
 	
 	var _kh = INPUT.check("right") - INPUT.check("left");
 	var _kv = INPUT.check("down") - INPUT.check("up");
+	
+	if get_can_uncrouch() {
+		nat_crouch(false);
+	}
 	
 	if _kh != 0 {
 		dir = _kh;
@@ -1540,7 +1505,7 @@ state_menu.set("enter", function() {
 		return;
 	}
 	
-	if !place_meeting(x, y, obj_checkpoint) {
+	if !place_meeting(x, y, obj_checkpoint) && !place_meeting(x, y, obj_checkpoint_dyn) {
 		global.game.menu.system.stop();
 		state.change(state_free);
 		return;

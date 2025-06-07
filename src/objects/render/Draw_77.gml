@@ -45,6 +45,32 @@ draw_sprite_ext(
 	0, #000209, 1
 );
 
+surface_set_target(surf_ping);
+draw_clear_alpha(c_black, 0);
+matrix_scratch[matrix_ind.x] = -_cam_x;
+matrix_scratch[matrix_ind.y] = -_cam_y;
+matrix_set(matrix_world, matrix_scratch);
+with obj_decor_glowable {
+	event_perform(ev_draw, 0);
+}
+var _beat = (1 + power(1 - game_music_get_beat(2), 2) * 0.1);
+with obj_timer_start {
+	var _dir = anim_dir * 90;
+	var _scale = _beat * tween(Tween.Back, anim_complete);
+	draw_sprite_ext(
+		spr_timer_star, 0,
+		x + sprite_width / 2 - lengthdir_x(8, _dir),
+		y + sprite_height / 2 - lengthdir_y(8, _dir),
+		_scale,
+		_scale,
+		0, #99bbbb, 1
+	);
+}
+matrix_set(matrix_world, matrix_identity);
+matrix_scratch[matrix_ind.x] = 0;
+matrix_scratch[matrix_ind.y] = 0;
+surface_reset_target();
+
 gpu_set_colorwriteenable(true, true, true, false);
 
 draw_surface_ext(surf_background, 0, 0, 1, 1, 0, c_white, 1);
@@ -60,6 +86,12 @@ if global.config.graphics_post_outline {
 	shader_reset();
 	
 	draw_surface_ext(surf_layer_0, 0, 0, 1, 1, 0, c_white, 1);
+	
+	game_render_refresh();
+	game_render_blendmode_set(shd_blend_colordodge);
+	draw_surface(surf_ping, 0, 0);
+	game_render_blendmode_reset();
+	
 	draw_surface_ext(surf_layer_1, 0, 0, 1, 1, 0, c_white, 1);
 	draw_surface_ext(surf_layer_2, 0, 0, 1, 1, 0, c_white, 1);
 
@@ -70,6 +102,19 @@ if global.config.graphics_post_outline {
 	draw_surface_ext(surf_layer_2, 0, 0, 1, 1, 0, c_white, 1);
 	
 }
+
+gpu_set_tex_filter(true);
+
+gpu_set_blendmode(bm_add);
+draw_sprite_tiled_ext(spr_atmosphere_clouds, 0, -_cam_x * 0.5, -_cam_y * 0.5 + (global.time / 4), 24, 24, #111111, 1);
+gpu_set_blendmode(bm_normal);
+
+game_render_refresh();
+game_render_blendmode_set(shd_blend_overlay);
+draw_sprite_tiled_ext(spr_atmosphere_clouds, 0, -_cam_x * 0.6, -_cam_y * 0.6 + (global.time / 2), 18, 18, #ffffff, 0.4);
+game_render_blendmode_reset();
+
+gpu_set_tex_filter(false);
 
 gpu_set_colorwriteenable(true, true, true, true);
 
@@ -217,7 +262,11 @@ if global.settings.graphic.abberation != 0 {
 	surface_reset_target();
 }
 
-
+with obj_flag_blackout {
+	surface_set_target(other.surf_compose);
+	draw_sprite_ext(spr_pixel, 0, 0, 0, WIDTH, HEIGHT, 0, c_black, time);
+	surface_reset_target();
+}
 
 if global.config.graphics_post_grading {
 

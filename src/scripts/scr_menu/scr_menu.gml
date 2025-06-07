@@ -211,10 +211,7 @@ function MenuPageMap() : MenuPage() constructor {
 		if _click && _c != noone {
 			_menu.stop();
 		
-			game_camera_set_shake(2, 0.5);
-			game_set_pause(2)
-		
-			game_checkpoint_set(_c.index);
+			game_checkpoint_set_index(_c.index);
 			
 			global.game.add_timeline(new Timeline().add(new KeyframeRespawn()));
 		
@@ -307,6 +304,168 @@ function MenuPageMap() : MenuPage() constructor {
 
 }
 
+function MenuPageChar(_kind) : MenuPage() constructor {
+	kind = _kind;
+	current = 0;
+	anim_current = 0;
+	list = undefined;
+	
+	static tail = new PlayerTail();
+	
+	static init = function () {
+		anim = 0;
+		
+		if kind == 0 {
+			list = global.data_char_refs.cloth;
+			current = array_get_index(list, global.data.player.cloth);
+		} else if kind == 1 {
+			list = global.data_char_refs.accessory;
+			current = array_get_index(list, global.data.player.accessory);
+		} else if kind == 2 {
+			list = global.data_char_refs.ears;
+			current = array_get_index(list, global.data.player.ears);
+		} else if kind == 3 {
+			list = global.data_char_refs.tail;
+			current = array_get_index(list, global.data.player.tail);
+		} else if kind == 4 {
+			list = global.data_char_refs.color;
+			current = array_get_index(list, global.data.player.color);
+		} else {
+			ASSERT(false);
+		}
+		
+		anim_current = current;
+	};
+	
+	static update = function (_menu) {
+		
+		var _kh = 
+			INPUT.check_stutter("right", 8, 4) -
+			INPUT.check_stutter("left", 8, 4);
+			
+		var _kv = 
+			INPUT.check_stutter("down", 8, 5) -
+			INPUT.check_stutter("up", 8, 5);
+			
+		var _click = INPUT.check_pressed("jump");
+		var _close = INPUT.check_pressed("dash");
+		
+		current = mod_euclidean(current + _kh, array_length(list));
+		
+		if _click {
+			LOG(Log.note, $"MenuPageChar(): selected {current}");
+			if kind == 0 {
+				global.data.player.cloth = list[current];
+			} else if kind == 1 {
+				global.data.player.accessory = list[current];
+			} else if kind == 2 {
+				global.data.player.ears = list[current];
+			} else if kind == 3 {
+				global.data.player.tail = list[current];
+			} else if kind == 4 {
+				global.data.player.color = list[current];
+			} else {
+				ASSERT(false);
+			}
+			game_file_save();
+			return;
+		}
+		
+		if _close {
+			_menu.close();
+		}
+		
+	};
+	
+	static draw = function (_x, _y, _active) {
+		
+		anim = approach(anim, _active, 1 / 10);
+		
+		var _w = 512 * tween(Tween.Circ, anim);
+		var _h = 320 * tween(Tween.Circ, anim);
+		
+		draw_sprite_stretched(
+			spr_sign_board, 0,
+			WIDTH / 2 - _w / 2, HEIGHT / 2 - _h / 2,
+			_w, _h
+		);
+		
+		if anim < 1 {
+			return;
+		}
+		
+		anim_current = lerp(anim_current, current, 0.6);
+		
+		var _tail = list == global.data_char_refs.tail ? list[current] : global.data.player.tail;
+		var _color = list == global.data_char_refs.color ? list[current] : global.data.player.color;
+		tail.update(0, 0, 1, 0, _tail);
+		
+		static __mat_scale = matrix_build(WIDTH / 2, HEIGHT / 2, 0, 0, 0, 0, 2, 2, 1);
+		matrix_set(matrix_world, __mat_scale);
+		
+		tail.draw(1, _tail, _color, c_white);
+		
+		static __mat_ident = matrix_build_identity();
+		matrix_set(matrix_world, __mat_ident);
+		
+		
+		draw_player(
+			0,
+			WIDTH / 2,
+			HEIGHT / 2 + 32,
+			2, 2,
+			0, c_white,
+			list == global.data_char_refs.cloth ? "none" : global.data.player.cloth,
+			list == global.data_char_refs.accessory ? "none" : global.data.player.accessory,
+			list == global.data_char_refs.ears ? "none" : global.data.player.ears,
+			_color
+		);
+		
+		draw_set_halign(fa_center);
+		
+		for (var i = 0; i < array_length(list); i++) {
+			var _item = list[i];
+			
+			var _asset = undefined;
+			var _check = false;
+			if kind == 0 {
+				_asset = global.data_char.cloth[$ _item];
+				_check = _check || _item == global.data.player.cloth;
+			} else if kind == 1 {
+				_asset = global.data_char.accessory[$ _item];
+				_check = _check || _item == global.data.player.accessory;
+			} else if kind == 2 {
+				_asset = global.data_char.ears[$ _item];
+				_check = _check || _item == global.data.player.ears;
+			} else if kind == 3 {
+				//_asset = global.data_char.tail[$ _item];
+				_check = _check || _item == global.data.player.tail;
+			} else if kind == 4 {
+				//_asset = global.data_char.color[$ _item];
+				_check = _check || _item == global.data.player.color;
+			} else {
+				ASSERT(false);
+			}
+			
+			var _xx = WIDTH / 2 + (i - anim_current) * 64;
+			if _asset == undefined {
+				draw_circle_outline(_xx, HEIGHT / 2, 6, 1, c_white, clamp(abs(i - anim_current), 0, 1), 12);
+				draw_text(_xx, HEIGHT / 2 + 48, _item);
+			} else {
+				draw_sprite_ext(_asset, 0, _xx, HEIGHT / 2 + 32, 2, 2, 0, c_white, 1);
+				draw_text(_xx, HEIGHT / 2 + 48, _item);
+			}
+			
+			if _check {
+				var _width = string_width(_item);
+				draw_line_sprite(_xx - _width / 2, HEIGHT / 2 + 48 + 9, _xx + _width / 2, HEIGHT / 2 + 48 + 9, 1, #ffffff, 1);
+			}
+		}
+		
+		draw_set_halign(fa_left);
+		
+	};
+}
 
 function MenuOption() constructor {
 	

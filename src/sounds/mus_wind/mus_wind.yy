@@ -9,7 +9,7 @@
   "bitRate":80,
   "compression":3,
   "conversionMode":0,
-  "duration":54.79018,
+  "duration":0.0,
   "name":"mus_wind",
   "parent":{
     "name":"bgm",

@@ -1,4 +1,7 @@
 
+x += 8;
+y += 8;
+
 event_inherited()
 
 frame = function(){

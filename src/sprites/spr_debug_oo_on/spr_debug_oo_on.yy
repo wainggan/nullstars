@@ -46,8 +46,8 @@
   },
   "origin":0,
   "parent":{
-    "name":"graphics",
-    "path":"folders/graphics.yy",
+    "name":"onoff",
+    "path":"folders/graphics/object/onoff.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

@@ -8,7 +8,7 @@ global.version = {
 #macro FILE_DATA "save.star"
 #macro FILE_INPUT "input.ini"
 
-#macro FILE_DATA_VERSION 4
+#macro FILE_DATA_VERSION 5
 
 global.file = undefined;
 global.settings = undefined;
@@ -54,6 +54,18 @@ global.file_default = {
 			time = best time in ms
 		*/
 		"gates": {},
+		
+		/*
+		player stuff
+		@todo: move to global file
+		*/
+		"player": {
+			"cloth": "none",
+			"accessory": "none",
+			"ears": "nova",
+			"tail": "nova",
+			"color": "main",
+		},
 	
 	},
 	"settings": {

@@ -39,8 +39,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_debug_lift_activate",
-    "path":"sprites/spr_debug_lift_activate/spr_debug_lift_activate.yy",
+    "name":"spr_lift_activate",
+    "path":"sprites/spr_lift_activate/spr_lift_activate.yy",
   },
   "spriteMaskId":null,
   "visible":true,

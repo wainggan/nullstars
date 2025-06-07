@@ -42,17 +42,14 @@ if !game_timer_running() && _start {
 	game_set_pause(4)
 	game_camera_set_shake(3, 0.5)
 	
-	instance_create_layer(x + sprite_width / 2, y + sprite_height / 2, layer, obj_effects_spritepop, {
-		sprite: spr_timer_pop,
-		index: 0,
-		spd: 0.02
-	})
 	instance_create_layer(x, y, layer, obj_effects_rectpop, {
 		width: sprite_width,
 		height: sprite_height,
 		pad: 16,
 		spd: 0.04
-	})
+	});
+	game_render_wave(x + sprite_width / 2, y + sprite_height / 2, 512, 60, 0.2, spr_wave_ripple);
+	game_render_particle_ambient(x + sprite_width / 2, y + sprite_height / 2, ps_timer_start);
 }
 
 if _end {
@@ -64,18 +61,13 @@ if _end {
 	}
 	
 	if _cond {
-		game_set_pause(4)
-		instance_create_layer(x + sprite_width / 2, y + sprite_height / 2, layer, obj_effects_spritepop, {
-			sprite: spr_timer_pop,
-			index: 1,
-			spd: 0.02
-		})
+		game_set_pause(4);
 		instance_create_layer(x, y, layer, obj_effects_rectpop, {
 			width: sprite_width,
 			height: sprite_height,
 			pad: 16,
 			spd: 0.04
-		})
+		});
 	}
 	
 }
@@ -123,12 +115,9 @@ with level_get_instance(ref) {
 			game_file_save();
 			
 			game_timer_stop();
-		
-			instance_create_layer(x + sprite_width / 2, y + sprite_height / 2, layer, obj_effects_spritepop, {
-				sprite: spr_timer_pop,
-				index: 1,
-				spd: 0.02
-			});
+			other.anim_pop = true;
+			
+			game_render_wave(x + sprite_width / 2, y + sprite_height / 2, 960, 120, 0.5, spr_wave_ripple);
 		
 			_pop = true;
 		}
@@ -148,8 +137,16 @@ with level_get_instance(ref) {
 				spd: 0.04
 			});
 		}
-	
 	}
+}
 
+anim_running = approach(anim_running, _letsgoo, 0.08);
+var _last_is_complete = anim_is_complete;
+anim_is_complete = global.game.gate.data(other.name).complete;
+anim_complete = approach(anim_complete, +anim_is_complete, 0.06);
+anim_wall = approach(anim_wall, anim_is_complete || _letsgoo ? 1 : 0, 0.1);
+
+if anim_pop {
+	anim_running = 0;
 }
 
