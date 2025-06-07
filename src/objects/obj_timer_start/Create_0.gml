@@ -16,6 +16,7 @@ pet = noone;
 anim_wall = 0;
 anim_running = 0;
 anim_is_complete = false;
+anim_complete = 0;
 anim_pop = false;
 
 anim_dir = 0;

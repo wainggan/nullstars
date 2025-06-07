@@ -53,6 +53,19 @@ matrix_set(matrix_world, matrix_scratch);
 with obj_decor_glowable {
 	event_perform(ev_draw, 0);
 }
+var _beat = (1 + power(1 - game_music_get_beat(2), 2) * 0.1);
+with obj_timer_start {
+	var _dir = anim_dir * 90;
+	var _scale = _beat * tween(Tween.Back, anim_complete);
+	draw_sprite_ext(
+		spr_timer_star, 0,
+		x + sprite_width / 2 - lengthdir_x(8, _dir),
+		y + sprite_height / 2 - lengthdir_y(8, _dir),
+		_scale,
+		_scale,
+		0, #99bbbb, 1
+	);
+}
 matrix_set(matrix_world, matrix_identity);
 matrix_scratch[matrix_ind.x] = 0;
 matrix_scratch[matrix_ind.y] = 0;

@@ -399,6 +399,7 @@
     {"id":{"name":"spr_timer_background","path":"sprites/spr_timer_background/spr_timer_background.yy",},},
     {"id":{"name":"spr_timer_end_wall","path":"sprites/spr_timer_end_wall/spr_timer_end_wall.yy",},},
     {"id":{"name":"spr_timer_pop","path":"sprites/spr_timer_pop/spr_timer_pop.yy",},},
+    {"id":{"name":"spr_timer_star","path":"sprites/spr_timer_star/spr_timer_star.yy",},},
     {"id":{"name":"spr_timer_start","path":"sprites/spr_timer_start/spr_timer_start.yy",},},
     {"id":{"name":"spr_timer_water","path":"sprites/spr_timer_water/spr_timer_water.yy",},},
     {"id":{"name":"spr_timer_wave","path":"sprites/spr_timer_wave/spr_timer_wave.yy",},},

@@ -143,6 +143,7 @@ with level_get_instance(ref) {
 anim_running = approach(anim_running, _letsgoo, 0.08);
 var _last_is_complete = anim_is_complete;
 anim_is_complete = global.game.gate.data(other.name).complete;
+anim_complete = approach(anim_complete, +anim_is_complete, 0.06);
 anim_wall = approach(anim_wall, anim_is_complete || _letsgoo ? 1 : 0, 0.1);
 
 if anim_pop {
