@@ -236,6 +236,7 @@
     {"name":"spr_grade_waterfall","order":3,"path":"sprites/spr_grade_waterfall/spr_grade_waterfall.yy",},
     {"name":"spr_hitbox_player","order":1,"path":"sprites/spr_hitbox_player/spr_hitbox_player.yy",},
     {"name":"spr_hitbox_player_crouch","order":4,"path":"sprites/spr_hitbox_player_crouch/spr_hitbox_player_crouch.yy",},
+    {"name":"spr_hors","order":80,"path":"sprites/spr_hors/spr_hors.yy",},
     {"name":"spr_lantern","order":3,"path":"sprites/spr_lantern/spr_lantern.yy",},
     {"name":"spr_lift_activate_rail","order":2,"path":"sprites/spr_lift_activate_rail/spr_lift_activate_rail.yy",},
     {"name":"spr_lift_attack","order":1,"path":"sprites/spr_lift_attack/spr_lift_attack.yy",},
