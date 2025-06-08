@@ -1,59 +1,76 @@
-
+ 
 var _cam = game_camera_get()
 var _pad = WIDTH;
 
-schedule += 30;
-while schedule > 1 {
-	schedule--;
+var _amount = irandom(2) + 1;
+
+while _amount-- > 0 {
+	var _p_x = irandom_range(_cam.x - _pad, _cam.x + _cam.w + _pad),
+		_p_y = irandom_range(_cam.y - _pad, _cam.y + _cam.h + _pad);
+	var _level = game_level_get_safe(_p_x, _p_y);
 	
-	var _x = irandom_range(_cam.x - _pad, _cam.x + _cam.w + _pad), 
-		_y = irandom_range(_cam.y - _pad, _cam.y + _cam.h + _pad);
-	var _level = game_level_get_safe(_x, _y);
-	
-	if !_level || !_level.loaded continue;
-	
-	if tilemap_get_at_pixel(_level.tiles, _x, _y) != 0 continue;
-	
-	for (var i = 1; i < TILESIZE; i++) {
-		if tilemap_get_at_pixel(_level.tiles, _x, _y + i) != 0 {
-			var _tx = floor((_x - _level.x) / TILESIZE), _ty = floor((_y - _level.y + i) / TILESIZE)
+	if _level && _level.loaded {
+		
+		var _t_x = (_p_x - _level.x) div TILESIZE;
+		var _t_y = (_p_y - _level.y) div TILESIZE;
+		
+		if tilemap_get(_level.tiles, _t_x, _t_y) == 0 {
 			
-			var _space_l = 0;
-			for (var j = 1; j < 4; j++) {
-				if !tilemap_get(_level.tiles, _tx - j, _ty) break;
-				_space_l++;
-			}
-			
-			var _space_r = 0;
-			for (var j = 1; j < 4; j++) {
-				if !tilemap_get(_level.tiles, _tx + j, _ty) break;
-				_space_r++;
-			}
-			
-			var _space = min(_space_l, _space_r);
-			_space = max(_space, 1);
-			
-			if _space != 1 _space = _space * 2 - 1;
-			
-			var _ox = _tx * TILESIZE + _level.x;
-			var _oy = _ty * TILESIZE + _level.y;
-			
-			with instance_create_layer(
-				_ox, _oy + 1,
-				"Instances", obj_decor_puddle, {
-					image_xscale: _space,
+			var i_check = 0;
+			var _found = false;
+			for (; i_check < 16; i_check++) {
+				if tilemap_get(_level.tiles, _t_x, _t_y + i_check) != 0 {
+					_found = true;
+					break;
 				}
-			) {
-				x = x - sprite_width / 2 - TILESIZE / 2;
-				height = random_range(0.7, 1.5)
-				if random(1) < 0.6 && place_meeting(x, y, obj_decor_puddle) instance_destroy() // @todo: stupid
 			}
 			
-			break;
+			_t_y += i_check;
+			
+			if _found {
+				var _space_l = 0;
+				for (var j_check = 1; j_check < 4; j_check++) {
+					if tilemap_get(_level.tiles, _t_x - j_check, _t_y) == 0
+						|| tilemap_get(_level.tiles, _t_x + j_check, _t_y - 1) != 0 {
+						break;
+					}
+					_space_l++;
+				}
+				
+				var _space_r = 0;
+				for (var j_check = 1; j_check < 4; j_check++) {
+					if tilemap_get(_level.tiles, _t_x + j_check, _t_y) == 0
+						|| tilemap_get(_level.tiles, _t_x + j_check, _t_y - 1) != 0 {
+						break;
+					}
+					_space_r++;
+				}
+				
+				var _space = min(_space_l, _space_r);
+				_space = max(_space, 1);
+				
+				if _space != 1 {
+					_space = _space * 2 - 1;
+				}
+	
+				var _o_x = _t_x * TILESIZE + _level.x;
+				var _o_y = _t_y * TILESIZE + _level.y;
+				
+				with instance_create_layer(
+					_o_x, _o_y + 1,
+					"Instances", obj_decor_puddle) {
+					image_xscale = _space;
+					x = x - sprite_width / 2 - TILESIZE / 2;
+					height = random_range(0.7, 1.5);
+				}
+			}
+			
 		}
 	}
-	
 }
 
 timer -= 1;
-if timer <= 0 instance_destroy();
+if timer <= 0 {
+	instance_destroy();
+}
+
