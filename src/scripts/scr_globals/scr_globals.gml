@@ -56,6 +56,9 @@ global.config = {
 // how long it takes to unload level data
 #macro GAME_LOAD_TIME_PREP 240
 
+// how many tiles processed per iteration
+#macro GAME_LOAD_PARSE_GRID 256
+
 // if the distance between player and checkpoint is larger than this, respawning will cause a screenfade
 #macro GAME_RESPAWN_FADE_THRESHOLD 3072
 

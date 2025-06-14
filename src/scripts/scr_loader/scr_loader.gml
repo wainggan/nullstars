@@ -352,6 +352,7 @@ function LoaderOption(_level, _priority) constructor {
 	priority = _priority;
 	level = _level;
 	
+	/// @arg {struct.Loader} _loader
 	static process = function (_loader) {
 		return LoaderOptionStatus.complete;
 	};

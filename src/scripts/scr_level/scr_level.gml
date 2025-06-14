@@ -460,6 +460,47 @@ function level_unpack_bin_entity(_buffer) {
 	};
 }
 
+function LoaderOptionParsePartGrid(_priority, _loader, _level, _bin_id, _at, _tilemap) : LoaderOption(_level, _priority) constructor {
+	_loader.bins[$ _bin_id][1] += 1;
+	
+	LOG(Log.note, $"Loader(): created LoaderOptionParsePartGrid {level.id}");
+	
+	tilemap = _tilemap;
+	bin_id = _bin_id;
+	
+	var _buffer = _loader.bins[$ _bin_id][0];
+	buffer_seek(_buffer, buffer_seek_start, _at);
+	
+	count = buffer_read(_buffer, buffer_u32);
+	position = buffer_tell(_buffer);
+	i_tile = 0;
+	
+	static process = function (_loader) {
+		var _buffer = _loader.bins[$ bin_id][0];
+		
+		var _w = tilemap_get_width(tilemap);
+		
+		buffer_seek(_buffer, buffer_seek_start, position);
+		
+		for (var i_iter = 0; i_tile < count && i_iter < GAME_LOAD_PARSE_GRID; {
+			i_tile++;
+			i_iter++;
+		}) {
+			var _tile = buffer_read(_buffer, buffer_u8);
+			tilemap_set(tilemap, _tile, i_tile mod _w, i_tile div _w);
+		}
+		
+		position = buffer_tell(_buffer);
+		
+		if i_tile < count {
+			return LoaderOptionStatus.running;
+		} else {
+			_loader.bins[$ bin_id][1] -= 1;
+			return LoaderOptionStatus.complete;
+		}
+	};
+}
+
 /// @arg {id.Buffer} _buffer
 /// @arg {real} _at
 /// @arg {id.TileMapElement} _tilemap
@@ -750,7 +791,21 @@ function Level(_id, _x, _y, _width, _height) constructor {
 			}
 		};
 		
-		array_push(_out, new LoaderOptionParsePart(0, _loader, _level, _bin_id, self, __fn_tiles));
+		// array_push(_out, new LoaderOptionParsePart(0, _loader, _level, _bin_id, self, __fn_tiles));
+		
+		layer = layer_create(0);
+		layer_set_visible(layer, false);
+		tiles = layer_tilemap_create(
+			layer,
+			x, y,
+			// this is an empty sprite.
+			// it seems gamemaker's place_meeting against a tile layer doesn't
+			// work when a tile's indice is technically larger than the tile layer.
+			tl_collision,
+			width div TILESIZE,
+			height div TILESIZE
+		);
+		array_push(_out, new LoaderOptionParsePartGrid(0, _loader, _level, _bin_id, file.content.layers[$ "Collisions"].pointer, tiles));
 		
 		
 		static __fn_spike = function (_self, _buffer) {
