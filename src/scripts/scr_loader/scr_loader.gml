@@ -403,8 +403,7 @@ function LoaderOptionFile(_level) : LoaderOption(_level, 0) constructor {
 	static collect = function (_loader) {
 		ASSERT(buffer_exists(bin));
 		
-		var _bin_id = _loader.bin_top++;
-		_loader.bins[$ _bin_id] = [bin, 1];
+		var _bin_id = global.game.buffers.add(bin);
 		
 		static __out = array_create(1);
 		__out[0] = new LoaderOptionParse(level, _bin_id);
@@ -420,15 +419,15 @@ function LoaderOptionParse(_level, _bin_id) : LoaderOption(_level, 0) constructo
 	LOG(Log.note, $"Loader(): created LoaderOptionParse {level.id} (binid: {_bin_id})");
 	
 	static process = function (_loader) {
-		ASSERT(_loader.bins[$ bin_id] != undefined);
+		ASSERT(bin_id.valid());
 
 		var _level = new Level(level.id, level.x, level.y, level.width, level.height);
-		_level.init(_loader.bins[$ bin_id][0]);
+		_level.init(bin_id.bin());
 		
 		level.data = _level;
 		level.loaded = LoaderProgress.prepared;
 		
-		_loader.bins[$ bin_id][1] -= 1;
+		bin_id.pop();
 		
 		return LoaderOptionStatus.complete;
 	};

@@ -30,6 +30,8 @@ function Game() constructor {
 	game_update_log(global.settings.debug.log);
 	
 	
+	buffers = new GameBuffers();
+	
 	global.time = 0;
 	state = new GameState();
 	
@@ -80,6 +82,7 @@ function Game() constructor {
 		
 		self.level.update();
 		self.music.update();
+		self.buffers.update();
 	}
 	
 	static step_begin = function() {
@@ -671,3 +674,54 @@ function GameMenu() constructor {
 		game_file_save();
 	}));
 }
+
+function GameBuffers() constructor {
+	// [Buffer.Id, Real]
+	// [0] - the buffer we cache
+	// [1] - how many depend on it
+	bins = {};
+	bin_top = 0;
+	
+	static _Buffer = function (_parent, _id) constructor {
+		parent = _parent;
+		id = _id;
+		
+		static valid = function () {
+			return parent.bins[$ id][1] > 0;
+		};
+		
+		static bin = function () {
+			ASSERT(valid());
+			return parent.bins[$ id][0];
+		};
+		
+		static push = function () {
+			parent.bins[$ id][1] += 1;
+			return self;
+		};
+		
+		static pop = function () {
+			parent.bins[$ id][1] -= 1;
+			return self;
+		};
+	};
+	
+	static add = function (_buffer) {
+		ASSERT(buffer_exists(_buffer));
+		var _bin_id = bin_top++;
+		bins[$ _bin_id] = [_buffer, 1];
+		return new _Buffer(self, _bin_id);
+	};
+	
+	static update = function () {
+		var _bin_ids = struct_get_names(bins);
+		for (var i = 0; i < array_length(_bin_ids); i++) {
+			var _b = bins[$ _bin_ids[i]];
+			if _b[1] <= 0 {
+				buffer_delete(_b[0]);
+				struct_remove(bins, _bin_ids[i]);
+			}
+		}
+	};
+}
+
