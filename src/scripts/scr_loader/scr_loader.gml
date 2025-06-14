@@ -188,17 +188,9 @@ function Loader() constructor {
 			var _val = _item.fields;
 			
 			switch _item.object {
-				case nameof(obj_checkpoint):
+				case nameof(obj_checkpoint): {
 					_field.index = _val.index;
-					break;
-				case nameof(obj_timer_start):
-					_field.name = _val.name;
-					_field.time = _val.time;
-					_field.dir = _val.dir;
-					_field.ref = _val.ref;
-					break;
-				case nameof(obj_timer_end):
-					break;
+				} break;
 			}
 			
 			_field.uid = _item.id;
