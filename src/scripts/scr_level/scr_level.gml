@@ -393,18 +393,20 @@ function level_unpack_bin_layer(_buffer) {
 		case 0x01: {
 			_pointer = buffer_tell(_buffer);
 			var _length = buffer_read(_buffer, buffer_u32);
-			repeat _length {
-				buffer_read(_buffer, buffer_u8);
-			}
+			buffer_seek(_buffer, buffer_seek_relative, _length);
+			//repeat _length {
+			//	buffer_read(_buffer, buffer_u8);
+			//}
 		} break;
 		case 0x02: {
 			_pointer = buffer_tell(_buffer);
 			var _length = buffer_read(_buffer, buffer_u32);
-			repeat _length {
-				buffer_read(_buffer, buffer_u32);
-				buffer_read(_buffer, buffer_s32);
-				buffer_read(_buffer, buffer_s32);
-			}
+			buffer_seek(_buffer, buffer_seek_relative, _length * 4 * 3);
+			//repeat _length {
+			//	buffer_read(_buffer, buffer_u32);
+			//	buffer_read(_buffer, buffer_s32);
+			//	buffer_read(_buffer, buffer_s32);
+			//}
 		} break;
 		case 0x03: {
 			_pointer = buffer_tell(_buffer);

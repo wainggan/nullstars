@@ -47,7 +47,7 @@ function util_matrix_get_alignment() {
 		var _get = matrix_build(-1, -2, -3, 0, 0, 0, -7, -8, -9);
 		var _x = -1, _y = -1, _z = -1,
 			_x_s = -1, _y_s = -1, _z_s = -1;
-		for (var i = 0; i < array_length(_get); i++) {
+		for (var i = 0, _l = array_length(_get); i < _l; i++) {
 			if _get[i] == -1 _x = i;
 			if _get[i] == -2 _y = i;
 			if _get[i] == -3 _z = i;
