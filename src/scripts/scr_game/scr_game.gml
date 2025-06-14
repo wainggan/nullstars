@@ -338,6 +338,9 @@ function GameHandleGates() constructor {
 		for (var i = 0; i < array_length(_names); i++) {
 			var _index = _names[i];
 			
+			if list[$ _index] == undefined {
+				list[$ _index] = {};
+			}
 			list[$ _index].complete = global.data.gates[$ _index].complete;
 			list[$ _index].time = global.data.gates[$ _index].time;
 		}
@@ -367,17 +370,14 @@ function GameHandleGates() constructor {
 		if list[$ _object.name] != undefined {
 			LOG(Log.warn, $"gate: {_object.name} already exists!");
 		}
-		list[$ _object.name] = {
-			object: _object,
+		data(_object.name);
+	}
+
+	static data = function(_index) {
+		list[$ _index] ??= {
 			complete: false,
 			time: 0,
 		};
-	}
-
-	static ref = function(_index) {
-		return list[$ _index].object;
-	}
-	static data = function(_index) {
 		return list[$ _index];
 	}
 }

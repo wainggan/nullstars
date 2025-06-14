@@ -1,6 +1,7 @@
 
-//draw_text(16, 16 + 12 * 0, instance_number(obj_Exists));
-//draw_text(16, 16 + 12 * 1, fps);
+draw_text(16, 16 + 12 * 0, instance_number(obj_Exists));
+draw_text(16, 16 + 12 * 1, fps);
+draw_text(16, 16 + 12 * 2, instance_number(obj_timer_start));
 
 if keyboard_check_pressed(ord("9")) {
 	// @todo: windows?

@@ -22,11 +22,6 @@ function game_checkpoint_get_dyn() {
 	return global.game.checkpoint.get_dyn();
 }
 
-/// @return {id.Instance}
-function game_checkpoint_ref() {
-	return global.game.checkpoint.ref(global.game.checkpoint.get_index());
-}
-
 function game_checkpoint_pos() {
 	return global.game.checkpoint.pos();
 }

@@ -1,4 +1,6 @@
 
+event_inherited();
+
 image_xscale = jorp_w;
 image_yscale = jorp_h;
 
@@ -9,7 +11,7 @@ last_alive = false;
 last_x = 0;
 last_y = 0;
 
-global.game.gate.add(self)
+// global.game.gate.add(self);
 
 pet = noone;
 
@@ -21,12 +23,16 @@ anim_pop = false;
 
 anim_dir = 0;
 if dir == "right" {
+	dir = "right";
 	anim_dir = 0;
 } else if dir == "left" {
+	dir = "left";
 	anim_dir = 2;
 } else if dir == "down" {
+	dir = "down";
 	anim_dir = 3;
 } else if dir == "up" {
+	dir = "up";
 	anim_dir = 1;
 } else {
 	ASSERT(false);

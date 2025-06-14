@@ -1,4 +1,8 @@
 
+if !game_level_get_safe_rect(bbox_left, bbox_top, bbox_right, bbox_bottom) {
+	exit;
+}
+
 var _checkable = false;
 if instance_exists(obj_player) {
 	if dir == "right" || dir == "left" {
