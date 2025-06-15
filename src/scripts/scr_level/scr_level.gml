@@ -463,7 +463,7 @@ function level_unpack_bin_entity(_buffer) {
 function LoaderOptionParsePartGrid(_priority, _level, _bin_id, _at, _tilemap) : LoaderOption(_level, _priority) constructor {
 	_bin_id.push();
 	
-	LOG(Log.note, $"Loader(): created LoaderOptionParsePartGrid {level.id}");
+	LOG(Log.note, $"Loader(): created LoaderOptionParsePartGrid id={level.id}");
 	
 	tilemap = _tilemap;
 	bin_id = _bin_id;
@@ -511,7 +511,7 @@ function level_unpack_bin_layer_grid(_buffer, _at, _tilemap) {
 function LoaderOptionParsePartFreeMap(_priority, _level, _bin_id, _at, _tilemap, _filter) : LoaderOption(_level, _priority) constructor {
 	_bin_id.push();
 	
-	LOG(Log.note, $"Loader(): created LoaderOptionParsePartFreeMap {level.id}");
+	LOG(Log.note, $"Loader(): created LoaderOptionParsePartFreeMap id={level.id}");
 	
 	tilemap = _tilemap;
 	tilemap_filter = _filter;
@@ -580,60 +580,97 @@ function level_unpack_bin_layer_free_map_filtered(_buffer, _at, _tilemap_normal,
 	ASSERT(false);
 }
 
+function LoaderOptionParsePartVertex(_priority, _level, _bin_id, _at, _vertex) : LoaderOption(_level, _priority) constructor {
+	_bin_id.push();
+	
+	LOG(Log.note, $"Loader(): created LoaderOptionParsePartVertex id={level.id}");
+	
+	vertex = _vertex;
+	bin_id = _bin_id;
+	
+	var _buffer = bin_id.bin();
+	buffer_seek(_buffer, buffer_seek_start, _at);
+	
+	count = buffer_read(_buffer, buffer_u32);
+	position = buffer_tell(_buffer);
+	i_tile = 0;
+	
+	ts_info = tileset_get_info(tl_tiles);
+	ts_width = ts_info.tile_width + 2 * ts_info.tile_horizontal_separator;
+	ts_height = ts_info.tile_height + 2 * ts_info.tile_vertical_separator;
+
+	tex_rx = texture_get_texel_width(ts_info.texture);
+	tex_ry = texture_get_texel_height(ts_info.texture);
+
+	var _uv = tileset_get_uvs(tl_tiles);
+	
+	uv_x = _uv[0];
+	uv_y = _uv[1];
+	
+	vertex_begin(vertex, level_get_vf());
+	
+	static process = function () {
+		var _buffer = bin_id.bin();
+		
+		buffer_seek(_buffer, buffer_seek_start, position);
+		
+		show_debug_message($"{global.time} {i_tile}");
+		
+		for (var i_iter = 0; i_tile < count && i_iter < GAME_LOAD_PARSE_GRID; {
+			i_tile++;
+			i_iter++;
+		}) {
+			var _t = buffer_read(_buffer, buffer_u32);
+			var _t_x = buffer_read(_buffer, buffer_s32);
+			var _t_y = buffer_read(_buffer, buffer_s32);
+	
+			var _ts_tile_x = (_t mod ts_info.tile_columns) * ts_width;
+			var _ts_tile_y = (_t div ts_info.tile_columns) * ts_height;
+	
+			var _uv_t_x = uv_x + _ts_tile_x * tex_rx;
+			var _uv_t_y = uv_y + _ts_tile_y * tex_ry;
+	
+			// tri 1
+			vertex_position(vertex, _t_x, _t_y);
+			vertex_texcoord(vertex, _uv_t_x, _uv_t_y);
+	
+			vertex_position(vertex, _t_x + TILESIZE, _t_y);
+			vertex_texcoord(vertex, _uv_t_x + TILESIZE * tex_rx, _uv_t_y);
+	
+			vertex_position(vertex, _t_x + TILESIZE, _t_y + TILESIZE);
+			vertex_texcoord(vertex, _uv_t_x + TILESIZE * tex_rx, _uv_t_y + TILESIZE * tex_ry);
+	
+			// tri 2
+			vertex_position(vertex, _t_x, _t_y);
+			vertex_texcoord(vertex, _uv_t_x, _uv_t_y);
+	
+			vertex_position(vertex, _t_x, _t_y + TILESIZE);
+			vertex_texcoord(vertex, _uv_t_x, _uv_t_y + TILESIZE * tex_ry);
+	
+			vertex_position(vertex, _t_x + TILESIZE, _t_y + TILESIZE);
+			vertex_texcoord(vertex, _uv_t_x + TILESIZE * tex_rx, _uv_t_y + TILESIZE * tex_ry);
+		}
+		
+		position = buffer_tell(_buffer);
+		
+		if i_tile < count {
+			return LoaderOptionStatus.running;
+		} else {
+			bin_id.pop();
+			vertex_end(vertex);
+			if vertex_get_number(vertex) > 0 {
+				vertex_freeze(vertex);
+			}
+			return LoaderOptionStatus.complete;
+		}
+	};
+}
+
 /// @arg {id.Buffer} _buffer
 /// @arg {real} _at
 /// @arg {id.VertexBuffer} _vertex
 function level_unpack_bin_layer_free_vertex(_buffer, _at, _vertex) {
-	
-	buffer_seek(_buffer, buffer_seek_start, _at);
-	var _count = buffer_read(_buffer, buffer_u32);
-	
-	vertex_begin(_vertex, level_get_vf());
-
-	var _ts_info = tileset_get_info(tl_tiles);
-	var _ts_width = _ts_info.tile_width + 2 * _ts_info.tile_horizontal_separator;
-	var _ts_height = _ts_info.tile_height + 2 * _ts_info.tile_vertical_separator;
-
-	var _tex_rx = texture_get_texel_width(_ts_info.texture);
-	var _tex_ry = texture_get_texel_height(_ts_info.texture);
-
-	var _uv_x = tileset_get_uvs(tl_tiles)[0];
-	var _uv_y = tileset_get_uvs(tl_tiles)[1];
-
-	repeat _count {
-		var _t = buffer_read(_buffer, buffer_u32);
-		var _t_x = buffer_read(_buffer, buffer_s32);
-		var _t_y = buffer_read(_buffer, buffer_s32);
-
-		var _ts_tile_x = (_t mod _ts_info.tile_columns) * _ts_width;
-		var _ts_tile_y = (_t div _ts_info.tile_columns) * _ts_height;
-
-		var _uv_t_x = _uv_x + _ts_tile_x * _tex_rx;
-		var _uv_t_y = _uv_y + _ts_tile_y * _tex_ry;
-
-		// tri 1
-		vertex_position(_vertex, _t_x, _t_y);
-		vertex_texcoord(_vertex, _uv_t_x, _uv_t_y);
-
-		vertex_position(_vertex, _t_x + TILESIZE, _t_y);
-		vertex_texcoord(_vertex, _uv_t_x + TILESIZE * _tex_rx, _uv_t_y);
-
-		vertex_position(_vertex, _t_x + TILESIZE, _t_y + TILESIZE);
-		vertex_texcoord(_vertex, _uv_t_x + TILESIZE * _tex_rx, _uv_t_y + TILESIZE * _tex_ry);
-
-		// tri 2
-		vertex_position(_vertex, _t_x, _t_y);
-		vertex_texcoord(_vertex, _uv_t_x, _uv_t_y);
-
-		vertex_position(_vertex, _t_x, _t_y + TILESIZE);
-		vertex_texcoord(_vertex, _uv_t_x, _uv_t_y + TILESIZE * _tex_ry);
-
-		vertex_position(_vertex, _t_x + TILESIZE, _t_y + TILESIZE);
-		vertex_texcoord(_vertex, _uv_t_x + TILESIZE * _tex_rx, _uv_t_y + TILESIZE * _tex_ry);
-	}
-	
-	vertex_end(_vertex);
-	
+	ASSERT(false);
 }
 
 
@@ -799,11 +836,12 @@ function Level(_id, _x, _y, _width, _height) constructor {
 			width div TILESIZE,
 			height div TILESIZE
 		);
-		array_push(_out, new LoaderOptionParsePartGrid(0, _level, _bin_id, file.content.layers[$ "Collisions"].pointer, tiles));
 		//level_unpack_bin_layer_grid(
 			//_buffer, file.content.layers[$ "Collisions"].pointer,
 			//tiles
 		//);
+		array_push(_out, new LoaderOptionParsePartGrid(0, _level, _bin_id, file.content.layers[$ "Collisions"].pointer, tiles));
+		
 		
 		layer_spike = layer_create(0);
 		layer_set_visible(layer_spike, false);
@@ -814,45 +852,29 @@ function Level(_id, _x, _y, _width, _height) constructor {
 			width div TILESIZE,
 			height div TILESIZE
 		);
-		array_push(_out, new LoaderOptionParsePartGrid(0, _level, _bin_id, file.content.layers[$ "Spikes"].pointer, tiles_spike));
 		//level_unpack_bin_layer_grid(
 			//_buffer, file.content.layers[$ "Spikes"].pointer,
 			//tiles_spike
 		//);
+		array_push(_out, new LoaderOptionParsePartGrid(0, _level, _bin_id, file.content.layers[$ "Spikes"].pointer, tiles_spike));
+		
+		
+		vb_front = vertex_create_buffer();
+		//level_unpack_bin_layer_free_vertex(
+			//_buffer, file.content.layers[$ "Tiles"].pointer,
+			//vb_front
+		//);
+		array_push(_out, new LoaderOptionParsePartVertex(1, _level, _bin_id, file.content.layers[$ "Tiles"].pointer, vb_front));
+		
+		
+		vb_tiles_below = vertex_create_buffer();
+		//level_unpack_bin_layer_free_vertex(
+			//_buffer,
+			//file.content.layers[$ "TilesBelow"].pointer,
+			//vb_tiles_below
+		//);
+		array_push(_out, new LoaderOptionParsePartVertex(2, _level, _bin_id, file.content.layers[$ "TilesBelow"].pointer, vb_tiles_below));
 
-		
-		static __fn_front = function (_self, _buffer) {
-			with _self {
-				vb_front = vertex_create_buffer();
-				level_unpack_bin_layer_free_vertex(
-					_buffer, file.content.layers[$ "Tiles"].pointer,
-					vb_front
-				);
-				if vertex_get_number(vb_front) > 0 {
-					vertex_freeze(vb_front);
-				}
-			}
-		};
-		
-		array_push(_out, new LoaderOptionParsePart(1, _loader, _level, _bin_id, self, __fn_front));
-		
-		
-		static __fn_tiles_below = function (_self, _buffer) {
-			with _self {
-				vb_tiles_below = vertex_create_buffer();
-				level_unpack_bin_layer_free_vertex(
-					_buffer,
-					file.content.layers[$ "TilesBelow"].pointer,
-					vb_tiles_below
-				);
-				if vertex_get_number(vb_tiles_below) > 0 {
-					vertex_freeze(vb_tiles_below);
-				}
-			}
-		};
-		
-		array_push(_out, new LoaderOptionParsePart(4, _loader, _level, _bin_id, self, __fn_tiles_below));
-		
 		
 		layer_back = layer_create(0);
 		layer_set_visible(layer_back, false);
