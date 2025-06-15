@@ -614,8 +614,6 @@ function LoaderOptionParsePartVertex(_priority, _level, _bin_id, _at, _vertex) :
 		
 		buffer_seek(_buffer, buffer_seek_start, position);
 		
-		show_debug_message($"{global.time} {i_tile}");
-		
 		for (var i_iter = 0; i_tile < count && i_iter < GAME_LOAD_PARSE_GRID; {
 			i_tile++;
 			i_iter++;
