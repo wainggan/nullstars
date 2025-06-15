@@ -505,17 +505,51 @@ function LoaderOptionParsePartGrid(_priority, _level, _bin_id, _at, _tilemap) : 
 /// @arg {real} _at
 /// @arg {id.TileMapElement} _tilemap
 function level_unpack_bin_layer_grid(_buffer, _at, _tilemap) {
+	ASSERT(false);
+}
+
+function LoaderOptionParsePartFreeMap(_priority, _level, _bin_id, _at, _tilemap) : LoaderOption(_level, _priority) constructor {
+	_bin_id.push();
 	
+	LOG(Log.note, $"Loader(): created LoaderOptionParsePartFreeMap {level.id}");
+	
+	tilemap = _tilemap;
+	bin_id = _bin_id;
+	
+	var _buffer = bin_id.bin();
 	buffer_seek(_buffer, buffer_seek_start, _at);
-	var _count = buffer_read(_buffer, buffer_u32);
 	
-	var _w = tilemap_get_width(_tilemap);
+	count = buffer_read(_buffer, buffer_u32);
+	position = buffer_tell(_buffer);
+	i_tile = 0;
 	
-	for (var i_tile = 0; i_tile < _count; i_tile++) {
-		var _tile = buffer_read(_buffer, buffer_u8);
-		tilemap_set(_tilemap, _tile, i_tile mod _w, i_tile div _w);
-	}
+	static process = function () {
+		var _buffer = bin_id.bin();
+		
+		var _w = tilemap_get_width(tilemap);
+		
+		buffer_seek(_buffer, buffer_seek_start, position);
+		
+		for (var i_iter = 0; i_tile < count && i_iter < GAME_LOAD_PARSE_GRID; {
+			i_tile++;
+			i_iter++;
+		}) {
+			var _t = buffer_read(_buffer, buffer_u32);
+			var _t_x = round(buffer_read(_buffer, buffer_s32) / TILESIZE);
+			var _t_y = round(buffer_read(_buffer, buffer_s32) / TILESIZE);
 	
+			tilemap_set(tilemap, _t, _t_x, _t_y);
+		}
+		
+		position = buffer_tell(_buffer);
+		
+		if i_tile < count {
+			return LoaderOptionStatus.running;
+		} else {
+			bin_id.pop();
+			return LoaderOptionStatus.complete;
+		}
+	};
 }
 
 /// @arg {id.Buffer} _buffer
@@ -870,69 +904,51 @@ function Level(_id, _x, _y, _width, _height) constructor {
 		array_push(_out, new LoaderOptionParsePart(5, _loader, _level, _bin_id, self, __fn_back));
 		
 		
-		static __fn_tiles_above = function (_self, _buffer) {
-			with _self {
-				layer_tiles_above = layer_create(0);
-				layer_set_visible(layer_tiles_above, false);
-				tiles_tiles_above = layer_tilemap_create(
-					layer_tiles_above,
-					x, y,
-					tl_tiles,
-					width div TILESIZE,
-					height div TILESIZE
-				);
-				level_unpack_bin_layer_free_map(
-					_buffer, file.content.layers[$ "TilesAbove"].pointer,
-					tiles_tiles_above
-				);
-			}
-		};
+		layer_tiles_above = layer_create(0);
+		layer_set_visible(layer_tiles_above, false);
+		tiles_tiles_above = layer_tilemap_create(
+			layer_tiles_above,
+			x, y,
+			tl_tiles,
+			width div TILESIZE,
+			height div TILESIZE
+		);
+		//level_unpack_bin_layer_free_map(
+			//_buffer, file.content.layers[$ "TilesAbove"].pointer,
+			//tiles_tiles_above
+		//);
+		array_push(_out, new LoaderOptionParsePartFreeMap(3, _level, _bin_id, file.content.layers[$ "TilesAbove"].pointer, tiles_tiles_above));
 		
-		array_push(_out, new LoaderOptionParsePart(3, _loader, _level, _bin_id, self, __fn_tiles_above));
+		layer_decor = layer_create(0);
+		layer_set_visible(layer_decor, false);
+		tiles_decor = layer_tilemap_create(
+			layer_decor,
+			x, y,
+			tl_tiles,
+			width div TILESIZE,
+			height div TILESIZE
+		);
+		//level_unpack_bin_layer_free_map(
+			//_buffer, file.content.layers[$ "Decor"].pointer,
+			//tiles_decor
+		//);
+		array_push(_out, new LoaderOptionParsePartFreeMap(3, _level, _bin_id, file.content.layers[$ "Decor"].pointer, tiles_decor));
 		
-		
-		static __fn_decor = function (_self, _buffer) {
-			with _self {
-				layer_decor = layer_create(0);
-				layer_set_visible(layer_decor, false);
-				tiles_decor = layer_tilemap_create(
-					layer_decor,
-					x, y,
-					tl_tiles,
-					width div TILESIZE,
-					height div TILESIZE
-				);
-				level_unpack_bin_layer_free_map(
-					_buffer, file.content.layers[$ "Decor"].pointer,
-					tiles_decor
-				);
-			}
-		};
-		
-		array_push(_out, new LoaderOptionParsePart(3, _loader, _level, _bin_id, self, __fn_decor));
-		
-		
-		static __fn_decor_under = function (_self, _buffer) {
-			with _self {
-				layer_decor_under = layer_create(0);
-				layer_set_visible(layer_decor_under, false);
-				tiles_decor_under = layer_tilemap_create(
-					layer_decor_under,
-					x, y,
-					tl_tiles,
-					width div TILESIZE,
-					height div TILESIZE
-				);
-				level_unpack_bin_layer_free_map(
-					_buffer, file.content.layers[$ "DecorUnder"].pointer,
-					tiles_decor_under
-				);
-			}
-		};
-		
-		array_push(_out, new LoaderOptionParsePart(3, _loader, _level, _bin_id, self, __fn_decor_under));
-
-	}
+		layer_decor_under = layer_create(0);
+		layer_set_visible(layer_decor_under, false);
+		tiles_decor_under = layer_tilemap_create(
+			layer_decor_under,
+			x, y,
+			tl_tiles,
+			width div TILESIZE,
+			height div TILESIZE
+		);
+		//level_unpack_bin_layer_free_map(
+			//_buffer, file.content.layers[$ "DecorUnder"].pointer,
+			//tiles_decor_under
+		//);
+		array_push(_out, new LoaderOptionParsePartFreeMap(3, _level, _bin_id, file.content.layers[$ "DecorUnder"].pointer, tiles_decor_under));
+	};
 	
 	/// flags level as loaded, loads entities
 	static load = function() {
