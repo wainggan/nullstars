@@ -460,7 +460,7 @@ function level_unpack_bin_entity(_buffer) {
 	};
 }
 
-function LoaderOptionParsePartGrid(_priority, _loader, _level, _bin_id, _at, _tilemap) : LoaderOption(_level, _priority) constructor {
+function LoaderOptionParsePartGrid(_priority, _level, _bin_id, _at, _tilemap) : LoaderOption(_level, _priority) constructor {
 	_bin_id.push();
 	
 	LOG(Log.note, $"Loader(): created LoaderOptionParsePartGrid {level.id}");
@@ -475,7 +475,7 @@ function LoaderOptionParsePartGrid(_priority, _loader, _level, _bin_id, _at, _ti
 	position = buffer_tell(_buffer);
 	i_tile = 0;
 	
-	static process = function (_loader) {
+	static process = function () {
 		var _buffer = bin_id.bin();
 		
 		var _w = tilemap_get_width(tilemap);
@@ -770,29 +770,6 @@ function Level(_id, _x, _y, _width, _height) constructor {
 	/// creates tile data from file
 	static prepare = function(_out, _level, _loader, _bin_id) {
 		
-		static __fn_tiles = function (_self, _buffer) {
-			with _self {
-				layer = layer_create(0);
-				layer_set_visible(layer, false);
-				tiles = layer_tilemap_create(
-					layer,
-					x, y,
-					// this is an empty sprite.
-					// it seems gamemaker's place_meeting against a tile layer doesn't
-					// work when a tile's indice is technically larger than the tile layer.
-					tl_collision,
-					width div TILESIZE,
-					height div TILESIZE
-				);
-				level_unpack_bin_layer_grid(
-					_buffer, file.content.layers[$ "Collisions"].pointer,
-					tiles
-				);
-			}
-		};
-		
-		// array_push(_out, new LoaderOptionParsePart(0, _loader, _level, _bin_id, self, __fn_tiles));
-		
 		layer = layer_create(0);
 		layer_set_visible(layer, false);
 		tiles = layer_tilemap_create(
@@ -805,29 +782,27 @@ function Level(_id, _x, _y, _width, _height) constructor {
 			width div TILESIZE,
 			height div TILESIZE
 		);
-		array_push(_out, new LoaderOptionParsePartGrid(0, _loader, _level, _bin_id, file.content.layers[$ "Collisions"].pointer, tiles));
+		array_push(_out, new LoaderOptionParsePartGrid(0, _level, _bin_id, file.content.layers[$ "Collisions"].pointer, tiles));
+		//level_unpack_bin_layer_grid(
+			//_buffer, file.content.layers[$ "Collisions"].pointer,
+			//tiles
+		//);
 		
-		
-		static __fn_spike = function (_self, _buffer) {
-			with _self {
-				layer_spike = layer_create(0);
-				layer_set_visible(layer_spike, false);
-				tiles_spike = layer_tilemap_create(
-					layer_spike,
-					x, y,
-					tl_spikes,
-					width div TILESIZE,
-					height div TILESIZE
-				);
-				level_unpack_bin_layer_grid(
-					_buffer, file.content.layers[$ "Spikes"].pointer,
-					tiles_spike
-				);
-			}
-		};
-		
-		array_push(_out, new LoaderOptionParsePart(0, _loader, _level, _bin_id, self, __fn_spike));
-		
+		layer_spike = layer_create(0);
+		layer_set_visible(layer_spike, false);
+		tiles_spike = layer_tilemap_create(
+			layer_spike,
+			x, y,
+			tl_spikes,
+			width div TILESIZE,
+			height div TILESIZE
+		);
+		array_push(_out, new LoaderOptionParsePartGrid(0, _level, _bin_id, file.content.layers[$ "Spikes"].pointer, tiles_spike));
+		//level_unpack_bin_layer_grid(
+			//_buffer, file.content.layers[$ "Spikes"].pointer,
+			//tiles_spike
+		//);
+
 		
 		static __fn_front = function (_self, _buffer) {
 			with _self {
