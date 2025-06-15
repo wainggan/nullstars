@@ -435,34 +435,6 @@ function LoaderOptionParse(_level, _bin_id) : LoaderOption(_level, 0) constructo
 	};
 }
 
-function LoaderOptionParsePart(_priority, _loader, _level, _bin_id, _self, _callback) : LoaderOption(_level, _priority) constructor {
-	_bin_id.push();
-	
-	LOG(Log.note, $"Loader(): created LoaderOptionParsePart id={level.id}");
-	
-	bin_id = _bin_id;
-	this = _self;
-	callback = _callback;
-	
-	if DEBUG_LOAD_SLOW_ENABLE {
-		slowdown = DEBUG_LOAD_SLOW_PARSE;
-	}
-	
-	static process = function (_loader) {
-		if DEBUG_LOAD_SLOW_ENABLE {
-			if slowdown-- > 0 {
-				return LoaderOptionStatus.running;
-			}
-		}
-		
-		callback(this, bin_id.bin());
-		
-		bin_id.pop();
-		
-		return LoaderOptionStatus.complete;
-	};
-}
-
 
 /// creates level entities.
 function LoaderOptionLoad(_level) : LoaderOption(_level, 0) constructor {
