@@ -710,6 +710,7 @@ function GameBuffers() constructor {
 		ASSERT(buffer_exists(_buffer));
 		var _bin_id = bin_top++;
 		bins[$ _bin_id] = [_buffer, 1];
+		LOG(Log.note, $"GameBuffers(): created buffer id={_bin_id}");
 		return new _Buffer(self, _bin_id);
 	};
 	
@@ -720,6 +721,7 @@ function GameBuffers() constructor {
 			if _b[1] <= 0 {
 				buffer_delete(_b[0]);
 				struct_remove(bins, _bin_ids[i]);
+				LOG(Log.note, $"GameBuffers(): deleted buffer id={_bin_ids[i]}");
 			}
 		}
 	};

@@ -66,12 +66,6 @@ function Loader() constructor {
 	
 	loaded = [];
 	
-	// [Buffer.Id, Real]
-	// [0] - the buffer we cache
-	// [1] - how many depend on it
-	bins = {};
-	bin_top = 0;
-	
 	queue = [];
 	
 	static queue_process = function () {
@@ -272,15 +266,6 @@ function Loader() constructor {
 		
 		self.queue_process();
 		
-		var _bin_ids = struct_get_names(bins);
-		for (var i = 0; i < array_length(_bin_ids); i++) {
-			var _b = bins[$ _bin_ids[i]];
-			if _b[1] <= 0 {
-				buffer_delete(_b[0]);
-				struct_remove(bins, _bin_ids[i]);
-			}
-		}
-		
 		with obj_Exists {
 			if (global.time + parity) % GAME_PARITY_ENTITY > 0 {
 				continue;
@@ -376,7 +361,7 @@ function LoaderOptionFile(_level) : LoaderOption(_level, 0) constructor {
 	
 	level.loaded = LoaderProgress.prepping;
 	
-	LOG(Log.note, $"Loader(): created LoaderOptionFile {level.id}");
+	LOG(Log.note, $"Loader(): created LoaderOptionFile id={level.id}");
 	
 	static process = function (_loader) {
 
@@ -404,6 +389,7 @@ function LoaderOptionFile(_level) : LoaderOption(_level, 0) constructor {
 		ASSERT(buffer_exists(bin));
 		
 		var _bin_id = global.game.buffers.add(bin);
+		_bin_id.pop();
 		
 		static __out = array_create(1);
 		__out[0] = new LoaderOptionParse(level, _bin_id);
@@ -415,8 +401,9 @@ function LoaderOptionFile(_level) : LoaderOption(_level, 0) constructor {
 /// parses level information from buffer. the level is now "prepared"
 function LoaderOptionParse(_level, _bin_id) : LoaderOption(_level, 0) constructor {
 	bin_id = _bin_id;
+	bin_id.push();
 	
-	LOG(Log.note, $"Loader(): created LoaderOptionParse {level.id} (binid: {_bin_id})");
+	LOG(Log.note, $"Loader(): created LoaderOptionParse id={level.id} (binid={_bin_id.id})");
 	
 	static process = function (_loader) {
 		ASSERT(bin_id.valid());
@@ -449,9 +436,9 @@ function LoaderOptionParse(_level, _bin_id) : LoaderOption(_level, 0) constructo
 }
 
 function LoaderOptionParsePart(_priority, _loader, _level, _bin_id, _self, _callback) : LoaderOption(_level, _priority) constructor {
-	_loader.bins[$ _bin_id][1] += 1;
+	_bin_id.push();
 	
-	LOG(Log.note, $"Loader(): created LoaderOptionParsePart {level.id}");
+	LOG(Log.note, $"Loader(): created LoaderOptionParsePart id={level.id}");
 	
 	bin_id = _bin_id;
 	this = _self;
@@ -468,9 +455,9 @@ function LoaderOptionParsePart(_priority, _loader, _level, _bin_id, _self, _call
 			}
 		}
 		
-		callback(this, _loader.bins[$ bin_id][0]);
+		callback(this, bin_id.bin());
 		
-		_loader.bins[$ bin_id][1] -= 1;
+		bin_id.pop();
 		
 		return LoaderOptionStatus.complete;
 	};
@@ -479,7 +466,7 @@ function LoaderOptionParsePart(_priority, _loader, _level, _bin_id, _self, _call
 
 /// creates level entities.
 function LoaderOptionLoad(_level) : LoaderOption(_level, 0) constructor {
-	LOG(Log.note, $"Loader(): created LoaderOptionLoad {level.id}");
+	LOG(Log.note, $"Loader(): created LoaderOptionLoad id={level.id}");
 	
 	static process = function (_loader) {
 		ASSERT(level.loaded == LoaderProgress.prepared);
@@ -491,7 +478,7 @@ function LoaderOptionLoad(_level) : LoaderOption(_level, 0) constructor {
 }
 
 function LoaderOptionUnload(_level) : LoaderOption(_level, 1) constructor {
-	LOG(Log.note, $"Loader(): created LoaderOptionUnload {level.id}");
+	LOG(Log.note, $"Loader(): created LoaderOptionUnload id={level.id}");
 	
 	static process = function (_loader) {
 		if level.loaded != LoaderProgress.loaded {
@@ -505,7 +492,7 @@ function LoaderOptionUnload(_level) : LoaderOption(_level, 1) constructor {
 
 /// destroy level.
 function LoaderOptionDestroy(_level) : LoaderOption(_level, 1) constructor {
-	LOG(Log.note, $"Loader(): created LoaderOptionDestroy {level.id}");
+	LOG(Log.note, $"Loader(): created LoaderOptionDestroy id={level.id}");
 	
 	static process = function (_loader) {
 		if level.loaded == LoaderProgress.out {

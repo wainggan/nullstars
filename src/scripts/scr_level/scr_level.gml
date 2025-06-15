@@ -461,14 +461,14 @@ function level_unpack_bin_entity(_buffer) {
 }
 
 function LoaderOptionParsePartGrid(_priority, _loader, _level, _bin_id, _at, _tilemap) : LoaderOption(_level, _priority) constructor {
-	_loader.bins[$ _bin_id][1] += 1;
+	_bin_id.push();
 	
 	LOG(Log.note, $"Loader(): created LoaderOptionParsePartGrid {level.id}");
 	
 	tilemap = _tilemap;
 	bin_id = _bin_id;
 	
-	var _buffer = _loader.bins[$ _bin_id][0];
+	var _buffer = bin_id.bin();
 	buffer_seek(_buffer, buffer_seek_start, _at);
 	
 	count = buffer_read(_buffer, buffer_u32);
@@ -476,7 +476,7 @@ function LoaderOptionParsePartGrid(_priority, _loader, _level, _bin_id, _at, _ti
 	i_tile = 0;
 	
 	static process = function (_loader) {
-		var _buffer = _loader.bins[$ bin_id][0];
+		var _buffer = bin_id.bin();
 		
 		var _w = tilemap_get_width(tilemap);
 		
@@ -495,7 +495,7 @@ function LoaderOptionParsePartGrid(_priority, _loader, _level, _bin_id, _at, _ti
 		if i_tile < count {
 			return LoaderOptionStatus.running;
 		} else {
-			_loader.bins[$ bin_id][1] -= 1;
+			bin_id.pop();
 			return LoaderOptionStatus.complete;
 		}
 	};

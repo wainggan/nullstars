@@ -11,7 +11,7 @@
 	"iid": "d5a16520-6280-11ee-ba61-ad454e9d2411",
 	"jsonVersion": "1.5.3",
 	"appBuildId": 485934,
-	"nextUid": 651,
+	"nextUid": 652,
 	"identifierStyle": "Free",
 	"toc": [{
 		"identifier": "obj_checkpoint",
@@ -15720,7 +15720,39 @@
 				{ "__identifier": "flags", "__type": "Array<LocalEnum.Level_Flags>", "__value": [], "__tile": null, "defUid": 451, "realEditorValues": [] }
 			],
 			"layerInstances": null,
-			"__neighbours": [{ "levelIid": "7faac4e0-1030-11f0-9cf6-9d06baece2dc", "dir": "w" }]
+			"__neighbours": [ { "levelIid": "7faac4e0-1030-11f0-9cf6-9d06baece2dc", "dir": "w" }, { "levelIid": "7b0ecc50-3740-11f0-8d11-d59d9d1edc50", "dir": "s" } ]
+		},
+		{
+			"identifier": "Room_71",
+			"iid": "7b0ecc50-3740-11f0-8d11-d59d9d1edc50",
+			"uid": 651,
+			"worldX": 43568,
+			"worldY": 8432,
+			"worldDepth": 0,
+			"pxWid": 1360,
+			"pxHei": 752,
+			"__bgColor": "#2D2A30",
+			"bgColor": null,
+			"useAutoIdentifier": true,
+			"bgRelPath": null,
+			"bgPos": null,
+			"bgPivotX": 0.5,
+			"bgPivotY": 0.5,
+			"__smartColor": "#8C8A8D",
+			"__bgPos": null,
+			"externalRelPath": "level/Room_71.ldtkl",
+			"fieldInstances": [
+				{ "__identifier": "preset", "__type": "LocalEnum.Level_Preset", "__value": null, "__tile": null, "defUid": 506, "realEditorValues": [] },
+				{ "__identifier": "area", "__type": "LocalEnum.Level_Area", "__value": null, "__tile": null, "defUid": 591, "realEditorValues": [] },
+				{ "__identifier": "background", "__type": "LocalEnum.Level_Background", "__value": null, "__tile": null, "defUid": 152, "realEditorValues": [] },
+				{ "__identifier": "music", "__type": "LocalEnum.Level_Music", "__value": null, "__tile": null, "defUid": 153, "realEditorValues": [] },
+				{ "__identifier": "biome", "__type": "LocalEnum.Level_Biome", "__value": null, "__tile": null, "defUid": 154, "realEditorValues": [] },
+				{ "__identifier": "lut_grade", "__type": "LocalEnum.Level_Grade", "__value": null, "__tile": null, "defUid": 504, "realEditorValues": [] },
+				{ "__identifier": "lut_mix", "__type": "Float", "__value": null, "__tile": null, "defUid": 502, "realEditorValues": [] },
+				{ "__identifier": "flags", "__type": "Array<LocalEnum.Level_Flags>", "__value": [], "__tile": null, "defUid": 451, "realEditorValues": [] }
+			],
+			"layerInstances": null,
+			"__neighbours": [{ "levelIid": "806cc440-1030-11f0-86f7-77ac1483a96a", "dir": "n" }]
 		}
 	],
 	"worlds": [],
