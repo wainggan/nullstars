@@ -8,10 +8,15 @@ function game_render_blendmode_reset() {
 }
 
 function game_render_refresh(_surf = surface_get_target()) {
-	surface_set_target(render.surf_app)
-	draw_clear_alpha(c_black, 0)
-	draw_surface(_surf, 0, 0)
-	surface_reset_target()
+	surface_set_target(render.surf_app);
+	draw_clear_alpha(c_black, 0);
+	if os_type == os_windows {
+		// windows specfic work around
+		draw_surface_ext(_surf, 0, HEIGHT, 1, -1, 0, c_white, 1);
+	} else {
+		draw_surface_ext(_surf, 0, 0, 1, 1, 0, c_white, 1);
+	}
+	surface_reset_target();
 }
 
 function game_render_particle(_x, _y, _system) {

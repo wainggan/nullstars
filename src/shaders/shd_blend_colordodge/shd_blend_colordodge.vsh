@@ -13,7 +13,7 @@ void main()
     gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * object_space_pos;
     
 	v_screen = gl_Position.xy*0.5 + 0.5;
-	v_screen.y = 1.0 - v_screen.y;
+	//v_screen.y = 1.0 - v_screen.y;
 	
     v_color = in_Colour;
     v_coord = in_TextureCoord;
