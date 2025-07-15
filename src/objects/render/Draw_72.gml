@@ -339,19 +339,20 @@ var _matrix = matrix_build_identity();
 var _matrix_ind = util_matrix_get_alignment();
 
 for (var i = 0; i < array_length(_lvl_onscreen); i++) {
-	var _lvl = _lvl_onscreen[i]
-	matrix_scratch[matrix_ind.x] = _lvl.x - _cam_x;
-	matrix_scratch[matrix_ind.y] = _lvl.y - _cam_y;
-	matrix_set(matrix_world, matrix_scratch);
-	if _lvl.vb_tiles_below != -1 {
-		vertex_submit(_lvl.vb_tiles_below, pr_trianglelist, tileset_get_texture(tl_tiles));
-	}
-	if _lvl.vb_front != -1 {
-		vertex_submit(_lvl.vb_front, pr_trianglelist, tileset_get_texture(tl_tiles));
+	var _lvl = _lvl_onscreen[i];
+	if _lvl.vb_is_complete <= 0 {
+		matrix_scratch[matrix_ind.x] = _lvl.x - _cam_x;
+		matrix_scratch[matrix_ind.y] = _lvl.y - _cam_y;
+		matrix_set(matrix_world, matrix_scratch);
+		if _lvl.vb_tiles_below != -1 {
+			vertex_submit(_lvl.vb_tiles_below, pr_trianglelist, tileset_get_texture(tl_tiles));
+		}
+		if _lvl.vb_front != -1 {
+			vertex_submit(_lvl.vb_front, pr_trianglelist, tileset_get_texture(tl_tiles));
+		}
 	}
 }
 matrix_set(matrix_world, matrix_identity);
-
 matrix_scratch[matrix_ind.x] = 0;
 matrix_scratch[matrix_ind.y] = 0;
 

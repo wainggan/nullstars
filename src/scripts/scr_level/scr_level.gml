@@ -580,13 +580,18 @@ function level_unpack_bin_layer_free_map_filtered(_buffer, _at, _tilemap_normal,
 	ASSERT(false);
 }
 
-function LoaderOptionParsePartVertex(_priority, _level, _bin_id, _at, _vertex) : LoaderOption(_level, _priority) constructor {
+function LoaderOptionParsePartVertex(_priority, _level, _bin_id, _at, _vertex, _complete = undefined) : LoaderOption(_level, _priority) constructor {
 	_bin_id.push();
 	
 	LOG(Log.note, $"Loader(): created LoaderOptionParsePartVertex id={level.id}");
 	
 	vertex = _vertex;
 	bin_id = _bin_id;
+	
+	// we need to make sure Level() doesn't call vertex_submit before vertex_end
+	// this allows us to edit Level().vb_is_complete
+	// it's horrendouly inelegant but I'm not sure what else to do without killing gc
+	complete = _complete;
 	
 	var _buffer = bin_id.bin();
 	buffer_seek(_buffer, buffer_seek_start, _at);
@@ -655,10 +660,16 @@ function LoaderOptionParsePartVertex(_priority, _level, _bin_id, _at, _vertex) :
 			return LoaderOptionStatus.running;
 		} else {
 			bin_id.pop();
+			
+			if complete {
+				complete.vb_is_complete -= 1;
+			}
+			
 			vertex_end(vertex);
 			if vertex_get_number(vertex) > 0 {
 				vertex_freeze(vertex);
 			}
+			
 			return LoaderOptionStatus.complete;
 		}
 	};
@@ -744,6 +755,9 @@ function Level(_id, _x, _y, _width, _height) constructor {
 	
 	// shadows
 	shadow_vb = -1;
+	
+	// vertex buffers cannot be submitted before vertex_end()
+	vb_is_complete = 0;
 	
 	/// run once after having created Level()
 	static init = function(_buffer) {
@@ -862,7 +876,8 @@ function Level(_id, _x, _y, _width, _height) constructor {
 			//_buffer, file.content.layers[$ "Tiles"].pointer,
 			//vb_front
 		//);
-		array_push(_out, new LoaderOptionParsePartVertex(1, _level, _bin_id, file.content.layers[$ "Tiles"].pointer, vb_front));
+		vb_is_complete += 1;
+		array_push(_out, new LoaderOptionParsePartVertex(1, _level, _bin_id, file.content.layers[$ "Tiles"].pointer, vb_front, self));
 		
 		
 		vb_tiles_below = vertex_create_buffer();
@@ -871,7 +886,8 @@ function Level(_id, _x, _y, _width, _height) constructor {
 			//file.content.layers[$ "TilesBelow"].pointer,
 			//vb_tiles_below
 		//);
-		array_push(_out, new LoaderOptionParsePartVertex(2, _level, _bin_id, file.content.layers[$ "TilesBelow"].pointer, vb_tiles_below));
+		vb_is_complete += 1;
+		array_push(_out, new LoaderOptionParsePartVertex(2, _level, _bin_id, file.content.layers[$ "TilesBelow"].pointer, vb_tiles_below, self));
 
 		
 		layer_back = layer_create(0);
