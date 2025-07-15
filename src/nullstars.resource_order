@@ -187,6 +187,7 @@
     {"name":"shd_water_shape","order":11,"path":"shaders/shd_water_shape/shd_water_shape.yy",},
     {"name":"shd_wave_distort","order":6,"path":"shaders/shd_wave_distort/shd_wave_distort.yy",},
     {"name":"shd_wave_normals","order":5,"path":"shaders/shd_wave_normals/shd_wave_normals.yy",},
+    {"name":"mus_inekstasis","order":5,"path":"sounds/mus_inekstasis/mus_inekstasis.yy",},
     {"name":"mus_questionthestars","order":1,"path":"sounds/mus_questionthestars/mus_questionthestars.yy",},
     {"name":"mus_story","order":2,"path":"sounds/mus_story/mus_story.yy",},
     {"name":"mus_wind","order":3,"path":"sounds/mus_wind/mus_wind.yy",},

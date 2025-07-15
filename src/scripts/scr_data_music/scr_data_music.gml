@@ -40,4 +40,9 @@ data_music_add(nameof(mus_story), "story", {
 	name: "Incipit",
 	artist: "parchment",
 });
+data_music_add(nameof(mus_inekstasis), "ekstasis", {
+	name: "In Ekstasis",
+	artist: "parchment",
+	bpm: 110,
+});
 

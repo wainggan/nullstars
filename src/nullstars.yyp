@@ -307,6 +307,7 @@
     {"id":{"name":"shd_wave_distort","path":"shaders/shd_wave_distort/shd_wave_distort.yy",},},
     {"id":{"name":"shd_wave_normals","path":"shaders/shd_wave_normals/shd_wave_normals.yy",},},
     {"id":{"name":"mus_hub_1","path":"sounds/mus_hub_1/mus_hub_1.yy",},},
+    {"id":{"name":"mus_inekstasis","path":"sounds/mus_inekstasis/mus_inekstasis.yy",},},
     {"id":{"name":"mus_questionthestars","path":"sounds/mus_questionthestars/mus_questionthestars.yy",},},
     {"id":{"name":"mus_story","path":"sounds/mus_story/mus_story.yy",},},
     {"id":{"name":"mus_wind","path":"sounds/mus_wind/mus_wind.yy",},},

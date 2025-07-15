@@ -1,6 +1,6 @@
 {
   "$GMSound":"",
-  "%Name":"mus_questionthestars",
+  "%Name":"mus_inekstasis",
   "audioGroupId":{
     "name":"audiogroup_default",
     "path":"audiogroups/audiogroup_default",
@@ -9,8 +9,8 @@
   "bitRate":192,
   "compression":3,
   "conversionMode":0,
-  "duration":20.313107,
-  "name":"mus_questionthestars",
+  "duration":314.18182,
+  "name":"mus_inekstasis",
   "parent":{
     "name":"bgm",
     "path":"folders/sounds/bgm.yy",
@@ -19,7 +19,7 @@
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
   "sampleRate":44100,
-  "soundFile":"mus_questionthestars.ogg",
+  "soundFile":"mus_inekstasis.ogg",
   "type":1,
   "volume":1.0,
 }
