@@ -7,6 +7,8 @@ gml_release_mode(RELEASE);
 global.defs = {
 	// global terminal velocity
 	terminal_vel: 5,
+	// how long it takes for oo_place switches to be active
+	oo_place_delay: 20,
 	// speed of lifts when returning back to normal positions
 	lift_spd_return: 2,
 	// how long lifts get stunned after reaching their final position in frames

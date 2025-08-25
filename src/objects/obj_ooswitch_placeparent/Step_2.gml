@@ -20,7 +20,7 @@ if _inst != noone && array_contains(target, _inst.object_index) {
 		anim_hit = 1;
 	}
 	hit = true;
-	hit_buffer = 12;
+	hit_buffer = global.defs.oo_place_delay;
 	
 } else {
 	hit = false;

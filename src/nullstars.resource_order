@@ -113,6 +113,7 @@
     {"name":"ps_ambient_rain","order":1,"path":"particles/ps_ambient_rain/ps_ambient_rain.yy",},
     {"name":"ps_ambient_smoke","order":2,"path":"particles/ps_ambient_smoke/ps_ambient_smoke.yy",},
     {"name":"ps_ambient_star","order":3,"path":"particles/ps_ambient_star/ps_ambient_star.yy",},
+    {"name":"ps_gen_pop","order":10,"path":"particles/ps_gen_pop/ps_gen_pop.yy",},
     {"name":"ps_player_death_0","order":2,"path":"particles/ps_player_death_0/ps_player_death_0.yy",},
     {"name":"ps_player_death_1","order":3,"path":"particles/ps_player_death_1/ps_player_death_1.yy",},
     {"name":"ps_timer_pop","order":8,"path":"particles/ps_timer_pop/ps_timer_pop.yy",},

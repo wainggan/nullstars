@@ -225,6 +225,7 @@
     {"id":{"name":"ps_ambient_rain","path":"particles/ps_ambient_rain/ps_ambient_rain.yy",},},
     {"id":{"name":"ps_ambient_smoke","path":"particles/ps_ambient_smoke/ps_ambient_smoke.yy",},},
     {"id":{"name":"ps_ambient_star","path":"particles/ps_ambient_star/ps_ambient_star.yy",},},
+    {"id":{"name":"ps_gen_pop","path":"particles/ps_gen_pop/ps_gen_pop.yy",},},
     {"id":{"name":"ps_player_death_0","path":"particles/ps_player_death_0/ps_player_death_0.yy",},},
     {"id":{"name":"ps_player_death_1","path":"particles/ps_player_death_1/ps_player_death_1.yy",},},
     {"id":{"name":"ps_timer_pop","path":"particles/ps_timer_pop/ps_timer_pop.yy",},},

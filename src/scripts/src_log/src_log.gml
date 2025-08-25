@@ -38,8 +38,6 @@ function Logger() constructor {
 	
 }
 
-global.logger = new Logger();
-
 function log_level(_level) {
 	global.logger.point = _level;
 }
@@ -56,6 +54,10 @@ function __log__(_file, _line) {
 
     __ctx.file = _file;
     __ctx.line = _line;
+	
+	if !variable_global_exists("logger") {
+		global.logger = new Logger();
+	}
     
     return __out;
 }
