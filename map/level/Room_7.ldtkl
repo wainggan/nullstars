@@ -281,6 +281,22 @@
 					"fieldInstances": [],
 					"__worldX": 3872,
 					"__worldY": 336
+				},
+				{
+					"__identifier": "obj_cannon_chain",
+					"__grid": [31,18],
+					"__pivot": [0.5,0.5],
+					"__tags": ["object"],
+					"__tile": { "tilesetUid": 8, "x": 288, "y": 208, "w": 16, "h": 16 },
+					"__smartColor": "#B86F50",
+					"iid": "f4bea480-8560-11f0-a2d2-c38562991db8",
+					"width": 48,
+					"height": 48,
+					"defUid": 656,
+					"px": [504,296],
+					"fieldInstances": [],
+					"__worldX": 3128,
+					"__worldY": 328
 				}
 			]
 		},
