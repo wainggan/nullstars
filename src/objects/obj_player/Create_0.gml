@@ -738,7 +738,6 @@ state_base.set("step", function () {
 			x_vel = 0;
 		}
 	};
-	actor_move_x(x_vel, __collide_x);
 	
 	static __collide_y = function() {
 		var _amount = 0;
@@ -770,7 +769,15 @@ state_base.set("step", function () {
 			y_vel = 0;
 		}
 	};
-	actor_move_y(y_vel, __collide_y);
+	
+	// move in fastest axis
+	if abs(x_vel) > abs(y_vel) {
+		actor_move_x(x_vel, __collide_x);
+		actor_move_y(y_vel, __collide_y);
+	} else {
+		actor_move_y(y_vel, __collide_y);
+		actor_move_x(x_vel, __collide_x);
+	}
 	
 	// if still colliding, you're inside a wall...
 	// escape!!
