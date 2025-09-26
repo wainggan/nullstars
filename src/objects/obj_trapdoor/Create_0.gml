@@ -7,8 +7,9 @@ image_yscale = jorp_h;
 pet = instance_create_layer(x, y, "Instances", obj_Solid);
 with pet {
 	visible = false;
-	image_xscale = other.image_xscale;
-	image_yscale = other.image_yscale;
+	outside = exists_outside_empty();
+	image_xscale = other.sprite_width;
+	image_yscale = other.sprite_height;
 	collidable = true;
 }
 

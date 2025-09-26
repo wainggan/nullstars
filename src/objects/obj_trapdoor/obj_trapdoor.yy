@@ -16,8 +16,8 @@
     "path":"folders/objects/door.yy",
   },
   "parentObjectId":{
-    "name":"obj_Exists",
-    "path":"objects/obj_Exists/obj_Exists.yy",
+    "name":"obj_Entity",
+    "path":"objects/obj_Entity/obj_Entity.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

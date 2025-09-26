@@ -284,6 +284,7 @@
     {"name":"spr_timer_start","order":5,"path":"sprites/spr_timer_start/spr_timer_start.yy",},
     {"name":"spr_timer_water","order":6,"path":"sprites/spr_timer_water/spr_timer_water.yy",},
     {"name":"spr_timer_wave","order":7,"path":"sprites/spr_timer_wave/spr_timer_wave.yy",},
+    {"name":"spr_trapdoor_key","order":1,"path":"sprites/spr_trapdoor_key/spr_trapdoor_key.yy",},
     {"name":"spr_water","order":19,"path":"sprites/spr_water/spr_water.yy",},
     {"name":"spr_wave_diamond","order":1,"path":"sprites/spr_wave_diamond/spr_wave_diamond.yy",},
     {"name":"spr_wave_ripple","order":2,"path":"sprites/spr_wave_ripple/spr_wave_ripple.yy",},

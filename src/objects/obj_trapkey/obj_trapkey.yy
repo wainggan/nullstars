@@ -1,7 +1,9 @@
 {
   "$GMObject":"",
   "%Name":"obj_trapkey",
-  "eventList":[],
+  "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+  ],
   "managed":true,
   "name":"obj_trapkey",
   "overriddenProperties":[],
@@ -31,9 +33,9 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_debug_wall",
-    "path":"sprites/spr_debug_wall/spr_debug_wall.yy",
+    "name":"spr_trapdoor_key",
+    "path":"sprites/spr_trapdoor_key/spr_trapdoor_key.yy",
   },
   "spriteMaskId":null,
-  "visible":true,
+  "visible":false,
 }

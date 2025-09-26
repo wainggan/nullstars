@@ -4,15 +4,15 @@ if game_paused() {
 }
 
 var _key = level_get_instance(ref);
-ASSERT(instance_exists(_key));
 with _key {
-	if place_meeting(x, y, obj_player) {
+	if other.locked && place_meeting(x, y, obj_player) {
 		other.locked = false;
+		game_set_pause(5);
 	}
 	if other.locked {
-		collidable = true;
+		other.pet.collidable = true;
 	} else {
-		collidable = false;
+		other.pet.collidable = false;
 	}
 }
 

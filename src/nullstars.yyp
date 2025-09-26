@@ -419,6 +419,7 @@
     {"id":{"name":"spr_timer_water","path":"sprites/spr_timer_water/spr_timer_water.yy",},},
     {"id":{"name":"spr_timer_wave","path":"sprites/spr_timer_wave/spr_timer_wave.yy",},},
     {"id":{"name":"spr_trapdoor","path":"sprites/spr_trapdoor/spr_trapdoor.yy",},},
+    {"id":{"name":"spr_trapdoor_key","path":"sprites/spr_trapdoor_key/spr_trapdoor_key.yy",},},
     {"id":{"name":"spr_water","path":"sprites/spr_water/spr_water.yy",},},
     {"id":{"name":"spr_wave_diamond","path":"sprites/spr_wave_diamond/spr_wave_diamond.yy",},},
     {"id":{"name":"spr_wave_ripple","path":"sprites/spr_wave_ripple/spr_wave_ripple.yy",},},
