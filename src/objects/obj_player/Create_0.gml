@@ -820,7 +820,7 @@ state_base.set("step", function () {
 	if dash_left < defs.dash_total && _inst_dash && _inst_dash.state.is(_inst_dash.state_active) {
 		game_set_pause(4);
 		dash_left = defs.dash_total;
-		_inst_dash.state.change(_inst.state_recover);
+		_inst_dash.state.change(_inst_dash.state_recover);
 	}
 	
 	// this is horrible
