@@ -208,6 +208,7 @@
     {"name":"spr_background_star","order":2,"path":"sprites/spr_background_star/spr_background_star.yy",},
     {"name":"spr_bounce","order":3,"path":"sprites/spr_bounce/spr_bounce.yy",},
     {"name":"spr_box","order":13,"path":"sprites/spr_box/spr_box.yy",},
+    {"name":"spr_cannon_chain","order":24,"path":"sprites/spr_cannon_chain/spr_cannon_chain.yy",},
     {"name":"spr_checkpoint","order":1,"path":"sprites/spr_checkpoint/spr_checkpoint.yy",},
     {"name":"spr_circle","order":3,"path":"sprites/spr_circle/spr_circle.yy",},
     {"name":"spr_dashrefill","order":2,"path":"sprites/spr_dashrefill/spr_dashrefill.yy",},

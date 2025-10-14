@@ -144,6 +144,9 @@ dash_jump = false;
 // reduces the effectiveness of reverse dashing
 dash_stale = 0;
 
+cannon_wait = false;
+cannon_cooldown = 0;
+
 swim_dir = 0;
 swim_spd = 0;
 swim_pre_x_vel = 0;
@@ -823,6 +826,15 @@ state_base.set("step", function () {
 		}
 	}
 	
+	_inst = instance_place(x, y, obj_cannon_chain);
+	if !state.is(state_cannon) && _inst && _inst.cooldown <= 0 && cannon_cooldown <= 0 {
+		x = _inst.x;
+		y = _inst.y;
+		_inst.cooldown = 30;
+		state.change(state_cannon);
+		return;
+	}
+	
 	if instance_exists(light) {
 		light.x = x;
 		light.y = y - (nat_crouch() ? 14 : 22);
@@ -838,6 +850,7 @@ state_base.set("step", function () {
 	dash_grace -= 1;
 	dash_grace_kick -= 1;
 	vel_grace_timer -= 1;
+	cannon_cooldown -= 1;
 	
 	if state.is(state_free) || state.is(state_swim) {
 		if INPUT.check_pressed("menu") &&
@@ -1332,6 +1345,72 @@ state_dash.set("enter", function() {
 		return;
 	}
 	
+});
+
+state_cannon = state_base.add();
+state_cannon.set("enter", function () {
+	game_set_pause(3);
+	
+	dash_left = defs.dash_total;
+	
+	cannon_wait = true;
+	
+	x_vel = 0;
+	y_vel = 0;
+	
+	hold_jump_key_timer = 0;
+	hold_jump_vel = defs.terminal_vel;
+	hold_jump_vel_timer = 0;
+});
+state_cannon.set("leave", function () {
+	cannon_cooldown = 12;
+});
+state_cannon.set("step", function () {
+	var _kh = INPUT.check("right") - INPUT.check("left");
+	var _kv = INPUT.check("down") - INPUT.check("up");
+
+	if buffer_dash > 0 {
+		if cannon_wait {
+			buffer_dash = 0;
+			cannon_wait = false;
+			
+			var _dir = point_direction(0, 0, _kh == 0 && _kv == 0 ? dir : _kh, _kv);
+	
+			x_vel = lengthdir_x(10, _dir);
+			y_vel = lengthdir_y(8, _dir);
+		} else {
+			state.change(state_dash);
+			return;
+		}
+	}
+	
+	if !cannon_wait {
+		y_vel = approach(y_vel, defs.terminal_vel, defs.gravity_peak);
+	}
+	
+	if buffer_jump > 0 {
+		if grace > 0 {
+			if sign(y_vel) != -1 {
+				action_dashjump(_kh == 0 && sign(y_vel) == 1 ? dir : _kh);
+				state.change(state_free);
+				return;
+			}
+		} else if get_check_wall(dir) { 
+			if sign(y_vel) == -1 && _kv == -1 {
+				action_dashjump_wall(_kh, dir);
+			} else {
+				action_walljump();
+			}
+			state.change(state_free);
+			return;
+		} else {
+			if sign(y_vel) != -1 || _kh != dir {
+				action_dashjump(_kh == 0 && sign(y_vel) == 1 ? dir : _kh);
+				state.change(state_free);
+				return;
+			}
+		}
+	}
 });
 
 state_swim = state_base.add();
