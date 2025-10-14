@@ -1398,8 +1398,8 @@ state_cannon.set("step", function () {
 	}
 	
 	if !cannon_wait {
-		y_vel = approach(y_vel, defs.terminal_vel, defs.gravity_peak * clamp(cannon_gravity, 0, 1));
-		cannon_gravity += 1 / 16;
+		y_vel = approach(y_vel, defs.terminal_vel_fast, defs.gravity_hold * clamp(cannon_gravity, 0, 1));
+		cannon_gravity += 1 / 20;
 	}
 	
 	if buffer_jump > 0 {
