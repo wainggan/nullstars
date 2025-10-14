@@ -59,6 +59,11 @@ y_last = y;
 x_delta = 0;
 y_delta = 0;
 
+x_anim = x;
+y_anim = y;
+x_scale_anim = 1;
+y_scale_anim = 1;
+
 dir = 1;
 
 light = instance_create_layer(x, y, "Lights", obj_light, {
@@ -145,6 +150,8 @@ dash_jump = false;
 dash_stale = 0;
 
 cannon_wait = false;
+cannon_inst = noone;
+cannon_gravity = 0;
 cannon_cooldown = 0;
 
 swim_dir = 0;
@@ -768,6 +775,10 @@ state_base.set("step", function () {
 		}
 		if state.is(state_swim_bullet) {
 			swim_dir = point_direction(0, 0, x_vel, -y_vel);
+		} else if state.is(state_cannon) {
+			if abs(y_vel) > 2 {
+				y_vel *= -0.5;
+			}
 		} else {
 			y_vel = 0;
 		}
@@ -805,11 +816,11 @@ state_base.set("step", function () {
 		}
 	}
 	
-	var _inst = instance_place(x, y, obj_dash);
-	if dash_left < defs.dash_total && _inst && _inst.state.is(_inst.state_active) {
+	var _inst_dash = instance_place(x, y, obj_dash);
+	if dash_left < defs.dash_total && _inst_dash && _inst_dash.state.is(_inst_dash.state_active) {
 		game_set_pause(4);
 		dash_left = defs.dash_total;
-		_inst.state.change(_inst.state_recover);
+		_inst_dash.state.change(_inst.state_recover);
 	}
 	
 	// this is horrible
@@ -826,11 +837,12 @@ state_base.set("step", function () {
 		}
 	}
 	
-	_inst = instance_place(x, y, obj_cannon_chain);
-	if !state.is(state_cannon) && _inst && _inst.cooldown <= 0 && cannon_cooldown <= 0 {
-		x = _inst.x;
-		y = _inst.y;
-		_inst.cooldown = 30;
+	var _inst_cannon = instance_place(x, y, obj_cannon_chain);
+	if !state.is(state_cannon) && _inst_cannon && _inst_cannon.cooldown <= 0 && cannon_cooldown <= 0 {
+		x = _inst_cannon.x;
+		y = _inst_cannon.y;
+		_inst_cannon.cooldown = 1;
+		cannon_inst = _inst_cannon;
 		state.change(state_cannon);
 		return;
 	}
@@ -1354,6 +1366,7 @@ state_cannon.set("enter", function () {
 	dash_left = defs.dash_total;
 	
 	cannon_wait = true;
+	cannon_gravity = -1;
 	
 	x_vel = 0;
 	y_vel = 0;
@@ -1377,7 +1390,7 @@ state_cannon.set("step", function () {
 			var _dir = point_direction(0, 0, _kh == 0 && _kv == 0 ? dir : _kh, _kv);
 	
 			x_vel = lengthdir_x(10, _dir);
-			y_vel = lengthdir_y(8, _dir);
+			y_vel = lengthdir_y(9, _dir);
 		} else {
 			state.change(state_dash);
 			return;
@@ -1385,31 +1398,19 @@ state_cannon.set("step", function () {
 	}
 	
 	if !cannon_wait {
-		y_vel = approach(y_vel, defs.terminal_vel, defs.gravity_peak);
+		y_vel = approach(y_vel, defs.terminal_vel, defs.gravity_peak * clamp(cannon_gravity, 0, 1));
+		cannon_gravity += 1 / 16;
 	}
 	
 	if buffer_jump > 0 {
-		if grace > 0 {
-			if sign(y_vel) != -1 {
-				action_dashjump(_kh == 0 && sign(y_vel) == 1 ? dir : _kh);
-				state.change(state_free);
-				return;
-			}
-		} else if get_check_wall(dir) { 
-			if sign(y_vel) == -1 && _kv == -1 {
-				action_dashjump_wall(_kh, dir);
-			} else {
-				action_walljump();
-			}
-			state.change(state_free);
-			return;
-		} else {
-			if sign(y_vel) != -1 || _kh != dir {
-				action_dashjump(_kh == 0 && sign(y_vel) == 1 ? dir : _kh);
-				state.change(state_free);
-				return;
-			}
-		}
+		action_jump();
+		state.change(state_free);
+		return;
+	}
+	
+	if !instance_exists(cannon_inst) {
+		state.change(state_free);
+		return;
 	}
 });
 

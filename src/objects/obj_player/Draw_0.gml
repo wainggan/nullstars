@@ -5,11 +5,28 @@ anim_longjump_timer -= 1;
 anim_flip_timer -= 1;
 anim_runjump_timer -= 1;
 
+if !game_paused() {
+	if state.is(state_cannon) {
+		x_anim = lerp(x_anim, x, 0.1);
+		y_anim = lerp(y_anim, y, 0.1);
+		x_scale_anim = lerp(x_scale_anim, 0, 0.2);
+		y_scale_anim = lerp(y_scale_anim, 0, 0.2);
+	} else {
+		x_anim = x;
+		y_anim = y;
+		x_scale_anim = lerp(x_scale_anim, 1, 0.2);
+		y_scale_anim = lerp(y_scale_anim, 1, 0.2);
+	}
+}
+
 var _sprite = spr_player;
-var _pos_x = x;
-var _pos_y = y;
+var _pos_x = x_anim;
+var _pos_y = y_anim;
 var _angle = 0;
 var _dir = dir;
+var _visible = true;
+var _scale_x = x_scale_anim;
+var _scale_y = y_scale_anim;
 
 if state.is(state_swim_bullet) {
 	anim.set("swimbullet");
@@ -91,6 +108,8 @@ else if state.is(state_free) {
 		}
 	}
 }
+else if state.is(state_cannon) {
+}
 
 anim.update();
 
@@ -98,25 +117,24 @@ var _meta = anim.meta();
 
 if !game_paused() {
 	tail.update(
-		_pos_x + (_meta.x ?? 0) * _dir,
-		_pos_y + (_meta.y ?? 0),
+		_pos_x + (_meta.x ?? 0) * _dir * _scale_x,
+		_pos_y + (_meta.y ?? 0) * _scale_y,
 		dir,
 		state.is(state_swim) ? 1 : 0,
 		global.data.player.tail
 	);
 }
 
-var _color = dash_left == 0 ? #00ffff : #ff00ff;
-
-if !(_meta.front ?? true) {
-	tail.draw(dash_left, global.data.player.tail, global.data.player.color, c_white);
+if _visible {
+	if !(_meta.front ?? true) {
+		tail.draw(dash_left, global.data.player.tail, global.data.player.color, c_white, _scale_x);
+	}
+	
+	var _frame = anim.get();
+	
+	draw_player(_frame, _pos_x, _pos_y, scale_x * _dir * _scale_x, scale_y * _scale_y, _angle, c_white, global.data.player.cloth, global.data.player.accessory, global.data.player.ears, global.data.player.color);
+	
+	if _meta.front ?? true {
+		tail.draw(dash_left, global.data.player.tail, global.data.player.color, c_white, _scale_x);
+	}
 }
-
-var _frame = anim.get();
-
-draw_player(_frame, _pos_x, _pos_y, scale_x * _dir, scale_y, _angle, c_white, global.data.player.cloth, global.data.player.accessory, global.data.player.ears, global.data.player.color);
-
-if _meta.front ?? true {
-	tail.draw(dash_left, global.data.player.tail, global.data.player.color, c_white);
-}
-

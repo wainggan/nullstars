@@ -258,7 +258,7 @@ function PlayerTail(_x = 0, _y = 0) constructor {
 		}
 	};
 	
-	static draw = function (_dash, _mode, _color, _blend = c_white) {
+	static draw = function (_dash, _mode, _color, _blend = c_white, _scale = 1) {
 		_mode = global.data_char.tail[$ _mode];
 		_color = global.data_char.color[$ _color];
 		
@@ -271,7 +271,7 @@ function PlayerTail(_x = 0, _y = 0) constructor {
 			draw_sprite_ext(
 				spr_player_tail, 3,
 				round_ext(friend_x, 2), round_ext(friend_y, 2),
-				10 / 16, 16 / 16, 
+				10 / 16 * _scale, 16 / 16 * _scale,
 				round_ext(_p.direction, 5), c_white, 1
 			);
 		}
@@ -318,19 +318,19 @@ function PlayerTail(_x = 0, _y = 0) constructor {
 			}
 			
 			draw_sprite_ext(
-				spr_player_tail, _frame, 
-				round_ext(_p.x, _round), round_ext(_p.y, _round), 
-				//round_ext(_p.x, 0), round_ext(_p.y, 0), 
-				_size / 16, _size / 16, 
+				spr_player_tail, _frame,
+				round_ext(_p.x, _round), round_ext(_p.y, _round),
+				//round_ext(_p.x, 0), round_ext(_p.y, 0),
+				_size / 16 * _scale, _size / 16 * _scale,
 				round_ext(_angle, 5), _c, 1
 			);
 			
 			if _mode == PlayerCharTail.geared && _local_i % 3 == 0 {
 				draw_sprite_ext(
-					spr_player_tail, 0, 
-					round_ext(_p.x, _round), round_ext(_p.y, _round), 
+					spr_player_tail, 0,
+					round_ext(_p.x, _round), round_ext(_p.y, _round),
 					//round_ext(_p.x, 0), round_ext(_p.y, 0), 
-					4 / 16, 16 / 16, 
+					4 / 16 * _scale, 16 / 16 * _scale,
 					round_ext(_p.direction, 5), _c, 1
 				);
 			}
@@ -341,14 +341,14 @@ function PlayerTail(_x = 0, _y = 0) constructor {
 			draw_sprite_ext(
 				spr_player_tail, 2,
 				round_ext(friend_x, 2), round_ext(friend_y, 2),
-				10 / 16, 16 / 16,
+				10 / 16 * _scale, 16 / 16 * _scale,
 				round_ext(_p.direction, 5), c_white, 1
 			);
 		} else if _mode == PlayerCharTail.hooked {
 			draw_sprite_ext(
 				spr_player_tail, 0, 
 				round_ext(friend_x, 1), round_ext(friend_y, 1),
-				4 / 16, 4 / 16,
+				4 / 16 * _scale, 4 / 16 * _scale,
 				0, c_white, 1
 			);
 		}
