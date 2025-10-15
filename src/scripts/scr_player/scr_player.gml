@@ -108,6 +108,16 @@ function draw_player(_frame, _x, _y, _x_scale, _y_scale, _angle, _blend, _cloth 
 	
 	var _check;
 	
+	_check = global.data_char.cloth[$ _cloth];
+	if _check != undefined {
+		draw_sprite_ext(
+			_check,
+			_frame, _x, _y,
+			_x_scale, _y_scale,
+			_angle, _blend, 1
+		);
+	}
+	
 	_check = global.data_char.ears[$ _ears];
 	if _check != undefined {
 		draw_sprite_ext(
@@ -125,16 +135,6 @@ function draw_player(_frame, _x, _y, _x_scale, _y_scale, _angle, _blend, _cloth 
 			_frame, _x, _y,
 			_x_scale, _y_scale,
 			_angle, multiply_color(_blend, array_length(_check) != 0 ? _check[0] : c_white), 1
-		);
-	}
-	
-	_check = global.data_char.cloth[$ _cloth];
-	if _check != undefined {
-		draw_sprite_ext(
-			_check,
-			_frame, _x, _y,
-			_x_scale, _y_scale,
-			_angle, _blend, 1
 		);
 	}
 	
