@@ -129,24 +129,7 @@
 			"seed": 7889850,
 			"overrideTilesetUid": null,
 			"gridTiles": [],
-			"entityInstances": [
-				{
-					"__identifier": "obj_water",
-					"__grid": [1,28],
-					"__pivot": [0,0],
-					"__tags": ["water"],
-					"__tile": null,
-					"__smartColor": "#50FAFF",
-					"iid": "8b3e2a60-8560-11f0-b9f6-cf1f26851635",
-					"width": 320,
-					"height": 160,
-					"defUid": 198,
-					"px": [16,448],
-					"fieldInstances": [],
-					"__worldX": 11984,
-					"__worldY": 10400
-				}
-			]
+			"entityInstances": []
 		},
 		{
 			"__identifier": "Spikes",
@@ -602,31 +585,6 @@
 			"entityInstances": []
 		},
 		{
-			"__identifier": "Walls",
-			"__type": "Entities",
-			"__cWid": 22,
-			"__cHei": 39,
-			"__gridSize": 16,
-			"__opacity": 1,
-			"__pxTotalOffsetX": 0,
-			"__pxTotalOffsetY": 0,
-			"__tilesetDefUid": null,
-			"__tilesetRelPath": null,
-			"iid": "57444ec8-8560-11f0-b9f6-f1ca34f3e64f",
-			"levelId": 658,
-			"layerDefUid": 276,
-			"pxOffsetX": 0,
-			"pxOffsetY": 0,
-			"visible": true,
-			"optionalRules": [],
-			"intGridCsv": [],
-			"autoLayerTiles": [],
-			"seed": 3922274,
-			"overrideTilesetUid": null,
-			"gridTiles": [],
-			"entityInstances": []
-		},
-		{
 			"__identifier": "Lights",
 			"__type": "Entities",
 			"__cWid": 22,
@@ -675,6 +633,48 @@
 			"overrideTilesetUid": null,
 			"gridTiles": [],
 			"entityInstances": []
+		},
+		{
+			"__identifier": "Walls",
+			"__type": "Entities",
+			"__cWid": 22,
+			"__cHei": 39,
+			"__gridSize": 16,
+			"__opacity": 1,
+			"__pxTotalOffsetX": 0,
+			"__pxTotalOffsetY": 0,
+			"__tilesetDefUid": null,
+			"__tilesetRelPath": null,
+			"iid": "57444ec8-8560-11f0-b9f6-f1ca34f3e64f",
+			"levelId": 658,
+			"layerDefUid": 276,
+			"pxOffsetX": 0,
+			"pxOffsetY": 0,
+			"visible": true,
+			"optionalRules": [],
+			"intGridCsv": [],
+			"autoLayerTiles": [],
+			"seed": 3922274,
+			"overrideTilesetUid": null,
+			"gridTiles": [],
+			"entityInstances": [
+				{
+					"__identifier": "obj_water",
+					"__grid": [1,28],
+					"__pivot": [0,0],
+					"__tags": ["water"],
+					"__tile": null,
+					"__smartColor": "#50FAFF",
+					"iid": "5084e020-8560-11f0-b393-01e0a26d215c",
+					"width": 320,
+					"height": 160,
+					"defUid": 198,
+					"px": [16,448],
+					"fieldInstances": [],
+					"__worldX": 11984,
+					"__worldY": 10400
+				}
+			]
 		},
 		{
 			"__identifier": "DecorUnder",

@@ -1855,48 +1855,6 @@
 			"entityInstances": []
 		},
 		{
-			"__identifier": "Walls",
-			"__type": "Entities",
-			"__cWid": 82,
-			"__cHei": 57,
-			"__gridSize": 16,
-			"__opacity": 1,
-			"__pxTotalOffsetX": 0,
-			"__pxTotalOffsetY": 0,
-			"__tilesetDefUid": null,
-			"__tilesetRelPath": null,
-			"iid": "9841cdd7-1030-11f0-b8da-8dc35d95be49",
-			"levelId": 614,
-			"layerDefUid": 276,
-			"pxOffsetX": 0,
-			"pxOffsetY": 0,
-			"visible": true,
-			"optionalRules": [],
-			"intGridCsv": [],
-			"autoLayerTiles": [],
-			"seed": 3279604,
-			"overrideTilesetUid": null,
-			"gridTiles": [],
-			"entityInstances": [
-				{
-					"__identifier": "obj_ss_right",
-					"__grid": [28,40],
-					"__pivot": [0,0],
-					"__tags": ["semisolid"],
-					"__tile": { "tilesetUid": 8, "x": 432, "y": 80, "w": 16, "h": 16 },
-					"__smartColor": "#63C74D",
-					"iid": "e5661c90-1030-11f0-8b0b-552ddf84e638",
-					"width": 16,
-					"height": 144,
-					"defUid": 247,
-					"px": [448,640],
-					"fieldInstances": [],
-					"__worldX": 35696,
-					"__worldY": 8048
-				}
-			]
-		},
-		{
 			"__identifier": "Lights",
 			"__type": "Entities",
 			"__cWid": 82,
@@ -2520,6 +2478,48 @@
 					"fieldInstances": [],
 					"__worldX": 36424,
 					"__worldY": 7576
+				}
+			]
+		},
+		{
+			"__identifier": "Walls",
+			"__type": "Entities",
+			"__cWid": 82,
+			"__cHei": 57,
+			"__gridSize": 16,
+			"__opacity": 1,
+			"__pxTotalOffsetX": 0,
+			"__pxTotalOffsetY": 0,
+			"__tilesetDefUid": null,
+			"__tilesetRelPath": null,
+			"iid": "9841cdd7-1030-11f0-b8da-8dc35d95be49",
+			"levelId": 614,
+			"layerDefUid": 276,
+			"pxOffsetX": 0,
+			"pxOffsetY": 0,
+			"visible": true,
+			"optionalRules": [],
+			"intGridCsv": [],
+			"autoLayerTiles": [],
+			"seed": 3279604,
+			"overrideTilesetUid": null,
+			"gridTiles": [],
+			"entityInstances": [
+				{
+					"__identifier": "obj_ss_right",
+					"__grid": [28,40],
+					"__pivot": [0,0],
+					"__tags": ["semisolid"],
+					"__tile": { "tilesetUid": 8, "x": 432, "y": 80, "w": 16, "h": 16 },
+					"__smartColor": "#63C74D",
+					"iid": "e5661c90-1030-11f0-8b0b-552ddf84e638",
+					"width": 16,
+					"height": 144,
+					"defUid": 247,
+					"px": [448,640],
+					"fieldInstances": [],
+					"__worldX": 35696,
+					"__worldY": 8048
 				}
 			]
 		},

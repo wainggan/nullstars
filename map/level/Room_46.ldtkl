@@ -999,31 +999,6 @@
 			"entityInstances": []
 		},
 		{
-			"__identifier": "Walls",
-			"__type": "Entities",
-			"__cWid": 33,
-			"__cHei": 22,
-			"__gridSize": 16,
-			"__opacity": 1,
-			"__pxTotalOffsetX": 0,
-			"__pxTotalOffsetY": 0,
-			"__tilesetDefUid": null,
-			"__tilesetRelPath": null,
-			"iid": "249ef1c8-9b00-11ef-ae8e-75e826563096",
-			"levelId": 588,
-			"layerDefUid": 276,
-			"pxOffsetX": 0,
-			"pxOffsetY": 0,
-			"visible": true,
-			"optionalRules": [],
-			"intGridCsv": [],
-			"autoLayerTiles": [],
-			"seed": 920659,
-			"overrideTilesetUid": null,
-			"gridTiles": [],
-			"entityInstances": []
-		},
-		{
 			"__identifier": "Lights",
 			"__type": "Entities",
 			"__cWid": 33,
@@ -1105,6 +1080,31 @@
 					"__worldY": 8632
 				}
 			]
+		},
+		{
+			"__identifier": "Walls",
+			"__type": "Entities",
+			"__cWid": 33,
+			"__cHei": 22,
+			"__gridSize": 16,
+			"__opacity": 1,
+			"__pxTotalOffsetX": 0,
+			"__pxTotalOffsetY": 0,
+			"__tilesetDefUid": null,
+			"__tilesetRelPath": null,
+			"iid": "249ef1c8-9b00-11ef-ae8e-75e826563096",
+			"levelId": 588,
+			"layerDefUid": 276,
+			"pxOffsetX": 0,
+			"pxOffsetY": 0,
+			"visible": true,
+			"optionalRules": [],
+			"intGridCsv": [],
+			"autoLayerTiles": [],
+			"seed": 920659,
+			"overrideTilesetUid": null,
+			"gridTiles": [],
+			"entityInstances": []
 		},
 		{
 			"__identifier": "DecorUnder",

@@ -72,7 +72,7 @@
 			"layerDefUid": 13,
 			"pxOffsetX": 0,
 			"pxOffsetY": 0,
-			"visible": false,
+			"visible": true,
 			"optionalRules": [],
 			"intGridCsv": [],
 			"autoLayerTiles": [],
@@ -82,16 +82,16 @@
 			"entityInstances": [
 				{
 					"__identifier": "obj_camera_room",
-					"__grid": [1,0],
+					"__grid": [1,1],
 					"__pivot": [0,0],
 					"__tags": [ "camera", "flag" ],
 					"__tile": { "tilesetUid": 8, "x": 288, "y": 256, "w": 16, "h": 16 },
 					"__smartColor": "#D77643",
 					"iid": "e33fc480-8560-11f0-b9f6-9bd536209b04",
 					"width": 2032,
-					"height": 544,
+					"height": 512,
 					"defUid": 6,
-					"px": [16,0],
+					"px": [16,16],
 					"fieldInstances": [
 						{ "__identifier": "crop_x1", "__type": "Int", "__value": 0, "__tile": null, "defUid": 48, "realEditorValues": [] },
 						{ "__identifier": "crop_x2", "__type": "Int", "__value": 0, "__tile": null, "defUid": 52, "realEditorValues": [] },
@@ -102,7 +102,7 @@
 						{ "__identifier": "weight", "__type": "Float", "__value": 0.5, "__tile": null, "defUid": 617, "realEditorValues": [] }
 					],
 					"__worldX": 9936,
-					"__worldY": 9952
+					"__worldY": 9968
 				}
 			]
 		},
@@ -130,22 +130,6 @@
 			"overrideTilesetUid": null,
 			"gridTiles": [],
 			"entityInstances": [
-				{
-					"__identifier": "obj_water",
-					"__grid": [88,6],
-					"__pivot": [0,0],
-					"__tags": ["water"],
-					"__tile": null,
-					"__smartColor": "#50FAFF",
-					"iid": "f8c31f50-8560-11f0-b9f6-6377b833874a",
-					"width": 208,
-					"height": 240,
-					"defUid": 198,
-					"px": [1408,96],
-					"fieldInstances": [],
-					"__worldX": 11328,
-					"__worldY": 10048
-				},
 				{
 					"__identifier": "obj_trapdoor",
 					"__grid": [80,18],
@@ -187,22 +171,6 @@
 					"__worldY": 10160
 				},
 				{
-					"__identifier": "obj_water",
-					"__grid": [88,20],
-					"__pivot": [0,0],
-					"__tags": ["water"],
-					"__tile": null,
-					"__smartColor": "#50FAFF",
-					"iid": "3e7d28b0-8560-11f0-b9f6-e5aed669ec9f",
-					"width": 448,
-					"height": 128,
-					"defUid": 198,
-					"px": [1408,320],
-					"fieldInstances": [],
-					"__worldX": 11328,
-					"__worldY": 10272
-				},
-				{
 					"__identifier": "obj_checkpoint",
 					"__grid": [73,26],
 					"__pivot": [0,1],
@@ -223,54 +191,6 @@
 					],
 					"__worldX": 11088,
 					"__worldY": 10384
-				},
-				{
-					"__identifier": "obj_water",
-					"__grid": [53,17],
-					"__pivot": [0,0],
-					"__tags": ["water"],
-					"__tile": null,
-					"__smartColor": "#50FAFF",
-					"iid": "798aff80-8560-11f0-b9f6-1b4aa1ab7720",
-					"width": 208,
-					"height": 176,
-					"defUid": 198,
-					"px": [848,272],
-					"fieldInstances": [],
-					"__worldX": 10768,
-					"__worldY": 10224
-				},
-				{
-					"__identifier": "obj_water",
-					"__grid": [28,6],
-					"__pivot": [0,0],
-					"__tags": ["water"],
-					"__tile": null,
-					"__smartColor": "#50FAFF",
-					"iid": "82627ca0-8560-11f0-b9f6-a9ccf041e0c0",
-					"width": 208,
-					"height": 192,
-					"defUid": 198,
-					"px": [448,96],
-					"fieldInstances": [],
-					"__worldX": 10368,
-					"__worldY": 10048
-				},
-				{
-					"__identifier": "obj_water",
-					"__grid": [9,17],
-					"__pivot": [0,0],
-					"__tags": ["water"],
-					"__tile": null,
-					"__smartColor": "#50FAFF",
-					"iid": "9bc0a0a0-8560-11f0-b9f6-d5ccc964b38c",
-					"width": 208,
-					"height": 224,
-					"defUid": 198,
-					"px": [144,272],
-					"fieldInstances": [],
-					"__worldX": 10064,
-					"__worldY": 10224
 				},
 				{
 					"__identifier": "obj_trapdoor",
@@ -337,22 +257,6 @@
 					"__worldY": 10384
 				},
 				{
-					"__identifier": "obj_water",
-					"__grid": [13,0],
-					"__pivot": [0,0],
-					"__tags": ["water"],
-					"__tile": null,
-					"__smartColor": "#50FAFF",
-					"iid": "abc99690-8560-11f0-b9f6-7fbe81e277c0",
-					"width": 144,
-					"height": 160,
-					"defUid": 198,
-					"px": [208,0],
-					"fieldInstances": [],
-					"__worldX": 10128,
-					"__worldY": 9952
-				},
-				{
 					"__identifier": "obj_trapkey",
 					"__grid": [49,11],
 					"__pivot": [0,0],
@@ -367,22 +271,6 @@
 					"fieldInstances": [],
 					"__worldX": 10704,
 					"__worldY": 10128
-				},
-				{
-					"__identifier": "obj_cannon_chain",
-					"__grid": [59,11],
-					"__pivot": [0.5,0.5],
-					"__tags": ["object"],
-					"__tile": { "tilesetUid": 8, "x": 288, "y": 208, "w": 16, "h": 16 },
-					"__smartColor": "#B86F50",
-					"iid": "9cbc7380-8560-11f0-b9f6-815cda03683b",
-					"width": 48,
-					"height": 48,
-					"defUid": 656,
-					"px": [952,184],
-					"fieldInstances": [],
-					"__worldX": 10872,
-					"__worldY": 10136
 				}
 			]
 		},
@@ -2858,48 +2746,6 @@
 			"entityInstances": []
 		},
 		{
-			"__identifier": "Walls",
-			"__type": "Entities",
-			"__cWid": 128,
-			"__cHei": 34,
-			"__gridSize": 16,
-			"__opacity": 1,
-			"__pxTotalOffsetX": 0,
-			"__pxTotalOffsetY": 0,
-			"__tilesetDefUid": null,
-			"__tilesetRelPath": null,
-			"iid": "8f2fafe6-8560-11f0-b9f6-0da7c0e4d81f",
-			"levelId": 659,
-			"layerDefUid": 276,
-			"pxOffsetX": 0,
-			"pxOffsetY": 0,
-			"visible": true,
-			"optionalRules": [],
-			"intGridCsv": [],
-			"autoLayerTiles": [],
-			"seed": 6144456,
-			"overrideTilesetUid": null,
-			"gridTiles": [],
-			"entityInstances": [
-				{
-					"__identifier": "obj_ss_up",
-					"__grid": [104,16],
-					"__pivot": [0,0],
-					"__tags": ["semisolid"],
-					"__tile": { "tilesetUid": 8, "x": 384, "y": 80, "w": 16, "h": 16 },
-					"__smartColor": "#63C74D",
-					"iid": "0a6c2620-8560-11f0-b9f6-757c92c671e6",
-					"width": 144,
-					"height": 16,
-					"defUid": 244,
-					"px": [1664,256],
-					"fieldInstances": [],
-					"__worldX": 11584,
-					"__worldY": 10208
-				}
-			]
-		},
-		{
 			"__identifier": "Lights",
 			"__type": "Entities",
 			"__cWid": 128,
@@ -3286,19 +3132,157 @@
 				},
 				{
 					"__identifier": "obj_spike_bubble",
-					"__grid": [79,12],
+					"__grid": [79,11],
 					"__pivot": [0.5,0.5],
 					"__tags": ["spike"],
 					"__tile": null,
 					"__smartColor": "#85FF6A",
-					"iid": "24a99bb0-8560-11f0-b9f6-33f40489ce21",
+					"iid": "3ad0ed80-8560-11f0-b393-9f916b47663b",
 					"width": 48,
 					"height": 48,
 					"defUid": 272,
-					"px": [1272,200],
+					"px": [1272,184],
 					"fieldInstances": [],
 					"__worldX": 11192,
-					"__worldY": 10152
+					"__worldY": 10136
+				}
+			]
+		},
+		{
+			"__identifier": "Walls",
+			"__type": "Entities",
+			"__cWid": 128,
+			"__cHei": 34,
+			"__gridSize": 16,
+			"__opacity": 1,
+			"__pxTotalOffsetX": 0,
+			"__pxTotalOffsetY": 0,
+			"__tilesetDefUid": null,
+			"__tilesetRelPath": null,
+			"iid": "8f2fafe6-8560-11f0-b9f6-0da7c0e4d81f",
+			"levelId": 659,
+			"layerDefUid": 276,
+			"pxOffsetX": 0,
+			"pxOffsetY": 0,
+			"visible": true,
+			"optionalRules": [],
+			"intGridCsv": [],
+			"autoLayerTiles": [],
+			"seed": 6144456,
+			"overrideTilesetUid": null,
+			"gridTiles": [],
+			"entityInstances": [
+				{
+					"__identifier": "obj_ss_up",
+					"__grid": [104,16],
+					"__pivot": [0,0],
+					"__tags": ["semisolid"],
+					"__tile": { "tilesetUid": 8, "x": 384, "y": 80, "w": 16, "h": 16 },
+					"__smartColor": "#63C74D",
+					"iid": "0a6c2620-8560-11f0-b9f6-757c92c671e6",
+					"width": 144,
+					"height": 16,
+					"defUid": 244,
+					"px": [1664,256],
+					"fieldInstances": [],
+					"__worldX": 11584,
+					"__worldY": 10208
+				},
+				{
+					"__identifier": "obj_water",
+					"__grid": [9,17],
+					"__pivot": [0,0],
+					"__tags": ["water"],
+					"__tile": null,
+					"__smartColor": "#50FAFF",
+					"iid": "350dee40-8560-11f0-b393-a39fd240e35e",
+					"width": 208,
+					"height": 224,
+					"defUid": 198,
+					"px": [144,272],
+					"fieldInstances": [],
+					"__worldX": 10064,
+					"__worldY": 10224
+				},
+				{
+					"__identifier": "obj_water",
+					"__grid": [53,17],
+					"__pivot": [0,0],
+					"__tags": ["water"],
+					"__tile": null,
+					"__smartColor": "#50FAFF",
+					"iid": "439fca00-8560-11f0-b393-dbb8df6a583d",
+					"width": 208,
+					"height": 176,
+					"defUid": 198,
+					"px": [848,272],
+					"fieldInstances": [],
+					"__worldX": 10768,
+					"__worldY": 10224
+				},
+				{
+					"__identifier": "obj_water",
+					"__grid": [13,0],
+					"__pivot": [0,0],
+					"__tags": ["water"],
+					"__tile": null,
+					"__smartColor": "#50FAFF",
+					"iid": "45227260-8560-11f0-b393-adc483dc27a1",
+					"width": 144,
+					"height": 160,
+					"defUid": 198,
+					"px": [208,0],
+					"fieldInstances": [],
+					"__worldX": 10128,
+					"__worldY": 9952
+				},
+				{
+					"__identifier": "obj_water",
+					"__grid": [28,6],
+					"__pivot": [0,0],
+					"__tags": ["water"],
+					"__tile": null,
+					"__smartColor": "#50FAFF",
+					"iid": "485a44d0-8560-11f0-b393-6559e0ae381d",
+					"width": 208,
+					"height": 192,
+					"defUid": 198,
+					"px": [448,96],
+					"fieldInstances": [],
+					"__worldX": 10368,
+					"__worldY": 10048
+				},
+				{
+					"__identifier": "obj_water",
+					"__grid": [88,6],
+					"__pivot": [0,0],
+					"__tags": ["water"],
+					"__tile": null,
+					"__smartColor": "#50FAFF",
+					"iid": "4b3ea010-8560-11f0-b393-0d2989f93e48",
+					"width": 208,
+					"height": 240,
+					"defUid": 198,
+					"px": [1408,96],
+					"fieldInstances": [],
+					"__worldX": 11328,
+					"__worldY": 10048
+				},
+				{
+					"__identifier": "obj_water",
+					"__grid": [88,20],
+					"__pivot": [0,0],
+					"__tags": ["water"],
+					"__tile": null,
+					"__smartColor": "#50FAFF",
+					"iid": "4ce79520-8560-11f0-b393-3d753749bf76",
+					"width": 448,
+					"height": 128,
+					"defUid": 198,
+					"px": [1408,320],
+					"fieldInstances": [],
+					"__worldX": 11328,
+					"__worldY": 10272
 				}
 			]
 		},
@@ -5551,5 +5535,5 @@
 			"entityInstances": []
 		}
 	],
-	"__neighbours": [ { "levelIid": "71ec4d50-8560-11f0-b9f6-210baf856b0a", "dir": "n" }, { "levelIid": "57444ec0-8560-11f0-b9f6-990ffb32c5b4", "dir": "e" } ]
+	"__neighbours": [ { "levelIid": "71ec4d50-8560-11f0-b9f6-210baf856b0a", "dir": "n" }, { "levelIid": "57444ec0-8560-11f0-b9f6-990ffb32c5b4", "dir": "e" }, { "levelIid": "7036d910-8560-11f0-b393-f78153e26120", "dir": "w" }, { "levelIid": "f5153670-8560-11f0-b393-5fb10e331bfa", "dir": "n" } ]
 }
