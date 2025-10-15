@@ -1,0 +1,95 @@
+{
+	"music": {
+		"wind": {
+			"asset": "mus_wind",
+		},
+
+		"hub": {
+			"asset": "mus_hub_1",
+			"name": "Glass Against Stone",
+			"artist": "parchment",
+			"bpm": 136,
+		},
+
+		"stars": {
+			"asset": "mus_world_0",
+			"name": "Love Letter",
+			"artist": "parchment",
+			"bpm": 130,
+		},
+		"story": {
+			"asset": "mus_world_1",
+			"name": "Incipit",
+			"artist": "parchment",
+			"bpm": 134,
+		},
+		"ekstasis": {
+			"asset": "mus_world_2",
+			"name": "In Ekstasis",
+			"artist": "parchment",
+			"bpm": 110,
+		},
+		"lava": {
+			"asset": "mus_yearsago",
+			"name": "Skies and Nightmares",
+			"artist": "parchment",
+			"bpm": 124,
+		},
+	},
+
+	"styles": {
+		"debug_0": {
+		},
+
+		"hub_0": {
+			"background": "judge",
+			"music": "hub",
+			"biome": "smoke",
+		},
+
+		"intro_0": {
+			"background": "glow",
+			"music": "wind",
+			"biome": "rain",
+		},
+		"intro_1": {
+			"background": "none",
+			"music": "none",
+			"biome": "rain",
+		},
+
+		"world0_0": {
+			"background": "glow",
+			"music": "stars",
+			"biome": "dust",
+		},
+		"world0_1": {
+			"background": "clouds",
+			"music": "stars",
+			"biome": "dust",
+		},
+
+		"world1_0": {
+			"background": "city",
+			"music": "story",
+			"biome": "rain",
+			"lut_grade": "vaporwave",
+			"lut_mix": 0.25,
+		},
+		"world1_1": {
+			"background": "boxes",
+			"music": "story",
+			"biome": "dust",
+			"lut_grade": "vaporwave",
+			"lut_mix": 0.1,
+		},
+
+		"world2_0": {
+			"background": "judge",
+			"music": "ekstasis",
+			"biome": "smoke",
+			"lut_grade": "waterfall",
+			"lut_mix": 0.25,
+		},
+	},
+}

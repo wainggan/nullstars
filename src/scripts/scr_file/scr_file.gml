@@ -13,6 +13,8 @@ global.version = {
 global.file = undefined;
 global.settings = undefined;
 global.data = undefined;
+global.meta_data = undefined;
+global.meta_info = undefined;
 
 global.file_default = {
 	

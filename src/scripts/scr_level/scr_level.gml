@@ -1201,84 +1201,30 @@ function game_level_grab_data(_lvl) {
 		music: undefined,
 		lut_grade: "base",
 		lut_mix: 1,
-		flags: [],
 	};
 	
-	if !_lvl return __return;
-	
-	__return.biome = "none";
-	__return.background = "none";
-	__return.music = undefined;
-	__return.lut_grade = "base";
-	__return.lut_mix = 1;
-	static __empty = [];
-	array_delete(__empty, 0, array_length(__empty));
-	__return.flags = __empty;
-	
-	// oh no
-	switch _lvl.fields.preset {
-		case "hub_0":
-			__return.area = "hub";
-			__return.background = "judge";
-			__return.biome = "smoke";
-			array_push(__return.flags, "hub");
-			break;
-		
-		case "area0_1":
-			__return.area = "area0";
-			__return.background = "glow";
-			__return.music = "stars";
-			__return.biome = "dust";
-			break;
-		case "area0_2":
-			__return.area = "area0";
-			__return.background = "clouds";
-			__return.music = "stars";
-			__return.biome = "dust";
-			break;
-			
-		case "area1_1":
-			__return.area = "area1";
-			__return.background = "city";
-			__return.music = "story";
-			__return.biome = "rain";
-			__return.lut_grade = "vaporwave";
-			__return.lut_mix = 0.25;
-			break;
-		case "area1_2":
-			__return.area = "area1";
-			__return.background = "boxes";
-			__return.music = "story";
-			__return.biome = "dust";
-			__return.lut_grade = "vaporwave";
-			__return.lut_mix = 0.1;
-			break;
-		
-		case "area2_1":
-			__return.area = "area2";
-			__return.background = "judge";
-			__return.music = "ekstasis";
-			__return.biome = "smoke";
-			__return.lut_grade = "waterfall";
-			__return.lut_mix = 0.25;
-			break;
+	if !_lvl {
+		return __return;
 	}
+	
+	var _style = global.meta_data.styles[$ _lvl.fields.style];
 	
 	// this feels like a terrible idea
-	__return.biome = _lvl.fields.biome ?? __return.biome;
-	__return.background = _lvl.fields.background ?? __return.background;
-	__return.music =
-		_lvl.fields.music == undefined
-			? __return.music
-			: (_lvl.fields.music == "null"
-				? undefined
-				: _lvl.fields.music);
-	__return.lut_grade = _lvl.fields.lut_grade ?? __return.lut_grade;
-	__return.lut_mix = _lvl.fields.lut_mix ?? __return.lut_mix;
-	for (var i = 0; i < array_length(_lvl.fields.flags); i++) {
-		array_push(__return.flags, _lvl.fields.flags[i]);
+	if _style == undefined {
+		__return.biome = "none";
+		__return.background = "none";
+		__return.music = undefined;
+		__return.lut_grade = "base";
+		__return.lut_mix = 1;
+	} else {
+		// this is a long story
+		__return.biome = _style[$ nameof(biome)] ?? "none";
+		__return.background = _style[$ nameof(background)] ?? "none";
+		__return.music = _style[$ nameof(music)] ?? undefined;
+		__return.lut_grade = _style[$ nameof(lut_grade)] ?? "base";
+		__return.lut_mix = _style[$ nameof(lut_mix)] ?? 1;
 	}
-	
+
 	return __return;
 }
 
@@ -1290,7 +1236,6 @@ function game_level_get_background(_x, _y) {
 }
 function game_level_get_music(_x, _y) {
 	var _out = game_level_get_data(_x, _y);
-	if !_out return undefined;
 	return _out.music;
 }
 function game_level_get_lut(_x, _y) {
@@ -1300,6 +1245,4 @@ function game_level_get_lut(_x, _y) {
 	__return.mix = _data.lut_mix;
 	return __return;
 }
-function game_level_get_flags(_x, _y) {
-	return game_level_get_data(_x, _y).flags;
-}
+

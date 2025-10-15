@@ -26,25 +26,10 @@
 	"__smartColor": "#DB9B8D",
 	"__bgPos": null,
 	"externalRelPath": null,
-	"fieldInstances": [
-		{ "__identifier": "preset", "__type": "LocalEnum.Level_Preset", "__value": "area0_1", "__tile": null, "defUid": 506, "realEditorValues": [{
-			"id": "V_String",
-			"params": ["area0_1"]
-		}] },
-		{ "__identifier": "area", "__type": "LocalEnum.Level_Area", "__value": null, "__tile": null, "defUid": 591, "realEditorValues": [null] },
-		{ "__identifier": "background", "__type": "LocalEnum.Level_Background", "__value": null, "__tile": null, "defUid": 152, "realEditorValues": [null] },
-		{ "__identifier": "music", "__type": "LocalEnum.Level_Music", "__value": null, "__tile": null, "defUid": 153, "realEditorValues": [null] },
-		{ "__identifier": "biome", "__type": "LocalEnum.Level_Biome", "__value": "star", "__tile": null, "defUid": 154, "realEditorValues": [{
-			"id": "V_String",
-			"params": ["star"]
-		}] },
-		{ "__identifier": "lut_grade", "__type": "LocalEnum.Level_Grade", "__value": "mild", "__tile": null, "defUid": 504, "realEditorValues": [{
-			"id": "V_String",
-			"params": ["mild"]
-		}] },
-		{ "__identifier": "lut_mix", "__type": "Float", "__value": 0.4, "__tile": null, "defUid": 502, "realEditorValues": [{ "id": "V_Float", "params": [0.4] }] },
-		{ "__identifier": "flags", "__type": "Array<LocalEnum.Level_Flags>", "__value": [], "__tile": null, "defUid": 451, "realEditorValues": [] }
-	],
+	"fieldInstances": [{ "__identifier": "style", "__type": "LocalEnum.Level_Styles", "__value": "world0_0", "__tile": null, "defUid": 506, "realEditorValues": [{
+		"id": "V_String",
+		"params": ["world0_0"]
+	}] }],
 	"layerInstances": [
 		{
 			"__identifier": "Decor",

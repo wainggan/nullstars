@@ -1,6 +1,6 @@
 {
   "$GMSound":"",
-  "%Name":"mus_inekstasis",
+  "%Name":"mus_world_0",
   "audioGroupId":{
     "name":"audiogroup_default",
     "path":"audiogroups/audiogroup_default",
@@ -9,8 +9,8 @@
   "bitRate":192,
   "compression":3,
   "conversionMode":0,
-  "duration":314.18182,
-  "name":"mus_inekstasis",
+  "duration":96.27719,
+  "name":"mus_world_0",
   "parent":{
     "name":"bgm",
     "path":"folders/sounds/bgm.yy",
@@ -19,7 +19,7 @@
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
   "sampleRate":44100,
-  "soundFile":"mus_inekstasis.ogg",
+  "soundFile":"mus_world_0.ogg",
   "type":1,
   "volume":1.0,
 }

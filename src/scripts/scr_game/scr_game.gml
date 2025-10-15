@@ -22,6 +22,14 @@ function Game() constructor {
 	ASSERT(global.strings != -1);
 	LOG(Log.note, "Game(): loaded strings.json");
 	
+	global.meta_data = game_json_open("data.json");
+	ASSERT(global.meta_data != -1);
+	LOG(Log.note, "Game(): loaded data.json");
+	
+	global.meta_info = game_json_open("meta.json");
+	ASSERT(global.meta_info != -1);
+	LOG(Log.note, "Game(): loaded meta.json");
+	
 	
 	// @todo: temp
 	global.onoff = 1;

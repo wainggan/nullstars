@@ -23,7 +23,7 @@ function data_music_add(_asset, _ref, _meta) {
 }
 
 data_music_add(nameof(mus_wind), "wind", {});
-data_music_add(nameof(mus_inekstasis), "stars", {
+data_music_add(nameof(mus_questionthestars), "stars", {
 	name: "Love Letter",
 	artist: "parchment",
 	bpm: 130,
