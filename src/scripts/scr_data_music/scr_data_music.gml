@@ -31,14 +31,17 @@ data_music_add(nameof(mus_inekstasis), "stars", {
 data_music_add(nameof(mus_yearsago), "lava", {
 	name: "Skies and Nightmares",
 	artist: "parchment",
+	bpm: 124,
 });
 data_music_add(nameof(mus_hub_1), "hub", {
 	name: "Glass Against Stone",
 	artist: "parchment",
+	bpm: 136,
 });
 data_music_add(nameof(mus_story), "story", {
 	name: "Incipit",
 	artist: "parchment",
+	bpm: 134,
 });
 data_music_add(nameof(mus_inekstasis), "ekstasis", {
 	name: "In Ekstasis",
