@@ -23,11 +23,14 @@
 	"bgPos": null,
 	"bgPivotX": 0.5,
 	"bgPivotY": 0.5,
-	"__smartColor": "#8C8A8D",
+	"__smartColor": "#95888E",
 	"__bgPos": null,
 	"externalRelPath": null,
 	"fieldInstances": [
-		{ "__identifier": "preset", "__type": "LocalEnum.Level_Preset", "__value": null, "__tile": null, "defUid": 506, "realEditorValues": [] },
+		{ "__identifier": "preset", "__type": "LocalEnum.Level_Preset", "__value": "area2_1", "__tile": null, "defUid": 506, "realEditorValues": [{
+			"id": "V_String",
+			"params": ["area2_1"]
+		}] },
 		{ "__identifier": "area", "__type": "LocalEnum.Level_Area", "__value": null, "__tile": null, "defUid": 591, "realEditorValues": [] },
 		{ "__identifier": "background", "__type": "LocalEnum.Level_Background", "__value": null, "__tile": null, "defUid": 152, "realEditorValues": [] },
 		{ "__identifier": "music", "__type": "LocalEnum.Level_Music", "__value": null, "__tile": null, "defUid": 153, "realEditorValues": [] },
@@ -88,16 +91,16 @@
 			"entityInstances": [
 				{
 					"__identifier": "obj_camera_room",
-					"__grid": [68,0],
+					"__grid": [1,0],
 					"__pivot": [0,0],
 					"__tags": [ "camera", "flag" ],
 					"__tile": { "tilesetUid": 8, "x": 288, "y": 256, "w": 16, "h": 16 },
 					"__smartColor": "#D77643",
 					"iid": "e33fc480-8560-11f0-b9f6-9bd536209b04",
-					"width": 960,
+					"width": 2032,
 					"height": 544,
 					"defUid": 6,
-					"px": [1088,0],
+					"px": [16,0],
 					"fieldInstances": [
 						{ "__identifier": "crop_x1", "__type": "Int", "__value": 0, "__tile": null, "defUid": 48, "realEditorValues": [] },
 						{ "__identifier": "crop_x2", "__type": "Int", "__value": 0, "__tile": null, "defUid": 52, "realEditorValues": [] },
@@ -107,7 +110,7 @@
 						{ "__identifier": "unlock_y", "__type": "Bool", "__value": true, "__tile": null, "defUid": 60, "realEditorValues": [] },
 						{ "__identifier": "weight", "__type": "Float", "__value": 0.5, "__tile": null, "defUid": 617, "realEditorValues": [] }
 					],
-					"__worldX": 11008,
+					"__worldX": 9936,
 					"__worldY": 9952
 				}
 			]

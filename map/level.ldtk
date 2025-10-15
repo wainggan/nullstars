@@ -12950,7 +12950,8 @@
 			{ "id": "wind", "tileRect": null, "color": 14120515 },
 			{ "id": "stars", "tileRect": null, "color": 15389866 },
 			{ "id": "lava", "tileRect": null, "color": 14984818 },
-			{ "id": "story", "tileRect": null, "color": 7552569 }
+			{ "id": "story", "tileRect": null, "color": 7552569 },
+			{ "id": "ekstasis", "tileRect": null, "color": 16690740 }
 		], "iconTilesetUid": null, "externalRelPath": null, "externalFileChecksum": null, "tags": [] },
 		{ "identifier": "Level_Biome", "uid": 151, "values": [
 			{ "id": "none", "tileRect": null, "color": 12470831 },
@@ -12979,13 +12980,15 @@
 		{ "identifier": "Level_Area", "uid": 590, "values": [
 			{ "id": "hub", "tileRect": null, "color": 14120515 },
 			{ "id": "area0", "tileRect": null, "color": 12470831 },
-			{ "id": "area1", "tileRect": null, "color": 15389866 }
+			{ "id": "area1", "tileRect": null, "color": 15389866 },
+			{ "id": "area2", "tileRect": null, "color": 14984818 }
 		], "iconTilesetUid": null, "externalRelPath": null, "externalFileChecksum": null, "tags": [] },
 		{ "identifier": "Level_Preset", "uid": 505, "values": [
 			{ "id": "area0_1", "tileRect": null, "color": 12470831 },
 			{ "id": "area0_2", "tileRect": null, "color": 14120515 },
 			{ "id": "area1_1", "tileRect": null, "color": 15389866 },
 			{ "id": "area1_2", "tileRect": null, "color": 14984818 },
+			{ "id": "area2_1", "tileRect": null, "color": 4073265 },
 			{ "id": "hub_0", "tileRect": null, "color": 7552569 }
 		], "iconTilesetUid": null, "externalRelPath": null, "externalFileChecksum": null, "tags": [] },
 		{ "identifier": "Level_Flags", "uid": 450, "values": [{ "id": "hub", "tileRect": null, "color": 12470831 }], "iconTilesetUid": null, "externalRelPath": null, "externalFileChecksum": null, "tags": [] },
@@ -15995,11 +15998,14 @@
 			"bgPos": null,
 			"bgPivotX": 0.5,
 			"bgPivotY": 0.5,
-			"__smartColor": "#8C8A8D",
+			"__smartColor": "#95888E",
 			"__bgPos": null,
 			"externalRelPath": "level/Room_74.ldtkl",
 			"fieldInstances": [
-				{ "__identifier": "preset", "__type": "LocalEnum.Level_Preset", "__value": null, "__tile": null, "defUid": 506, "realEditorValues": [] },
+				{ "__identifier": "preset", "__type": "LocalEnum.Level_Preset", "__value": "area2_1", "__tile": null, "defUid": 506, "realEditorValues": [{
+					"id": "V_String",
+					"params": ["area2_1"]
+				}] },
 				{ "__identifier": "area", "__type": "LocalEnum.Level_Area", "__value": null, "__tile": null, "defUid": 591, "realEditorValues": [] },
 				{ "__identifier": "background", "__type": "LocalEnum.Level_Background", "__value": null, "__tile": null, "defUid": 152, "realEditorValues": [] },
 				{ "__identifier": "music", "__type": "LocalEnum.Level_Music", "__value": null, "__tile": null, "defUid": 153, "realEditorValues": [] },
@@ -16027,11 +16033,14 @@
 			"bgPos": null,
 			"bgPivotX": 0.5,
 			"bgPivotY": 0.5,
-			"__smartColor": "#8C8A8D",
+			"__smartColor": "#95888E",
 			"__bgPos": null,
 			"externalRelPath": "level/Room_75.ldtkl",
 			"fieldInstances": [
-				{ "__identifier": "preset", "__type": "LocalEnum.Level_Preset", "__value": null, "__tile": null, "defUid": 506, "realEditorValues": [] },
+				{ "__identifier": "preset", "__type": "LocalEnum.Level_Preset", "__value": "area2_1", "__tile": null, "defUid": 506, "realEditorValues": [{
+					"id": "V_String",
+					"params": ["area2_1"]
+				}] },
 				{ "__identifier": "area", "__type": "LocalEnum.Level_Area", "__value": null, "__tile": null, "defUid": 591, "realEditorValues": [] },
 				{ "__identifier": "background", "__type": "LocalEnum.Level_Background", "__value": null, "__tile": null, "defUid": 152, "realEditorValues": [] },
 				{ "__identifier": "music", "__type": "LocalEnum.Level_Music", "__value": null, "__tile": null, "defUid": 153, "realEditorValues": [] },

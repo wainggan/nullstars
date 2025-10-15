@@ -1253,6 +1253,15 @@ function game_level_grab_data(_lvl) {
 			__return.lut_grade = "vaporwave";
 			__return.lut_mix = 0.1;
 			break;
+		
+		case "area2_1":
+			__return.area = "area2";
+			__return.background = "judge";
+			__return.music = "ekstasis";
+			__return.biome = "smoke";
+			__return.lut_grade = "waterfall";
+			__return.lut_mix = 0.25;
+			break;
 	}
 	
 	// this feels like a terrible idea
