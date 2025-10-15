@@ -1472,8 +1472,17 @@ state_swim.set("step", function() {
 		_y_accel = 0.04;
 	}
 	
+	var _push_x = get_check_water(x + 16, y) - get_check_water(x - 16, y);
+	var _push_y = get_check_water(x, y + 24) - get_check_water(x, y - 24);
+	
 	x_vel = approach(x_vel, _x_vel, _x_accel);
+	if abs(x_vel) < 1 || sign(x_vel) == _push_x {
+		x_vel += _push_x * 0.5;
+	}
 	y_vel = approach(y_vel, _y_vel, _y_accel);
+	if abs(y_vel) < 1 || sign(y_vel) == _push_y {
+		y_vel += _push_y * 0.5;
+	}
 	
 	if !get_check_water(x, y) {
 		if y_vel < 0 {
@@ -1537,9 +1546,6 @@ state_swim_bullet.set("enter", function() {
 		nat_crouch(false);
 	}
 	
-	var _push_x = get_check_water(x + 16, y) - get_check_water(x - 16, y);
-	var _push_y = get_check_water(x, y + 24) - get_check_water(x, y - 24);
-	
 	if _kh != 0 {
 		dir = _kh;
 	}
@@ -1563,8 +1569,11 @@ state_swim_bullet.set("enter", function() {
 	
 	swim_dir -= clamp(round(sign(_dir_diff) * _dir_accel), -abs(_dir_diff), abs(_dir_diff));
 	
-	x_vel = lengthdir_x(swim_spd, swim_dir) + _push_x;
-	y_vel = lengthdir_y(swim_spd, swim_dir) + _push_y;
+	var _push_x = get_check_water(x + 12, y) - get_check_water(x - 12, y);
+	var _push_y = get_check_water(x, y + 16) - get_check_water(x, y - 16);
+	
+	x_vel = lengthdir_x(swim_spd, swim_dir) + _push_x * 0.5;
+	y_vel = lengthdir_y(swim_spd, swim_dir) + _push_y * 0.5;
 	
 	if !get_check_water(x, y) {
 		grace = defs.grace;
