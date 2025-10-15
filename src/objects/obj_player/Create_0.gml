@@ -114,9 +114,15 @@ vel_keygrace = 0;
 vel_grace = 0;
 vel_grace_timer = 0;
 
+// simulate holding jump
 hold_jump_key_timer = 0;
+// force y_vel at value
 hold_jump_vel = 0;
 hold_jump_vel_timer = 0;
+
+// bonus jump velocity
+jump_vel_grace = 0;
+jump_vel_grace_timer = 0;
 
 key_force = 0;
 key_force_timer = 0;
@@ -140,8 +146,11 @@ dash_pre_y_vel = 0;
 dash_timer = 0;
 // how long has dash been happening?
 dash_frame = 0;
+// extend dash into free state
 dash_grace = 0;
+// extend dash into free state
 dash_grace_kick = 0;
+// how long until allowed to refill from ground
 dash_recover = 0;
 // player should long jump on the next frame
 dash_jump = false;
@@ -451,12 +460,19 @@ action_jump = function() {
 	var _kv = INPUT.check("down") - INPUT.check("up");
 	
 	if grace > 0 {
-		actor_move_y(grace_y - y);
+		actor_move_y(min(grace_y - y, 0));
 	}
 	
 	action_jump_shared();
 	
-	y_vel = min(y_vel, defs.jump_vel);
+	var _jump_vel = defs.jump_vel;
+	if jump_vel_grace_timer > 0 {
+		jump_vel_grace_timer = 0;
+		_jump_vel = min(_jump_vel, jump_vel_grace);
+	}
+	
+	y_vel = min(y_vel, _jump_vel);
+	// in case the player buffered the jump
 	if !INPUT.check("jump") {
 		y_vel *= defs.jump_damp;
 	}
@@ -515,7 +531,7 @@ action_walljump = function() {
 action_dashjump = function(_key_dir) {
 	
 	if grace > 0 {
-		actor_move_y(grace_y - y);
+		actor_move_y(min(grace_y - y));
 	}
 	
 	action_jump_shared();
@@ -862,6 +878,7 @@ state_base.set("step", function () {
 	dash_grace -= 1;
 	dash_grace_kick -= 1;
 	vel_grace_timer -= 1;
+	jump_vel_grace_timer -= 1;
 	cannon_cooldown -= 1;
 	
 	if state.is(state_free) || state.is(state_swim) {
@@ -1461,9 +1478,9 @@ state_swim.set("step", function() {
 	if !get_check_water(x, y) {
 		if y_vel < 0 {
 			y_vel *= 0.95;
-			hold_jump_key_timer = 8;
+			hold_jump_key_timer = 48;
 			hold_jump_vel = y_vel;
-			hold_jump_vel_timer = 2;
+			hold_jump_vel_timer = 3;
 		}
 		state.change(state_free);
 		return;
@@ -1552,12 +1569,17 @@ state_swim_bullet.set("enter", function() {
 	if !get_check_water(x, y) {
 		grace = defs.grace;
 		grace_y = y;
-		if y_vel <= 0 {
-			y_vel *= 0.95;
-			hold_jump_key_timer = 24;
-			hold_jump_vel = y_vel;
-			hold_jump_vel_timer = 2;
+		
+		if y_vel < 0 {
+			jump_vel_grace = y_vel;
+			jump_vel_grace_timer = defs.grace;
 		}
+		
+		y_vel *= 0.6;
+		hold_jump_key_timer = 48;
+		hold_jump_vel = y_vel;
+		hold_jump_vel_timer = 5;
+		
 		state.change(state_free);
 		return;
 	}
