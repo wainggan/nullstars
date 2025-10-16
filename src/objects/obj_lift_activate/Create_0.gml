@@ -21,12 +21,19 @@ target_y = y;
 
 with target {
 	other.target_x = x;
-	other.target_y = y;	
+	other.target_y = y;
 }
 
 trigger_set(function() {
 	if state.is(state_idle) state.change(state_active);
 });
+
+fn_touch = function () {
+	if time <= 0 && !reliant {
+		trigger_run();
+		trigger_send();
+	}
+};
 
 reset = function(){
 	state.change(state_idle);
@@ -37,11 +44,11 @@ reset = function(){
 
 state = new State();
 
-state_idle = state.add()
-.set("enter", function() {
+state_idle = state.add();
+state_idle.set("enter", function() {
 	time = 10;
-})
-.set("step", function(){
+});
+state_idle.set("step", function(){
 	
 	var _activate = false;
 	
@@ -49,18 +56,8 @@ state_idle = state.add()
 	lift_y = 0;
 	
 	time -= 1;
-	if time < 0 with obj_player {
-		if riding(other) _activate = true;
-	}
 	
-	if _activate {
-		if !reliant {
-			trigger_run();
-			trigger_send();
-		}
-	}
-	
-})
+});
 
 state_active = state.add()
 .set("enter", function(){

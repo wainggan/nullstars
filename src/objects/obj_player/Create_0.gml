@@ -1093,6 +1093,12 @@ state_free.set("step", function () {
 		}
 	}
 	
+	// todo: use instance_place_list instead
+	var _inst_lift = instance_place(x, y + 1, obj_lift_activate);
+	if _inst_lift != noone && onground {
+		_inst_lift.fn_touch();
+	}
+	
 	if buffer_dash > 0 && dash_left > 0 {
 		state.change(state_dash);
 		return;
@@ -1163,6 +1169,11 @@ state_ledge.set("enter", function(){
 	}
 	
 	action_anim_ledge();
+	
+	var _inst_lift = instance_place(x + dir, y, obj_lift_activate);
+	if _inst_lift != noone {
+		_inst_lift.fn_touch();
+	}
 	
 	if buffer_dash > 0 && dash_left > 0 {
 		state.change(state_dash);
