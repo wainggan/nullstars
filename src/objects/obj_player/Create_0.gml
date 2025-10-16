@@ -854,7 +854,7 @@ state_base.set("step", function () {
 	}
 	
 	var _inst_cannon = instance_place(x, y, obj_cannon_chain);
-	if !state.is(state_cannon) && _inst_cannon && _inst_cannon.cooldown <= 0 && cannon_cooldown <= 0 {
+	if _inst_cannon && _inst_cannon.cooldown <= 0 && cannon_cooldown <= 0 && (!state.is(state_cannon) || _inst_cannon != cannon_inst) {
 		x = _inst_cannon.x;
 		y = _inst_cannon.y;
 		_inst_cannon.cooldown = 1;
@@ -1393,7 +1393,7 @@ state_cannon.set("enter", function () {
 	hold_jump_vel_timer = 0;
 });
 state_cannon.set("leave", function () {
-	cannon_cooldown = 12;
+	cannon_cooldown = 1;
 });
 state_cannon.set("step", function () {
 	var _kh = INPUT.check("right") - INPUT.check("left");
