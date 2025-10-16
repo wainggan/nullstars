@@ -1407,7 +1407,7 @@ state_cannon.set("step", function () {
 			var _dir = point_direction(0, 0, _kh == 0 && _kv == 0 ? dir : _kh, _kv);
 	
 			x_vel = lengthdir_x(10, _dir);
-			y_vel = lengthdir_y(9, _dir);
+			y_vel = lengthdir_y(10, _dir);
 		} else {
 			state.change(state_dash);
 			return;
