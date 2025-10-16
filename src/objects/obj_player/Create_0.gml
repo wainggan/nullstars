@@ -836,6 +836,12 @@ state_base.set("step", function () {
 		}
 	}
 	
+	// move one pixel down if walking off a cliff.
+	// fixes walking off lift bug
+	if onground && y_vel <= 0 && !actor_collision(x, y + 1) {
+		actor_move_y(1);
+	}
+	
 	var _inst_dash = instance_place(x, y, obj_dash);
 	if dash_left < defs.dash_total && _inst_dash && _inst_dash.state.is(_inst_dash.state_active) {
 		game_set_pause(4);
