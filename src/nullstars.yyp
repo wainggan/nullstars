@@ -143,6 +143,7 @@
     {"$GMIncludedFile":"","%Name":"Room_78.bin","CopyToMask":-1,"filePath":"datafiles/world/room","name":"Room_78.bin","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"Room_79.bin","CopyToMask":-1,"filePath":"datafiles/world/room","name":"Room_79.bin","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"Room_8.bin","CopyToMask":-1,"filePath":"datafiles/world/room","name":"Room_8.bin","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"Room_80.bin","CopyToMask":-1,"filePath":"datafiles/world/room","name":"Room_80.bin","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"Room_9.bin","CopyToMask":-1,"filePath":"datafiles/world/room","name":"Room_9.bin","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"world.bin","CopyToMask":-1,"filePath":"datafiles/world","name":"world.bin","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
   ],
