@@ -629,6 +629,10 @@ impl_jump_bounce = function(_dir, _from_x, _from_y) {
 	
 	action_jump_shared();
 	
+	if state.is(state_dash) {
+		action_dash_end();
+	}
+	
 	state.change(state_free);
 
 	y_vel = defs.jump_vel - 2;
