@@ -15169,10 +15169,13 @@
 			"bgPos": null,
 			"bgPivotX": 0.5,
 			"bgPivotY": 0.5,
-			"__smartColor": "#8C8A8D",
+			"__smartColor": "#95888E",
 			"__bgPos": null,
 			"externalRelPath": "level/Room_80.ldtkl",
-			"fieldInstances": [{ "__identifier": "style", "__type": "LocalEnum.Level_Styles", "__value": null, "__tile": null, "defUid": 506, "realEditorValues": [] }],
+			"fieldInstances": [{ "__identifier": "style", "__type": "LocalEnum.Level_Styles", "__value": "world2_0", "__tile": null, "defUid": 506, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["world2_0"]
+			}] }],
 			"layerInstances": null,
 			"__neighbours": [{ "levelIid": "619ebef0-8560-11f0-b393-4bdd1dedca64", "dir": "e" }]
 		}
