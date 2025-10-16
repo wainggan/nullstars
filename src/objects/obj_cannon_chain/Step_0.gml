@@ -15,12 +15,12 @@ if instance_exists(obj_player) && obj_player.state.is(obj_player.state_cannon) &
 	anim_return = true;
 	
 	anim_anchor_x_vel = obj_player.x - anim_anchor_x;
-	anim_anchor_y_vel = obj_player.y - anim_anchor_y;
+	anim_anchor_y_vel = (obj_player.y - 16) - anim_anchor_y;
 	
 	anim_anchor_accel = 0;
 	
 	anim_anchor_x = obj_player.x;
-	anim_anchor_y = obj_player.y;
+	anim_anchor_y = obj_player.y - 16;
 } else {
 	if anim_return {
 		var _dir = point_direction(anim_anchor_x, anim_anchor_y, x, y);

@@ -856,7 +856,7 @@ state_base.set("step", function () {
 	var _inst_cannon = instance_place(x, y, obj_cannon_chain);
 	if _inst_cannon && _inst_cannon.cooldown <= 0 && cannon_cooldown <= 0 && (!state.is(state_cannon) || _inst_cannon != cannon_inst) {
 		x = _inst_cannon.x;
-		y = _inst_cannon.y;
+		y = _inst_cannon.y + 16;
 		_inst_cannon.cooldown = 1;
 		cannon_inst = _inst_cannon;
 		state.change(state_cannon);
@@ -1724,6 +1724,10 @@ cam = function(_cam) {
 	
 	var _x = x + power(abs(x_vel), 1.4) * sign(x_vel);
 	var _y = y - 32;
+	
+	if state.is(state_cannon) {
+		_y = y - 16;
+	}
 	
 	/*
 	if state.is(state_menu) {
