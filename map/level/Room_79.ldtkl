@@ -365,6 +365,28 @@
 					"fieldInstances": [],
 					"__worldX": 6096,
 					"__worldY": 10256
+				},
+				{
+					"__identifier": "obj_checkpoint",
+					"__grid": [145,25],
+					"__pivot": [0,1],
+					"__tags": [],
+					"__tile": { "tilesetUid": 8, "x": 224, "y": 288, "w": 16, "h": 16 },
+					"__smartColor": "#2CE8F5",
+					"iid": "0062e900-8560-11f0-acb8-ef808cd05e0e",
+					"width": 32,
+					"height": 32,
+					"defUid": 70,
+					"px": [2320,416],
+					"fieldInstances": [
+						{ "__identifier": "index", "__type": "String", "__value": "2nddjd", "__tile": null, "defUid": 275, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["2nddjd"]
+						}] },
+						{ "__identifier": "waypoint", "__type": "Bool", "__value": true, "__tile": null, "defUid": 527, "realEditorValues": [] }
+					],
+					"__worldX": 7296,
+					"__worldY": 10288
 				}
 			]
 		},
