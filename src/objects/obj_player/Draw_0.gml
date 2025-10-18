@@ -120,7 +120,7 @@ if !game_paused() {
 		_pos_x + (_meta.x ?? 0) * _dir * _scale_x,
 		_pos_y + (_meta.y ?? 0) * _scale_y,
 		dir,
-		state.is(state_swim) ? 1 : 0,
+		state.is(state_swim_bullet) ? 1 : 0,
 		global.data.player.tail
 	);
 }
