@@ -531,7 +531,7 @@ action_walljump = function() {
 action_dashjump = function(_key_dir) {
 	
 	if grace > 0 {
-		actor_move_y(min(grace_y - y));
+		actor_move_y(min(grace_y - y, 0));
 	}
 	
 	action_jump_shared();
@@ -763,7 +763,13 @@ state_base.set("step", function () {
 			vel_grace = x_vel;
 		}
 		if state.is(state_swim_bullet) {
-			swim_dir = point_direction(0, 0, -x_vel, y_vel);
+			// swim_dir = point_direction(0, 0, -x_vel, y_vel);
+			if abs(x_vel) > abs(y_vel) {
+				x_vel = -x_vel;
+				state.change(state_free);
+			} else {
+				swim_dir = point_direction(0, 0, 0, y_vel);
+			}
 		} else {
 			x_vel = 0;
 		}
@@ -794,7 +800,13 @@ state_base.set("step", function () {
 			}
 		}
 		if state.is(state_swim_bullet) {
-			swim_dir = point_direction(0, 0, x_vel, -y_vel);
+			//swim_dir = point_direction(0, 0, x_vel, -y_vel);
+			if abs(y_vel) > abs(x_vel) {
+				y_vel = -y_vel;
+				state.change(state_free);
+			} else {
+				swim_dir = point_direction(0, 0, x_vel, 0);
+			}
 		} else if state.is(state_cannon) {
 			if abs(y_vel) > 2 {
 				y_vel *= -0.5;
@@ -836,6 +848,24 @@ state_base.set("step", function () {
 		}
 	}
 	
+	if get_check_death(x, y) {
+		game_player_kill();
+	}
+	
+	if instance_exists(light) {
+		light.x = x;
+		light.y = y - (nat_crouch() ? 14 : 22);
+	}
+	
+	actor_lift_update();
+	
+	onground_last = onground;
+	dash_grace -= 1;
+	dash_grace_kick -= 1;
+	vel_grace_timer -= 1;
+	jump_vel_grace_timer -= 1;
+	cannon_cooldown -= 1;
+	
 	// move one pixel down if walking off a cliff.
 	// fixes walking off lift bug
 	if onground && y_vel <= 0 && !actor_collision(x, y + 1) {
@@ -872,24 +902,6 @@ state_base.set("step", function () {
 		state.change(state_cannon);
 		return;
 	}
-	
-	if instance_exists(light) {
-		light.x = x;
-		light.y = y - (nat_crouch() ? 14 : 22);
-	}
-	
-	if get_check_death(x, y) {
-		game_player_kill();
-	}
-	
-	actor_lift_update();
-	
-	onground_last = onground;
-	dash_grace -= 1;
-	dash_grace_kick -= 1;
-	vel_grace_timer -= 1;
-	jump_vel_grace_timer -= 1;
-	cannon_cooldown -= 1;
 	
 	if state.is(state_free) || state.is(state_swim) {
 		if INPUT.check_pressed("menu") &&
@@ -1427,8 +1439,8 @@ state_cannon.set("step", function () {
 			
 			var _dir = point_direction(0, 0, _kh == 0 && _kv == 0 ? dir : _kh, _kv);
 	
-			x_vel = lengthdir_x(10, _dir);
-			y_vel = lengthdir_y(10, _dir);
+			x_vel = lengthdir_x(9, _dir);
+			y_vel = lengthdir_y(9, _dir);
 		} else {
 			state.change(state_dash);
 			return;
@@ -1436,7 +1448,7 @@ state_cannon.set("step", function () {
 	}
 	
 	if !cannon_wait {
-		y_vel = approach(y_vel, 9, defs.gravity_hold * clamp(cannon_gravity, 0, 1));
+		y_vel = approach(y_vel, 8, defs.gravity_hold * clamp(cannon_gravity, 0, 1));
 		cannon_gravity += 1 / 20;
 	}
 	
