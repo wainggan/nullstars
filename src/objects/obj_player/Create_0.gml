@@ -127,12 +127,16 @@ jump_vel_grace_timer = 0;
 key_force = 0;
 key_force_timer = 0;
 
+// used to fix some velocity related bugs related to dying
+check_death = false;
+
 walljump_grace = 0;
 walljump_grace_dir = 0;
 walljump_solid = noone;
 walljump_solid_x = 0;
 walljump_solid_y = 0;
 
+dash_left = defs.dash_total;
 // direction of dash (-1 | 0 | 1)
 dash_dir_x = 0;
 dash_dir_y = 0;
@@ -168,9 +172,6 @@ swim_spd = 0;
 swim_pre_x_vel = 0;
 swim_pre_y_vel = 0;
 swim_frame = 0;
-
-
-dash_left = defs.dash_total;
 
 cam_ground_x = x;
 cam_ground_y = y;
@@ -773,6 +774,15 @@ state_base.set("step", function () {
 		} else {
 			x_vel = 0;
 		}
+		
+		var _x_vel = x_vel;
+		var _y_vel = y_vel;
+		x_vel = 0;
+		y_vel = 0;
+		// todo: this is technically correct, though possibly slow.
+		check_death = check_death || get_check_death(x, y);
+		x_vel = _x_vel;
+		y_vel = _y_vel;
 	};
 	
 	static __collide_y = function() {
@@ -814,7 +824,19 @@ state_base.set("step", function () {
 		} else {
 			y_vel = 0;
 		}
+		
+		var _x_vel = x_vel;
+		var _y_vel = y_vel;
+		x_vel = 0;
+		y_vel = 0;
+		// todo: this is technically correct, though possibly slow (since, both axis do the check).
+		check_death = check_death || get_check_death(x, y);
+		x_vel = _x_vel;
+		y_vel = _y_vel;
 	};
+	
+	// reset flag before movement
+	check_death = false;
 	
 	// move in fastest axis
 	if abs(x_vel) > abs(y_vel) {
@@ -848,7 +870,7 @@ state_base.set("step", function () {
 		}
 	}
 	
-	if get_check_death(x, y) {
+	if check_death || get_check_death(x, y) {
 		game_player_kill();
 	}
 	
