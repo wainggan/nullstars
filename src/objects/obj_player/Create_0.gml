@@ -820,6 +820,8 @@ state_base.set("step", function () {
 		} else if state.is(state_cannon) {
 			if abs(y_vel) > 2 {
 				y_vel *= -0.5;
+			} else {
+				y_vel = 0;
 			}
 		} else {
 			y_vel = 0;
