@@ -335,9 +335,6 @@ draw_clear_alpha(c_black, 0);
 
 shader_set(shd_tiles);
 
-var _matrix = matrix_build_identity();
-var _matrix_ind = util_matrix_get_alignment();
-
 for (var i = 0; i < array_length(_lvl_onscreen); i++) {
 	var _lvl = _lvl_onscreen[i];
 	if _lvl.vb_is_complete <= 0 {
