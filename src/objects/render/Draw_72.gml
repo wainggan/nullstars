@@ -383,6 +383,14 @@ for (var i = 0; i < array_length(_lvl_onscreen); i++) {
 	}
 }
 
+with obj_spike {
+	// todo: this could probably be way faster than it is
+	if object_index == obj_spike_bubble || object_index == obj_spike_pond {
+		continue;
+	}
+	draw_sprite_ext(sprite_index, image_index, x - _cam_x, y - _cam_y, image_xscale, image_yscale, image_angle, image_blend, image_alpha);
+}
+
 surface_reset_target();
 
 /*

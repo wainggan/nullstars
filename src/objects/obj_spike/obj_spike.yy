@@ -38,5 +38,5 @@
     "path":"sprites/spr_spike/spr_spike.yy",
   },
   "spriteMaskId":null,
-  "visible":true,
+  "visible":false,
 }
