@@ -332,10 +332,18 @@ get_check_death = function(_x, _y) {
 	
 	var _inst = instance_place(_x, _y, obj_spike);
 	with _inst {
-		if object_index == obj_spike_up && other.y_vel >= 0 return true;
-		if object_index == obj_spike_down && other.y_vel <= 0 return true;
-		if object_index == obj_spike_left && other.x_vel >= 0 return true;
-		if object_index == obj_spike_right && other.x_vel <= 0 return true;
+		if object_index == obj_spike_up && other.y_vel - y_delta >= 0 {
+			return true;
+		}
+		if object_index == obj_spike_down && other.y_vel - y_delta <= 0 {
+			return true;
+		}
+		if object_index == obj_spike_left && other.x_vel - x_delta >= 0 {
+			return true;
+		}
+		if object_index == obj_spike_right && other.x_vel - x_delta <= 0 {
+			return true;
+		}
 		return true;
 	}
 	

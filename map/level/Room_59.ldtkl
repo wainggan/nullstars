@@ -357,7 +357,7 @@
 					"__identifier": "obj_spike_right",
 					"__grid": [17,26],
 					"__pivot": [0,0],
-					"__tags": ["spike"],
+					"__tags": [ "spike", "glue_target" ],
 					"__tile": { "tilesetUid": 8, "x": 368, "y": 80, "w": 16, "h": 16 },
 					"__smartColor": "#3E8948",
 					"iid": "56ee2700-e920-11ef-a4bb-d9df37fd901e",
@@ -368,6 +368,41 @@
 					"fieldInstances": [{ "__identifier": "stick", "__type": "Bool", "__value": true, "__tile": null, "defUid": 36, "realEditorValues": [] }],
 					"__worldX": 31968,
 					"__worldY": 8960
+				},
+				{
+					"__identifier": "obj_glue",
+					"__grid": [14,25],
+					"__pivot": [0,0],
+					"__tags": [],
+					"__tile": null,
+					"__smartColor": "#FEE761",
+					"iid": "841a0580-ac70-11f0-a83e-f1d664f6ad7b",
+					"width": 16,
+					"height": 16,
+					"defUid": 241,
+					"px": [224,400],
+					"fieldInstances": [
+						{ "__identifier": "parent", "__type": "EntityRef", "__value": {
+							"entityIid": "974dd370-e920-11ef-a4bb-478302422ed9",
+							"layerIid": "8e2a7d13-e920-11ef-a4bb-b149956fe35f",
+							"levelIid": "8e2a7d10-e920-11ef-a4bb-ab1e6620c716",
+							"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3"
+						}, "__tile": null, "defUid": 242, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["974dd370-e920-11ef-a4bb-478302422ed9"]
+						}] },
+						{ "__identifier": "children", "__type": "Array<EntityRef>", "__value": [{
+							"entityIid": "56ee2700-e920-11ef-a4bb-d9df37fd901e",
+							"layerIid": "8e2a7d13-e920-11ef-a4bb-b149956fe35f",
+							"levelIid": "8e2a7d10-e920-11ef-a4bb-ab1e6620c716",
+							"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3"
+						}], "__tile": null, "defUid": 243, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["56ee2700-e920-11ef-a4bb-d9df37fd901e"]
+						}] }
+					],
+					"__worldX": 31920,
+					"__worldY": 8944
 				}
 			]
 		},

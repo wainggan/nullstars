@@ -8854,7 +8854,7 @@
 		{
 			"identifier": "obj_spike_up",
 			"uid": 29,
-			"tags": ["spike"],
+			"tags": [ "spike", "glue_target" ],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "a spike, used to stick to moving platforms.",
@@ -8930,7 +8930,7 @@
 		{
 			"identifier": "obj_spike_left",
 			"uid": 33,
-			"tags": ["spike"],
+			"tags": [ "spike", "glue_target" ],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "a spike, used to stick to moving platforms.",
@@ -8960,53 +8960,12 @@
 			"limitBehavior": "MoveLastOne",
 			"pivotX": 0,
 			"pivotY": 0,
-			"fieldDefs": [
-				{
-					"identifier": "stick",
-					"doc": "if true, the spikes will attempt to inherit the position or state of whatever is around it",
-					"__type": "Bool",
-					"uid": 34,
-					"type": "F_Bool",
-					"isArray": false,
-					"canBeNull": false,
-					"arrayMinLength": null,
-					"arrayMaxLength": null,
-					"editorDisplayMode": "Hidden",
-					"editorDisplayScale": 1,
-					"editorDisplayPos": "Above",
-					"editorLinkStyle": "StraightArrow",
-					"editorDisplayColor": null,
-					"editorAlwaysShow": false,
-					"editorShowInWorld": true,
-					"editorCutLongValues": true,
-					"editorTextSuffix": null,
-					"editorTextPrefix": null,
-					"useForSmartColor": false,
-					"exportToToc": false,
-					"searchable": false,
-					"min": null,
-					"max": null,
-					"regex": null,
-					"acceptFileTypes": null,
-					"defaultOverride": {
-						"id": "V_Bool",
-						"params": [ true ]
-					},
-					"textLanguageMode": null,
-					"symmetricalRef": false,
-					"autoChainRef": true,
-					"allowOutOfLevelRef": true,
-					"allowedRefs": "OnlySame",
-					"allowedRefsEntityUid": null,
-					"allowedRefTags": [],
-					"tilesetUid": null
-				}
-			]
+			"fieldDefs": []
 		},
 		{
 			"identifier": "obj_spike_right",
 			"uid": 35,
-			"tags": ["spike"],
+			"tags": [ "spike", "glue_target" ],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "a spike, used to stick to moving platforms.",
@@ -9082,7 +9041,7 @@
 		{
 			"identifier": "obj_spike_down",
 			"uid": 31,
-			"tags": ["spike"],
+			"tags": [ "spike", "glue_target" ],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": "a spike, used to stick to moving platforms.",
