@@ -25,13 +25,13 @@ switch dir {
 		dir = 0;
 		break;
 	case "up":
-		dir = 90;
+		dir = 1;
 		break;
 	case "left":
-		dir = 180;
+		dir = 2;
 		break;
 	case "down":
-		dir = 270;
+		dir = 3;
 		break;
 	default:
 		throw $"Unknown obj_lift_activate dir value: {dir}";
@@ -122,8 +122,8 @@ state_active = state.add()
 	
 	anim_line = 1;
 	
-	reset_polarity_x = lengthdir_x(1, dir);
-	reset_polarity_y = lengthdir_y(1, dir);
+	reset_polarity_x = lengthdir_x(1, dir * 90);
+	reset_polarity_y = lengthdir_y(1, dir * 90);
 	
 	rest = false;
 	
@@ -137,8 +137,8 @@ state_active = state.add()
 .set("step", function(){
 	
 	accel += 0.05;
-	x_vel = approach(x_vel, lengthdir_x(spd, dir), accel);
-	y_vel = approach(y_vel, lengthdir_y(spd, dir), accel);
+	x_vel = approach(x_vel, lengthdir_x(spd, dir * 90), accel);
+	y_vel = approach(y_vel, lengthdir_y(spd, dir * 90), accel);
 	
 	anim_vel += min(point_distance(0, 0, x_vel, y_vel), 5);
 	anim_frame += 2;
@@ -147,11 +147,11 @@ state_active = state.add()
 	mask_index = sprite_index;
 	
 	actor_move_x(x_vel, function(){
-		game_camera_set_shake(4, 0.4)
+		game_camera_set_shake(4, 0.4);
 		state.change(state_retract);
 	});
 	actor_move_y(y_vel, function(){
-		game_camera_set_shake(4, 0.4)
+		game_camera_set_shake(4, 0.4);
 		state.change(state_retract);
 	});
 	glue_parent_moved(x, y);
@@ -175,7 +175,7 @@ state_retract = state.add()
 })
 .set("step", function(){
 	
-	var _dir = dir + 180;
+	var _dir = dir * 90 + 180;
 	
 	time -= 1;
 	if time < 0 {

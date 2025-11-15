@@ -4,7 +4,7 @@ draw_sprite_ext(spr_lift_attack, 0, x, y, image_xscale, image_yscale, 0, c_white
 var _center_x = x + sprite_width / 2;
 var _center_y = y + sprite_height / 2;
 
-var _di = round(dir / 90); // going to kill myself
+var _di = dir; // going to kill myself
 
 var _anim = (anim_frame / 4 % 32);
 

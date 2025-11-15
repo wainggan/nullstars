@@ -1,26 +1,84 @@
 
-function actor_scan(_x, _y, _dir, _cap = 30) {
-	static __return = {};
+function actor_scan(_x, _y, _dir, _cap = 16) {
+	// cache alloc
+	static __return = {
+		x: 0,
+		y: 0,
+	};
+	
+	var _off_x;
+	var _off_y;
 	
 	var _check_x = _x;
 	var _check_y = _y;
+	
+	// _dir is 0 | 1 | 2 | 3
+	switch _dir {
+		case 0: {
+			_off_x = 1;
+			_off_y = 0;
+		} break;
+		case 1: {
+			_off_x = 0;
+			_off_y = -1;
+		} break;
+		case 2: {
+			_off_x = -1;
+			_off_y = 0;
+		} break;
+		case 3: {
+			_off_x = 0;
+			_off_y = 1;
+		} break;
+		default: {
+			__return.x = _check_x;
+			__return.y = _check_y;
+			return __return;
+		}
+	}
+	
 	var _check = _cap;
 	
+	// while not overflowing
 	while _check > 0 {
 		if actor_collision(_check_x, _check_y) {
-			if _check_x == _x && _check_y == _y break;
+			// we are inside a wall
+			if _check_x == _x && _check_y == _y {
+				break;
+			}
 			
-			var _check_2 = max(sprite_width, sprite_height);
-			while actor_collision(_check_x, _check_y) && _check_2 > 0 {
-				_check_x -= lengthdir_x(1, _dir);
-				_check_y -= lengthdir_y(1, _dir);
+			_check_x -= (sprite_width + (TILESIZE - 1)) * _off_x;
+			_check_y -= (sprite_height + (TILESIZE - 1)) * _off_y;
+			
+			// todo: is this actually safe?
+			if _off_x == 1 {
+				// round down
+				_check_x = _check_x & 0xffff_ffff_ffff_fffc;
+			} else if _off_x == -1 {
+				// round up
+				_check_x = (_check_x | 0b11) + 1;
+			}
+			if _off_y == 1 {
+				// round down
+				_check_y = _check_y & 0xffff_ffff_ffff_fffc;
+			} else if _off_y == -1 {
+				// round up
+				_check_y = (_check_y | 0b11) + 1;
+			}
+			
+			var _check_2 = max(sprite_width div 4 + 1, sprite_height div 4 + 1);
+			while !actor_collision(_check_x + _off_x * 4, _check_y + _off_y * 4) && _check_2 > 0 {
+				_check_x += _off_x * 4;
+				_check_y += _off_y * 4;
 				_check_2--;
 			}
 	
 			break;
 		}
-		_check_x += lengthdir_x(sprite_width, _dir);
-		_check_y += lengthdir_y(sprite_height, _dir);
+		
+		_check_x += (sprite_width + (TILESIZE - 1)) * _off_x;
+		_check_y += (sprite_height + (TILESIZE - 1)) * _off_y;
+		
 		_check--;
 	}
 

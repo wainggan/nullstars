@@ -104,33 +104,38 @@ function actor_move_y(_amount, _callback = undefined, _pusher = noone) {
 	
 }
 
+// todo: optimize?
 function actor_collision(_x, _y) {
 	
 	static __list = ds_list_create();
 	
-	for (var i = 0; i < array_length(global.game.level.loaded); i++) {
-		if place_meeting(_x, _y, global.game.level.loaded[i].data.tiles) return true;
+	var _loaded = global.game.level.loaded;
+	for (var i = 0, _len = array_length(_loaded); i < _len; i++) {
+		if place_meeting(_x, _y, _loaded[i].data.tiles) {
+			return true;
+		}
 	}
 	
-	ds_list_clear(__list)
+	ds_list_clear(__list);
 	instance_place_list(_x, _y, obj_Solid, __list, false);
 	
-	for (var i = 0; i < ds_list_size(__list); i++) {
+	for (var i = 0, _len = ds_list_size(__list); i < _len; i++) {
 		var _o = __list[| i];
 		if _o.collidable {
+			var _object_index = _o.object_index;
 			
-			if object_get_parent(_o.object_index) == obj_ss {
+			if object_get_parent(_object_index) == obj_ss {
 				
-				if _o.object_index == obj_ss_up && _o.bbox_top >= bbox_bottom {
+				if _object_index == obj_ss_up && _o.bbox_top >= bbox_bottom {
 					return true;
 				}
-				if _o.object_index == obj_ss_down && _o.bbox_bottom <= bbox_top {
+				if _object_index == obj_ss_down && _o.bbox_bottom <= bbox_top {
 					return true;
 				}
-				if _o.object_index == obj_ss_left && _o.bbox_left >= bbox_right {
+				if _object_index == obj_ss_left && _o.bbox_left >= bbox_right {
 					return true;
 				}
-				if _o.object_index == obj_ss_right && _o.bbox_right <= bbox_left {
+				if _object_index == obj_ss_right && _o.bbox_right <= bbox_left {
 					return true;
 				}
 				

@@ -20,8 +20,7 @@ if state.is(state_idle) {
 }
 
 
-var _di = round(dir / 90);
-switch _di {
+switch dir {
 	case 0:
 	case 2: {
 		var _x0 = min(x, anim_sight_x) + 6;
@@ -30,7 +29,7 @@ switch _di {
 		var _nx0 = _x0;
 		var _nx1 = _x1;
 		
-		if _di == 0 {
+		if dir == 0 {
 			_nx0 = lerp(_x0, _x1, 1 - _anim);
 		} else {
 			_nx1 = lerp(_x1, _x0, 1 - _anim);
@@ -53,7 +52,7 @@ switch _di {
 		var _ny0 = _y0;
 		var _ny1 = _y1;
 		
-		if _di == 3 {
+		if dir == 3 {
 			_ny0 = lerp(_y0, _y1, 1 - _anim);
 		} else {
 			_ny1 = lerp(_y1, _y0, 1 - _anim);
