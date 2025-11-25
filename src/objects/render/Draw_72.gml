@@ -52,7 +52,7 @@ if array_length(_lvl_onscreen) > 0 {
 				spr_pixel, 0,
 				_lvl.x - _cam_x, _lvl.y - _cam_y,
 				_lvl.width, _lvl.height,
-				0, c_white, 1,
+				0, c_white, 1
 			);
 			
 		}
@@ -197,8 +197,10 @@ draw_clear_alpha(c_black, 0)
 // draw bubble base
 with obj_spike_bubble {
 	var _size = 1
-	if global.config.graphics_up_bubble_wobble
-		_size = round_ext(wave(0.95, 1.1, 8, offset), 0.05)
+	if global.config.graphics_up_bubble_wobble {
+		_size = sin((global.time / 60 / 8 + offset) * (pi * 2)) * ((1.1 - 0.95) / 2) + ((1.1 - 0.95) / 2 + 0.95);
+		_size = round_ext(_size, 0.05);
+	}
 	
 	draw_sprite_ext(spr_spike_bubble, 0, x - _cam_x, y - _cam_y, _size, _size, 0, c_black, 1);
 	draw_sprite_ext(spr_spike_bubble, 1, x - _cam_x, y - _cam_y, size, size, offset % 360, c_black, 1);
@@ -207,8 +209,10 @@ with obj_spike_bubble {
 with obj_spike_pond {
 	var _size = 2, _frame = floor(global.time / 60);
 	if global.config.graphics_up_bubble_wobble {
-		_size = round_ext(wave(0, 4, 9, offset), 1);
-		_frame = floor(wave(0, 24, 10, offset));
+		_size = sin((global.time / 60 / 9 + offset) * (pi * 2)) * ((4 - 0) / 2) + ((4 - 0) / 2 + 0);
+		_size = round(_size);
+		_frame = sin((global.time / 60 / 10 + offset) * (pi * 2)) * ((24 - 0) / 2) + ((24 - 0) / 2 + 0);
+		_frame = floor(_frame);
 	}
 	
 	draw_sprite_ext(spr_spike_pond, 0, x - _cam_x, y - _cam_y, image_xscale, image_yscale, 0, c_black, 1);
@@ -238,27 +242,31 @@ if global.config.graphics_up_bubble_spike {
 		var _off_x = 0;
 		var _off_y = 0;
 		if global.config.graphics_up_bubble_wobble {
-			_size = round_ext(wave(0.8, 2, 18, offset + 1000), 0.05);
-			_off_x = round_ext(wave(-6, 6, 23, offset * 2), 1);
-			_off_y = round_ext(wave(-6, 6, 24, offset * 3), 1);
+			_size = sin((global.time / 60 / 18 + offset + 100) * (pi * 2)) * ((2 - 0.8) / 2) + ((2 - 0.8) / 2 + 0.8);
+			_size = round_ext(_size, 0.05);
+			_off_x = sin((global.time / 60 / 23 + offset * 2) * (pi * 2)) * 6;
+			_off_x = round(_off_x);
+			_off_y = sin((global.time / 60 / 24 + offset * 3) * (pi * 2)) * 6;
+			_off_y = round(_off_y);
 		}
 	
 		draw_sprite_ext(spr_spike_x, 0, x + _off_x - _cam_x, y + _off_y - _cam_y, _size, _size, 0, _col, 1);
 	}
 
-	var _scissor = gpu_get_scissor();
 	with obj_spike_pond {
 		var _off_0 = 0;
 		var _off_1 = 0;
 		if global.config.graphics_up_bubble_wobble {
-			_off_0 = round_ext(wave(-96, 96, 30, offset * 2), 1);
-			_off_1 = round_ext(wave(-128, 128, 36, offset * 3), 1);
+			_off_0 = sin((global.time / 60 / 30 + offset * 2) * (pi * 2)) * 96;
+			_off_0 = round(_off_0);
+			_off_1 = sin((global.time / 60 / 36 + offset * 3) * (pi * 2)) * 128;
+			_off_1 = round(_off_1);
 		}
 		gpu_set_scissor(x - _cam_x + 2, y - _cam_y + 2, sprite_width - 4, sprite_height - 4);
 		draw_sprite_tiled_ext(spr_spike_pond_fill, 0, -_cam_x * 0.9, _off_0 - _cam_y * 0.9, 1, 1, _col, 1);
 		draw_sprite_tiled_ext(spr_spike_pond_fill, 1, -_cam_x * 0.9, _off_1 - _cam_y * 0.9, 1.5, 1.5, _col, 1);
 	}
-	gpu_set_scissor(_scissor);
+	gpu_set_scissor(0, 0, WIDTH, HEIGHT);
 
 }
 
