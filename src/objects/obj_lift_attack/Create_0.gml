@@ -146,14 +146,13 @@ state_active = state.add()
 	pet.mask_index = spr_none;
 	mask_index = sprite_index;
 	
-	actor_move_x(x_vel, function(){
+	static __collide = function () {
 		game_camera_set_shake(4, 0.4);
 		state.change(state_retract);
-	});
-	actor_move_y(y_vel, function(){
-		game_camera_set_shake(4, 0.4);
-		state.change(state_retract);
-	});
+	};
+	
+	actor_move_x(x_vel, __collide);
+	actor_move_y(y_vel, __collide);
 	glue_parent_moved(x, y);
 	
 	pet.mask_index = pet.sprite_index;
@@ -189,14 +188,13 @@ state_retract = state.add()
 		pet.mask_index = spr_none;
 		mask_index = sprite_index;
 		
-		actor_move_x(x_vel, function(){
+		static __collide = function () {
 			game_camera_set_shake(2, 0.4);
 			state.change(state_idle);
-		});
-		actor_move_y(y_vel, function(){
-			game_camera_set_shake(2, 0.4);
-			state.change(state_idle);
-		});
+		};
+		
+		actor_move_x(x_vel, __collide);
+		actor_move_y(y_vel, __collide);
 		glue_parent_moved(x, y);
 		
 		pet.mask_index = pet.sprite_index;
