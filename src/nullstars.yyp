@@ -316,6 +316,7 @@
     {"id":{"name":"shd_light_shadow_new","path":"shaders/shd_light_shadow_new/shd_light_shadow_new.yy",},},
     {"id":{"name":"shd_outline","path":"shaders/shd_outline/shd_outline.yy",},},
     {"id":{"name":"shd_outline_post","path":"shaders/shd_outline_post/shd_outline_post.yy",},},
+    {"id":{"name":"shd_outline_wide","path":"shaders/shd_outline_wide/shd_outline_wide.yy",},},
     {"id":{"name":"shd_reflect","path":"shaders/shd_reflect/shd_reflect.yy",},},
     {"id":{"name":"shd_rimlight","path":"shaders/shd_rimlight/shd_rimlight.yy",},},
     {"id":{"name":"shd_tiles","path":"shaders/shd_tiles/shd_tiles.yy",},},

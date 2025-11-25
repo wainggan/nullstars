@@ -185,6 +185,7 @@
     {"name":"shd_light_shadow_new","order":16,"path":"shaders/shd_light_shadow_new/shd_light_shadow_new.yy",},
     {"name":"shd_outline","order":6,"path":"shaders/shd_outline/shd_outline.yy",},
     {"name":"shd_outline_post","order":7,"path":"shaders/shd_outline_post/shd_outline_post.yy",},
+    {"name":"shd_outline_wide","order":18,"path":"shaders/shd_outline_wide/shd_outline_wide.yy",},
     {"name":"shd_reflect","order":8,"path":"shaders/shd_reflect/shd_reflect.yy",},
     {"name":"shd_rimlight","order":10,"path":"shaders/shd_rimlight/shd_rimlight.yy",},
     {"name":"shd_tiles","order":9,"path":"shaders/shd_tiles/shd_tiles.yy",},
