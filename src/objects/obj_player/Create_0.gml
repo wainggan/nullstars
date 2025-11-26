@@ -603,6 +603,13 @@ action_dashjump_wall = function(_key_dir, _wall_dir) {
 	
 	action_anim_dashjump_wall();
 	
+	if actor_lift_get_x() == 0 && actor_lift_get_y() == 0 {
+		var _inst = instance_place(x + dir * defs.wall_distance, y, obj_Solid);
+		if _inst != noone {
+			actor_lift_set(_inst.lift_x, _inst.lift_y);
+		}
+	}
+	
 	if dash_recover <= 0 {
 		dash_left = defs.dash_total;
 	}
