@@ -1,4 +1,8 @@
 
+if state.is(state_dead) {
+	exit;
+}
+
 draw_sprite_ext(spr_lift_attack, 0, x, y, image_xscale, image_yscale, 0, c_white, 1);
 
 var _center_x = x + sprite_width / 2;

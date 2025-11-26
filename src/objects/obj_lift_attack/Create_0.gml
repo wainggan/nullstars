@@ -12,7 +12,13 @@ pet = instance_create_layer(x, y, layer, obj_Solid, {
 });
 pet.outside = exists_outside_empty();
 
-riding = function(){
+squish = function () {
+	game_set_pause(2);
+	game_camera_set_shake(2, 0.4);
+	state.change(state_dead);
+};
+
+riding = function () {
 	return false;
 };
 mask_index = spr_none;
@@ -76,11 +82,22 @@ reset = function(){
 
 state = new State();
 
-state_idle = state.add()
-.set("enter", function() {
+state_dead = state.add();
+state_dead.set("enter", function () {
+	game_render_particle(x + sprite_width / 2, y + sprite_height / 2, ps_gen_pop);
+	pet.mask_index = spr_none;
+	mask_index = spr_none;
+});
+state_dead.set("leave", function () {
+	pet.mask_index = pet.sprite_index;
+	mask_index = spr_none;
+});
+
+state_idle = state.add();
+state_idle.set("enter", function () {
 	time = 10;
-})
-.set("step", function(){
+});
+state_idle.set("step", function () {
 	
 	var _activate = false;
 	
@@ -109,10 +126,10 @@ state_idle = state.add()
 		}
 	}
 	
-})
+});
 
-state_active = state.add()
-.set("enter", function(){
+state_active = state.add();
+state_active.set("enter", function () {
 	x_vel = 0;
 	y_vel = 0;
 	accel = 0;
@@ -133,8 +150,8 @@ state_active = state.add()
 		pad: 16,
 		spd: 0.04,
 	});
-})
-.set("step", function(){
+});
+state_active.set("step", function () {
 	
 	accel += 0.05;
 	x_vel = approach(x_vel, lengthdir_x(spd, dir * 90), accel);
@@ -160,19 +177,19 @@ state_active = state.add()
 	
 	with pet solid_move(other.x - x, other.y - y, , other.x_vel, other.y_vel);
 	
-})
+});
 
-state_retract = state.add()
-.set("enter", function(){
+state_retract = state.add();
+state_retract.set("enter", function () {
 	x_vel = 0;
 	y_vel = 0;
 	accel = 0;
 	time = 10;
-})
-.set("leave", function(){
+});
+state_retract.set("leave", function () {
 	rest = true;
-})
-.set("step", function(){
+});
+state_retract.set("step", function () {
 	
 	var _dir = dir * 90 + 180;
 	
@@ -220,11 +237,10 @@ state_retract = state.add()
 		
 		with pet solid_move(other.x - x, other.y - y, , 0, 0);
 		
-		state.change(state_idle)
+		state.change(state_idle);
 	}
 	
-})
+});
 
-
-state.change(state_idle)
+state.change(state_idle);
 

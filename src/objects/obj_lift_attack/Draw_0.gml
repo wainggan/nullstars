@@ -1,4 +1,8 @@
 
+if state.is(state_dead) {
+	exit;
+}
+
 var _cam = game_camera_get();
 
 var _pad = 6;
