@@ -126,7 +126,146 @@
 			"seed": 7064344,
 			"overrideTilesetUid": null,
 			"gridTiles": [],
-			"entityInstances": []
+			"entityInstances": [
+				{
+					"__identifier": "obj_lift_activate",
+					"__grid": [11,21],
+					"__pivot": [0,0],
+					"__tags": [ "object", "trigger", "glue_parent", "lift" ],
+					"__tile": null,
+					"__smartColor": "#6C7F7C",
+					"iid": "96680f60-ac70-11f0-b041-a371017bdf24",
+					"width": 48,
+					"height": 48,
+					"defUid": 16,
+					"px": [176,336],
+					"fieldInstances": [
+						{ "__identifier": "target", "__type": "Point", "__value": { "cx": 23, "cy": 21 }, "__tile": null, "defUid": 17, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["23,21"]
+						}] },
+						{ "__identifier": "spd", "__type": "Float", "__value": 6, "__tile": null, "defUid": 18, "realEditorValues": [] },
+						{ "__identifier": "reliant", "__type": "Bool", "__value": false, "__tile": null, "defUid": 203, "realEditorValues": [] }
+					],
+					"__worldX": 11680,
+					"__worldY": 368
+				},
+				{
+					"__identifier": "obj_lift_attack",
+					"__grid": [17,21],
+					"__pivot": [0,0],
+					"__tags": [ "lift", "object", "trigger", "glue_parent" ],
+					"__tile": null,
+					"__smartColor": "#B55088",
+					"iid": "9a359220-ac70-11f0-b041-69e0a10a70ae",
+					"width": 48,
+					"height": 48,
+					"defUid": 267,
+					"px": [272,336],
+					"fieldInstances": [
+						{ "__identifier": "dir", "__type": "LocalEnum.Direction_4", "__value": "down", "__tile": null, "defUid": 268, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["down"]
+						}] },
+						{ "__identifier": "spd", "__type": "Float", "__value": 6, "__tile": null, "defUid": 269, "realEditorValues": [] },
+						{ "__identifier": "reliant", "__type": "Bool", "__value": false, "__tile": null, "defUid": 270, "realEditorValues": [] }
+					],
+					"__worldX": 11776,
+					"__worldY": 368
+				},
+				{
+					"__identifier": "obj_lift_activate",
+					"__grid": [35,21],
+					"__pivot": [0,0],
+					"__tags": [ "object", "trigger", "glue_parent", "lift" ],
+					"__tile": null,
+					"__smartColor": "#6C7F7C",
+					"iid": "a9dd4ab0-ac70-11f0-b041-e3d20d942114",
+					"width": 48,
+					"height": 48,
+					"defUid": 16,
+					"px": [560,336],
+					"fieldInstances": [
+						{ "__identifier": "target", "__type": "Point", "__value": { "cx": 47, "cy": 21 }, "__tile": null, "defUid": 17, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["47,21"]
+						}] },
+						{ "__identifier": "spd", "__type": "Float", "__value": 6, "__tile": null, "defUid": 18, "realEditorValues": [] },
+						{ "__identifier": "reliant", "__type": "Bool", "__value": false, "__tile": null, "defUid": 203, "realEditorValues": [] }
+					],
+					"__worldX": 12064,
+					"__worldY": 368
+				},
+				{
+					"__identifier": "obj_lift_attack",
+					"__grid": [41,21],
+					"__pivot": [0,0],
+					"__tags": [ "lift", "object", "trigger", "glue_parent" ],
+					"__tile": null,
+					"__smartColor": "#B55088",
+					"iid": "ac8b2ca0-ac70-11f0-b041-f559feb8a8dc",
+					"width": 48,
+					"height": 48,
+					"defUid": 267,
+					"px": [656,336],
+					"fieldInstances": [
+						{ "__identifier": "dir", "__type": "LocalEnum.Direction_4", "__value": "down", "__tile": null, "defUid": 268, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["down"]
+						}] },
+						{ "__identifier": "spd", "__type": "Float", "__value": 6, "__tile": null, "defUid": 269, "realEditorValues": [] },
+						{ "__identifier": "reliant", "__type": "Bool", "__value": false, "__tile": null, "defUid": 270, "realEditorValues": [] }
+					],
+					"__worldX": 12160,
+					"__worldY": 368
+				},
+				{
+					"__identifier": "obj_lift_attack",
+					"__grid": [61,27],
+					"__pivot": [0,0],
+					"__tags": [ "lift", "object", "trigger", "glue_parent" ],
+					"__tile": null,
+					"__smartColor": "#B55088",
+					"iid": "b9f57850-ac70-11f0-b041-f57dc9a842cd",
+					"width": 48,
+					"height": 32,
+					"defUid": 267,
+					"px": [976,432],
+					"fieldInstances": [
+						{ "__identifier": "dir", "__type": "LocalEnum.Direction_4", "__value": "down", "__tile": null, "defUid": 268, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["down"]
+						}] },
+						{ "__identifier": "spd", "__type": "Float", "__value": 6, "__tile": null, "defUid": 269, "realEditorValues": [] },
+						{ "__identifier": "reliant", "__type": "Bool", "__value": false, "__tile": null, "defUid": 270, "realEditorValues": [] }
+					],
+					"__worldX": 12480,
+					"__worldY": 464
+				},
+				{
+					"__identifier": "obj_lift_attack",
+					"__grid": [61,21],
+					"__pivot": [0,0],
+					"__tags": [ "lift", "object", "trigger", "glue_parent" ],
+					"__tile": null,
+					"__smartColor": "#B55088",
+					"iid": "bc544fe0-ac70-11f0-b041-db224c18bad1",
+					"width": 48,
+					"height": 32,
+					"defUid": 267,
+					"px": [976,336],
+					"fieldInstances": [
+						{ "__identifier": "dir", "__type": "LocalEnum.Direction_4", "__value": "down", "__tile": null, "defUid": 268, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["down"]
+						}] },
+						{ "__identifier": "spd", "__type": "Float", "__value": 6, "__tile": null, "defUid": 269, "realEditorValues": [] },
+						{ "__identifier": "reliant", "__type": "Bool", "__value": false, "__tile": null, "defUid": 270, "realEditorValues": [] }
+					],
+					"__worldX": 12480,
+					"__worldY": 368
+				}
+			]
 		},
 		{
 			"__identifier": "Spikes",
@@ -2733,11 +2872,17 @@
 				{ "px": [7520,495], "src": [96,0], "f": 0, "t": 6, "d": [166,15505], "a": 1 },
 				{ "px": [7536,495], "src": [80,0], "f": 0, "t": 5, "d": [166,15506], "a": 1 },
 				{ "px": [7696,495], "src": [96,0], "f": 0, "t": 6, "d": [166,15516], "a": 1 },
+				{ "px": [848,352], "src": [48,16], "f": 0, "t": 35, "d": [292,10723], "a": 1 },
+				{ "px": [832,352], "src": [16,16], "f": 0, "t": 33, "d": [291,10722], "a": 1 },
 				{ "px": [7712,416], "src": [16,16], "f": 0, "t": 33, "d": [291,13092], "a": 1 },
 				{ "px": [7712,432], "src": [16,16], "f": 0, "t": 33, "d": [291,13577], "a": 1 },
 				{ "px": [7712,448], "src": [16,16], "f": 0, "t": 33, "d": [291,14062], "a": 1 },
 				{ "px": [7712,464], "src": [16,16], "f": 0, "t": 33, "d": [291,14547], "a": 1 },
 				{ "px": [7712,480], "src": [16,16], "f": 0, "t": 33, "d": [291,15032], "a": 1 },
+				{ "px": [832,368], "src": [16,32], "f": 0, "t": 65, "d": [293,11207], "a": 1 },
+				{ "px": [848,368], "src": [48,32], "f": 0, "t": 67, "d": [294,11208], "a": 1 },
+				{ "px": [848,336], "src": [112,0], "f": 0, "t": 7, "d": [325,10238], "a": 1 },
+				{ "px": [832,336], "src": [64,0], "f": 0, "t": 4, "d": [168,10237], "a": 1 },
 				{ "px": [7712,400], "src": [64,0], "f": 0, "t": 4, "d": [168,12607], "a": 1 }
 			],
 			"seed": 7394564,
@@ -3322,6 +3467,7 @@
 				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -3335,6 +3481,7 @@
 				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+				0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -3348,9 +3495,7 @@
 				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+				0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -3504,6 +3649,12 @@
 				1,1,1,1,1
 			],
 			"autoLayerTiles": [
+				{ "px": [832,336], "src": [368,256], "f": 0, "t": 535, "d": [10,10237], "a": 1 },
+				{ "px": [848,336], "src": [368,256], "f": 0, "t": 535, "d": [10,10238], "a": 1 },
+				{ "px": [832,352], "src": [368,256], "f": 0, "t": 535, "d": [10,10722], "a": 1 },
+				{ "px": [848,352], "src": [368,256], "f": 0, "t": 535, "d": [10,10723], "a": 1 },
+				{ "px": [832,368], "src": [368,256], "f": 0, "t": 535, "d": [10,11207], "a": 1 },
+				{ "px": [848,368], "src": [368,256], "f": 0, "t": 535, "d": [10,11208], "a": 1 },
 				{ "px": [7712,400], "src": [368,256], "f": 0, "t": 535, "d": [10,12607], "a": 1 },
 				{ "px": [7728,400], "src": [368,256], "f": 0, "t": 535, "d": [10,12608], "a": 1 },
 				{ "px": [7744,400], "src": [368,256], "f": 0, "t": 535, "d": [10,12609], "a": 1 },
