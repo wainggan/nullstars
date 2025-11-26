@@ -13,11 +13,11 @@ collidable = true;
 // runs when the scene "resets".
 // the object should return to the same state it was
 // initialized.
-reset = function(){};
+reset = function () {};
 
 // camera offset
 /// @arg {struct.Camera} _out
-cam = function(_out) {
+cam = function (_out) {
 	_out.move(x, y)
-}
+};
 
