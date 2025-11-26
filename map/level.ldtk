@@ -11,7 +11,7 @@
 	"iid": "d5a16520-6280-11ee-ba61-ad454e9d2411",
 	"jsonVersion": "1.5.3",
 	"appBuildId": 485934,
-	"nextUid": 668,
+	"nextUid": 669,
 	"identifierStyle": "Free",
 	"toc": [{
 		"identifier": "obj_checkpoint",
@@ -298,7 +298,13 @@
 				"levelIid": "8a3a7120-ac70-11f0-b041-4f6ea93930c0",
 				"layerIid": "8a3a9830-ac70-11f0-b041-6f52643bd4a3",
 				"entityIid": "4f79c260-ac70-11f0-b041-6107d30d04e6"
-			}, "worldX": 46368, "worldY": 9664, "widPx": 32, "heiPx": 32, "fields": { "index": "lskdjf", "waypoint": true } }
+			}, "worldX": 46368, "worldY": 9664, "widPx": 32, "heiPx": 32, "fields": { "index": "lskdjf", "waypoint": true } },
+			{ "iids": {
+				"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
+				"levelIid": "a35f7100-ac70-11f0-b041-e1bc37e82600",
+				"layerIid": "a35f9812-ac70-11f0-b041-43f028580985",
+				"entityIid": "363032d0-ac70-11f0-b041-75f957d482ae"
+			}, "worldX": 48640, "worldY": 9520, "widPx": 32, "heiPx": 32, "fields": { "index": "ksdfjksdfjkl", "waypoint": true } }
 		]
 	}],
 	"worldLayout": "Free",
@@ -15244,7 +15250,30 @@
 				"params": ["world1_1"]
 			}] }],
 			"layerInstances": null,
-			"__neighbours": [{ "levelIid": "2511f260-ac70-11f0-b041-57146d710bbe", "dir": "w" }]
+			"__neighbours": [ { "levelIid": "2511f260-ac70-11f0-b041-57146d710bbe", "dir": "w" }, { "levelIid": "a35f7100-ac70-11f0-b041-e1bc37e82600", "dir": "e" } ]
+		},
+		{
+			"identifier": "Room_84",
+			"iid": "a35f7100-ac70-11f0-b041-e1bc37e82600",
+			"uid": 668,
+			"worldX": 48368,
+			"worldY": 8576,
+			"worldDepth": 0,
+			"pxWid": 1200,
+			"pxHei": 1328,
+			"__bgColor": "#2D2A30",
+			"bgColor": null,
+			"useAutoIdentifier": true,
+			"bgRelPath": null,
+			"bgPos": null,
+			"bgPivotX": 0.5,
+			"bgPivotY": 0.5,
+			"__smartColor": "#8C8A8D",
+			"__bgPos": null,
+			"externalRelPath": "level/Room_84.ldtkl",
+			"fieldInstances": [{ "__identifier": "style", "__type": "LocalEnum.Level_Styles", "__value": null, "__tile": null, "defUid": 506, "realEditorValues": [] }],
+			"layerInstances": null,
+			"__neighbours": [{ "levelIid": "8a3a7120-ac70-11f0-b041-4f6ea93930c0", "dir": "w" }]
 		}
 	],
 	"worlds": [],
