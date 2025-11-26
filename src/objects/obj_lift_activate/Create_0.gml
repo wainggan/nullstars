@@ -92,8 +92,10 @@ state_active.set("step", function () {
 	// probably safe; these get set and unset correctly, but surely theres a
 	// safer, more extensible way of doing this, even in gml?
 	with obj_lift_attack {
-		pet.mask_index = spr_none;
-		mask_index = sprite_index;
+		if !state.is(state_dead) {
+			pet.mask_index = spr_none;
+			mask_index = sprite_index;
+		}
 	}
 	
 	var _to_x = start_x + lengthdir_x(progress, _dir) * _dist;
@@ -103,8 +105,10 @@ state_active.set("step", function () {
 	glue_parent_moved(x, y);
 	
 	with obj_lift_attack {
-		pet.mask_index = pet.sprite_index;
-		mask_index = spr_none;
+		if !state.is(state_dead) {
+			pet.mask_index = pet.sprite_index;
+			mask_index = spr_none;
+		}
 	}
 	
 	if progress == 1 {
@@ -125,8 +129,10 @@ state_retract.set("step", function () {
 	var _dir = point_direction(start_x, start_y, target_x, target_y);
 	
 	with obj_lift_attack {
-		pet.mask_index = spr_none;
-		mask_index = sprite_index;
+		if !state.is(state_dead) {
+			pet.mask_index = spr_none;
+			mask_index = sprite_index;
+		}
 	}
 	
 	time -= 1;
@@ -151,8 +157,10 @@ state_retract.set("step", function () {
 	}
 	
 	with obj_lift_attack {
-		pet.mask_index = spr_none;
-		mask_index = sprite_index;
+		if !state.is(state_dead) {
+			pet.mask_index = spr_none;
+			mask_index = sprite_index;
+		}
 	}
 });
 
