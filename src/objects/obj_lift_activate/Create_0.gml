@@ -11,6 +11,8 @@ vel = 0;
 accel = 0;
 time = 0;
 
+progress = 0;
+
 anim_vel = 0;
 
 start_x = x;
@@ -37,6 +39,7 @@ fn_touch = function () {
 
 reset = function(){
 	state.change(state_idle);
+	progress = 0;
 	x = xstart;
 	y = ystart;
 	glue_parent_moved(x, y);
@@ -57,10 +60,12 @@ state_idle.set("step", function(){
 	
 	time -= 1;
 	
+	progress = 0;
+	
 });
 
-state_active = state.add()
-.set("enter", function(){
+state_active = state.add();
+state_active.set("enter", function () {
 	vel = 0;
 	accel = 0;
 	
@@ -70,38 +75,59 @@ state_active = state.add()
 		pad: 16,
 		spd: 0.04,
 	});
-})
-.set("step", function(){
+});
+state_active.set("step", function () {
 	
-	var _dir = point_direction(start_x, start_y, target_x, target_y)
+	var _dist = point_distance(start_x, start_y, target_x, target_y);
+	var _dir = point_direction(start_x, start_y, target_x, target_y);
 	
 	accel += 0.05;
 	vel = approach(vel, spd, accel);
 	
 	anim_vel += min(vel, 5);
 	
-	solid_move(lengthdir_x(vel, _dir), lengthdir_y(vel, _dir));
+	progress = approach(progress, 1, vel / _dist);
+	
+	// todo: this is a pretty ugly hack.
+	// probably safe; these get set and unset correctly, but surely theres a
+	// safer, more extensible way of doing this, even in gml?
+	with obj_lift_attack {
+		pet.mask_index = spr_none;
+		mask_index = sprite_index;
+	}
+	
+	var _to_x = start_x + lengthdir_x(progress, _dir) * _dist;
+	var _to_y = start_y + lengthdir_y(progress, _dir) * _dist;
+	
+	solid_move(_to_x - x, _to_y - y, true, lengthdir_x(vel, _dir), lengthdir_y(vel, _dir));
 	glue_parent_moved(x, y);
 	
-	if (start_x == target_x || sign(x - target_x) != sign(start_x - target_x))
-	&& (start_y == target_y || sign(y - target_y) != sign(start_y - target_y)) {
-		solid_move(target_x - x, target_y - y, false);
-		glue_parent_moved(x, y);
+	with obj_lift_attack {
+		pet.mask_index = pet.sprite_index;
+		mask_index = spr_none;
+	}
+	
+	if progress == 1 {
 		game_camera_set_shake(4, 0.4)
 		state.change(state_retract)
 	}
-	
-})
+});
 
-state_retract = state.add()
-.set("enter", function(){
+state_retract = state.add();
+state_retract.set("enter", function () {
 	vel = 0;
 	accel = 0;
 	time = 10;
-})
-.set("step", function(){
+});
+state_retract.set("step", function () {
 	
-	var _dir = point_direction(target_x, target_y, start_x, start_y)
+	var _dist = point_distance(start_x, start_y, target_x, target_y);
+	var _dir = point_direction(start_x, start_y, target_x, target_y);
+	
+	with obj_lift_attack {
+		pet.mask_index = spr_none;
+		mask_index = sprite_index;
+	}
 	
 	time -= 1;
 	if time < 0 {
@@ -110,20 +136,25 @@ state_retract = state.add()
 		
 		anim_vel -= vel;
 		
-		solid_move(lengthdir_x(vel, _dir), lengthdir_y(vel, _dir));
+		progress = approach(progress, 0, vel / _dist);
+		
+		var _to_x = start_x + lengthdir_x(progress, _dir) * _dist;
+		var _to_y = start_y + lengthdir_y(progress, _dir) * _dist;
+		
+		solid_move(_to_x - x, _to_y - y, true, -lengthdir_x(vel, _dir), -lengthdir_y(vel, _dir));
 		glue_parent_moved(x, y);
+		
+		if progress == 0 {
+			game_camera_set_shake(2, 0.4);
+			state.change(state_idle);
+		}
 	}
 	
-	if (start_x == target_x || sign(x - start_x) != sign(target_x - start_x))
-	&& (start_y == target_y || sign(y - start_y) != sign(target_y - start_y)) {
-		solid_move(start_x - x, start_y - y, false);
-		glue_parent_moved(x, y);
-		game_camera_set_shake(2, 0.4)
-		state.change(state_idle)
+	with obj_lift_attack {
+		pet.mask_index = spr_none;
+		mask_index = sprite_index;
 	}
-	
-})
+});
 
-
-state.change(state_idle)
+state.change(state_idle);
 
