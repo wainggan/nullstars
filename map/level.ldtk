@@ -292,7 +292,13 @@
 				"levelIid": "fc6de870-8560-11f0-acb8-f5bb1f687108",
 				"layerIid": "fc6e0f81-8560-11f0-acb8-f13d1796af98",
 				"entityIid": "fe269f80-8560-11f0-acb8-95feed55df14"
-			}, "worldX": 3152, "worldY": 10288, "widPx": 32, "heiPx": 32, "fields": { "index": "2dsfklmfdskl", "waypoint": true } }
+			}, "worldX": 3152, "worldY": 10288, "widPx": 32, "heiPx": 32, "fields": { "index": "2dsfklmfdskl", "waypoint": true } },
+			{ "iids": {
+				"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
+				"levelIid": "8a3a7120-ac70-11f0-b041-4f6ea93930c0",
+				"layerIid": "8a3a9830-ac70-11f0-b041-6f52643bd4a3",
+				"entityIid": "4f79c260-ac70-11f0-b041-6107d30d04e6"
+			}, "worldX": 46368, "worldY": 9664, "widPx": 32, "heiPx": 32, "fields": { "index": "lskdjf", "waypoint": true } }
 		]
 	}],
 	"worldLayout": "Free",
@@ -15204,10 +15210,13 @@
 			"bgPos": null,
 			"bgPivotX": 0.5,
 			"bgPivotY": 0.5,
-			"__smartColor": "#8C8A8D",
+			"__smartColor": "#F0CEB1",
 			"__bgPos": null,
 			"externalRelPath": "level/Room_82.ldtkl",
-			"fieldInstances": [{ "__identifier": "style", "__type": "LocalEnum.Level_Styles", "__value": null, "__tile": null, "defUid": 506, "realEditorValues": [] }],
+			"fieldInstances": [{ "__identifier": "style", "__type": "LocalEnum.Level_Styles", "__value": "world1_1", "__tile": null, "defUid": 506, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["world1_1"]
+			}] }],
 			"layerInstances": null,
 			"__neighbours": [ { "levelIid": "4eb7bb10-3740-11f0-b678-1dc53cb25bce", "dir": "w" }, { "levelIid": "8a3a7120-ac70-11f0-b041-4f6ea93930c0", "dir": "e" } ]
 		},
@@ -15218,7 +15227,7 @@
 			"worldX": 46352,
 			"worldY": 9232,
 			"worldDepth": 0,
-			"pxWid": 2128,
+			"pxWid": 2016,
 			"pxHei": 544,
 			"__bgColor": "#2D2A30",
 			"bgColor": null,
@@ -15227,10 +15236,13 @@
 			"bgPos": null,
 			"bgPivotX": 0.5,
 			"bgPivotY": 0.5,
-			"__smartColor": "#8C8A8D",
+			"__smartColor": "#F0CEB1",
 			"__bgPos": null,
 			"externalRelPath": "level/Room_83.ldtkl",
-			"fieldInstances": [{ "__identifier": "style", "__type": "LocalEnum.Level_Styles", "__value": null, "__tile": null, "defUid": 506, "realEditorValues": [] }],
+			"fieldInstances": [{ "__identifier": "style", "__type": "LocalEnum.Level_Styles", "__value": "world1_1", "__tile": null, "defUid": 506, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["world1_1"]
+			}] }],
 			"layerInstances": null,
 			"__neighbours": [{ "levelIid": "2511f260-ac70-11f0-b041-57146d710bbe", "dir": "w" }]
 		}
