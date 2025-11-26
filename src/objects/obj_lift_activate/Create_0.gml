@@ -158,8 +158,8 @@ state_retract.set("step", function () {
 	
 	with obj_lift_attack {
 		if !state.is(state_dead) {
-			pet.mask_index = spr_none;
-			mask_index = sprite_index;
+			pet.mask_index = pet.sprite_index;
+			mask_index = spr_none;
 		}
 	}
 });

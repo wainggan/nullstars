@@ -49,9 +49,6 @@ y_vel = 0;
 start_x = x;
 start_y = y;
 
-reset_polarity_x = 0;
-reset_polarity_y = 0;
-
 anim_vel = 0;
 anim_sight_x = x; // @todo: bandage
 anim_sight_y = y;
@@ -69,9 +66,6 @@ reset = function(){
 	x = xstart;
 	y = ystart;
 	glue_parent_moved(x, y);
-	reset_polarity_x = 0;
-	reset_polarity_y = 0;
-	resot = true;
 	with pet {
 		x = other.x;
 		y = other.y;
@@ -137,10 +131,7 @@ state_active.set("enter", function () {
 	start_y = y;
 	
 	anim_line = 1;
-	
-	reset_polarity_x = lengthdir_x(1, dir * 90);
-	reset_polarity_y = lengthdir_y(1, dir * 90);
-	
+
 	instance_create_layer(x, y, layer, obj_effects_rectpop, {
 		width: sprite_width,
 		height: sprite_height,
@@ -205,20 +196,11 @@ state_retract.set("step", function () {
 			state.change(state_idle);
 		};
 		
-		var _off_x = min(x_vel, start_x - x);
-		var _off_y = min(y_vel, start_y - y);
+		var _off_x = min(abs(x_vel), abs(start_x - x)) * sign(x_vel);
+		var _off_y = min(abs(y_vel), abs(start_y - y)) * sign(y_vel);
 		
 		actor_move_x(_off_x, __collide);
 		actor_move_y(_off_y, __collide);
-		
-		glue_parent_moved(x, y);
-		
-		pet.mask_index = pet.sprite_index;
-		mask_index = spr_none;
-		
-		with pet {
-			solid_move(other.x - x, other.y - y, true, other.x_vel, other.y_vel);
-		}
 		
 		if dir == 0 || dir == 2 {
 			if x == start_x {
@@ -229,6 +211,15 @@ state_retract.set("step", function () {
 			if y == start_y {
 				__collide();
 			}
+		}
+		
+		glue_parent_moved(x, y);
+		
+		pet.mask_index = pet.sprite_index;
+		mask_index = spr_none;
+		
+		with pet {
+			solid_move(other.x - x, other.y - y, true, other.x_vel, other.y_vel);
 		}
 	}
 	
