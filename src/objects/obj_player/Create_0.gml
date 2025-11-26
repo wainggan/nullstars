@@ -332,16 +332,16 @@ get_check_death = function(_x, _y) {
 	
 	var _inst = instance_place(_x, _y, obj_spike);
 	with _inst {
-		if object_index == obj_spike_up && other.y_vel - y_delta >= 0 {
+		if object_index == obj_spike_up && other.y_delta - y_delta >= 0 {
 			return true;
 		}
-		if object_index == obj_spike_down && other.y_vel - y_delta <= 0 {
+		if object_index == obj_spike_down && other.y_delta - y_delta <= 0 {
 			return true;
 		}
-		if object_index == obj_spike_left && other.x_vel - x_delta >= 0 {
+		if object_index == obj_spike_left && other.x_delta - x_delta >= 0 {
 			return true;
 		}
-		if object_index == obj_spike_right && other.x_vel - x_delta <= 0 {
+		if object_index == obj_spike_right && other.x_delta - x_delta <= 0 {
 			return true;
 		}
 		return true;
@@ -384,7 +384,7 @@ get_check_death = function(_x, _y) {
 				switch _tile {
 					case 1: {
 						// 6 indents!! yippee
-						if x_vel > 0 {
+						if x_delta > 0 {
 							break;
 						}
 						if !rectangle_in_rectangle(
@@ -396,7 +396,7 @@ get_check_death = function(_x, _y) {
 						return true;
 					}
 					case 2: {
-						if y_vel < 0 {
+						if y_delta < 0 {
 							break;
 						}
 						if !rectangle_in_rectangle(
@@ -408,7 +408,7 @@ get_check_death = function(_x, _y) {
 						return true;
 					}
 					case 3: {
-						if x_vel < 0 {
+						if x_delta < 0 {
 							break;
 						}
 						if !rectangle_in_rectangle(
@@ -420,7 +420,7 @@ get_check_death = function(_x, _y) {
 						return true;
 					}
 					case 4: {
-						if y_vel > 0 {
+						if y_delta > 0 {
 							break;
 						}
 						if !rectangle_in_rectangle(
@@ -706,12 +706,6 @@ state_base.set("step", function () {
 		return;
 	}
 	
-	x_delta = x - x_last;
-	y_delta = y - y_last;
-	
-	x_last = x;
-	y_last = y;
-	
 	scale_x = lerp(scale_x, 1, 0.2);
 	scale_y = lerp(scale_y, 1, 0.2);
 	
@@ -917,6 +911,12 @@ state_base.set("step", function () {
 		dash_left = defs.dash_total;
 		_inst_dash.state.change(_inst_dash.state_recover);
 	}
+	
+	x_delta = x - x_last;
+	y_delta = y - y_last;
+	
+	x_last = x;
+	y_last = y;
 	
 	// this is horrible
 	if state.is(state_free) {
