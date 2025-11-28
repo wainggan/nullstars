@@ -1,5 +1,11 @@
 
 /// @self obj_Entity
+function obj_entity_impl() {
+	static __return = [];
+	return __return;
+}
+
+/// @self obj_Entity
 function obj_entity_reset() {
 	return;
 }

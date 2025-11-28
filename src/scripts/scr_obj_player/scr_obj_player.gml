@@ -1,4 +1,11 @@
 
+/// override
+/// @self obj_player
+function obj_player_impl() {
+	static __return = ["bounce"];
+	return __return;
+}
+
 /// @self obj_player
 function obj_player_get_crouch() {
 	return mask_index == spr_hitbox_player_crouch;

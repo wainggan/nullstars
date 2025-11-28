@@ -10,6 +10,9 @@ event_inherited();
 
 collidable := true;
 
+// returns list of interfaces
+fn_impl := obj_entity_impl;
+
 // runs when the scene "resets".
 // the object should return to the same state it was
 // initialized.

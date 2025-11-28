@@ -642,6 +642,8 @@ impl_jump_bounce = function(_dir, _from_x, _from_y) {
 	
 }
 
+fn_impl_bounce := impl_jump_bounce;
+
 event.add("bounce", impl_jump_bounce);
 
 #endregion
@@ -1766,6 +1768,8 @@ fn_riding = function(_solid) {
 fn_cam := obj_player_cam;
 
 fn_outside = function() { return false; };
+
+fn_impl := obj_player_impl;
 
 
 state.change(state_free);
