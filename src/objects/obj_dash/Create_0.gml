@@ -17,7 +17,7 @@ dir_dir = 1;
 
 anim_hit = 0;
 
-reset = function(){
+fn_reset = function(){
 	state.change(state_active);
 	recover_timer = 0;
 };

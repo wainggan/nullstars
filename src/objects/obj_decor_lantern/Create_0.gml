@@ -28,7 +28,7 @@ light = instance_create_layer(x, y, "Lights", obj_light, {
 	size: size,
 });
 
-reset = function() {
+fn_reset = function() {
 	vel = 0;
 	x = xstart;
 	y = ystart;

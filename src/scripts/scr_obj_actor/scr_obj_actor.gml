@@ -1,18 +1,34 @@
 
-function actor_lift_get_x() {
+/// @arg {id.Instance} _other
+/// @return {bool}
+/// @self obj_Actor
+function obj_actor_riding(_other) {
+	return place_meeting(x, y + 1, _other);
+}
+
+/// @self obj_Actor
+function obj_actor_squish(_data) {
+	return;
+}
+
+/// @self obj_Actor
+function obj_actor_lift_get_x() {
 	if lift_x == 0 && lift_y == 0 {
 		return lift_last_x;
 	}
 	return lift_x;
 }
-function actor_lift_get_y() {
+
+/// @self obj_Actor
+function obj_actor_lift_get_y() {
 	if lift_x == 0 && lift_y == 0 {
 		return lift_last_y;
 	}
 	return lift_y;
 }
 
-function actor_lift_set(_x, _y) {
+/// @self obj_Actor
+function obj_actor_lift_set(_x, _y) {
 	lift_x = _x;
 	lift_y = _y;
 	if _x != 0 || _y != 0 {
@@ -23,8 +39,9 @@ function actor_lift_set(_x, _y) {
 }
 
 /// should be called *after* the object has completed its main update
-function actor_lift_update() {
-	actor_lift_set(0, 0);
+/// @self obj_Actor
+function obj_actor_lift_update() {
+	self.fn_lift_set(0, 0);
 	lift_last_time -= 1;
 	if lift_last_time <= 0 {
 		lift_last_x = 0;
@@ -32,8 +49,8 @@ function actor_lift_update() {
 	}
 }
 
-
-function actor_move_x(_amount, _callback = undefined, _pusher = noone) {
+/// @self obj_Actor
+function obj_actor_move_x(_amount, _callback = undefined, _pusher = noone) {
 	
 	static __data = {
 		target_x: 0,
@@ -50,7 +67,7 @@ function actor_move_x(_amount, _callback = undefined, _pusher = noone) {
 		var _sign = sign(_move);
 		
 		while _move != 0 {
-			if !actor_collision(x + _sign, y) {
+			if !self.fn_collision(x + _sign, y) {
 				x += _sign;
 				_move -= _sign;
 			} else {
@@ -68,8 +85,8 @@ function actor_move_x(_amount, _callback = undefined, _pusher = noone) {
 	
 }
 
-
-function actor_move_y(_amount, _callback = undefined, _pusher = noone) {
+/// @self obj_Actor
+function obj_actor_move_y(_amount, _callback = undefined, _pusher = noone) {
 	
 	static __data = {
 		target_x: 0,
@@ -86,7 +103,7 @@ function actor_move_y(_amount, _callback = undefined, _pusher = noone) {
 		var _sign = sign(_move);
 		
 		while _move != 0 {
-			if !actor_collision(x, y + _sign) {
+			if !self.fn_collision(x, y + _sign) {
 				y += _sign;
 				_move -= _sign;
 			} else {
@@ -105,7 +122,8 @@ function actor_move_y(_amount, _callback = undefined, _pusher = noone) {
 }
 
 // todo: optimize?
-function actor_collision(_x, _y) {
+/// @self obj_Actor
+function obj_actor_collision(_x, _y) {
 	
 	static __list = ds_list_create();
 	

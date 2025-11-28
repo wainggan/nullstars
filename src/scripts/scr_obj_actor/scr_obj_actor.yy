@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_actor",
+  "%Name":"scr_obj_actor",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_actor",
+  "name":"scr_obj_actor",
   "parent":{
     "name":"entities",
     "path":"folders/entities.yy",

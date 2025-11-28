@@ -18,7 +18,7 @@ scan = {};
 activate = function(){
 	state.change(state_attack)
 }
-riding = function(){ return false; }
+fn_riding = function(){ return false; }
 
 attack_dir = 0;
 spd = 0;
@@ -104,7 +104,7 @@ state_attack = state.add()
 	pet_chain.collidable = true;
 	pet_wall.collidable = true;
 	with pet_chain {
-		solid_move(_x_vel, _y_vel);
+		self.fn_move(_x_vel, _y_vel);
 		
 		var _x1 = min(other.x, other.chain_x) + 8,
 			_y1 = min(other.y, other.chain_y) + 8,
@@ -176,7 +176,7 @@ state_retract = state.add()
 	
 	pet_chain.collidable = true;
 	with pet_chain {
-		solid_move(_x_vel, _y_vel);
+		self.fn_move(_x_vel, _y_vel);
 		
 		var _x1 = min(other.x, other.chain_x) + 8,
 			_y1 = min(other.y, other.chain_y) + 8,

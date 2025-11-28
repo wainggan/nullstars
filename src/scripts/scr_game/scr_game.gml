@@ -221,7 +221,7 @@ function GameState() constructor {
 		
 		self.reset();
 		with obj_Entity {
-			reset();
+			fn_reset();
 		}
 	};
 	

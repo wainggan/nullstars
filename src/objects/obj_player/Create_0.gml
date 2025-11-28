@@ -6,7 +6,7 @@ if instance_number(obj_player) > 1 {
 
 event_inherited();
 
-defs = {
+defs := {
 	move_speed: 2,
 	move_accel: 0.5,
 	move_accel_fast: 0.8,
@@ -50,59 +50,37 @@ defs = {
 };
 
 
-scale_x = 0;
-scale_y = 0;
+scale_x := 0;
+scale_y := 0;
 
-x_last = x;
-y_last = y;
+x_last := x;
+y_last := y;
 
-x_delta = 0;
-y_delta = 0;
+x_delta := 0;
+y_delta := 0;
 
-x_anim = x;
-y_anim = y;
-x_scale_anim = 1;
-y_scale_anim = 1;
+x_anim := x;
+y_anim := y;
+x_scale_anim := 1;
+y_scale_anim := 1;
 
-dir = 1;
+dir := 1;
 
-light = instance_create_layer(x, y, "Lights", obj_light, {
+light := instance_create_layer(x, y, "Lights", obj_light, {
 	color: #ffffff,
 	size: 60,
 	intensity: 0.5,
 });
 
-buffer_jump = 0;
-buffer_dash = 0;
+buffer_jump := 0;
+buffer_dash := 0;
 
-nat_crouch = function(_value = undefined) {
-	if _value != undefined {
-		if _value {
-			mask_index = spr_hitbox_player_crouch;
-		} else {
-			mask_index = spr_hitbox_player;
-		}
-	}
-	return mask_index == spr_hitbox_player_crouch;
-};
-nat_crouch(false);
+fn_set_crouch := obj_player_set_crouch;
+fn_get_crouch := obj_player_get_crouch;
 
-get_can_uncrouch = function() {
-	if !nat_crouch() {
-		return true;
-	}
-	var _pre = mask_index;
-	mask_index = spr_hitbox_player;
-	
-	var _collide = actor_collision(x, y);
-	var _inst = instance_place(x, y, obj_ss_down);
-	if _inst != noone {
-		_collide = true;
-	}
-	
-	mask_index = _pre;
-	return !_collide;
-};
+fn_set_crouch(false);
+
+fn_get_can_uncrouch := obj_player_get_can_uncrouch;
 
 onground = false;
 onground_last = false;
@@ -316,15 +294,15 @@ get_check_water = function(_x, _y) {
 }
 
 get_check_wall = function(_dir, _dist = defs.wall_distance) {
-	return actor_collision(x + _dir * _dist, y);
+	return self.fn_collision(x + _dir * _dist, y);
 };
 
 get_lift_x = function() {
-	var _out = actor_lift_get_x();
+	var _out = self.fn_lift_get_x();
 	return clamp(_out, -defs.boost_limit_x, defs.boost_limit_x);
 };
 get_lift_y = function() {
-	var _out = actor_lift_get_y();
+	var _out = self.fn_lift_get_y();
 	return clamp(_out, -defs.boost_limit_y, 0);
 };
 
@@ -469,7 +447,7 @@ action_jump = function() {
 	var _kv = INPUT.check("down") - INPUT.check("up");
 	
 	if grace > 0 {
-		actor_move_y(min(grace_y - y, 0));
+		self.fn_move_y(min(grace_y - y, 0));
 	}
 	
 	action_jump_shared();
@@ -519,10 +497,10 @@ action_walljump = function() {
 		walljump_solid_y = walljump_solid.y;
 	}
 	
-	if actor_lift_get_x() == 0 && actor_lift_get_y() == 0 {
+	if self.fn_lift_get_x() == 0 && self.fn_lift_get_y() == 0 {
 		var _inst = instance_place(x + dir * defs.wall_distance, y, obj_Solid);
 		if _inst != noone {
-			actor_lift_set(_inst.lift_x, _inst.lift_y);
+			self.fn_lift_set(_inst.lift_x, _inst.lift_y);
 		}
 	}
 	
@@ -540,7 +518,7 @@ action_walljump = function() {
 action_dashjump = function(_key_dir) {
 	
 	if grace > 0 {
-		actor_move_y(min(grace_y - y, 0));
+		self.fn_move_y(min(grace_y - y, 0));
 	}
 	
 	action_jump_shared();
@@ -583,8 +561,8 @@ action_dashjump = function(_key_dir) {
 	hold_jump_key_timer = 0;
 	hold_jump_vel = y_vel;
 	
-	if get_can_uncrouch() {
-		nat_crouch(false);
+	if fn_get_can_uncrouch() {
+		fn_set_crouch(false);
 	}
 	
 	x_vel += get_lift_x();
@@ -603,10 +581,10 @@ action_dashjump_wall = function(_key_dir, _wall_dir) {
 	
 	action_anim_dashjump_wall();
 	
-	if actor_lift_get_x() == 0 && actor_lift_get_y() == 0 {
+	if self.fn_lift_get_x() == 0 && self.fn_lift_get_y() == 0 {
 		var _inst = instance_place(x + dir * defs.wall_distance, y, obj_Solid);
 		if _inst != noone {
-			actor_lift_set(_inst.lift_x, _inst.lift_y);
+			self.fn_lift_set(_inst.lift_x, _inst.lift_y);
 		}
 	}
 	
@@ -641,7 +619,7 @@ action_dashjump_wall = function(_key_dir, _wall_dir) {
 
 impl_jump_bounce = function(_dir, _from_x, _from_y) {
 	
-	actor_move_y(_from_y - y);
+	self.fn_move_y(_from_y - y);
 	
 	action_jump_shared();
 	
@@ -679,10 +657,10 @@ state_stuck.set("step", function() {
 	x_vel = approach(x_vel, 0, 0.5);
 	y_vel = approach(y_vel, defs.terminal_vel, defs.gravity);
 	
-	actor_move_x(x_vel);
-	actor_move_y(y_vel);
+	self.fn_move_x(x_vel);
+	self.fn_move_y(y_vel);
 	
-	if actor_collision(x, y + 1) {
+	if self.fn_collision(x, y + 1) {
 		state.change(state_free);
 	}
 });
@@ -712,8 +690,8 @@ state_base.set("step", function () {
 	if state.is(state_free) || state.is(state_dash) {
 	 	if walljump_solid != noone {
 			if walljump_solid.x != walljump_solid_x || walljump_solid.y != walljump_solid_y {
-				actor_move_x(walljump_solid.x - walljump_solid_x);
-				actor_move_y(walljump_solid.y - walljump_solid_y);
+				self.fn_move_x(walljump_solid.x - walljump_solid_x);
+				self.fn_move_y(walljump_solid.y - walljump_solid_y);
 				walljump_solid_x = walljump_solid.x;
 				walljump_solid_y = walljump_solid.y;
 			}
@@ -727,7 +705,7 @@ state_base.set("step", function () {
 	}
 	
 	if y_vel >= 0 {
-		onground = actor_collision(x, y + 1);
+		onground = self.fn_collision(x, y + 1);
 	} else {
 		onground = false;
 	}
@@ -759,11 +737,11 @@ state_base.set("step", function () {
 		
 		for (var i = 0; i < _amount * 2 + 1; i++) {
 			var _d = (i % 2 == 0 ? 1 : -1) * floor((i + 2) / 2);
-			if !actor_collision(x + sign(x_vel), y + _d) {
-				actor_move_y(_d);
+			if !self.fn_collision(x + sign(x_vel), y + _d) {
+				self.fn_move_y(_d);
 				// avoid getting stuck
 				// it's probably fine...
-				actor_move_x(sign(x_vel));
+				self.fn_move_x(sign(x_vel));
 				return;
 			}
 		}
@@ -804,9 +782,9 @@ state_base.set("step", function () {
 		
 		for (var i = 0; i < _amount * 2 + 1; i++) {
 			var _d = (i % 2 == 0 ? 1 : -1) * floor((i + 2) / 2);
-			if !actor_collision(x + _d, y + sign(y_vel)) {
-				actor_move_x(_d);
-				actor_move_y(sign(y_vel));
+			if !self.fn_collision(x + _d, y + sign(y_vel)) {
+				self.fn_move_x(_d);
+				self.fn_move_y(sign(y_vel));
 				return;
 			}
 		}
@@ -851,25 +829,25 @@ state_base.set("step", function () {
 	
 	// move in fastest axis
 	if abs(x_vel) > abs(y_vel) {
-		actor_move_x(x_vel, __collide_x);
-		actor_move_y(y_vel, __collide_y);
+		self.fn_move_x(x_vel, __collide_x);
+		self.fn_move_y(y_vel, __collide_y);
 	} else {
-		actor_move_y(y_vel, __collide_y);
-		actor_move_x(x_vel, __collide_x);
+		self.fn_move_y(y_vel, __collide_y);
+		self.fn_move_x(x_vel, __collide_x);
 	}
 	
 	// if still colliding, you're inside a wall...
 	// escape!!
-	if actor_collision(x, y) {
+	if self.fn_collision(x, y) {
 		var _out = false;
 		for (var i = 0; i < 16 * 2; i++) {
 			var _d = (i % 2 == 0 ? 1 : -1) * floor((i + 2) / 2);
-			if !actor_collision(x + _d, y) {
+			if !self.fn_collision(x + _d, y) {
 				x += _d;
 				_out = true;
 				break;
 			}
-			if !actor_collision(x, y + _d) {
+			if !self.fn_collision(x, y + _d) {
 				y += _d;
 				_out = true;
 				break;
@@ -887,10 +865,10 @@ state_base.set("step", function () {
 	
 	if instance_exists(light) {
 		light.x = x;
-		light.y = y - (nat_crouch() ? 14 : 22);
+		light.y = y - (fn_get_crouch() ? 14 : 22);
 	}
 	
-	actor_lift_update();
+	obj_actor_lift_update();
 	
 	onground_last = onground;
 	dash_grace -= 1;
@@ -901,8 +879,8 @@ state_base.set("step", function () {
 	
 	// move one pixel down if walking off a cliff.
 	// fixes walking off lift bug
-	if onground && y_vel <= 0 && !actor_collision(x, y + 1) {
-		actor_move_y(1);
+	if onground && y_vel <= 0 && !self.fn_collision(x, y + 1) {
+		self.fn_move_y(1);
 	}
 	
 	var _inst_dash = instance_place(x, y, obj_dash);
@@ -922,9 +900,9 @@ state_base.set("step", function () {
 	if state.is(state_free) {
 		if y_vel > -1 {
 			if get_check_wall(dir, 1) && INPUT.check("grab") {
-				var _crouched = nat_crouch();
-				if !_crouched || (_crouched && get_can_uncrouch()) {
-					nat_crouch(false);
+				var _crouched = fn_get_crouch();
+				if !_crouched || (_crouched && fn_get_can_uncrouch()) {
+					fn_set_crouch(false);
 					state.change(state_ledge);
 					return;
 				}
@@ -945,7 +923,7 @@ state_base.set("step", function () {
 	if state.is(state_free) || state.is(state_swim) {
 		if INPUT.check_pressed("menu") &&
 			(place_meeting(x, y, obj_checkpoint) || place_meeting(x, y, obj_checkpoint_dyn)) &&
-			!nat_crouch() &&
+			!fn_get_crouch() &&
 			!state.is(state_swim)
 		{
 			state.change(state_menu);
@@ -990,7 +968,7 @@ state_stuck = state_base.add()
 .set("step", function(){
 	x_vel = approach(x_vel, 0, 0.5);
 	y_vel = approach(y_vel, defs.terminal_vel, defs.gravity);
-	if actor_collision(x, y + 1) {
+	if self.fn_collision(x, y + 1) {
 		state.change(state_free);
 	}
 });
@@ -1006,14 +984,14 @@ state_free.set("step", function () {
 	if key_force_timer > 0 {
 		_k_move = key_force;
 	}
-	if onground && nat_crouch() {
+	if onground && fn_get_crouch() {
 		_k_move = 0;
 	}
 	
 	if vel_grace_timer > 0 {
 		if _kh != sign(vel_grace) {
 			vel_grace_timer = 0;
-		} else if !actor_collision(x + _kh, y) {
+		} else if !self.fn_collision(x + _kh, y) {
 			x_vel = vel_grace;
 			vel_grace_timer = 0;
 		}
@@ -1032,7 +1010,7 @@ state_free.set("step", function () {
 		} else {
 			_x_accel = defs.move_accel;
 		}
-		if nat_crouch() {
+		if fn_get_crouch() {
 			_x_accel = 0.2;
 		}
 	}
@@ -1059,7 +1037,7 @@ state_free.set("step", function () {
 	x_vel = approach(x_vel, _k_move * defs.move_speed, _x_accel);
 	
 	if _kh != 0 {
-		if dir != _kh && onground && nat_crouch() {
+		if dir != _kh && onground && fn_get_crouch() {
 			scale_x = 0.8;
 			scale_y = 1.2;
 		}
@@ -1129,22 +1107,22 @@ state_free.set("step", function () {
 		}
 	}
 	
-	if nat_crouch() {
-		if get_can_uncrouch() {
+	if fn_get_crouch() {
+		if fn_get_can_uncrouch() {
 			if onground && !INPUT.check("down") {
-				nat_crouch(false);
+				fn_set_crouch(false);
 				scale_x = 0.8;
 				scale_y = 1.2;
 			}
 			if !onground && y_vel >= 0 && !INPUT.check("down") {
-				nat_crouch(false);
+				fn_set_crouch(false);
 				scale_x = 0.8;
 				scale_y = 1.2;
 			}
 		}
 	} else {
 		if onground && INPUT.check("down") {
-			nat_crouch(true);
+			fn_set_crouch(true);
 			scale_x = 1.2;
 			scale_y = 0.8;
 		}
@@ -1169,7 +1147,7 @@ state_free.set("step", function () {
 				action_jump();
 			}
 		} else {
-			var _close = actor_collision(x, y + 24) ||
+			var _close = self.fn_collision(x, y + 24) ||
 				get_check_wall(-1, 20) ||
 				get_check_wall(1, 20);
 			_close = _close && !get_check_death(x, y + 24);
@@ -1217,10 +1195,10 @@ state_ledge.set("enter", function(){
 	x_vel = 0;
 	
 	y_vel = 0;
-	if !actor_collision(x + dir, y - 22) {
+	if !self.fn_collision(x + dir, y - 22) {
 		y_vel = 1
 	} else {
-		if !actor_collision(x + dir, y - 20) {
+		if !self.fn_collision(x + dir, y - 20) {
 			y_vel = -1
 		}
 	}
@@ -1376,10 +1354,10 @@ state_dash.set("enter", function() {
 		dash_dir_y_vel = y_vel;
 		
 		if onground && INPUT.check("down") {
-			nat_crouch(true);
+			fn_set_crouch(true);
 		} else {
-			if get_can_uncrouch() {
-				nat_crouch(false);
+			if fn_get_can_uncrouch() {
+				fn_set_crouch(false);
 			}
 		}
 		
@@ -1511,8 +1489,8 @@ state_swim.set("step", function() {
 	var _kh = INPUT.check("right") - INPUT.check("left");
 	var _kv = INPUT.check("down") - INPUT.check("up");
 	
-	if get_can_uncrouch() {
-		nat_crouch(false);
+	if fn_get_can_uncrouch() {
+		fn_set_crouch(false);
 	}
 	
 	if _kh != 0 {
@@ -1614,8 +1592,8 @@ state_swim_bullet.set("enter", function() {
 		swim_spd = max(point_distance(0, 0, swim_pre_x_vel, swim_pre_y_vel), 8);
 	}
 	
-	if get_can_uncrouch() {
-		nat_crouch(false);
+	if fn_get_can_uncrouch() {
+		fn_set_crouch(false);
 	}
 	
 	if _kh != 0 {
@@ -1703,31 +1681,31 @@ state_menu.set("enter", function() {
 	
 });
 
-squish = function(_data) {
+fn_squish = function(_data) {
 	
 	if !instance_exists(_data.pusher) {
 		game_player_kill();
 		return;
 	}
 	
-	// since squish only gets calls when solids push actors, _data.pusher.collidable must be false.
+	// since fn_squish only gets calls when solids push actors, _data.pusher.collidable must be false.
 	// it's safe to re-enable it so long as it is set back to false at the end of the function
 	
 	_data.pusher.collidable = true;
 	
 	var _crouched = false;
-	if !nat_crouch() && state.is(state_free) {
-		nat_crouch(true);
+	if !fn_get_crouch() && state.is(state_free) {
+		fn_set_crouch(true);
 		_crouched = true;
 		
 		// this looks so fucking stupid
-		if !actor_collision(x, y) {
+		if !self.fn_collision(x, y) {
 			scale_x = 1.2;
 			scale_y = 0.8;
 			_data.pusher.collidable = false;
 			return;
 		}
-		if !actor_collision(_data.target_x, _data.target_y) {
+		if !self.fn_collision(_data.target_x, _data.target_y) {
 			x = _data.target_x;
 			y = _data.target_y;
 			scale_x = 1.2;
@@ -1744,23 +1722,23 @@ squish = function(_data) {
 	// todo: a particular edge case happens sometimes due to this not detecting diagonal escape positions
 	for (var i = 0; i < _amount * 2; i++) {
 		var _d = (i % 2 == 0 ? 1 : -1) * floor((i + 2) / 2);
-		if !actor_collision(x + _d, y) {
+		if !self.fn_collision(x + _d, y) {
 			x += _d;
 			_out = true;
 			break;
 		}
-		if !actor_collision(x, y + _d) {
+		if !self.fn_collision(x, y + _d) {
 			y += _d;
 			_out = true;
 			break;
 		}
-		if !actor_collision(_data.target_x + _d, _data.target_y) {
+		if !self.fn_collision(_data.target_x + _d, _data.target_y) {
 			x = _data.target_x + _d;
 			y = _data.target_y;
 			_out = true;
 			break;
 		}
-		if !actor_collision(_data.target_x, _data.target_y + _d) {
+		if !self.fn_collision(_data.target_x, _data.target_y + _d) {
 			x = _data.target_x;
 			y = _data.target_y + _d;
 			_out = true;
@@ -1769,8 +1747,8 @@ squish = function(_data) {
 	}
 	
 	if _out {
-		if !_crouched && get_can_uncrouch() {
-			nat_crouch(false);
+		if !_crouched && fn_get_can_uncrouch() {
+			fn_set_crouch(false);
 		}
 		_data.pusher.collidable = false;
 		return;
@@ -1780,41 +1758,14 @@ squish = function(_data) {
 	game_player_kill();
 };
 
-riding = function(_solid) {
+fn_riding = function(_solid) {
 	return place_meeting(x, y + 1, _solid) ||
 		(state.is(state_ledge) && place_meeting(x + dir, y, _solid));
 };
 
-cam = function(_cam) {
-	
-	if state.is(state_free) && onground {
-		cam_ground_x = x + dir * 64;
-		cam_ground_y = y - 32;
-	}
-	
-	var _dist = point_distance(cam_ground_x, cam_ground_y, x, y);
-	
-	var _x = x + power(abs(x_vel), 1.4) * sign(x_vel);
-	var _y = y - 32;
-	
-	if state.is(state_cannon) {
-		_y = y - 16;
-	}
-	
-	/*
-	if state.is(state_menu) {
-		_x += 48 + (array_length(menu.stack) - 1) * 12;
-		_y += -4;
-	}*/
-	
-	_x = lerp(cam_ground_x, _x, 1 - max(0, 1 - power(_dist / 64, 2)) * 0.0);
-	_y = lerp(cam_ground_y, _y, 1 - max(0, 1 - power(_dist / 128, 2)) * 0.8);
-	
-	var _ = _cam.constrain(_x, _y);
-	_cam.move(_.x, _.y);
-}
+fn_cam := obj_player_cam;
 
-outside = function() { return false; };
+fn_outside = function() { return false; };
 
 
 state.change(state_free);

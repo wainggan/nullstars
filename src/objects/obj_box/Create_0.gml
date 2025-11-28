@@ -20,9 +20,9 @@ frame = function () {
 		if abs(x_vel) > 0.25 x_vel = -x_vel * 0.5;
 		else x_vel = 0;
 	};
-	actor_move_x(x_vel, __collide_x);
+	self.fn_move_x(x_vel, __collide_x);
 	
-	if actor_collision(x, y + 1) {
+	if self.fn_collision(x, y + 1) {
 		x_vel = approach(x_vel, 0, 0.8)
 	}
 
@@ -33,7 +33,7 @@ frame = function () {
 		}
 		else y_vel = 0;
 	};
-	actor_move_y(y_vel, __collide_y);
+	self.fn_move_y(y_vel, __collide_y);
 };
 
 depth = -20;
@@ -62,7 +62,7 @@ state_held = state_base.add()
 	
 })
 
-reset = function(){
+fn_reset = function(){
 	x = xstart;
 	y = ystart;
 }

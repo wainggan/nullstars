@@ -28,7 +28,7 @@ function game_player_kill() {
 				game_render_wave(_x, _y - 16, 256, 90, 1, spr_wave_wave);
 				
 				with obj_Entity {
-					reset();
+					fn_reset();
 				}
 				global.onoff = 1;
 			})))

@@ -40,7 +40,7 @@ function Camera() constructor {
 	/// @arg {struct.Game} _game
 	static update = function (_game) {
 		if instance_exists(self.target) || is_struct(self.target) {
-			self.target.cam(self); // ?
+			self.target.fn_cam(self); // ?
 			auto_x = x;
 			auto_y = y;
 		} else {

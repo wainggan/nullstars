@@ -2,7 +2,7 @@
 var _last = false;
 
 with obj_player {
-	if riding(other) {
+	if fn_riding(other) {
 		with other {
 			if dir == 0
 				solid_sim(other.dir * 5, 0, obj_player)
@@ -20,7 +20,7 @@ with obj_player {
 }
 
 with obj_box {
-	if riding(other) {
+	if fn_riding(other) {
 		with other {
 			var _vel = 0;
 			if dir == 0 

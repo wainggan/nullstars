@@ -1,4 +1,16 @@
 
+/// @self obj_Entity
+function obj_entity_reset() {
+	return;
+}
+
+/// @arg {struct.Camera} _cam
+/// @self obj_Entity
+function obj_entity_cam(_cam) {
+	_cam.move(x, y);
+}
+
+
 /// preferred way to check for entity collision
 function entity_at(_x, _y, _type) {
 	static __list = ds_list_create();

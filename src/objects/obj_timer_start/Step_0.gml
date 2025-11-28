@@ -92,7 +92,7 @@ with level_get_instance(ref) {
 					image_xscale: sprite_width,
 					image_yscale: sprite_height
 				});
-				other.pet.outside = exists_outside_empty;
+				other.pet.fn_outside = exists_outside_empty();
 			}
 		}
 	} else {

@@ -1,23 +1,20 @@
+/// obj_Entity.Create
+
+/*
+ * object representing something that can meaningfully do literally anything
+ * 
+ * see `scr_obj_entity`
+ */
 
 event_inherited();
 
-/*
- * object representing something that can meaningfully
- * do literally anything
- * 
- * see `scr_entity`
- */
-
-collidable = true;
+collidable := true;
 
 // runs when the scene "resets".
 // the object should return to the same state it was
 // initialized.
-reset = function () {};
+fn_reset := obj_entity_reset;
 
 // camera offset
-/// @arg {struct.Camera} _out
-cam = function (_out) {
-	_out.move(x, y)
-};
+fn_cam := obj_entity_cam;
 

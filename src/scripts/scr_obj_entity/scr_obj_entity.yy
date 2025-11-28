@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_solid",
+  "%Name":"scr_obj_entity",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_solid",
+  "name":"scr_obj_entity",
   "parent":{
     "name":"entities",
     "path":"folders/entities.yy",

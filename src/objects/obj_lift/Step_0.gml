@@ -1,3 +1,3 @@
 
-solid_move(wave(-2, 2, 6), 0)
+self.fn_move(wave(-2, 2, 6), 0)
 

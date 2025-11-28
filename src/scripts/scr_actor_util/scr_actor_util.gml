@@ -41,7 +41,7 @@ function actor_scan(_x, _y, _dir, _cap = 16) {
 	
 	// while not overflowing
 	while _check > 0 {
-		if actor_collision(_check_x, _check_y) {
+		if self.fn_collision(_check_x, _check_y) {
 			// we are inside a wall
 			if _check_x == _x && _check_y == _y {
 				break;
@@ -67,7 +67,7 @@ function actor_scan(_x, _y, _dir, _cap = 16) {
 			}
 			
 			var _check_2 = max(sprite_width div 4 + 1, sprite_height div 4 + 1);
-			while !actor_collision(_check_x + _off_x * 4, _check_y + _off_y * 4) && _check_2 > 0 {
+			while !self.fn_collision(_check_x + _off_x * 4, _check_y + _off_y * 4) && _check_2 > 0 {
 				_check_x += _off_x * 4;
 				_check_y += _off_y * 4;
 				_check_2--;

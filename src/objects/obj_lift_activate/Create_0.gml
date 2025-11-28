@@ -37,7 +37,7 @@ fn_touch = function () {
 	}
 };
 
-reset = function(){
+fn_reset = function(){
 	state.change(state_idle);
 	progress = 0;
 	x = xstart;
@@ -101,7 +101,7 @@ state_active.set("step", function () {
 	var _to_x = start_x + lengthdir_x(progress, _dir) * _dist;
 	var _to_y = start_y + lengthdir_y(progress, _dir) * _dist;
 	
-	solid_move(_to_x - x, _to_y - y, true, lengthdir_x(vel, _dir), lengthdir_y(vel, _dir));
+	self.fn_move(_to_x - x, _to_y - y, true, lengthdir_x(vel, _dir), lengthdir_y(vel, _dir));
 	glue_parent_moved(x, y);
 	
 	with obj_lift_attack {
@@ -147,7 +147,7 @@ state_retract.set("step", function () {
 		var _to_x = start_x + lengthdir_x(progress, _dir) * _dist;
 		var _to_y = start_y + lengthdir_y(progress, _dir) * _dist;
 		
-		solid_move(_to_x - x, _to_y - y, true, -lengthdir_x(vel, _dir), -lengthdir_y(vel, _dir));
+		self.fn_move(_to_x - x, _to_y - y, true, -lengthdir_x(vel, _dir), -lengthdir_y(vel, _dir));
 		glue_parent_moved(x, y);
 		
 		if progress == 0 {

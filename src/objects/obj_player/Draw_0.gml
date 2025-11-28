@@ -69,10 +69,10 @@ else if state.is(state_dash) || anim_dive_timer || anim_jab_timer {
 	}
 }
 else if state.is(state_free) {
-	if nat_crouch() && anim_longjump_timer <= 0 {
+	if fn_get_crouch() && anim_longjump_timer <= 0 {
 		anim.set("crouch");
 	}
-	else if actor_collision(x, y + 1) && y_vel >= 0 {
+	else if self.fn_collision(x, y + 1) && y_vel >= 0 {
 		if abs(x_vel) < 0.8 {
 			anim.set("idle");
 		}

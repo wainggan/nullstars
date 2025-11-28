@@ -10,15 +10,15 @@ glue_parent_setup();
 pet = instance_create_layer(x, y, layer, obj_Solid, {
 	image_xscale: sprite_width, image_yscale: sprite_height,
 });
-pet.outside = exists_outside_empty();
+pet.fn_outside = exists_outside_empty();
 
-squish = function () {
+fn_squish = function () {
 	game_set_pause(2);
 	game_camera_set_shake(2, 0.4);
 	state.change(state_dead);
 };
 
-riding = function () {
+fn_riding = function () {
 	return false;
 };
 mask_index = spr_none;
@@ -61,7 +61,7 @@ trigger_set(function(){
 	}
 });
 
-reset = function(){
+fn_reset = function(){
 	state.change(state_idle);
 	x = xstart;
 	y = ystart;
@@ -156,15 +156,15 @@ state_active.set("step", function () {
 		state.change(state_retract);
 	};
 	
-	actor_move_x(x_vel, __collide);
-	actor_move_y(y_vel, __collide);
+	self.fn_move_x(x_vel, __collide);
+	self.fn_move_y(y_vel, __collide);
 	glue_parent_moved(x, y);
 	
 	pet.mask_index = pet.sprite_index;
 	mask_index = spr_none;
 	
 	with pet {
-		solid_move(other.x - x, other.y - y, true, other.x_vel, other.y_vel);
+		self.fn_move(other.x - x, other.y - y, true, other.x_vel, other.y_vel);
 	}
 });
 
@@ -199,8 +199,8 @@ state_retract.set("step", function () {
 		var _off_x = min(abs(x_vel), abs(start_x - x)) * sign(x_vel);
 		var _off_y = min(abs(y_vel), abs(start_y - y)) * sign(y_vel);
 		
-		actor_move_x(_off_x, __collide);
-		actor_move_y(_off_y, __collide);
+		self.fn_move_x(_off_x, __collide);
+		self.fn_move_y(_off_y, __collide);
 		
 		if dir == 0 || dir == 2 {
 			if x == start_x {
@@ -219,7 +219,7 @@ state_retract.set("step", function () {
 		mask_index = spr_none;
 		
 		with pet {
-			solid_move(other.x - x, other.y - y, true, other.x_vel, other.y_vel);
+			self.fn_move(other.x - x, other.y - y, true, other.x_vel, other.y_vel);
 		}
 	}
 	

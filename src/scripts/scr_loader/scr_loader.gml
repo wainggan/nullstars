@@ -271,7 +271,7 @@ function Loader() constructor {
 				continue;
 			}
 			var _lvl = game_level_get_safe_rect(bbox_left, bbox_top, bbox_right, bbox_bottom);
-			if (_lvl == undefined || !_lvl.loaded) && outside(_cam) {
+			if (_lvl == undefined || !_lvl.loaded) && fn_outside(_cam) {
 				instance_destroy();
 			}
 		}

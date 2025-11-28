@@ -7,7 +7,7 @@ image_yscale = jorp_h;
 pet = instance_create_layer(x, y, "Instances", obj_Solid);
 with pet {
 	visible = false;
-	outside = exists_outside_empty();
+	fn_outside = exists_outside_empty();
 	image_xscale = other.sprite_width;
 	image_yscale = other.sprite_height;
 	collidable = true;
@@ -16,6 +16,6 @@ with pet {
 locked = true;
 locked_anim = 0;
 
-reset = function () {
+fn_reset = function () {
 	locked = true;
 };
