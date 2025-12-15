@@ -615,6 +615,11 @@ function LoaderOptionParsePartVertex(_priority, _level, _bin_id, _at, _vertex, _
 	vertex_begin(vertex, level_get_vf());
 	
 	static process = function () {
+		// in case a `LoaderOptionDestroy` runs before this completes
+		if !vertex_buffer_exists(vertex) {
+			return LoaderOptionStatus.complete;
+		}
+
 		var _buffer = bin_id.bin();
 		
 		buffer_seek(_buffer, buffer_seek_start, position);
