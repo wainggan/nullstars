@@ -11,7 +11,7 @@
 	"iid": "d5a16520-6280-11ee-ba61-ad454e9d2411",
 	"jsonVersion": "1.5.3",
 	"appBuildId": 485934,
-	"nextUid": 670,
+	"nextUid": 672,
 	"identifierStyle": "Free",
 	"toc": [{
 		"identifier": "obj_checkpoint",
@@ -310,7 +310,13 @@
 				"levelIid": "b7f225a0-ac70-11f0-b041-9383b0ebd7c8",
 				"layerIid": "b7f24cb2-ac70-11f0-b041-eba1c58d458d",
 				"entityIid": "9b26fc20-ac70-11f0-b041-433484dd72dc"
-			}, "worldX": 49632, "worldY": 9232, "widPx": 32, "heiPx": 32, "fields": { "index": "fidjeo3", "waypoint": true } }
+			}, "worldX": 49632, "worldY": 9232, "widPx": 32, "heiPx": 32, "fields": { "index": "fidjeo3", "waypoint": true } },
+			{ "iids": {
+				"worldIid": "d5a22870-6280-11ee-ba61-cd0c5d88e4b3",
+				"levelIid": "424e2ec0-d380-11f0-8076-a94c94e9e74d",
+				"layerIid": "424e2ec3-d380-11f0-8076-b981332c371e",
+				"entityIid": "7cc061d0-d380-11f0-8076-b94e20dd1e26"
+			}, "worldX": 38672, "worldY": 9664, "widPx": 32, "heiPx": 32, "fields": { "index": "asdnmcx", "waypoint": true } }
 		]
 	}],
 	"worldLayout": "Free",
@@ -12325,7 +12331,7 @@
 			"tileOpacity": 1,
 			"fillOpacity": 1,
 			"lineOpacity": 1,
-			"hollow": false,
+			"hollow": true,
 			"color": "#85FF6A",
 			"renderMode": "Rectangle",
 			"showName": false,
@@ -14817,7 +14823,7 @@
 				"params": ["world1_1"]
 			}] }],
 			"layerInstances": null,
-			"__neighbours": [{ "levelIid": "386d86f0-1030-11f0-b8da-71fc97ecaf08", "dir": "n" }]
+			"__neighbours": [ { "levelIid": "386d86f0-1030-11f0-b8da-71fc97ecaf08", "dir": "n" }, { "levelIid": "a7552db0-d380-11f0-8076-fb3e422b25d7", "dir": "s" } ]
 		},
 		{
 			"identifier": "Room_67",
@@ -15306,6 +15312,52 @@
 			"fieldInstances": [{ "__identifier": "style", "__type": "LocalEnum.Level_Styles", "__value": null, "__tile": null, "defUid": 506, "realEditorValues": [] }],
 			"layerInstances": null,
 			"__neighbours": [{ "levelIid": "a35f7100-ac70-11f0-b041-e1bc37e82600", "dir": "w" }]
+		},
+		{
+			"identifier": "Room_86",
+			"iid": "a7552db0-d380-11f0-8076-fb3e422b25d7",
+			"uid": 670,
+			"worldX": 37504,
+			"worldY": 9344,
+			"worldDepth": 0,
+			"pxWid": 1136,
+			"pxHei": 688,
+			"__bgColor": "#2D2A30",
+			"bgColor": null,
+			"useAutoIdentifier": true,
+			"bgRelPath": null,
+			"bgPos": null,
+			"bgPivotX": 0.5,
+			"bgPivotY": 0.5,
+			"__smartColor": "#8C8A8D",
+			"__bgPos": null,
+			"externalRelPath": "level/Room_86.ldtkl",
+			"fieldInstances": [{ "__identifier": "style", "__type": "LocalEnum.Level_Styles", "__value": null, "__tile": null, "defUid": 506, "realEditorValues": [] }],
+			"layerInstances": null,
+			"__neighbours": [ { "levelIid": "ed5045c0-1030-11f0-8b0b-11ecccdd38e7", "dir": "n" }, { "levelIid": "424e2ec0-d380-11f0-8076-a94c94e9e74d", "dir": "e" } ]
+		},
+		{
+			"identifier": "Room_87",
+			"iid": "424e2ec0-d380-11f0-8076-a94c94e9e74d",
+			"uid": 671,
+			"worldX": 38640,
+			"worldY": 9264,
+			"worldDepth": 0,
+			"pxWid": 4080,
+			"pxHei": 768,
+			"__bgColor": "#2D2A30",
+			"bgColor": null,
+			"useAutoIdentifier": true,
+			"bgRelPath": null,
+			"bgPos": null,
+			"bgPivotX": 0.5,
+			"bgPivotY": 0.5,
+			"__smartColor": "#8C8A8D",
+			"__bgPos": null,
+			"externalRelPath": "level/Room_87.ldtkl",
+			"fieldInstances": [{ "__identifier": "style", "__type": "LocalEnum.Level_Styles", "__value": null, "__tile": null, "defUid": 506, "realEditorValues": [] }],
+			"layerInstances": null,
+			"__neighbours": [{ "levelIid": "a7552db0-d380-11f0-8076-fb3e422b25d7", "dir": "w" }]
 		}
 	],
 	"worlds": [],

@@ -10,5 +10,5 @@ if instance_exists(obj_player) {
 	_dist_size = clamp(1 - (_dist) / 256, 0, 1) * 1.5;
 }
 
-size = lerp(size, _dist_size, 0.15);
+size = lerp(size, _dist_size, 0.2);
 
