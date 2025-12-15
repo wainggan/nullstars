@@ -1,6 +1,25 @@
 
-#macro ASSERT if RELEASE {} else for (var __check__ = true;; { if !__check__ { throw $"assertion failed @ {_GMFILE_}:{_GMLINE_} :: found {__check__}"; } break; }) __check__ =
+#macro ASSERT if RELEASE {} else for (var __check__ = undefined;; { if __check__ != undefined { throw $"assertion failed @ {_GMFILE_}:{_GMLINE_} :: {__check__}"; } break; }) __check__ = __assert__
 
+function __assert__(_bool, _msg = "") {
+	if _bool {
+		return undefined;
+	}
+	else {
+		return _msg;
+	}
+}
+
+#macro ASSERT_EQ if RELEASE {} else for (var __check__ = undefined;; { if __check__ != undefined { throw $"assertion failed @ {_GMFILE_}:{_GMLINE_} :: {__check__}"; } break; }) __check__ = __assert_eq__
+
+function __assert_eq__(_left, _right, _msg = "") {
+	if _left == _right {
+		return undefined;
+	}
+	else {
+		return $"left = {_left}, right = {_right}. {_msg}";
+	}
+}
 
 /// moves `a` to `b` by `amount` without overshooting
 /// @arg {real} _a starting value
