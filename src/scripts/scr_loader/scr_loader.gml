@@ -40,7 +40,7 @@ function Loader() constructor {
 	if _buffer == -1 {
 		LOG(Log.error, $"Loader(): file 'world.bin' doesn't exist");
 		LOG(Log.error, "what do you even do about this?");
-		ASSERT(false);
+		ASSERT(false, "world.bin must exist");
 	}
 	file = level_unpack_bin_main(_buffer);
 	buffer_delete(_buffer);
@@ -100,7 +100,7 @@ function Loader() constructor {
 				// keep processing it until it is complete
 				while true {
 					_status = _item.process(self);
-					ASSERT(_status != undefined);
+					ASSERT_NE(_status, undefined, $"{instanceof(_item)}");
 					
 					if _status == LoaderOptionStatus.complete {
 						break;
@@ -120,7 +120,7 @@ function Loader() constructor {
 			} else if _budget_runs > 0 && _budget_time > 0 {
 				// this item can be processed over multiple frames.
 				_status = _item.process(self);
-				ASSERT(_status != undefined);
+				ASSERT_NE(_status, undefined, $"{instanceof(_item)}");
 				
 				if _status != LoaderOptionStatus.complete {
 					// whatever
@@ -130,7 +130,7 @@ function Loader() constructor {
 				continue;
 			}
 			
-			ASSERT(_status == LoaderOptionStatus.complete);
+			ASSERT_EQ(_status, LoaderOptionStatus.complete);
 			
 			var _out = _item.collect(self);
 			
@@ -412,6 +412,7 @@ function LoaderOptionParse(_level, _bin_id) : LoaderOption(_level, 0) constructo
 		_level.init(bin_id.bin());
 		
 		level.data = _level;
+		ASSERT_EQ(level.loaded, LoaderProgress.prepping);
 		level.loaded = LoaderProgress.prepared;
 		
 		bin_id.pop();

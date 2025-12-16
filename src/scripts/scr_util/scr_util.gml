@@ -1,5 +1,7 @@
 
-#macro ASSERT if RELEASE {} else for (var __check__ = undefined;; { if __check__ != undefined { throw $"assertion failed @ {_GMFILE_}:{_GMLINE_} :: {__check__}"; } break; }) __check__ = __assert__
+#macro __ASSERT if RELEASE {} else for (var __check__ = undefined;; { if __check__ != undefined { throw $"assertion failed @ {_GMFILE_}:{_GMLINE_} :: {__check__}"; } break; }) __check__ =
+
+#macro ASSERT __ASSERT __assert__
 
 function __assert__(_bool, _msg = "") {
 	if _bool {
@@ -10,16 +12,28 @@ function __assert__(_bool, _msg = "") {
 	}
 }
 
-#macro ASSERT_EQ if RELEASE {} else for (var __check__ = undefined;; { if __check__ != undefined { throw $"assertion failed @ {_GMFILE_}:{_GMLINE_} :: {__check__}"; } break; }) __check__ = __assert_eq__
+#macro ASSERT_EQ __ASSERT __assert_eq__
 
 function __assert_eq__(_left, _right, _msg = "") {
 	if _left == _right {
 		return undefined;
 	}
 	else {
-		return $"left = {_left}, right = {_right}. {_msg}";
+		return $"left == right: left = {_left}, right = {_right}. {_msg}";
 	}
 }
+
+#macro ASSERT_NE __ASSERT __assert_ne__
+
+function __assert_ne__(_left, _right, _msg = "") {
+	if _left != _right {
+		return undefined;
+	}
+	else {
+		return $"left != right: left = {_left}, right = {_right}. {_msg}";
+	}
+}
+
 
 /// moves `a` to `b` by `amount` without overshooting
 /// @arg {real} _a starting value
