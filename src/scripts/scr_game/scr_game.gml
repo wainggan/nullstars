@@ -704,11 +704,13 @@ function GameBuffers() constructor {
 		};
 		
 		static push = function () {
+			ASSERT(valid());
 			parent.bins[$ id][1] += 1;
 			return self;
 		};
 		
 		static pop = function () {
+			ASSERT(valid());
 			parent.bins[$ id][1] -= 1;
 			return self;
 		};
