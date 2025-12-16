@@ -20,6 +20,8 @@
  * to "prepared", and the entities it had can be destroyed.
  * - when a room exits the preparation zone, a "destroy"
  * command is created, which will destroy the room's resources.
+ *
+ *
  * 
  * this is a very delicate process with lots of room for
  * error. pay attention to `ASSERT()` where used.
@@ -46,11 +48,12 @@ function Loader() constructor {
 	buffer_delete(_buffer);
 	
 	
-	levels = array_create(array_length(file.rooms));
+	levels := array_create(array_length(file.rooms));
 	
 	for (var i = 0; i < array_length(levels); i++) {
-		var _room = file.rooms[i];
-		levels[i] = {
+		var _room := file.rooms[i];
+		
+		var _data := {
 			id: i,
 			loaded: LoaderProgress.out,
 			time_load: 0,
@@ -61,10 +64,29 @@ function Loader() constructor {
 			height: _room.height,
 			name: $"world/room/{_room.name}.bin",
 			data: undefined,
+			obj: noone,
 		};
+		
+		var _inst := instance_create_layer(_room.x, _room.y, "Instances", obj_room);
+		
+		// this might be a circular reference, but because these are intended to stay alive
+		// for the entire course of the program, this should be fine
+		
+		_data.obj = _inst;
+		
+		levels[i] = _data;
+		
+		with _inst {
+			image_xscale = _room.width;
+			image_yscale = _room.height;
+			
+			data := _data;
+		}
 	}
 	
 	loaded = [];
+	
+	flagged = [];
 	
 	queue = [];
 	
@@ -161,7 +183,7 @@ function Loader() constructor {
 		
 		// remove elements without screwing up indicies
 		array_sort(_remove, true);
-		repeat array_length(_remove) {
+		while array_length(_remove) != 0 {
 			var _index = array_pop(_remove);
 			array_delete(queue, _index, 1);
 		}
@@ -210,49 +232,114 @@ function Loader() constructor {
 	static update = function () {
 		var _cam = game_camera_get();
 		
-		for (var i = 0, _len = array_length(levels); i < _len; i++) {
-			var _level = levels[i];
+		if global.config.perf_fastroomcheck {
 			
-			if util_check_level_zone_load(_cam, _level) {
-				if _level.loaded == LoaderProgress.out && _level.data == undefined {
-					self.queue_add(new LoaderOptionFile(_level));
+			static __list = ds_list_create();
+			
+			ds_list_clear(__list);
+			util_check_level_zone_prep_fast(__list, _cam);
+			
+			for (var i = 0, _len = ds_list_size(__list); i < _len; i++) {
+				var _level = __list[| i];
 				
-				} else if _level.loaded == LoaderProgress.prepared {
-					self.queue_add(new LoaderOptionLoad(_level));
+				if !array_contains(self.flagged, _level.data) {
+					array_push(self.flagged, _level.data);
+				}
+			}
+			
+			
+			for (var i = 0, _len = array_length(self.flagged); i < _len; i++) {
+				var _level = self.flagged[i];
 				
-				} else if _level.loaded == LoaderProgress.loaded {
-					_level.time_load = GAME_LOAD_TIME_FILE;
-					_level.time_prep = GAME_LOAD_TIME_PREP;
+				if util_check_level_zone_load(_cam, _level) {
+					if _level.loaded == LoaderProgress.out && _level.data == undefined {
+						self.queue_add(new LoaderOptionFile(_level));
+				
+					} else if _level.loaded == LoaderProgress.prepared {
+						self.queue_add(new LoaderOptionLoad(_level));
+				
+					} else if _level.loaded == LoaderProgress.loaded {
+						_level.time_load = GAME_LOAD_TIME_FILE;
+						_level.time_prep = GAME_LOAD_TIME_PREP;
 					
+					}
+				
+				} else if util_check_level_zone_prep(_cam, _level) {
+					if _level.loaded == LoaderProgress.out && _level.data == undefined {
+						self.queue_add(new LoaderOptionFile(_level));
+				
+					} else if _level.loaded == LoaderProgress.loaded {
+						if _level.time_load-- <= 0 {
+							// entities inside the level should automatically be destroyed now
+							self.queue_add(new LoaderOptionUnload(_level));
+						}
+				
+					} else if _level.loaded == LoaderProgress.prepared {
+						_level.time_prep = GAME_LOAD_TIME_PREP;
+				
+					}
+				
+				} else {
+					if _level.loaded == LoaderProgress.prepared {
+						if _level.time_prep-- <= 0 {
+							self.queue_add(new LoaderOptionDestroy(_level));
+						}
+				
+					} else if _level.loaded == LoaderProgress.loaded {
+						_level.time_load -= 4;
+						if _level.time_load <= 0 {
+							self.queue_add(new LoaderOptionUnload(_level));
+						}
+				
+					}
 				}
+			}
+		}
+		else {
+			for (var i = 0, _len = array_length(levels); i < _len; i++) {
+				var _level = levels[i];
+			
+				if util_check_level_zone_load(_cam, _level) {
+					if _level.loaded == LoaderProgress.out && _level.data == undefined {
+						self.queue_add(new LoaderOptionFile(_level));
 				
-			} else if util_check_level_zone_prep(_cam, _level) {
-				if _level.loaded == LoaderProgress.out && _level.data == undefined {
-					self.queue_add(new LoaderOptionFile(_level));
+					} else if _level.loaded == LoaderProgress.prepared {
+						self.queue_add(new LoaderOptionLoad(_level));
 				
-				} else if _level.loaded == LoaderProgress.loaded {
-					if _level.time_load-- <= 0 {
-						// entities inside the level should automatically be destroyed now
-						self.queue_add(new LoaderOptionUnload(_level));
+					} else if _level.loaded == LoaderProgress.loaded {
+						_level.time_load = GAME_LOAD_TIME_FILE;
+						_level.time_prep = GAME_LOAD_TIME_PREP;
+					
 					}
 				
-				} else if _level.loaded == LoaderProgress.prepared {
-					_level.time_prep = GAME_LOAD_TIME_PREP;
+				} else if util_check_level_zone_prep(_cam, _level) {
+					if _level.loaded == LoaderProgress.out && _level.data == undefined {
+						self.queue_add(new LoaderOptionFile(_level));
 				
-				}
+					} else if _level.loaded == LoaderProgress.loaded {
+						if _level.time_load-- <= 0 {
+							// entities inside the level should automatically be destroyed now
+							self.queue_add(new LoaderOptionUnload(_level));
+						}
 				
-			} else {
-				if _level.loaded == LoaderProgress.prepared {
-					if _level.time_prep-- <= 0 {
-						self.queue_add(new LoaderOptionDestroy(_level));
+					} else if _level.loaded == LoaderProgress.prepared {
+						_level.time_prep = GAME_LOAD_TIME_PREP;
+				
 					}
 				
-				} else if _level.loaded == LoaderProgress.loaded {
-					_level.time_load -= 4;
-					if _level.time_load <= 0 {
-						self.queue_add(new LoaderOptionUnload(_level));
-					}
+				} else {
+					if _level.loaded == LoaderProgress.prepared {
+						if _level.time_prep-- <= 0 {
+							self.queue_add(new LoaderOptionDestroy(_level));
+						}
 				
+					} else if _level.loaded == LoaderProgress.loaded {
+						_level.time_load -= 4;
+						if _level.time_load <= 0 {
+							self.queue_add(new LoaderOptionUnload(_level));
+						}
+				
+					}
 				}
 			}
 		}
@@ -303,6 +390,20 @@ function util_check_level_zone_prep(_cam, _level) {
 	);
 }
 
+function util_check_level_zone_prep_fast(_list, _cam) {
+	collision_rectangle_list(
+		_cam.x - GAME_LOAD_RADIUS_FILE,
+		_cam.y - GAME_LOAD_RADIUS_FILE,
+		_cam.x + _cam.w + GAME_LOAD_RADIUS_FILE,
+		_cam.y + _cam.h + GAME_LOAD_RADIUS_FILE,
+		obj_room,
+		false,
+		true,
+		_list,
+		false
+	);
+}
+
 function util_check_level_zone_load(_cam, _level) {
 	var _check = false;
 	if instance_exists(obj_player) {
@@ -316,7 +417,7 @@ function util_check_level_zone_load(_cam, _level) {
 			_level.y + _level.height
 		) != 0;
 	}
-	return rectangle_in_rectangle(
+	return _check || rectangle_in_rectangle(
 		_cam.x - GAME_LOAD_RADIUS_ENTITY,
 		_cam.y - GAME_LOAD_RADIUS_ENTITY,
 		_cam.x + _cam.w + GAME_LOAD_RADIUS_ENTITY,
@@ -324,8 +425,37 @@ function util_check_level_zone_load(_cam, _level) {
 		_level.x, _level.y,
 		_level.x + _level.width,
 		_level.y + _level.height
-	) || _check;
+	);
 }
+
+function util_check_level_zone_load_fast(_list, _cam) {
+	collision_rectangle_list(
+		_cam.x - GAME_LOAD_RADIUS_ENTITY,
+		_cam.y - GAME_LOAD_RADIUS_ENTITY,
+		_cam.x + _cam.w + GAME_LOAD_RADIUS_ENTITY,
+		_cam.y + _cam.h + GAME_LOAD_RADIUS_ENTITY,
+		obj_room,
+		false,
+		true,
+		_list,
+		false
+	);
+	with obj_player {
+		collision_rectangle_list(
+			bbox_left + min(0, x_vel),
+			bbox_top + min(0, y_vel),
+			bbox_left + max(0, x_vel),
+			bbox_bottom + max(0, y_vel),
+			obj_room,
+			false,
+			true,
+			_list,
+			false
+		);
+	}
+}
+
+
 
 enum LoaderOptionStatus {
 	complete,
@@ -389,10 +519,11 @@ function LoaderOptionFile(_level) : LoaderOption(_level, 0) constructor {
 		ASSERT(buffer_exists(bin));
 		
 		var _bin_id = global.game.buffers.add(bin);
-		_bin_id.pop();
 		
 		static __out = array_create(1);
 		__out[0] = new LoaderOptionParse(level, _bin_id);
+		
+		_bin_id.pop();
 		
 		return __out;
 	};
@@ -415,22 +546,22 @@ function LoaderOptionParse(_level, _bin_id) : LoaderOption(_level, 0) constructo
 		ASSERT_EQ(level.loaded, LoaderProgress.prepping);
 		level.loaded = LoaderProgress.prepared;
 		
-		bin_id.pop();
-		
 		return LoaderOptionStatus.complete;
 	};
 	
 	static collect = function (_loader) {
-		var _cam = game_camera_get();
+		var _cam := game_camera_get();
 		
-		var __out = [];
-		array_delete(__out, 0, array_length(__out));
-		
+		static __out := [];
+		array_resize(__out, 0);
+
 		if util_check_level_zone_load(_cam, level) {
 			array_push(__out, new LoaderOptionLoad(level));
 		}
 		
 		level.data.prepare(__out, level, _loader, bin_id);
+		
+		bin_id.pop();
 		
 		return __out;
 	};
@@ -476,6 +607,7 @@ function LoaderOptionDestroy(_level) : LoaderOption(_level, 1) constructor {
 		level.data.unload();
 		level.data.destroy();
 		level.data = undefined;
+		array_delete(_loader.flagged, array_get_index(_loader.flagged, level), 1);
 		return LoaderOptionStatus.complete;
 	};
 }

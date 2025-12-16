@@ -29,6 +29,7 @@ global.config = {
 	graphics_up_bubble_wobble: true,
 	graphics_up_bubble_outline: true,
 	graphics_up_bubble_spike: true,
+	perf_fastroomcheck: true,
 	slow: false,
 }
 
