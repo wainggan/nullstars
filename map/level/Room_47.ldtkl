@@ -177,7 +177,15 @@
 							"params": ["74ff77d0-9b00-11ef-ae8e-1d8ddf1a9582"]
 						}] },
 						{ "__identifier": "dir", "__type": "LocalEnum.Direction_4", "__value": "right", "__tile": null, "defUid": 448, "realEditorValues": [] },
-						{ "__identifier": "terms", "__type": "Array<LocalEnum.Terms>", "__value": [], "__tile": null, "defUid": 586, "realEditorValues": [] }
+						{ "__identifier": "terms", "__type": "Array<LocalEnum.Terms>", "__value": [], "__tile": null, "defUid": 586, "realEditorValues": [] },
+						{ "__identifier": "info_pos", "__type": "Point", "__value": { "cx": 8, "cy": 22 }, "__tile": null, "defUid": 672, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["8,22"]
+						}] },
+						{ "__identifier": "info_align", "__type": "LocalEnum.Alignment", "__value": "right", "__tile": null, "defUid": 674, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["right"]
+						}] }
 					],
 					"__worldX": 32368,
 					"__worldY": 9792

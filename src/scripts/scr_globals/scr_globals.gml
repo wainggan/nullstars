@@ -47,6 +47,10 @@ global.config = {
 #macro GAME_RENDER_LIGHT_SIZE 2048
 #macro GAME_RENDER_LIGHT_KERNEL 256
 
+#macro GAME_UI_TEXT_PAD_X 8
+#macro GAME_UI_TEXT_PAD_Y 11
+#macro GAME_UI_TEXT_PAD_LINE 14
+
 // amount of time loader may spend working during a frame in ms
 #macro GAME_LOAD_BUDGET_TIME 1
 // amount of jobs loader may complete in one frame

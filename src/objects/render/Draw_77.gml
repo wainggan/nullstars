@@ -57,6 +57,9 @@ var _beat = (1 + power(1 - game_music_get_beat(2), 2) * 0.1);
 with obj_timer_start {
 	var _dir = anim_dir * 90;
 	var _scale = _beat * tween(Tween.Back, anim_complete);
+	if _scale == 0 {
+		continue;
+	}
 	draw_sprite_ext(
 		spr_timer_star, 0,
 		x + sprite_width / 2 - lengthdir_x(8, _dir),

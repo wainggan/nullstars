@@ -1,6 +1,121 @@
 
 var _cam = game_camera_get();
 
+with obj_timer_start {
+	if anim_menu == 0 {
+		continue;
+	}
+	
+	var _scale := 1;//global.settings.graphic.textscale + 1;
+	var _width := 80 * _scale;
+	var _height := 60 * _scale;
+	
+	var _x := info_pos.x - _cam.x;
+	
+	if info_align == "right" {
+		_x -= _width - 16;
+	}
+	else if info_align == "center" {
+		_x -= _width / 2;
+	}
+	
+	var _y := info_pos.y - _cam.y;
+	
+	var _pad_x := GAME_UI_TEXT_PAD_X * _scale;
+	var _pad_y := GAME_UI_TEXT_PAD_Y * _scale - 4;
+	var _option_pad := GAME_UI_TEXT_PAD_LINE * _scale - 2;
+	
+	draw_set_font(ft_sign);
+	draw_set_color(#dddddd);
+	
+	draw_sprite_stretched(
+		spr_sign_board,
+		0,
+		_x,
+		_y,
+		_width,
+		_height * tween(Tween.Circ, anim_menu)
+	);
+	
+	if anim_menu < 1 {
+		continue;
+	}
+	
+	var _i := 0;
+	draw_set_halign(fa_center);
+	
+	draw_text_transformed(
+		_x + _width / 2,
+		_y + _pad_y + _option_pad * _i++,
+		"-",
+		_scale,
+		_scale,
+		0
+	);
+	
+	draw_text_transformed(
+		_x + _width / 2,
+		_y + _pad_y + _option_pad * _i++,
+		"/",
+		_scale,
+		_scale,
+		0
+	);
+		
+	_i = 0;
+	draw_set_halign(fa_right);
+	
+	draw_text_transformed(
+		_x + _width / 2 - 6,
+		_y + _pad_y + _option_pad * _i++,
+		name,
+		_scale,
+		_scale,
+		0
+	);
+	
+	draw_text_transformed(
+		_x + _width / 2 - 6,
+		_y + _pad_y + _option_pad * _i++,
+		"3:40",
+		_scale,
+		_scale,
+		0
+	);
+	
+	_i = 0;
+	draw_set_halign(fa_left);
+	
+	draw_text_transformed(
+		_x + _width / 2 + 6,
+		_y + _pad_y + _option_pad * _i++,
+		"x",
+		_scale,
+		_scale,
+		0
+	);
+	
+	draw_text_transformed(
+		_x + _width / 2 + 6,
+		_y + _pad_y + _option_pad * _i++,
+		"0:50",
+		_scale,
+		_scale,
+		0
+	);
+	
+	draw_text_transformed(
+		_x + _pad_x,
+		_y + _pad_y + _option_pad * _i++,
+		"() () ()",
+		_scale,
+		_scale,
+		0
+	);
+	
+	draw_set_color(c_white);
+}
+
 
 if anim_time_main > 0 {
 	var _pos_x = WIDTH / 2,

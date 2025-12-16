@@ -161,7 +161,15 @@
 							"id": "V_String",
 							"params": ["left"]
 						}] },
-						{ "__identifier": "terms", "__type": "Array<LocalEnum.Terms>", "__value": [], "__tile": null, "defUid": 586, "realEditorValues": [] }
+						{ "__identifier": "terms", "__type": "Array<LocalEnum.Terms>", "__value": [], "__tile": null, "defUid": 586, "realEditorValues": [] },
+						{ "__identifier": "info_pos", "__type": "Point", "__value": { "cx": 37, "cy": 37 }, "__tile": null, "defUid": 672, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["37,37"]
+						}] },
+						{ "__identifier": "info_align", "__type": "LocalEnum.Alignment", "__value": "right", "__tile": null, "defUid": 674, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["right"]
+						}] }
 					],
 					"__worldX": 11248,
 					"__worldY": 4384

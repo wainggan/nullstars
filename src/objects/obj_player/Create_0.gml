@@ -439,7 +439,7 @@ action_jump_shared = function() {
 	
 	action_anim_jump();
 	
-	game_render_particle_below(x, y, ps_player_jump);
+	game_render_particle(x, y - 1, ps_player_jump);
 	
 };
 

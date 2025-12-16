@@ -103,9 +103,9 @@ function MenuPageList(_width = 200) : MenuPage() constructor {
 		
 		var _width_t = 160 * _scale;
 		
-		var _pad_x = 8 * _scale;
-		var _pad_y = 11 * _scale;
-		var _option_pad = 14 * _scale;
+		var _pad_x = GAME_UI_TEXT_PAD_X * _scale;
+		var _pad_y = GAME_UI_TEXT_PAD_Y * _scale;
+		var _option_pad = GAME_UI_TEXT_PAD_LINE * _scale;
 		
 		draw_set_font(ft_sign);
 		draw_set_color(#cccccc);

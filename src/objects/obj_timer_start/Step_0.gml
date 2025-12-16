@@ -154,3 +154,22 @@ if anim_pop {
 	anim_running = 0;
 }
 
+var _off_left = dir == "left" ? 32 : 128;
+var _off_right = dir == "right" ? 32 : 128;
+var _off_top = dir == "up" ? 32 : 128;
+var _off_bottom = dir == "down" ? 32 : 128;
+
+if collision_rectangle(
+	bbox_left - _off_left,
+	bbox_top - _off_top,
+	bbox_right + _off_right,
+	bbox_bottom + _off_bottom,
+	obj_player,
+	false,
+	true
+) {
+	anim_menu = approach(anim_menu, 1, 0.1);
+} else {
+	anim_menu = approach(anim_menu, 0, 0.1);
+}
+

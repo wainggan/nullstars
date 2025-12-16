@@ -53,7 +53,7 @@
 			"autoLayerTiles": [],
 			"seed": 9765424,
 			"overrideTilesetUid": null,
-			"gridTiles": [],
+			"gridTiles": [{ "px": [416,352], "src": [0,0], "f": 0, "t": 0, "d": [1522], "a": 1 }],
 			"entityInstances": []
 		},
 		{
@@ -199,7 +199,15 @@
 							"params": ["dc13f410-8990-11ee-9c14-1b29fdc5d15c"]
 						}] },
 						{ "__identifier": "dir", "__type": "LocalEnum.Direction_4", "__value": "right", "__tile": null, "defUid": 448, "realEditorValues": [] },
-						{ "__identifier": "terms", "__type": "Array<LocalEnum.Terms>", "__value": [], "__tile": null, "defUid": 586, "realEditorValues": [] }
+						{ "__identifier": "terms", "__type": "Array<LocalEnum.Terms>", "__value": [], "__tile": null, "defUid": 586, "realEditorValues": [] },
+						{ "__identifier": "info_pos", "__type": "Point", "__value": { "cx": 26, "cy": 11 }, "__tile": null, "defUid": 672, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["26,11"]
+						}] },
+						{ "__identifier": "info_align", "__type": "LocalEnum.Alignment", "__value": "right", "__tile": null, "defUid": 674, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["right"]
+						}] }
 					],
 					"__worldX": 1936,
 					"__worldY": 3472

@@ -20,6 +20,7 @@ anim_running = 0;
 anim_is_complete = false;
 anim_complete = 0;
 anim_pop = false;
+anim_menu = 0;
 
 anim_dir = 0;
 if dir == "right" {
