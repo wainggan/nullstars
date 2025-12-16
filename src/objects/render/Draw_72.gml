@@ -404,3 +404,6 @@ surface_reset_target();
 note:
 up to this point, the application surface consists of the level background tiles.
 */
+
+part_system_drawit(particles_below);
+

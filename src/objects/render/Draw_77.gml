@@ -146,7 +146,7 @@ if instance_number(obj_effect_wave) == 0 || global.settings.graphic.distortion =
 			sprite, 0,
 			(x - _cam_x) * _surf_wave_scale,
 			(y - _cam_y) * _surf_wave_scale,
-			scale / 512 * _surf_wave_scale, scale / 512 * _surf_wave_scale, 0,
+			scale / 256 * _surf_wave_scale, scale / 256 * _surf_wave_scale, 0,
 			c_white, alpha
 		);
 	}

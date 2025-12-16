@@ -52,7 +52,7 @@ if !game_timer_running() && _start {
 		pad: 16,
 		spd: 0.04
 	});
-	game_render_wave(x + sprite_width / 2, y + sprite_height / 2, 512, 60, 0.2, spr_wave_ripple);
+	game_render_wave(x + sprite_width / 2, y + sprite_height / 2, 256, 60, 0.2, spr_wave_ripple);
 	game_render_particle_ambient(x + sprite_width / 2, y + sprite_height / 2, ps_timer_start);
 }
 
@@ -121,7 +121,7 @@ with level_get_instance(ref) {
 			game_timer_stop();
 			other.anim_pop = true;
 			
-			game_render_wave(x + sprite_width / 2, y + sprite_height / 2, 960, 120, 0.5, spr_wave_ripple);
+			game_render_wave(x + sprite_width / 2, y + sprite_height / 2, 480, 120, 0.5, spr_wave_ripple);
 		
 			_pop = true;
 		}

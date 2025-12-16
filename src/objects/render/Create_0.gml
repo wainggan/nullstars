@@ -50,6 +50,10 @@ particles_ambient = part_system_create_layer("Instances", true);
 part_system_automatic_update(particles_ambient, false);
 part_system_automatic_draw(particles_ambient, false);
 
+particles_below = part_system_create_layer("Instances", true);
+part_system_automatic_update(particles_below, false);
+part_system_automatic_draw(particles_below, false);
+
 particles_layer = part_system_create_layer("Instances", true);
 part_system_automatic_update(particles_layer, false);
 part_system_automatic_draw(particles_layer, false);

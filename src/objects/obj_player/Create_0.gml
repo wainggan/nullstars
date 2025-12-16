@@ -439,6 +439,8 @@ action_jump_shared = function() {
 	
 	action_anim_jump();
 	
+	game_render_particle_below(x, y, ps_player_jump);
+	
 };
 
 action_jump = function() {
@@ -721,8 +723,12 @@ state_base.set("step", function () {
 		action_anim_onground();
 	}
 	
-	if (grace > 0 && dash_recover <= 0) || (state.is(state_ledge)) {
+	if (grace > 0 && dash_recover < 0) || (state.is(state_ledge)) {
 		dash_left = defs.dash_total;
+	}
+	
+	if dash_recover > 0 || state.is(state_swim_bullet) {
+		game_render_particle_below(x, y - 16, ps_player_dash_stream);
 	}
 	
 	dash_stale = approach(dash_stale, 0, 3 / 60);
@@ -947,7 +953,7 @@ state_base.set("step", function () {
 					game_set_pause(4);
 					game_render_particle(x, y - 16, ps_player_death_1);
 					
-					game_render_wave(x, y - 16, 256, 60, 0.8, spr_wave_sphere);
+					game_render_wave(x, y - 16, 128, 60, 0.8, spr_wave_sphere);
 				}
 			}
 		} else {
@@ -1299,6 +1305,9 @@ state_dash.set("enter", function() {
 	
 	dash_jump = false;
 	
+	game_render_particle(x, y - 16, ps_player_dash_splash);
+	game_render_wave(x, y - 16, 64, 32, 0.25, spr_wave_sphere);
+	
 	game_sound_play(sfx_dash);
 	
 })
@@ -1575,6 +1584,9 @@ state_swim_bullet.set("enter", function() {
 	y_vel = 0;
 	
 	swim_frame = 0;
+	
+	game_render_particle(x, y - 16, ps_player_dash_splash);
+	game_render_wave(x, y - 16, 64, 32, 0.25, spr_wave_sphere);
 	
 })
 .set("step", function() {

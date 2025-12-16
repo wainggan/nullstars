@@ -25,6 +25,12 @@ function game_render_particle(_x, _y, _system) {
 	);
 }
 
+function game_render_particle_below(_x, _y, _system) {
+	with render part_particles_burst(
+		particles_below, _x, _y, _system
+	);
+}
+
 function game_render_particle_water(_x, _y, _system) {
 	with render part_particles_burst(
 		particles_water, _x, _y, _system

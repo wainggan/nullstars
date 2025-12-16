@@ -35,6 +35,7 @@ if _amparts != -1
 	);
 
 part_system_update(particles_ambient);
+part_system_update(particles_below);
 part_system_update(particles_layer);
 part_system_update(particles_water);
 

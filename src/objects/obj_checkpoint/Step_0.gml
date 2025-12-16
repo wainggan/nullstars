@@ -8,6 +8,6 @@ if light == noone && game_level_get_safe(x, y) {
 
 if game_checkpoint_get_index() != index && place_meeting(x, y, obj_player) {
 	game_checkpoint_set_index(index);
-	game_render_wave(x, y - 16, 400, 80, 1, spr_wave_sphere);
+	game_render_wave(x, y - 16, 200, 80, 1, spr_wave_sphere);
 	game_set_pause(4)
 }
