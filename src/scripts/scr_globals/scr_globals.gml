@@ -70,3 +70,6 @@ global.config = {
 #macro DEBUG_LOAD_SLOW_FILE 30
 #macro DEBUG_LOAD_SLOW_PARSE 50
 
+// print operations completed
+#macro DEBUG_LOAD_TRACK_OPS false
+

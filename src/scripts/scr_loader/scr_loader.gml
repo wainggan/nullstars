@@ -103,6 +103,11 @@ function Loader() constructor {
 		
 		var _remove = [];
 		
+		var _debug_track;
+		if DEBUG_LOAD_TRACK_OPS {
+			_debug_track = [];
+		}
+		
 		var _cam = game_camera_get();
 		
 		var _budget_runs = GAME_LOAD_BUDGET_COUNT;
@@ -117,6 +122,10 @@ function Loader() constructor {
 			var _status = LoaderOptionStatus.running;
 			
 			if _item.priority == 0 && util_check_level_zone_load(_cam, _item.level) {
+				
+				if DEBUG_LOAD_TRACK_OPS {
+					array_push(_debug_track, instanceof(_item));
+				}
 				
 				// this item must be processed now
 				// keep processing it until it is complete
@@ -135,20 +144,45 @@ function Loader() constructor {
 				// if it must wait for the next frame to
 				// be processed, freeze the game for a frame.
 				if _status == LoaderOptionStatus.wait {
+					// deal with budget
+					_budget_runs -= 1;
+					_budget_time -= (get_timer() - _time) / 1000;
+					
+					if DEBUG_LOAD_TRACK_OPS {
+						array_push(_debug_track, (get_timer() - _time) / 1000);
+					}
+					
 					game_set_freeze(true);
 					continue;
 				}
 				
 			} else if _budget_runs > 0 && _budget_time > 0 {
+				
+				if DEBUG_LOAD_TRACK_OPS {
+					array_push(_debug_track, instanceof(_item));
+				}
+				
 				// this item can be processed over multiple frames.
 				_status = _item.process(self);
 				ASSERT_NE(_status, undefined, $"{instanceof(_item)}");
 				
 				if _status != LoaderOptionStatus.complete {
+					// deal with budget
+					_budget_runs -= 1;
+					_budget_time -= (get_timer() - _time) / 1000;
+					
+					if DEBUG_LOAD_TRACK_OPS {
+						array_push(_debug_track, (get_timer() - _time) / 1000);
+					}
+					
 					// whatever
 					continue;
 				}
 			} else {
+				// this path happens when the budget runs out.
+				// continue to go back to the top of the loop, consuming
+				// items from the todo array until it's empty.
+				
 				continue;
 			}
 			
@@ -175,10 +209,22 @@ function Loader() constructor {
 			// deal with budget
 			_budget_runs -= 1;
 			_budget_time -= (get_timer() - _time) / 1000;
+			
+			if DEBUG_LOAD_TRACK_OPS {
+				array_push(_debug_track, (get_timer() - _time) / 1000);
+			}
 		}
 		
 		if array_length(_remove) != 0 {
 			LOG(_budget_runs < 0 || _budget_time < 0 ? Log.warn : Log.note, $"{array_length(_remove)} processed; {_budget_runs} {_budget_time}");
+			if DEBUG_LOAD_TRACK_OPS {
+				var _debug_track_str = "types: ";
+				while array_length(_debug_track) != 0 {
+					_debug_track_str += string(array_pop(_debug_track));
+					_debug_track_str += ", ";
+				}
+				LOG(Log.note, _debug_track_str);
+			}
 		}
 		
 		// remove elements without screwing up indicies
