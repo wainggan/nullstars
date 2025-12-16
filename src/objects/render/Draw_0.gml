@@ -102,7 +102,7 @@ if config.light_method {
 	
 	// collect relevant lights into list
 	
-	array_delete(lights_array, 0, array_length(lights_array));
+	array_resize(lights_array, 0);
 	with obj_light {
 		var _size = size * 2 + 16; // surely this won't cause an accident
 		if point_in_rectangle(

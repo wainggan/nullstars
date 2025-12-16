@@ -13,7 +13,7 @@
 function obj_solid_move(_xv, _yv, _lift = true, _lift_x = undefined, _lift_y = undefined) {
 	
 	static __riding = [];
-	array_delete(__riding, 0, array_length(__riding));
+	array_resize(__riding, 0);
 	with obj_Actor {
 		if self.fn_riding(other) array_push(__riding, self);
 	}
