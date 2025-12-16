@@ -121,11 +121,6 @@ global.file_default = {
 			"mix": 10,
 		},
 		"debug": {
-			"gctime": 2,
-				// 0 = 100
-				// 1 = 500
-				// 2 = 1000
-				// 3 = 2000
 			"overlay": 0,
 				// 0 = off
 				// 1 = on

@@ -17,19 +17,6 @@ function game_update_fullscreen(_enable) {
 function game_update_overlay(_enable) {
 	show_debug_overlay(_enable, true);
 }
-function game_update_gctime(_set) {
-	switch _set {
-		case 0:
-			gc_target_frame_time(100);
-			break;
-		case 1:
-			gc_target_frame_time(500);
-			break;
-		case 2:
-			gc_target_frame_time(1000);
-			break;
-	}
-}
 function game_update_log(_set) {
 	global.logger.point = _set + 1;
 }

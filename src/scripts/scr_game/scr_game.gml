@@ -34,7 +34,7 @@ function Game() constructor {
 	// @todo: temp
 	global.onoff = 1;
 	game_update_overlay(global.settings.debug.overlay);
-	game_update_gctime(global.settings.debug.gctime);
+	gc_target_frame_time(-1);
 	game_update_log(global.settings.debug.log);
 	
 	
@@ -656,14 +656,6 @@ function GameMenu() constructor {
 		LOG(Log.note, _text);
 		gc_collect();
 	}, @"force run the gc."))
-	.add(new MenuRadio("gc time", 
-			["100ns", "500ns", "1000ns"],
-			global.settings.debug.gctime,
-			function(_) {
-		global.settings.debug.gctime = _;
-		game_update_gctime(global.settings.debug.gctime);
-		game_file_save();
-	}, @"set the gc's target time. may help with stuttering."))
 	.add(new MenuRadio("overlay", 
 			["off", "on"],
 			global.settings.debug.overlay,
