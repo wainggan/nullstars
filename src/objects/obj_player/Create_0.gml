@@ -1019,7 +1019,7 @@ state_free.set("step", function () {
 		} else {
 			_x_accel = defs.move_accel;
 		}
-		if fn_get_crouch() {
+		if fn_get_crouch() && onground {
 			_x_accel = 0.2;
 		}
 	}
