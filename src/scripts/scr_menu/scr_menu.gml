@@ -318,19 +318,28 @@ function MenuPageChar(_kind) : MenuPage() constructor {
 		if kind == 0 {
 			list = global.data_char_refs.cloth;
 			current = array_get_index(list, global.data.player.cloth);
-		} else if kind == 1 {
+		}
+		else if kind == 1 {
 			list = global.data_char_refs.accessory;
 			current = array_get_index(list, global.data.player.accessory);
-		} else if kind == 2 {
+		}
+		else if kind == 2 {
 			list = global.data_char_refs.ears;
 			current = array_get_index(list, global.data.player.ears);
-		} else if kind == 3 {
+		}
+		else if kind == 3 {
 			list = global.data_char_refs.tail;
 			current = array_get_index(list, global.data.player.tail);
-		} else if kind == 4 {
+		}
+		else if kind == 4 {
 			list = global.data_char_refs.color;
 			current = array_get_index(list, global.data.player.color);
-		} else {
+		}
+		else if kind == 5 {
+			list = global.data_char_refs.trail;
+			current = array_get_index(list, global.data.player.trail);
+		}
+		else {
 			ASSERT(false);
 		}
 		
@@ -356,15 +365,23 @@ function MenuPageChar(_kind) : MenuPage() constructor {
 			LOG(Log.note, $"MenuPageChar(): selected {current}");
 			if kind == 0 {
 				global.data.player.cloth = list[current];
-			} else if kind == 1 {
+			}
+			else if kind == 1 {
 				global.data.player.accessory = list[current];
-			} else if kind == 2 {
+			}
+			else if kind == 2 {
 				global.data.player.ears = list[current];
-			} else if kind == 3 {
+			}
+			else if kind == 3 {
 				global.data.player.tail = list[current];
-			} else if kind == 4 {
+			}
+			else if kind == 4 {
 				global.data.player.color = list[current];
-			} else {
+			}
+			else if kind == 5 {
+				global.data.player.trail = list[current];
+			}
+			else {
 				ASSERT(false);
 			}
 			game_file_save();
@@ -431,19 +448,28 @@ function MenuPageChar(_kind) : MenuPage() constructor {
 			if kind == 0 {
 				_asset = global.data_char.cloth[$ _item];
 				_check = _check || _item == global.data.player.cloth;
-			} else if kind == 1 {
+			}
+			else if kind == 1 {
 				_asset = global.data_char.accessory[$ _item];
 				_check = _check || _item == global.data.player.accessory;
-			} else if kind == 2 {
+			}
+			else if kind == 2 {
 				_asset = global.data_char.ears[$ _item];
 				_check = _check || _item == global.data.player.ears;
-			} else if kind == 3 {
+			}
+			else if kind == 3 {
 				//_asset = global.data_char.tail[$ _item];
 				_check = _check || _item == global.data.player.tail;
-			} else if kind == 4 {
+			}
+			else if kind == 4 {
 				//_asset = global.data_char.color[$ _item];
 				_check = _check || _item == global.data.player.color;
-			} else {
+			}
+			else if kind == 5 {
+				//_asset = global.data_char.color[$ _item];
+				_check = _check || _item == global.data.player.trail;
+			}
+			else {
 				ASSERT(false);
 			}
 			

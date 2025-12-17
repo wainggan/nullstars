@@ -437,6 +437,9 @@ function GameMenu() constructor {
 	}))
 	.add(new MenuButton("color", function () {
 		system.open(page_char_color);
+	}))
+	.add(new MenuButton("trail", function () {
+		system.open(page_char_trail);
 	}));
 	
 	page_char_cloth = new MenuPageChar(0);
@@ -444,6 +447,7 @@ function GameMenu() constructor {
 	page_char_ears = new MenuPageChar(2);
 	page_char_tail = new MenuPageChar(3);
 	page_char_color = new MenuPageChar(4);
+	page_char_trail = new MenuPageChar(5);
 	
 	page_settings = new MenuPageList()
 	.add(new MenuButton("back", function(){

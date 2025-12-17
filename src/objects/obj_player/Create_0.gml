@@ -728,7 +728,8 @@ state_base.set("step", function () {
 	}
 	
 	if dash_recover > 0 || state.is(state_swim_bullet) {
-		game_render_particle_below(x, y - 16, ps_player_dash_stream);
+		var _stream = global.data_char.trail[$ global.data.player.trail];
+		game_render_particle_below(x, y - 16, _stream);
 	}
 	
 	dash_stale = approach(dash_stale, 0, 3 / 60);

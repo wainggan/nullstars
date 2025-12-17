@@ -15,6 +15,9 @@ global.data_char = {
 	color: {
 		
 	},
+	trail: {
+		
+	},
 };
 
 global.data_char_refs = {
@@ -23,6 +26,7 @@ global.data_char_refs = {
 	ears: [],
 	tail: [],
 	color: [],
+	trail: [],
 };
 
 /// @arg {string} _name
@@ -75,6 +79,16 @@ function data_char_add_color(_name, _color) {
 	array_push(global.data_char_refs.color, _name);
 }
 
+/// @arg {string} _name 
+/// @arg {id.ParticleSystem} _ref
+function data_char_add_trail(_name, _ref) {
+	if global.data_char.trail[$ _name] != undefined {
+		LOG(Log.error, $"data_char.trail: {_name} already exists");
+	}
+	global.data_char.trail[$ _name] = _ref;
+	array_push(global.data_char_refs.trail, _name);
+}
+
 data_char_add_cloth("shirt", spr_player_layer_shirt);
 data_char_add_cloth("classic", spr_player_layer_shine);
 
@@ -99,5 +113,14 @@ data_char_add_color("main", [ #ff00ff, #00ffff, #ff00ff ]);
 data_char_add_color("hollow", [ #f27b3a, #965fe3, #f27b3a ]);
 data_char_add_color("lush", [ #ca49f5, #e37f96, #26f059 ]);
 data_char_add_color("gray", [ #777780, #1b1821, #c3c1e3 ]);
+
+data_char_add_trail("bubbles", ps_player_dash_stream_bubble);
+data_char_add_trail("stars", ps_player_dash_stream_star);
+data_char_add_trail("flare", ps_player_dash_stream_flare);
+data_char_add_trail("hearts", ps_player_dash_stream_heart);
+data_char_add_trail("paws", ps_player_dash_stream_paw);
+data_char_add_trail("fish", ps_player_dash_stream_fish);
+data_char_add_trail("bones", ps_player_dash_stream_bone);
+data_char_add_trail("pop", ps_player_dash_stream_pop);
 
 

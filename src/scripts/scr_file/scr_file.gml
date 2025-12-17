@@ -8,7 +8,7 @@ global.version = {
 #macro FILE_DATA "save.star"
 #macro FILE_INPUT "input.ini"
 
-#macro FILE_DATA_VERSION 5
+#macro FILE_DATA_VERSION 6
 
 global.file = undefined;
 global.settings = undefined;
@@ -67,6 +67,7 @@ global.file_default = {
 			"ears": "nova",
 			"tail": "nova",
 			"color": "main",
+			"trail": "bubbles",
 		},
 	
 	},
