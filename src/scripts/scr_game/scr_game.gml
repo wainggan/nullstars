@@ -679,7 +679,7 @@ function GameMenu() constructor {
 		game_file_save();
 	}));
 	
-	page_checkpoint_none = new MenuPageList()
+	page_gate_none = new MenuPageList()
 	.add(new MenuButton("back", function () {
 		system.close();
 	}));

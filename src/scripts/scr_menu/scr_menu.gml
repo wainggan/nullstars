@@ -215,10 +215,8 @@ function MenuPageMap() : MenuPage() constructor {
 		
 		if _click && _c != noone {
 			_menu.stop();
-		
-			game_checkpoint_set_index(_c.index);
 			
-			global.game.add_timeline(new Timeline().add(new KeyframeRespawn()));
+			global.game.add_timeline(new Timeline().add(new KeyframeRespawn().set_where(_c.index)));
 		
 			return;
 		}

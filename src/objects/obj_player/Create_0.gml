@@ -249,6 +249,7 @@ anim_jab_timer = 0;
 anim_longjump_timer = 0;
 anim_flip_timer = 0;
 anim_runjump_timer = 0;
+anim_menu = 0;
 
 action_anim_onground = function() {
 	anim_longjump_timer = 0;
@@ -425,7 +426,7 @@ fn_get_menu := function () {
 		return global.game.menu.page_none;
 	}
 	else if collision_rectangle(bbox_left - 64, bbox_top, bbox_right + 64, bbox_bottom, obj_timer_start, false, true) {
-		return global.game.menu.page_checkpoint_none;
+		return global.game.menu.page_gate_none;
 	}
 	return undefined;
 };
@@ -949,8 +950,8 @@ state_base.set("step", function () {
 				ASSERT(!global.game.menu.system.is_open());
 				global.game.menu.system.open(_check);
 				self.state.change(state_menu);
+				return;
 			}
-			return;
 		}
 		
 		if INPUT.check("menu") {

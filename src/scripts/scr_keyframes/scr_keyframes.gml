@@ -119,8 +119,12 @@ function KeyframeCamera(_from_x, _from_y, _to_x, _to_y, _speed) : Keyframe() con
 	};
 }
 
+/// @arg {string} _where checkpoint id (undefined for respawn)
+/// @arg {bool} _force force black out
+/// @arg {bool} _pre immediately start black out
 function KeyframeRespawn(_force = false, _pre = false) : Keyframe() constructor {
 	checkpoint = undefined;
+	where := undefined;
 	state = 0;
 	pet = noone;
 	force = _force;
@@ -135,9 +139,18 @@ function KeyframeRespawn(_force = false, _pre = false) : Keyframe() constructor 
 		return self;
 	};
 	
+	static set_where := function (_where) {
+		where = _where;
+		return self;
+	};
+	
 	static init = function () {
+		if where != undefined {
+			game_checkpoint_set_index(where);
+		}
+		
 		checkpoint = game_checkpoint_pos();
-		ASSERT(checkpoint != undefined);
+		ASSERT_NE(checkpoint, undefined);
 		
 		var _fade = false;
 		

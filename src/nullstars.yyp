@@ -432,6 +432,7 @@
     {"id":{"name":"spr_player_tail","path":"sprites/spr_player_tail/spr_player_tail.yy",},},
     {"id":{"name":"spr_player","path":"sprites/spr_player/spr_player.yy",},},
     {"id":{"name":"spr_sign_board","path":"sprites/spr_sign_board/spr_sign_board.yy",},},
+    {"id":{"name":"spr_sign_emark","path":"sprites/spr_sign_emark/spr_sign_emark.yy",},},
     {"id":{"name":"spr_sign","path":"sprites/spr_sign/spr_sign.yy",},},
     {"id":{"name":"spr_speed_arrows_lr","path":"sprites/spr_speed_arrows_lr/spr_speed_arrows_lr.yy",},},
     {"id":{"name":"spr_speed_arrows","path":"sprites/spr_speed_arrows/spr_speed_arrows.yy",},},

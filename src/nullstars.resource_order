@@ -279,6 +279,7 @@
     {"name":"spr_player_layer_shirt","order":6,"path":"sprites/spr_player_layer_shirt/spr_player_layer_shirt.yy",},
     {"name":"spr_player_tail","order":2,"path":"sprites/spr_player_tail/spr_player_tail.yy",},
     {"name":"spr_sign_board","order":6,"path":"sprites/spr_sign_board/spr_sign_board.yy",},
+    {"name":"spr_sign_emark","order":7,"path":"sprites/spr_sign_emark/spr_sign_emark.yy",},
     {"name":"spr_sign","order":4,"path":"sprites/spr_sign/spr_sign.yy",},
     {"name":"spr_speed_arrows_lr","order":10,"path":"sprites/spr_speed_arrows_lr/spr_speed_arrows_lr.yy",},
     {"name":"spr_speed_arrows","order":9,"path":"sprites/spr_speed_arrows/spr_speed_arrows.yy",},
