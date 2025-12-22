@@ -6,8 +6,8 @@
   "name":"obj_camera_parent",
   "overriddenProperties":[],
   "parent":{
-    "name":"light",
-    "path":"folders/objects/light.yy",
+    "name":"flags",
+    "path":"folders/objects/flags.yy",
   },
   "parentObjectId":{
     "name":"obj_Exists",

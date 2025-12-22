@@ -420,6 +420,16 @@ get_check_death = function(_x, _y) {
 	
 };
 
+fn_get_menu := function () {
+	if place_meeting(x, y, obj_checkpoint) || place_meeting(x, y, obj_checkpoint_dyn) {
+		return global.game.menu.page_none;
+	}
+	else if collision_rectangle(bbox_left - 64, bbox_top, bbox_right + 64, bbox_bottom, obj_timer_start, false, true) {
+		return global.game.menu.page_checkpoint_none;
+	}
+	return undefined;
+};
+
 #endregion
 
 #region methods: jumps
@@ -931,13 +941,19 @@ state_base.set("step", function () {
 	
 	if state.is(state_free) || state.is(state_swim) {
 		if INPUT.check_pressed("menu") &&
-			(place_meeting(x, y, obj_checkpoint) || place_meeting(x, y, obj_checkpoint_dyn)) &&
 			!fn_get_crouch() &&
 			!state.is(state_swim)
 		{
-			state.change(state_menu);
+			var _check = self.fn_get_menu();
+			if _check != undefined {
+				ASSERT(!global.game.menu.system.is_open());
+				global.game.menu.system.open(_check);
+				self.state.change(state_menu);
+			}
 			return;
-		} else if INPUT.check("menu") {
+		}
+		
+		if INPUT.check("menu") {
 			respawn_timer += 1;
 			if respawn_timer > 17 {
 				game_player_kill();
@@ -1668,32 +1684,24 @@ state_swim_bullet.set("enter", function() {
 });
 
 state_menu = state_base.add();
-state_menu.set("enter", function() {
-	with global.game.menu system.open(page_none);
-})
-.set("step", function() {
+state_menu.set("enter", function () {
+});
+state_menu.set("leave", function () {
+	with global.game.menu {
+		system.stop();
+	}
+});
+state_menu.set("step", function () {
 	x_vel = approach(x_vel, 0, defs.move_accel);
 	y_vel = approach(y_vel, defs.terminal_vel, defs.gravity);
 	
 	buffer_dash = 0;
 	buffer_jump = 0;
 	
-	// @todo: this kinda sucks
-	// die
-	global.game.menu.system.update();
-	
-	if array_length(global.game.menu.system.stack) == 0 {
-		global.game.menu.system.stop();
+	if !global.game.menu.system.is_open() || self.fn_get_menu() == undefined {
 		state.change(state_free);
 		return;
 	}
-	
-	if !place_meeting(x, y, obj_checkpoint) && !place_meeting(x, y, obj_checkpoint_dyn) {
-		global.game.menu.system.stop();
-		state.change(state_free);
-		return;
-	}
-	
 });
 
 fn_squish = function(_data) {

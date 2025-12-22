@@ -1,31 +1,36 @@
 
 function Menu() constructor {
 	
-	stack = []
+	stack := [];
 	
-	static open = function(_page){
+	static open := function (_page) {
 		_page.init();
-		array_push(stack, _page);
+		array_push(self.stack, _page);
 		return self;
-	}
+	};
 	
-	static update = function(){
+	static is_open := function () {
+		return array_length(self.stack) != 0;
+	};
+	
+	static update := function () {
+		if !self.is_open() {
+			return;
+		}
 		
-		if array_length(stack) == 0 return;
-		
-		var _stack = array_last(stack);
+		var _stack = array_last(self.stack);
 		_stack.update(self);
-		
-	}
+	};
 	
-	static close = function(){
-		array_pop(stack)
-	}
+	static close := function () {
+		array_pop(self.stack);
+	};
 	
-	static stop = function(){
-		while array_length(stack)
-			close();
-	}
+	static stop := function () {
+		while array_length(self.stack) {
+			self.close();
+		}
+	};
 	
 }
 

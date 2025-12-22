@@ -71,7 +71,8 @@ function Game() constructor {
 	static update_begin = function() {
 		global.logger.update();
 		self.state.update();
-		input.update();
+		self.input.update();
+		self.menu.system.update();
 		
 		if !self.state.get_pause() {
 			self.step_begin();
@@ -676,6 +677,11 @@ function GameMenu() constructor {
 		LOG(Log.user, $"log level set to {_}")
 		game_update_log(global.settings.debug.log);
 		game_file_save();
+	}));
+	
+	page_checkpoint_none = new MenuPageList()
+	.add(new MenuButton("back", function () {
+		system.close();
 	}));
 }
 
