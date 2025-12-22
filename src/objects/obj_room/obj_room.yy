@@ -6,8 +6,8 @@
   "name":"obj_room",
   "overriddenProperties":[],
   "parent":{
-    "name":"flags",
-    "path":"folders/game/flags.yy",
+    "name":"game",
+    "path":"folders/game.yy",
   },
   "parentObjectId":null,
   "persistent":false,

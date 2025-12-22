@@ -8,8 +8,8 @@
   "name":"obj_flag_stop",
   "overriddenProperties":[],
   "parent":{
-    "name":"flags",
-    "path":"folders/game/flags.yy",
+    "name":"light",
+    "path":"folders/objects/light.yy",
   },
   "parentObjectId":{
     "name":"obj_Exists",

@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_file",
   "parent":{
-    "name":"meta",
-    "path":"folders/game/meta.yy",
+    "name":"game",
+    "path":"folders/game.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

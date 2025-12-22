@@ -8,8 +8,8 @@
   "name":"obj_camera_room",
   "overriddenProperties":[],
   "parent":{
-    "name":"flags",
-    "path":"folders/game/flags.yy",
+    "name":"light",
+    "path":"folders/objects/light.yy",
   },
   "parentObjectId":{
     "name":"obj_camera_parent",

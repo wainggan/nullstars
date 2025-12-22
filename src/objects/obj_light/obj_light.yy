@@ -6,8 +6,8 @@
   "name":"obj_light",
   "overriddenProperties":[],
   "parent":{
-    "name":"lights",
-    "path":"folders/game/lights.yy",
+    "name":"light",
+    "path":"folders/objects/light.yy",
   },
   "parentObjectId":null,
   "persistent":false,
