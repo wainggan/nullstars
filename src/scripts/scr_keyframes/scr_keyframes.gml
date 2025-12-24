@@ -6,6 +6,7 @@ function Timeline() constructor {
 	/// @arg {struct.Keyframe} _keyframe
 	/// @return struct.Timeline
 	static add = function (_keyframe) {
+		ASSERT(is_instanceof(_keyframe, Keyframe));
 		array_push(self.keyframes, _keyframe);
 		return self;
 	};

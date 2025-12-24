@@ -1,40 +1,61 @@
 
 function InputManager(_gamepad = 0, _deadzone = 0.3) constructor {
 	
-	gamepad = _gamepad;
-	deadzone = _deadzone
+	gamepad := _gamepad;
+	deadzone := _deadzone;
 	
-	inputs = {}
+	consumed := false;
 	
-	static update = function() {
-		var _inputs = variable_struct_get_names(inputs)
+	inputs := {};
+	
+	static update := function() {
+		var _inputs := variable_struct_get_names(inputs)
 		for (var i = 0; i < array_length(_inputs); i++) {
 			inputs[$ _inputs[i]].update()
 		}
-	}
+		self.consumed = false;
+	};
 	
-	static create_input = function(_name) {
-		var _input = new Input(self);
+	static create_input := function(_name) {
+		var _input := new Input(self);
 		inputs[$ _name] = _input;
 		return _input;
-	}
+	};
 	
-	static check = function(_name) {
+	static check := function(_name) {
+		if self.consumed {
+			return false;
+		}
 		return inputs[$ _name].check();
-	}
-	static check_pressed = function(_name, _buffered = undefined) {
+	};
+	static check_pressed := function(_name, _buffered = undefined) {
+		if self.consumed {
+			return false;
+		}
 		return inputs[$ _name].check_pressed(_buffered);
-	}
-	static check_released = function(_name, _buffered = undefined) {
+	};
+	static check_released := function(_name, _buffered = undefined) {
+		if self.consumed {
+			return false;
+		}
 		return inputs[$ _name].check_released(_buffered);
-	}
-	static check_stutter = function(_name, _initial_delay = undefined, _interval = undefined) {
+	};
+	static check_stutter := function(_name, _initial_delay = undefined, _interval = undefined) {
+		if self.consumed {
+			return false;
+		}
 		return inputs[$ _name].check_stutter(_initial_delay, _interval);
-	}
-	static check_raw = function(_name) {
+	};
+	static check_raw := function(_name) {
+		if self.consumed {
+			return false;
+		}
 		return inputs[$ _name].check_raw();
-	}
+	};
 	
+	static consume := function () {
+		self.consumed = true;
+	};
 }
 
 function Input(_manager) constructor {

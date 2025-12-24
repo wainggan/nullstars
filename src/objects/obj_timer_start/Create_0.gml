@@ -39,3 +39,22 @@ if dir == "right" {
 	ASSERT(false);
 }
 
+var _off_left = dir == "left" ? 32 : 128;
+var _off_right = dir == "right" ? 32 : 128;
+var _off_top = dir == "up" ? 32 : 128;
+var _off_bottom = dir == "down" ? 32 : 128;
+
+pet_menu := instance_create_layer(x, y, "Instances", obj_flag_menu);
+with pet_menu {
+	x = other.bbox_left - _off_left;
+	y = other.bbox_top - _off_top;
+	image_xscale = (other.bbox_right + _off_right) - x;
+	image_yscale = (other.bbox_bottom + _off_bottom) - y;
+	
+	target = global.game.menu.page_gate_none;
+	
+	at_x = other.x + (other.bbox_right - other.bbox_left) / 2;
+	at_y = other.bbox_bottom + 8;
+}
+
+

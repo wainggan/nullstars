@@ -56,6 +56,10 @@ function Game() constructor {
 	news_sound = new News();
 	
 	menu = new GameMenu();
+	// todo: see later todo
+	menu_x := 0;
+	menu_y := 0;
+	menu_anim := 0;
 	
 	music = new Music();
 	
@@ -72,11 +76,50 @@ function Game() constructor {
 		global.logger.update();
 		self.state.update();
 		self.input.update();
-		self.menu.system.update();
 		
 		if !self.state.get_pause() {
 			self.step_begin();
+			
+			// menu check
+			
+			// todo: can we abstract systems like this away?
+			var _can_menu := false;
+			with obj_player {
+				_can_menu = self.fn_get_can_menu();
+			}
+			
+			// only way this could fail is obj_player.fn_get_can_menu is bugged
+			ASSERT(is_bool(_can_menu));
+			// anyways. I'm paranoid.
+			
+			var _touch := false;
+			
+			with obj_flag_menu {
+				if _can_menu && place_meeting(x, y, obj_player) {
+					ASSERT_NE(self.target, undefined, "forgot to set obj_flag_menu target lol");
+					ASSERT_NE(self.at_x, 0, "forgot to set obj_flag_menu target lol");
+					ASSERT_NE(self.at_y, 0, "forgot to set obj_flag_menu target (L)");
+					
+					_touch = true;
+					
+					other.menu_x = self.at_x;
+					other.menu_y = self.at_y;
+					
+					if INPUT.check_pressed("menu") && !global.game.menu.system.is_open() && _can_menu {
+						global.game.menu.system.open(self.target);
+						INPUT.consume();
+					}
+				}
+			}
+			
+			if _touch && _can_menu && !global.game.menu.system.is_open() {
+				self.menu_anim = approach(self.menu_anim, 1, 0.1);
+			} else {
+				self.menu_anim = approach(self.menu_anim, 0, 0.1);
+			}
 		}
+		
+		self.menu.system.update();
 	};
 	static update = function() {
 		
@@ -121,6 +164,20 @@ function Game() constructor {
 			}
 		} else {
 			instance_destroy(obj_checkpoint_dyn);
+		}
+	};
+	
+	// todo: temporary?
+	static draw_ui := function () {
+		var _cam = game_camera_get();
+		
+		if self.menu_anim > 0 {
+			var _width = 20 * tween(Tween.Circ, self.menu_anim);
+			var _height = 20 * tween(Tween.Ease, self.menu_anim);
+			draw_sprite_stretched(spr_sign_board, 0, self.menu_x - _width / 2 - _cam.x, self.menu_y - _cam.y, _width, _height);
+			if self.menu_anim == 1 {
+				draw_sprite(spr_sign_emark, 0, self.menu_x - _cam.x, self.menu_y - _cam.y + 3);
+			}
 		}
 	};
 	

@@ -81,6 +81,7 @@ fn_get_crouch := obj_player_get_crouch;
 fn_set_crouch(false);
 
 fn_get_can_uncrouch := obj_player_get_can_uncrouch;
+fn_get_can_menu := obj_player_get_can_menu;
 
 onground = false;
 onground_last = false;
@@ -249,7 +250,6 @@ anim_jab_timer = 0;
 anim_longjump_timer = 0;
 anim_flip_timer = 0;
 anim_runjump_timer = 0;
-anim_menu = 0;
 
 action_anim_onground = function() {
 	anim_longjump_timer = 0;
@@ -941,19 +941,6 @@ state_base.set("step", function () {
 	}
 	
 	if state.is(state_free) || state.is(state_swim) {
-		if INPUT.check_pressed("menu") &&
-			!fn_get_crouch() &&
-			!state.is(state_swim)
-		{
-			var _check = self.fn_get_menu();
-			if _check != undefined {
-				ASSERT(!global.game.menu.system.is_open());
-				global.game.menu.system.open(_check);
-				self.state.change(state_menu);
-				return;
-			}
-		}
-		
 		if INPUT.check("menu") {
 			respawn_timer += 1;
 			if respawn_timer > 17 {
@@ -1682,27 +1669,6 @@ state_swim_bullet.set("enter", function() {
 	
 	swim_frame += 1;
 	
-});
-
-state_menu = state_base.add();
-state_menu.set("enter", function () {
-});
-state_menu.set("leave", function () {
-	with global.game.menu {
-		system.stop();
-	}
-});
-state_menu.set("step", function () {
-	x_vel = approach(x_vel, 0, defs.move_accel);
-	y_vel = approach(y_vel, defs.terminal_vel, defs.gravity);
-	
-	buffer_dash = 0;
-	buffer_jump = 0;
-	
-	if !global.game.menu.system.is_open() || self.fn_get_menu() == undefined {
-		state.change(state_free);
-		return;
-	}
 });
 
 fn_squish = function(_data) {

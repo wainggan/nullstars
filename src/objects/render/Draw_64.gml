@@ -1,6 +1,8 @@
 
 var _cam = game_camera_get();
 
+global.game.draw_ui();
+
 with obj_timer_start {
 	if anim_menu == 0 {
 		continue;

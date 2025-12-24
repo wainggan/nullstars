@@ -4,6 +4,7 @@ function Menu() constructor {
 	stack := [];
 	
 	static open := function (_page) {
+		ASSERT(is_instanceof(_page, MenuPage));
 		_page.init();
 		array_push(self.stack, _page);
 		return self;
@@ -20,6 +21,8 @@ function Menu() constructor {
 		
 		var _stack = array_last(self.stack);
 		_stack.update(self);
+		
+		INPUT.consume();
 	};
 	
 	static close := function () {
