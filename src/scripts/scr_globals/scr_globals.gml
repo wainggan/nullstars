@@ -56,12 +56,14 @@ global.config = {
 // amount of jobs loader may complete in one frame
 #macro GAME_LOAD_BUDGET_COUNT 4
 
-#macro GAME_LOAD_RADIUS_FILE 512
+// load+parse distance from camera in pixels
+#macro GAME_LOAD_RADIUS_FILE 768
+// entity distance from camera in pixels
 #macro GAME_LOAD_RADIUS_ENTITY 128
 // how long it takes to unload the entities of a level
-#macro GAME_LOAD_TIME_FILE 180
+#macro GAME_LOAD_TIME_FILE (60 * 6)
 // how long it takes to unload level data
-#macro GAME_LOAD_TIME_PREP 240
+#macro GAME_LOAD_TIME_PREP (60 * 16)
 
 // how many tiles processed per iteration
 #macro GAME_LOAD_PARSE_GRID 128
