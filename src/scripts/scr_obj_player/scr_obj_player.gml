@@ -41,7 +41,7 @@ function obj_player_get_can_uncrouch() {
 
 /// @self obj_player
 function obj_player_get_can_menu() {
-	return !fn_get_crouch() && state.is(state_free);
+	return !self.fn_get_crouch() && self.state.is(self.state_free) && self.fn_collision(x, y + 1);
 }
 
 /// overrides obj_entity_cam

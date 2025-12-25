@@ -421,16 +421,6 @@ get_check_death = function(_x, _y) {
 	
 };
 
-fn_get_menu := function () {
-	if place_meeting(x, y, obj_checkpoint) || place_meeting(x, y, obj_checkpoint_dyn) {
-		return global.game.menu.page_none;
-	}
-	else if collision_rectangle(bbox_left - 64, bbox_top, bbox_right + 64, bbox_bottom, obj_timer_start, false, true) {
-		return global.game.menu.page_gate_none;
-	}
-	return undefined;
-};
-
 #endregion
 
 #region methods: jumps
