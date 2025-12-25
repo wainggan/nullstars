@@ -14,4 +14,5 @@ with pet_menu {
 	target = global.game.menu.page_none;
 	at_x = other.x;
 	at_y = other.bbox_bottom + 4;
+	priority = 1;
 }

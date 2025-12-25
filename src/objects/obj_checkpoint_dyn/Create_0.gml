@@ -10,5 +10,6 @@ with pet_menu {
 	image_xscale = other.bbox_right - other.bbox_left;
 	image_yscale = other.bbox_bottom - other.bbox_top;
 	target = global.game.menu.page_none;
+	priority = 1;
 }
 

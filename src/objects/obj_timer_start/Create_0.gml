@@ -55,6 +55,7 @@ with pet_menu {
 	
 	at_x = other.x + (other.bbox_right - other.bbox_left) / 2;
 	at_y = other.bbox_bottom + 8;
+	priority = 0;
 }
 
 

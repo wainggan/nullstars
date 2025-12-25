@@ -94,21 +94,29 @@ function Game() constructor {
 			
 			var _touch := false;
 			
-			with obj_flag_menu {
-				if _can_menu && place_meeting(x, y, obj_player) {
-					ASSERT_NE(self.target, undefined, "forgot to set obj_flag_menu target lol");
-					ASSERT_NE(self.at_x, 0, "forgot to set obj_flag_menu target lol");
-					ASSERT_NE(self.at_y, 0, "forgot to set obj_flag_menu target (L)");
-					
-					_touch = true;
-					
-					other.menu_x = self.at_x;
-					other.menu_y = self.at_y;
-					
-					if INPUT.check_pressed("menu") && !global.game.menu.system.is_open() && _can_menu {
-						global.game.menu.system.open(self.target);
-						INPUT.consume();
+			var _winner := noone;
+			
+			if _can_menu {
+				with obj_flag_menu {
+					if place_meeting(x, y, obj_player) && (_winner == noone || _winner.priority < self.priority) {
+						_winner = self;
 					}
+				}
+			}
+			
+			with _winner {
+				ASSERT_NE(self.target, undefined, "forgot to set obj_flag_menu target lol");
+				ASSERT_NE(self.at_x, 0, "forgot to set obj_flag_menu target lol");
+				ASSERT_NE(self.at_y, 0, "forgot to set obj_flag_menu target (L)");
+				
+				_touch = true;
+				
+				other.menu_x = self.at_x;
+				other.menu_y = self.at_y;
+				
+				if INPUT.check_pressed("menu") && !global.game.menu.system.is_open() && _can_menu {
+					global.game.menu.system.open(self.target);
+					INPUT.consume();
 				}
 			}
 			
