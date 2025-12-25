@@ -92,6 +92,7 @@ function Game() constructor {
 			ASSERT(is_bool(_can_menu));
 			// anyways. I'm paranoid.
 			
+			// true if the player can press the "menu" button to open a menu
 			var _touch := false;
 			
 			var _winner := noone;
@@ -109,18 +110,22 @@ function Game() constructor {
 				ASSERT_NE(self.at_x, 0, "forgot to set obj_flag_menu target lol");
 				ASSERT_NE(self.at_y, 0, "forgot to set obj_flag_menu target (L)");
 				
-				_touch = true;
-				
 				other.menu_x = self.at_x;
 				other.menu_y = self.at_y;
 				
-				if INPUT.check_pressed("menu") && !global.game.menu.system.is_open() && _can_menu {
-					global.game.menu.system.open(self.target);
-					INPUT.consume();
+				if _can_menu {
+					if !global.game.menu.system.is_open() {
+						_touch = true;
+						
+						if INPUT.check_pressed("menu") {
+							global.game.menu.system.open(self.target);
+							INPUT.consume();
+						}
+					}
 				}
 			}
 			
-			if _touch && _can_menu && !global.game.menu.system.is_open() {
+			if _touch {
 				self.menu_anim = approach(self.menu_anim, 1, 0.1);
 			} else {
 				self.menu_anim = approach(self.menu_anim, 0, 0.1);
