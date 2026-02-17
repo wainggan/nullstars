@@ -62,7 +62,6 @@
   ],
   "ForcedPrefabProjectReferences":[
     {"link":"io.gamemaker.sdfshaders-1.0.0","name":"io.gamemaker.sdfshaders-1.0.0","path":"io.gamemaker.sdfshaders-1.0.0.yyp",},
-    {"link":"io.gamemaker.gmparticlepresets-1.0.0","name":"io.gamemaker.gmparticlepresets-1.0.0","path":"io.gamemaker.gmparticlepresets-1.0.0.yyp",},
   ],
   "IncludedFiles":[
     {"$GMIncludedFile":"","%Name":"data.json","CopyToMask":-1,"filePath":"datafiles","name":"data.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
@@ -161,7 +160,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.1400.2.940",
+    "IDEVersion":"2024.1400.4.991",
   },
   "name":"nullstars",
   "resources":[
@@ -307,6 +306,7 @@
     {"id":{"name":"scr_sod","path":"scripts/scr_sod/scr_sod.yy",},},
     {"id":{"name":"scr_sound","path":"scripts/scr_sound/scr_sound.yy",},},
     {"id":{"name":"scr_state","path":"scripts/scr_state/scr_state.yy",},},
+    {"id":{"name":"scr_system","path":"scripts/scr_system/scr_system.yy",},},
     {"id":{"name":"scr_timer","path":"scripts/scr_timer/scr_timer.yy",},},
     {"id":{"name":"scr_trigger","path":"scripts/scr_trigger/scr_trigger.yy",},},
     {"id":{"name":"scr_tweens","path":"scripts/scr_tweens/scr_tweens.yy",},},
