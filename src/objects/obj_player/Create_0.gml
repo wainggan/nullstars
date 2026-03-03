@@ -1252,6 +1252,7 @@ action_dash_end = function() {
 		hold_jump_vel = defs.terminal_vel;
 		hold_jump_vel_timer = 12;
 	} else if dash_dir_y == -1 {
+		// todo: fix up dash
 		x_vel = max(abs(dash_pre_x_vel), 3) * sign(x_vel);
 		
 		hold_jump_key_timer = 24;
@@ -1329,7 +1330,7 @@ state_dash.set("enter", function() {
 			}
 			dash_dir_y = _kv;
 		} else {
-			if _kh == 0 {
+			if _kh == 0 && _kv == 0 {
 				dash_dir_x = dir;
 			} else {
 				dash_dir_x = _kh;
@@ -1346,7 +1347,7 @@ state_dash.set("enter", function() {
 		x_vel = 0;
 		y_vel = 0;
 		
-		x_vel = abs(dash_pre_x_vel) * dash_dir_x;
+		x_vel = abs(dash_pre_x_vel) * (dash_dir_x == 0 ? sign(dash_pre_x_vel) * (1 / 8) : dash_dir_x);
 		
 		x_vel += lengthdir_x(7, _dir);
 		y_vel += lengthdir_y(7, _dir);
