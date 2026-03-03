@@ -326,7 +326,7 @@ get_check_death = function(_x, _y) {
 		return true;
 	}
 	
-	static __size = 5;
+	static __size = 3;
 	
 	var _left = (bbox_left - x) + _x + 1;
 	var _top = (bbox_top - y) + _y + 1;
