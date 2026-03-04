@@ -2,11 +2,22 @@
 a Body represents an in-game object that can collide with other Bodys.
 */
 
+/*
+collide
+	whether other bodys should consider this one 'collidable'
+strong
+	whether this body is 'solid'. solid bodys may not overlap
+	another body, and they are able to push other bodys.
+priority
+	determines push priority. bodys with higher priorities
+	can push bodys with lower priorities.
+*/
+
 // Feather ignore GM1051
 #macro SETUP_OBJ_BODY \
-	collide = true; \ // whether other bodys should consider this one 'collidable'
-	strong = true; \ // whether this body is 'solid'. solid bodys may not overlap another body, and they are able to push other bodys.
-	priority = 0; \ // determines push priority. bodys with higher priorities can push bodys with lower priorities.
+	collide = true; \
+	strong = true; \
+	priority = 0; \
 	fn_riding := obj_Body_fn_riding; \
 	fn_squish := obj_Body_fn_squish; \
 	fn_move_blunt := obj_Body_fn_move_blunt;
