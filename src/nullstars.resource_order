@@ -1,6 +1,8 @@
 {
   "FolderOrderSettings":[
     {"name":"entities","order":90,"path":"folders/entities.yy",},
+    {"name":"Body","order":11,"path":"folders/entities/Body.yy",},
+    {"name":"Entity","order":12,"path":"folders/entities/Entity.yy",},
     {"name":"scripts","order":5,"path":"folders/entities/scripts.yy",},
     {"name":"game","order":88,"path":"folders/game.yy",},
     {"name":"data","order":24,"path":"folders/game/data.yy",},
@@ -73,7 +75,6 @@
     {"name":"obj_decor_sign","order":1,"path":"objects/obj_decor_sign/obj_decor_sign.yy",},
     {"name":"obj_effect_wave","order":4,"path":"objects/obj_effect_wave/obj_effect_wave.yy",},
     {"name":"obj_effects_rectpop","order":1,"path":"objects/obj_effects_rectpop/obj_effects_rectpop.yy",},
-    {"name":"obj_Entity","order":1,"path":"objects/obj_Entity/obj_Entity.yy",},
     {"name":"obj_Exists","order":7,"path":"objects/obj_Exists/obj_Exists.yy",},
     {"name":"obj_flag_menu","order":1,"path":"objects/obj_flag_menu/obj_flag_menu.yy",},
     {"name":"obj_flag_stop","order":3,"path":"objects/obj_flag_stop/obj_flag_stop.yy",},
@@ -159,7 +160,8 @@
     {"name":"scr_menu","order":10,"path":"scripts/scr_menu/scr_menu.yy",},
     {"name":"scr_music","order":18,"path":"scripts/scr_music/scr_music.yy",},
     {"name":"scr_obj_actor","order":3,"path":"scripts/scr_obj_actor/scr_obj_actor.yy",},
-    {"name":"scr_obj_entity","order":8,"path":"scripts/scr_obj_entity/scr_obj_entity.yy",},
+    {"name":"scr_obj_Body","order":1,"path":"scripts/scr_obj_Body/scr_obj_Body.yy",},
+    {"name":"scr_obj_Entity","order":1,"path":"scripts/scr_obj_Entity/scr_obj_Entity.yy",},
     {"name":"scr_obj_exists","order":9,"path":"scripts/scr_obj_exists/scr_obj_exists.yy",},
     {"name":"scr_obj_player","order":2,"path":"scripts/scr_obj_player/scr_obj_player.yy",},
     {"name":"scr_obj_solid","order":4,"path":"scripts/scr_obj_solid/scr_obj_solid.yy",},

@@ -1,5 +1,5 @@
 
-#macro __ASSERT if RELEASE {} else for (var __check__ = undefined;; { if __check__ != undefined { throw $"assertion failed @ {_GMFILE_}:{_GMLINE_} :: {__check__}"; } break; }) __check__ =
+#macro __ASSERT if RELEASE {} else for (var __check__ = undefined;; { if __check__ != undefined { throw assertion failed @ _GMFILE_":"_GMLINE_" :: "__check__""; } break; }) __check__ =
 
 #macro ASSERT __ASSERT __assert__
 

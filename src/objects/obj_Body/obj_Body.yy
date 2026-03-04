@@ -1,19 +1,19 @@
 {
   "$GMObject":"",
-  "%Name":"obj_Entity",
+  "%Name":"obj_Body",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
-  "managed":false,
-  "name":"obj_Entity",
+  "managed":true,
+  "name":"obj_Body",
   "overriddenProperties":[],
   "parent":{
-    "name":"Entity",
-    "path":"folders/entities/Entity.yy",
+    "name":"Body",
+    "path":"folders/entities/Body.yy",
   },
   "parentObjectId":{
-    "name":"obj_Exists",
-    "path":"objects/obj_Exists/obj_Exists.yy",
+    "name":"obj_Entity",
+    "path":"objects/obj_Entity/obj_Entity.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,
@@ -28,10 +28,7 @@
   "physicsShape":1,
   "physicsShapePoints":[],
   "physicsStartAwake":true,
-  "properties":[
-    {"$GMObjectProperty":"v2","%Name":"link","filters":[],"listItems":[],"multiselect":false,"name":"link","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"noone","varType":0,},
-    {"$GMObjectProperty":"v2","%Name":"reliant","filters":[],"listItems":[],"multiselect":false,"name":"reliant","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":3,},
-  ],
+  "properties":[],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
