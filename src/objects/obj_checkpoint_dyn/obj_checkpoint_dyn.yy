@@ -11,8 +11,8 @@
   "name":"obj_checkpoint_dyn",
   "overriddenProperties":[],
   "parent":{
-    "name":"objects",
-    "path":"folders/objects.yy",
+    "name":"_CheckpointDyn",
+    "path":"folders/objects/checkpoint/_CheckpointDyn.yy",
   },
   "parentObjectId":null,
   "persistent":false,

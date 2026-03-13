@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_obj_exists",
+  "%Name":"scr_obj_Exists",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_obj_exists",
+  "name":"scr_obj_Exists",
   "parent":{
-    "name":"entities",
-    "path":"folders/entities.yy",
+    "name":"_Exists",
+    "path":"folders/entities/_Exists.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

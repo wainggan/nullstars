@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_player",
   "parent":{
-    "name":"player",
-    "path":"folders/objects/player.yy",
+    "name":"_Player",
+    "path":"folders/objects/_Player.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

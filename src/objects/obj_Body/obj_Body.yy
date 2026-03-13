@@ -8,8 +8,8 @@
   "name":"obj_Body",
   "overriddenProperties":[],
   "parent":{
-    "name":"Body",
-    "path":"folders/entities/Body.yy",
+    "name":"_Body",
+    "path":"folders/entities/_Body.yy",
   },
   "parentObjectId":{
     "name":"obj_Entity",

@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_obj_Body",
   "parent":{
-    "name":"Body",
-    "path":"folders/entities/Body.yy",
+    "name":"_Body",
+    "path":"folders/entities/_Body.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

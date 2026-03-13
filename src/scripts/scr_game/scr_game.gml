@@ -49,6 +49,7 @@ function Game() constructor {
 	checkpoint = new GameHandleCheckpoints();
 	gate = new GameHandleGates();
 	
+	global_entities := [];
 	level = new Loader();
 	
 	schedule = new Schedule();
@@ -148,6 +149,16 @@ function Game() constructor {
 		self.level.update();
 		self.music.update();
 		self.buffers.update();
+		
+		var _cam := game_camera_get();
+		
+		for (var i_entity = 0; i_entity < array_length(self.global_entities); i_entity++) {
+			var _entity := self.global_entities[i_entity];
+			if _entity.fn_outside(_cam) {
+				instance_destroy(_entity);
+				array_kick(self.global_entities, i_entity--);
+			}
+		}
 	}
 	
 	static step_begin = function() {

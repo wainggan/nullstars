@@ -806,6 +806,10 @@ function Level(_id, _x, _y, _width, _height) constructor {
 						
 						var _object_index = asset_get_index(_e.name);
 						
+						if _object_index == -1 || !object_is_ancestor(_object_index, obj_Exists) {
+							throw $"object name {_e.name} is not spawnable";
+						}
+						
 						var _field = _e.fields; // this just seems like such a good idea!
 						_field.uid = _e.id;
 						_field.rid = self.id;
@@ -971,9 +975,10 @@ function Level(_id, _x, _y, _width, _height) constructor {
 	};
 	
 	/// flags level as loaded, loads entities
-	static load = function() {
-		
-		if loaded return;
+	static load = function(_level) {
+		if loaded {
+			return;
+		}
 		loaded = true;
 		
 		for (var i_entity = 0; i_entity < array_length(entities); i_entity++) {
@@ -989,7 +994,9 @@ function Level(_id, _x, _y, _width, _height) constructor {
 				}
 			}
 
-			if _exists continue;
+			if _exists {
+				continue;
+			}
 
 			var _inst = instance_create_layer(
 				_e.x, _e.y, 
@@ -999,22 +1006,35 @@ function Level(_id, _x, _y, _width, _height) constructor {
 			);
 			
 			global.entities[$ _e.id] = _inst;
-			
+			array_push(_level.obj.entities, _inst);
 		}
 		
 		if shadow_vb == -1 {
 			game_level_setup_light(self);
 		}
-		
 	}
 	
 	/// flags level as 'unloaded', probably destroying 
 	/// its associated entities in the process.
-	static unload = function() {
-		
-		if !loaded return;
+	static unload = function(_level) {
+		if !loaded {
+			return;
+		}
 		loaded = false;
-	
+		
+		var _cam := game_camera_get();
+		
+		for (var i_entity = 0; i_entity < array_length(_level.obj.entities); i_entity++) {
+			var _entity := _level.obj.entities[i_entity];
+			if _entity.fn_outside(_cam) {
+				instance_destroy(_entity);
+			}
+			else {
+				array_push(global.game.global_entities, _entity);
+			}
+		}
+		
+		array_resize(_level.obj.entities, 0);
 	}
 	
 	/// destroys tile data.

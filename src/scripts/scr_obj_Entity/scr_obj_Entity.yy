@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_obj_Entity",
   "parent":{
-    "name":"Entity",
-    "path":"folders/entities/Entity.yy",
+    "name":"_Entity",
+    "path":"folders/entities/_Entity.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
