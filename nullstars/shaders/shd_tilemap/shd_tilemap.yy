@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_tilemap",
+  "name":"shd_tilemap",
+  "parent":{
+    "name":"graphic",
+    "path":"folders/graphic.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

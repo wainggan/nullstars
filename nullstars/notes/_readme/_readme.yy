@@ -1,0 +1,12 @@
+{
+  "$GMNotes":"v1",
+  "%Name":"_readme",
+  "name":"_readme",
+  "openedOnFirstLoad":true,
+  "parent":{
+    "name":"nullstars",
+    "path":"nullstars.yyp",
+  },
+  "resourceType":"GMNotes",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_json",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_json",
+  "parent":{
+    "name":"nullstars",
+    "path":"nullstars.yyp",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

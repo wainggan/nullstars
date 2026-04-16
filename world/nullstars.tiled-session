@@ -1,0 +1,106 @@
+{
+    "activeFile": "world/001.tmx",
+    "expandedProjectPaths": [
+        ".",
+        "asset",
+        "world",
+        "template"
+    ],
+    "fileStates": {
+        "000.tmx": {
+            "expandedGroupLayers": [
+                2
+            ],
+            "scale": 1.2492,
+            "selectedLayer": -1,
+            "viewCenter": {
+                "x": 255.363432596862,
+                "y": 74.04739032981107
+            }
+        },
+        "001.tmx": {
+            "scale": 0.8827,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 33.98663192477625,
+                "y": 2.8322193270647062
+            }
+        },
+        "asset/semisolid.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "asset/solid.tsx": {
+            "scaleInDock": 3.0936,
+            "scaleInEditor": 1
+        },
+        "asset/spike.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "room_000.tmx": {
+            "scale": 2.03953125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 228.23871906841333,
+                "y": 165.47920018386577
+            }
+        },
+        "world/000.tmx": {
+            "scale": 1.5338,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 276.43760594601645,
+                "y": 296.32285826052936
+            }
+        },
+        "world/001.tmx": {
+            "scale": 1.5338,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": -203.4163515451819,
+                "y": 264.37605946016424
+            }
+        },
+        "world/spike.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.exportedFilePath": "/home/parchii/project/nullstars/nullstars/datafiles/base/world",
+    "last.externalTilesetPath": "/home/parchii/project/nullstars/world/asset",
+    "last.imagePath": "/home/parchii/project/nullstars/world/asset",
+    "last.objectTemplatePath": "/home/parchii/project/nullstars/world/template",
+    "last.worldFilePath": "/home/parchii/project/nullstars/world/world",
+    "loadedWorlds": [
+        "/home/parchii/project/nullstars/world/world/root.world",
+        "/home/parchii/project/nullstars/world/world/root.world"
+    ],
+    "map.lastUsedExportFilter": "nullstars map format (*.nsm)",
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "openFiles": [
+        "world/000.tmx",
+        "world/001.tmx"
+    ],
+    "project": "nullstars.tiled-project",
+    "property.type": "object",
+    "recentFiles": [
+        "world/000.tmx",
+        "world/001.tmx",
+        "asset/semisolid.tsx",
+        "asset/solid.tsx",
+        "asset/spike.tsx",
+        "world/spike.tsx",
+        "001.tmx",
+        "000.tmx",
+        "room_000.tmx"
+    ],
+    "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}

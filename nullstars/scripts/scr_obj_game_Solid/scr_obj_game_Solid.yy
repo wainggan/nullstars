@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_obj_game_Solid",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_obj_game_Solid",
+  "parent":{
+    "name":"Solid",
+    "path":"folders/entities/objects/Solid.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
