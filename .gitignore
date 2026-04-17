@@ -1,8 +1,9 @@
 backup/*
 assets/export/*
 src/datafiles/world/*
-nullstars/datafiles/**/*.nsm
-nullstars/datafiles/**/*.nsw
+nullstars/datafiles/base/**/*.nsm
+nullstars/datafiles/base/**/*.nsw
+nullstars/datafiles/base/tiles.png
 src/Build/*
 bin/*
 *.tiled-session

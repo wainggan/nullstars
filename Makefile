@@ -8,7 +8,7 @@ map_outputs := $(patsubst %.tmx,%.nsm,$(foreach x,$(notdir $(map_targets)),$(map
 asset_src_dir := assets
 asset_dst_dir := nullstars/datafiles/base
 
-all: $(map_outputs) $(asset_dst_dir)/tileset.png
+all: $(map_outputs) $(asset_dst_dir)/tiles.png
 
 $(map_dst_dir)/%.nsm: $(map_src_dir)/%.tmx
 	tiled --project $(map_proj) --export-map nsmap $< $@
