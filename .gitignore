@@ -1,5 +1,8 @@
 backup/*
 assets/export/*
 src/datafiles/world/*
+nullstars/datafiles/world/*
 src/Build/*
 bin/*
+*.tiled-session
+*.kate-swp
