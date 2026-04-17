@@ -131,7 +131,7 @@ class Writer {
 	}
 };
 
-const action_world_compile = tiled.registerAction("nsfmt_world_compile", action => {
+const action_world_compile_fn = () => {
 	if (tiled.worlds.length === 0) {
 		tiled.error("no world is currently loaded.", () => {});
 		return;
@@ -177,21 +177,25 @@ const action_world_compile = tiled.registerAction("nsfmt_world_compile", action 
 	}
 
 	file.commit();
-});
+};
+
+const action_world_compile = tiled.registerAction("nsfmt_world_compile", action_world_compile_fn);
 action_world_compile.text = "world compiler";
 // action_world_compile.checkable = true;
 
-tiled.extendMenu("File", [
-	{
-		action: "nsfmt_world_compile",
-		before: "Close",
-	},
-	{
-		separator: true,
-	},
-]);
+if (tiled.menus.includes("File")) {
+	tiled.extendMenu("File", [
+		{
+			action: "nsfmt_world_compile",
+			before: "Close",
+		},
+		{
+			separator: true,
+		},
+	]);
+}
 
-tiled.registerMapFormat("nsfmt", {
+tiled.registerMapFormat("nsmap", {
 	name: "nullstars map format",
 	extension: "nsm",
 	write: (map, filename) => {
@@ -250,7 +254,7 @@ tiled.registerMapFormat("nsfmt", {
 
 				const id = tile.id;
 
-				if (id > 0b0011_1111) {
+				if (id >= 0b0011_1111) {
 					tiled.error(`tile @ ${x} ${y} has id=${id}`);
 					return;
 				}
@@ -259,7 +263,7 @@ tiled.registerMapFormat("nsfmt", {
 
 				if (value === 0) {
 					// solids
-					solid_view[i] = tile.id | 0b0000_0000;
+					solid_view[i] = (tile.id + 1) | 0b0000_0000;
 				}
 				else if (value === 1) {
 					// spikes

@@ -10,7 +10,7 @@ function Package(_name) constructor {
 	LOG(Log.Note, $"Package(): reading in '{directory}'");
 	
 	if !directory_exists(directory) {
-		throw $"package '{_name}' does not exist";
+		ASSERT(false, $"package '{_name}' does not exist (couldn't find '{directory}')");
 	}
 	
 	var _path_package = $"{directory}/package.json";
@@ -18,7 +18,7 @@ function Package(_name) constructor {
 	LOG(Log.Note, $"Package(): loading from '{_path_package}'");
 	package := nullstars_file_json_load(_path_package);
 	if package == -1 {
-		throw $"package '{_name}' missing package.json";
+		ASSERT(false, $"package '{_name}' missing package.json");
 	}
 	
 	LOG(Log.Note, "Package(): loaded package.json");

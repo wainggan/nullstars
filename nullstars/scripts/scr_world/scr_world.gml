@@ -629,6 +629,7 @@ function WorldTaskParseLayer(_room) : WorldTask(_room, 0) constructor {
 			parent.width,
 			parent.height
 		);
+		tilemap_set_mask(_layer_solid_tilemap, 0);
 		
 		var _layer_spike_base := layer_create(0);
 		var _layer_spike_tilemap := layer_tilemap_create(
@@ -697,22 +698,38 @@ function WorldTaskParseLayer(_room) : WorldTask(_room, 0) constructor {
 		
 		vertex_begin(_layer_graphic_front_vb, nullstars_world_get_vertex_format());
 		
+		var _time = get_timer();
+		
 		for (var _y = 0; _y < _map.height; _y++) {
 			for (var _x = 0; _x < _map.width; _x++) {
-				var _resolve := _rules.run(_layer_solid_tilemap, _x, _y);
-				ASSERT(is_array(_resolve));
+				var _current := tilemap_get(_layer_solid_tilemap, _x, _y);
+				
+				if _current == 0 {
+					continue;
+				}
+				
+				var _resolve;
+				
+				if _current & 1 == 1 {
+					_resolve := _rules.collector;
+					_resolve.clear();
+					_resolve.add((_current >> 2) + 1, 0);
+				}
+				else {
+					_resolve := _rules.run(_layer_solid_tilemap, _x, _y)
+				}
 
-				for (var i = 0, _len := array_length(_resolve); i < _len; i++) {
-					var _tile := _resolve[i];
+				for (var i = 0, _len := _resolve.length; i < _len; i++) {
+					var _tile := _resolve.array[i];
 					
 					var _v_x0 := _tiles_uvs.left + _tile.src_x * _tex_tw * TILE_SIZE;
 					var _v_x1 := _v_x0 + _tex_tw * TILE_SIZE;
 					var _v_y0 := _tiles_uvs.top + _tile.src_y * _tex_th * TILE_SIZE;
 					var _v_y1 := _v_y0 + _tex_th * TILE_SIZE;
 				
-					var _p_x0 := _x * TILE_SIZE;
+					var _p_x0 := (_x + _tile.off_y) * TILE_SIZE + irandom_range(_tile.rand_x_min, _tile.rand_x_max);
 					var _p_x1 := _p_x0 + TILE_SIZE;
-					var _p_y0 := _y * TILE_SIZE;
+					var _p_y0 := (_y + _tile.off_x) * TILE_SIZE + irandom_range(_tile.rand_y_min, _tile.rand_y_max);
 					var _p_y1 := _p_y0 + TILE_SIZE;
 				
 					vertex_position_3d(_layer_graphic_front_vb, _p_x0, _p_y0, 0);
@@ -735,6 +752,8 @@ function WorldTaskParseLayer(_room) : WorldTask(_room, 0) constructor {
 				}
 			}
 		}
+		
+		show_debug_message((get_timer() - _time) / 1000)
 		
 		vertex_end(_layer_graphic_front_vb);
 		vertex_freeze(_layer_graphic_front_vb);
@@ -760,14 +779,14 @@ function nullstars_world_get_vertex_format() {
 
 function nullstars_world_get_test() {
 	static __out := {
-		"stamp": [
+		"stamps": [
 		],
 		"rules": [
 			{
 				"rule": "match",
 				"match": {
 					"condition": "tileset",
-					"tileset": [1],
+					"tileset": [2],
 				},
 				"then": {
 					"rule": "list",
@@ -781,8 +800,8 @@ function nullstars_world_get_test() {
 								"single": {
 									"stamp": "choose",
 									"choose": [
-										{ "stamp": "tile", "src_x": 1, "src_y": 11 },
-										{ "stamp": "tile", "src_x": 2, "src_y": 11 },
+										{ "stamp": "tile", "src_x": 1, "src_y": 11, "rand_y_max": 1 },
+										{ "stamp": "tile", "src_x": 2, "src_y": 11, "rand_y_max": 1 },
 									],
 								},
 							},
@@ -835,7 +854,7 @@ function nullstars_world_autotile_rules_process_select(_tilemap, _current, _x, _
 	if _tile == -1 {
 		return _current;
 	}
-	if _tile & 1 == 1 {
+	if (_tile & 1) == 1 {
 		return 0;
 	}
 	return _tile >> 2;
@@ -883,10 +902,10 @@ function WorldAutotileCompiler() constructor {
 	static compile_stamp := function (_json) {
 		ASSERT(is_struct(_json));
 		
-		var _type := variable_struct_get(_json, "stamp");
-		ASSERT(is_string(_type));
+		var _json_type := variable_struct_get(_json, "stamp");
+		ASSERT(is_string(_json_type));
 		
-		switch _type {
+		switch _json_type {
 			case "choose": {
 				var _choose := variable_struct_get(_json, "choose");
 				ASSERT(is_array(_choose));
@@ -920,30 +939,30 @@ function WorldAutotileCompiler() constructor {
 			}
 			
 			case "tile": {
-				var _src_x := variable_struct_get(_rule, "src_x");
+				var _src_x := variable_struct_get(_json, "src_x");
 				ASSERT(is_real(_src_x));
-				var _src_y := variable_struct_get(_rule, "src_y");
+				var _src_y := variable_struct_get(_json, "src_y");
 				ASSERT(is_real(_src_y));
 			
-				var _off_x := variable_struct_get(_rule, "off_x") ?? 0;
+				var _off_x := variable_struct_get(_json, "off_x") ?? 0;
 				ASSERT(is_real(_off_x));
 			
-				var _off_y := variable_struct_get(_rule, "off_y") ?? 0;
+				var _off_y := variable_struct_get(_json, "off_y") ?? 0;
 				ASSERT(is_real(_off_y));
 			
-				var _off_z := variable_struct_get(_rule, "off_z") ?? 0;
+				var _off_z := variable_struct_get(_json, "off_z") ?? 0;
 				ASSERT(is_real(_off_z));
 			
-				var _rand_x_min := variable_struct_get(_rule, "rand_x_min") ?? 0;
+				var _rand_x_min := variable_struct_get(_json, "rand_x_min") ?? 0;
 				ASSERT(is_real(_rand_x_min));
 			
-				var _rand_x_max := variable_struct_get(_rule, "rand_x_max") ?? 0;
+				var _rand_x_max := variable_struct_get(_json, "rand_x_max") ?? 0;
 				ASSERT(is_real(_rand_x_max));
 			
-				var _rand_y_min := variable_struct_get(_rule, "rand_y_min") ?? 0;
+				var _rand_y_min := variable_struct_get(_json, "rand_y_min") ?? 0;
 				ASSERT(is_real(_rand_y_min));
 			
-				var _rand_y_max := variable_struct_get(_rule, "rand_y_max") ?? 0;
+				var _rand_y_max := variable_struct_get(_json, "rand_y_max") ?? 0;
 				ASSERT(is_real(_rand_y_max));
 				
 				var _stamp := {
@@ -966,7 +985,7 @@ function WorldAutotileCompiler() constructor {
 			}
 			
 			default: {
-				ASSERT(false, $"unknown type: {_type}");
+				ASSERT(false, $"unknown type: {_json_type}");
 			}
 		}
 	};
@@ -1035,8 +1054,6 @@ function WorldAutotileCompiler() constructor {
 					_array[i] := _value;
 				}
 				
-				// is it a bad idea to name all of these "array"? yes.
-				// is anyone going to stop me? unfortunately, no.
 				return method({
 					array: _array,
 				}, __nullstars_world_autotile_expr_condition_tileset);
@@ -1076,8 +1093,8 @@ function WorldAutotileCompiler() constructor {
 	
 	static compile_criteria := function (_json) {
 		ASSERT(is_struct(_json));
-		
-		var _json_type := variable_struct_get(_json, "condition");
+
+		var _json_type := variable_struct_get(_json, "rule");
 		ASSERT(is_string(_json_type));
 		
 		switch _json_type {
@@ -1111,7 +1128,7 @@ function WorldAutotileCompiler() constructor {
 					case "single": {
 						var _json_single := variable_struct_get(_json, "single");
 						
-						var _stamp := compile_stamp(_single);
+						var _stamp := compile_stamp(_json_single);
 						
 						return method({
 							stamp: _stamp,
@@ -1119,7 +1136,7 @@ function WorldAutotileCompiler() constructor {
 					}
 					
 					default: {
-						ASSERT(false, $"unknown emitter: {_emit}");
+						ASSERT(false, $"unknown emitter: {_json_emit}");
 					}
 				}
 			}
@@ -1165,7 +1182,7 @@ function WorldAutotileCompiler() constructor {
 				
 				return method({
 					array: _array,
-				}, __nullstars_world_autotile_expr_criteria_list);
+				}, __nullstars_world_autotile_expr_criteria_choose);
 			}
 			
 			case "match": {
@@ -1178,20 +1195,26 @@ function WorldAutotileCompiler() constructor {
 				var _then := compile_criteria(_json_then);
 				
 				var _json_else := variable_struct_get(_json, "else");
-				var _else = undefined;
-				if _json_else != undefined {
-					_else := compile_criteria(_json_else);
-				}
 				
-				return method({
-					match: _match,
-					branch_then: _then,
-					branch_else: _else,
-				}, __nullstars_world_autotile_expr_criteria_list);
+				if _json_else != undefined {
+					var _else := compile_criteria(_json_else);
+					
+					return method({
+						match: _match,
+						branch_then: _then,
+						branch_else: _else,
+					}, __nullstars_world_autotile_expr_criteria_match_else);
+				}
+				else {
+					return method({
+						match: _match,
+						branch_then: _then,
+					}, __nullstars_world_autotile_expr_criteria_match);
+				}
 			}
 			
 			default: {
-				ASSERT(false, $"unknown type: {_type}");
+				ASSERT(false, $"unknown type: {_json_type}");
 			}
 		}
 	};
@@ -1225,7 +1248,7 @@ function WorldAutotilePebis(_stamps, _root) constructor {
 		
 		root(self);
 		
-		return collector.array;
+		return collector;
 	};
 }
 
@@ -1289,16 +1312,7 @@ function __nullstars_world_autotile_expr_criteria_emit_blob(_root) {
 	
 	var _t_t := nullstars_world_autotile_format_blob(_t_s);
 	
-	_collector.add(_t_t.src_x, _t_t.src_y);
-	
-	return true;
-}
-
-/**
-@arg {struct.WorldAutotilePebis} _root
-*/
-function __nullstars_world_autotile_expr_criteria_emit_stamp(_root) {
-	_root.collector.add(stamp.x, stamp.y);
+	_root.collector.add(src_x + _t_t.x, src_y + _t_t.y);
 	
 	return true;
 }
@@ -1307,6 +1321,15 @@ function __nullstars_world_autotile_expr_criteria_emit_stamp(_root) {
 @arg {struct.WorldAutotilePebis} _root
 */
 function __nullstars_world_autotile_expr_criteria_emit_single(_root) {
+	stamp(_root);
+	
+	return true;
+}
+
+/**
+@arg {struct.WorldAutotilePebis} _root
+*/
+function __nullstars_world_autotile_expr_criteria_emit_stamp(_root) {
 	_root.stamps[$ stamp](_root)
 	
 	return true;
@@ -1319,7 +1342,16 @@ function __nullstars_world_autotile_expr_criteria_match(_root) {
 	if match(_root) {
 		return branch_then(_root);
 	}
-	else if branch_else != undefined {
+}
+
+/**
+@arg {struct.WorldAutotilePebis} _root
+*/
+function __nullstars_world_autotile_expr_criteria_match_else(_root) {
+	if match(_root) {
+		return branch_then(_root);
+	}
+	else {
 		return branch_else(_root);
 	}
 }
@@ -1330,9 +1362,10 @@ function __nullstars_world_autotile_expr_criteria_match(_root) {
 function __nullstars_world_autotile_expr_criteria_list(_root) {
 	for (var i = 0, _len := array_length(array); i < _len; i++) {
 		if array[i](_root) {
-			break;
+			return true;
 		}
 	}
+	return false;
 }
 
 /**
@@ -1341,7 +1374,7 @@ function __nullstars_world_autotile_expr_criteria_list(_root) {
 function __nullstars_world_autotile_expr_criteria_choose(_root) {
 	var _len := array_length(array);
 	if _len != 0 {
-		return array[irandom(_len)](_root);
+		return array[irandom(_len - 1)](_root);
 	}
 	return false;
 }
@@ -1428,8 +1461,10 @@ function __nullstars_world_autotile_expr_condition_class(_root) {
 		_bottomright != 0
 	);
 	
-	var _t_s := nullstars_world_autotile_sheet()[_t_i];
-					
+	var _t_s := nullstars_world_autotile_sheet_match()[_t_i];
+	
+	// show_debug_message("{0} {1} {2} {3}", _t_s, _t_i, _current, array);
+	
 	for (var i = 0, _len := array_length(array); i < _len; i++) {
 		if array[i] == _t_s {
 			return true;
@@ -1458,7 +1493,7 @@ function __nullstars_world_autotile_expr_condition_tileset(_root) {
 function __nullstars_world_autotile_expr_stamp_choose(_root) {
 	var _len := array_length(array);
 	if _len != 0 {
-		array[irandom(_len)](_root);
+		array[irandom(_len - 1)](_root);
 	}
 }
 
@@ -1493,7 +1528,6 @@ function WorldAutotileStampCollector() constructor {
 	length = 0;
 	
 	static clear := function () {
-		array_resize(array, 0);
 		length = 0;
 	};
 	
@@ -1508,9 +1542,7 @@ function WorldAutotileStampCollector() constructor {
 		_rand_y_min = 0,
 		_rand_y_max = 0,
 	) {
-		var _len := array_length(array);
-		
-		if _len == length {
+		if array_length(array) == length {
 			array_push(array, {
 				src_x: 0,
 				src_y: 0,
@@ -1526,7 +1558,7 @@ function WorldAutotileStampCollector() constructor {
 			});
 		}
 		
-		var _cache := array[_len];
+		var _cache := array[length++];
 		
 		_cache.src_x = _src_x;
 		_cache.src_y = _src_y;
@@ -1554,7 +1586,7 @@ function nullstars_world_autotile_noise_gen(_width, _height, _seed = undefined) 
 	var _seed_prev;
 	if _seed != undefined {
 		_seed_prev := random_get_seed();
-		random_set_seed(_seed, true);
+		// random_set_seed(_seed, true);
 	}
 	
 	for (var i = 0; i < _length; i++) {
@@ -1562,7 +1594,7 @@ function nullstars_world_autotile_noise_gen(_width, _height, _seed = undefined) 
 	}
 	
 	if _seed != undefined {
-		random_set_seed(_seed_prev, true);
+		// random_set_seed(_seed_prev, true);
 	}
 	
 	return {
@@ -1835,6 +1867,267 @@ function nullstars_world_autotile_sheet() {
 }
 
 /**
+returns a lookup table of tile matches, used in the match json api
+*/
+function nullstars_world_autotile_sheet_match() {
+	static __array = undefined;
+	
+	/*
+	   1   2   4
+	   8   ?  16
+	  32  64 128
+	
+	00000001  00000010  00000100
+	
+	00001000  xxxxxxxx  00010000
+	
+	00100000  01000000  10000000
+	*/
+	
+	if __array == undefined {
+		// fill with undefined, in the hope that retrieving an invalid value results in a crash.
+		__array := array_create(256, undefined);
+		
+		// o o o
+		// o : o
+		// o o o
+		__array[0b0000_0000] := 3;
+		
+		// o = o
+		// o : o
+		// o o o
+		__array[0b0000_0010] := 21;
+		
+		// o o o
+		// = : o
+		// o o o
+		__array[0b0000_1000] := 2;
+		
+		// o = o
+		// = : o
+		// o o o
+		__array[0b0000_1010] := 38;
+		
+		// = = o
+		// = : o
+		// o o o
+		__array[0b0000_1011] := 20;
+		
+		// o o o
+		// o : =
+		// o o o
+		__array[0b0001_0000] := 0;
+		
+		// o = o
+		// o : =
+		// o o o
+		__array[0b0001_0010] := 36;
+		
+		// o = =
+		// o : =
+		// o o o
+		__array[0b0001_0110] := 18;
+		
+		// o o o
+		// = : =
+		// o o o
+		__array[0b0001_1000] := 1;
+		
+		// o = o
+		// = : =
+		// o o o
+		__array[0b0001_1010] := 37;
+		
+		// = = o
+		// = : =
+		// o o o
+		__array[0b0001_1011] := 10;
+		
+		// o = =
+		// = : =
+		// o o o
+		__array[0b0001_1110] := 11;
+		
+		// = = =
+		// = : =
+		// o o o
+		__array[0b0001_1111] := 19;
+		
+		// o o o
+		// o : o
+		// o = o
+		__array[0b0100_0000] := 9;
+		
+		// o = o
+		// o : o
+		// o = o
+		__array[0b0100_0010] := 15;
+		
+		// o o o
+		// = : o
+		// o = o
+		__array[0b0100_1000] := 26;
+		
+		// o = o
+		// = : o
+		// o = o
+		__array[0b0100_1010] := 32;
+		
+		// = = o
+		// = : o
+		// o = o
+		__array[0b0100_1011] := 17;
+		
+		// o o o
+		// o : =
+		// o = o
+		__array[0b0101_0000] := 24;
+		
+		// o = o
+		// o : =
+		// o = o
+		__array[0b0101_0010] := 30;
+		
+		// o = =
+		// o : =
+		// o = o
+		__array[0b0101_0110] := 16;
+		
+		// o o o
+		// = : =
+		// o = o
+		__array[0b0101_1000] := 25;
+		
+		// o = o
+		// = : =
+		// o = o
+		__array[0b0101_1010] := 31;
+		
+		// = = o
+		// = : =
+		// o = o
+		__array[0b0101_1011] := 44;
+		
+		// o = =
+		// = : =
+		// o = o
+		__array[0b0101_1110] := 45;
+		
+		// = = =
+		// = : =
+		// o = o
+		__array[0b0101_1111] := 28;
+		
+		// o o o
+		// = : o
+		// = = o
+		__array[0b0110_1000] := 8;
+		
+		// o = o
+		// = : o
+		// = = o
+		__array[0b0110_1010] := 23;
+		
+		// = = o
+		// = : o
+		// = = o
+		__array[0b0110_1011] := 14;
+		
+		// o o o
+		// = : =
+		// = = o
+		__array[0b0111_1000] := 4;
+		
+		// o = o
+		// = : =
+		// = = o
+		__array[0b0111_1010] := 46;
+		
+		// = = o
+		// = : =
+		// = = o
+		__array[0b0111_1011] := 33;
+		
+		// o = =
+		// = : =
+		// = = o
+		__array[0b0111_1110] := 43;
+		
+		// = = =
+		// = : =
+		// = = o
+		__array[0b0111_1111] := 27;
+		
+		// o o o
+		// o : =
+		// o = =
+		__array[0b1101_0000] := 6;
+		
+		// o = o
+		// o : =
+		// o = =
+		__array[0b1101_0010] := 22;
+		
+		// o = =
+		// o : =
+		// o = =
+		__array[0b1101_0110] := 12;
+		
+		// o o o
+		// = : =
+		// o = =
+		__array[0b1101_1000] := 5;
+		
+		// o = o
+		// = : =
+		// o = =
+		__array[0b1101_1010] := 47;
+		
+		// = = o
+		// = : =
+		// o = =
+		__array[0b1101_1011] := 42;
+		
+		// o = =
+		// = : =
+		// o = =
+		__array[0b1101_1110] := 35;
+		
+		// = = =
+		// = : =
+		// o = =
+		__array[0b1101_1111] := 29;
+		
+		// o o o
+		// = : =
+		// = = =
+		__array[0b1111_1000] := 7;
+		
+		// o = o
+		// = : =
+		// = = =
+		__array[0b1111_1010] := 40;
+		
+		// = = o
+		// = : =
+		// = = =
+		__array[0b1111_1011] := 39;
+		
+		// o = =
+		// = : =
+		// = = =
+		__array[0b1111_1110] := 41;
+		
+		// = = =
+		// = : =
+		// = = =
+		__array[0b1111_1111] := 3;
+	}
+	
+	return __array;
+}
+
+/**
 @arg {bool} _topleft
 @arg {bool} _top
 @arg {bool} _topright
@@ -1883,7 +2176,7 @@ function nullstars_world_autotile_format_blob(_id) {
 		
 		__array[2] := { x: 2, y: 0 };
 		
-		__array[3] := { x: 2, y: 7 };
+		__array[3] := { x: 2, y: 6 };
 		
 		__array[4] := { x: 2, y: 3 };
 		

@@ -28,7 +28,6 @@ function Root(_async) constructor {
 	
 	render := new Render();
 	
-	
 	static tick := function () {
 		camera.tick();
 		
@@ -82,7 +81,7 @@ function AsyncHook() constructor {
 				if !ds_map_find_value(_dsmap, "status") {
 					LOG(Log.Error, $"AsyncHook(): file '{_item.load_id}' couldn't be loaded. does it even exist?");
 					LOG(Log.Error, $"AsyncHook(): this is an unrecoverable error. fuck you. crashing now");
-					throw $"see logs asshole";
+					ASSERT(false, $"see logs asshole");
 				}
 				
 				_item.item.hook();

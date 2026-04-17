@@ -42,9 +42,9 @@ type Package = {
 
 ```ts
 type Tileset = {
-	/** stamps are individual collections of tiles that can be reused. */
-	"stamp": Stamp[];
-	/** while the autotiler iterates over every tile, rules control which stamp to place. */
+	/** a stamp is a individual collection of tiles that can be reused. */
+	"stamps": Stamp[];
+	/** while the autotiler iterates over every tile, a rule controls which stamp to place. */
 	"rules": RuleCriteria[];
 };
 
@@ -74,10 +74,10 @@ type RuleStamp =
 		"off_y"?: number;
 		"off_z"?: number;
 		
-		"x_rand_min"?: number;
-		"x_rand_max"?: number;
-		"y_rand_min"?: number;
-		"y_rand_max"?: number;
+		"rand_x_min"?: number;
+		"rand_x_max"?: number;
+		"rand_y_min"?: number;
+		"rand_y_max"?: number;
 	};
 
 type RuleCriteria =
@@ -85,7 +85,6 @@ type RuleCriteria =
 		"type": "emit";
 	} & (
 		| {
-			"type": "emit";
 			"emit": "blob";
 			"src_x": number;
 			"src_y": number;
