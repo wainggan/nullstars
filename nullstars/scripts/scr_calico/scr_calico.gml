@@ -80,7 +80,7 @@ set a state's onenter function.
 @arg {string} _state
 @arg {function, undefined} _callback
 */
-function calico_mut_onenter(_machine, _state, _callback) {
+function calico_mut_set_onenter(_machine, _state, _callback) {
 	_machine.__states[$ _state].onenter = _callback;
 }
 
@@ -91,8 +91,22 @@ set a state's onleave function.
 @arg {string} _state
 @arg {function, undefined} _callback
 */
-function calico_mut_onenter(_machine, _state, _callback) {
+function calico_mut_set_onenter(_machine, _state, _callback) {
 	_machine.__states[$ _state].onleave = _callback;
+}
+
+/**
+set a state's `reenter` flag.
+if the machine's state is changed to the current state, if `reenter` is
+true, the state's onleave and onenter functions will run as normal.
+if false, however, they will not, as if change was never called.
+
+@arg {struct.__Calico} _machine
+@arg {string} _state
+@arg {bool} _reenter
+*/
+function calico_mut_set_reenter(_machine, _state, _reenter) {
+	_machine.__states[$ _state].flag_reenter = _reenter;
 }
 
 /// @ignore
@@ -182,10 +196,30 @@ function __Calico() constructor {
 	
 	/// @ignore
 	static __change := function (_state) {
+		ASSERT_NE(__states[$ _state], undefined, $"invalid state");
+		
 		if !__running {
-			__run(__current, 2);
-			__current = _state;
-			__run(__current, 1);
+			var _reenter;
+			
+			if __current == _state {
+				var _flag_reenter := __states[$ _state].flag_reenter;
+				
+				ASSERT_NE(_flag_reenter, undefined, $"attempting to transition to current state, but reenter flag not set");
+				
+				_reenter := _reenter;
+			}
+			else {
+				_reenter := true;
+			}
+			
+			if _reenter {
+				__run(__current, 2);
+				__current = _state;
+				__run(__current, 1);
+			}
+			else {
+				__current = _state;
+			}
 		}
 		else {
 			__defer = _state;
@@ -234,9 +268,12 @@ function __Calico() constructor {
 	static __add_state := function (_state, _parent) {
 		__states[$ _state] := {
 			parent: _parent,
+			
 			onleave: undefined,
 			onenter: undefined,
 			events: {},
+			
+			flag_reenter: undefined,
 		};
 	};
 }
