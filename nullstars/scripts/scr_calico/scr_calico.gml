@@ -2,11 +2,96 @@
 generic state machine.
 */
 
+function calico_base_create() {
+	return new __CalicoBase();
+}
+
+/**
+create a new, empty state.
+
+@arg {struct.__CalicoBase} _base
+@arg {string} _state
+@arg {string} [_parent]
+*/
+function calico_base_add(_base, _state, _parent = undefined) {
+	_base.__add_state(_state, _parent);
+}
+
+/**
+set a state's onenter function.
+
+@arg {struct.__CalicoBase} _base
+@arg {string} _state
+@arg {function, undefined} _callback
+*/
+function calico_base_onenter(_base, _state, _callback) {
+	_base.__states[$ _state].onenter = _callback;
+}
+
+/**
+set a state's onleave function.
+
+@arg {struct.__CalicoBase} _base
+@arg {string} _state
+@arg {function, undefined} _callback
+*/
+function calico_base_onleave(_base, _state, _callback) {
+	_base.__states[$ _state].onleave = _callback;
+}
+
+/**
+set a state's event function.
+
+@arg {struct.__CalicoBase} _base
+@arg {string} _state
+@arg {string} _event
+@arg {function, undefined} _callback
+*/
+function calico_base_event(_base, _state, _event, _callback) {
+	_base.__states[$ _state].events[$ _event] = _callback;
+}
+
+/**
+add an 'edge' to a state.
+if one attempts to transition to another state that
+isn't in the edge list, an exception is thrown.
+
+@arg {struct.__CalicoBase} _base
+@arg {string} _state
+@arg {string} _target
+*/
+function calico_base_edge(_base, _state, _target) {
+	var _x := _base.__states[$ _state];
+	
+	if _x.edges == undefined {
+		_x.edges := [];
+	}
+	
+	array_push(_x.edges, _target);
+}
+
+/**
+set a state's `reenter` flag.
+if the machine's state is changed to the current state, if `reenter` is
+true, the state's onleave and onenter functions will run as normal.
+if false, however, they will not, as if change was never called.
+
+@arg {struct.__CalicoBase} _base
+@arg {string} _state
+@arg {bool} _reenter
+*/
+function calico_base_flag_reenter(_base, _state, _reenter) {
+	_base.__states[$ _state].flag_reenter = _reenter;
+}
+
+
 /**
 create a new, empty state machine.
+
+@arg {struct.__CalicoBase} _base
 */
-function calico_create() {
-	return new __Calico();
+function calico_create(_base) {
+	return new __Calico(_base);
 }
 
 /**
@@ -53,6 +138,15 @@ function calico_is(_machine, _state) {
 }
 
 /**
+get the machine's 'data' struct.
+
+@arg {struct.__Calico} _machine
+*/
+function calico_data(_machine) {
+	return _machine.__data;
+}
+
+/**
 set a machine's current state, without triggering onenter/onleave.
 
 @arg {struct.__Calico} _machine
@@ -62,58 +156,34 @@ function calico_mut_current(_machine, _state) {
 	_machine.__current = _state;
 }
 
-/**
-create a new, empty state.
-
-@arg {struct.__Calico} _machine
-@arg {string} _state
-@arg {string} [_parent]
-*/
-function calico_mut_new(_machine, _state, _parent = undefined) {
-	_machine.__add_state(_state, _parent);
-}
-
-/**
-set a state's onenter function.
-
-@arg {struct.__Calico} _machine
-@arg {string} _state
-@arg {function, undefined} _callback
-*/
-function calico_mut_set_onenter(_machine, _state, _callback) {
-	_machine.__states[$ _state].onenter = _callback;
-}
-
-/**
-set a state's onleave function.
-
-@arg {struct.__Calico} _machine
-@arg {string} _state
-@arg {function, undefined} _callback
-*/
-function calico_mut_set_onenter(_machine, _state, _callback) {
-	_machine.__states[$ _state].onleave = _callback;
-}
-
-/**
-set a state's `reenter` flag.
-if the machine's state is changed to the current state, if `reenter` is
-true, the state's onleave and onenter functions will run as normal.
-if false, however, they will not, as if change was never called.
-
-@arg {struct.__Calico} _machine
-@arg {string} _state
-@arg {bool} _reenter
-*/
-function calico_mut_set_reenter(_machine, _state, _reenter) {
-	_machine.__states[$ _state].flag_reenter = _reenter;
-}
-
-/// @ignore
-function __Calico() constructor {
+function __CalicoBase() constructor {
 	// map of available states.
 	/// @ignore
 	__states := {};
+	
+	/// @ignore
+	static __add_state := function (_state, _parent) {
+		__states[$ _state] := {
+			parent: _parent,
+			
+			onleave: undefined,
+			onenter: undefined,
+			events: {},
+			
+			edges: undefined,
+			
+			flag_reenter: undefined,
+		};
+	};
+}
+
+/**
+@arg {struct.__CalicoBase} _base
+@ignore
+*/
+function __Calico(_base) constructor {
+	// state base
+	__base := _base;
 	
 	// current state. indexes into `__states`.
 	/// @ignore
@@ -146,6 +216,9 @@ function __Calico() constructor {
 	/// @ignore
 	__cache_tree_index = 0;
 	
+	/// @ignore
+	__data := {};
+	
 	// run an event.
 	/// @ignore
 	static __run := function (_event, _type) {
@@ -167,12 +240,14 @@ function __Calico() constructor {
 		
 			var _check = __current;
 			while _check != undefined {
-				array_push(__cache_tree_list, __states[$ _check]);
-				_check = __states[$ _check].parent;
+				array_push(__cache_tree_list, __base.__states[$ _check]);
+				_check = __base.__states[$ _check].parent;
 			}
 			
 			__cache_current = __current;
 		}
+		
+		__cache_tree_index = array_length(__cache_tree_list);
 		
 		// set flag stating that we are running.
 		
@@ -196,13 +271,13 @@ function __Calico() constructor {
 	
 	/// @ignore
 	static __change := function (_state) {
-		ASSERT_NE(__states[$ _state], undefined, $"invalid state");
+		ASSERT_NE(__base.__states[$ _state], undefined, $"invalid state");
 		
 		if !__running {
 			var _reenter;
 			
 			if __current == _state {
-				var _flag_reenter := __states[$ _state].flag_reenter;
+				var _flag_reenter := __base.__states[$ _state].flag_reenter;
 				
 				ASSERT_NE(_flag_reenter, undefined, $"attempting to transition to current state, but reenter flag not set");
 				
@@ -252,7 +327,7 @@ function __Calico() constructor {
 			}
 			
 			if _callback != undefined {
-				_callback(self);
+				_callback(self, __data);
 			}
 			else {
 				// automatically delegate if not set.
@@ -262,19 +337,6 @@ function __Calico() constructor {
 		
 		// "push"
 		__cache_tree_index += 1;
-	};
-	
-	/// @ignore
-	static __add_state := function (_state, _parent) {
-		__states[$ _state] := {
-			parent: _parent,
-			
-			onleave: undefined,
-			onenter: undefined,
-			events: {},
-			
-			flag_reenter: undefined,
-		};
 	};
 }
 

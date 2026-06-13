@@ -19,7 +19,10 @@ function WorldMain(_package) constructor {
 	entities_global_sorted = true;
 	
 	// all rooms. after being filled, this should never be touched.
-	rooms := [];
+	rooms_list := [];
+	
+	// all rooms, as a map.
+	rooms_map := {};
 	
 	// populate rooms
 	// todo: move to another function
@@ -37,7 +40,7 @@ function WorldMain(_package) constructor {
 		
 		var _rooms_length := buffer_read(_buffer, buffer_u32);
 		
-		array_resize(rooms, _rooms_length);
+		array_resize(rooms_list, _rooms_length);
 		
 		for (var i = 0; i < _rooms_length; i++) {
 			var _room_id := buffer_read(_buffer, buffer_string);
@@ -45,7 +48,12 @@ function WorldMain(_package) constructor {
 			var _room_y := buffer_read(_buffer, buffer_s32);
 			var _room_width := buffer_read(_buffer, buffer_u32);
 			var _room_height := buffer_read(_buffer, buffer_u32);
-			rooms[i] := new WorldRoom(self, _room_id, _room_x, _room_y, _room_width, _room_height);
+			
+			var _room_inst := new WorldRoom(self, _room_id, _room_x, _room_y, _room_width, _room_height);
+			
+			rooms_list[i] := _room_inst;
+			rooms_map[$ _room_id] := _room_inst;
+			
 		}
 	
 		buffer_delete(_buffer);
@@ -396,6 +404,18 @@ enum WorldRoomState {
 	Unloading,
 }
 
+#macro WORLD_ROOM_STATE_BASE "base"
+#macro WORLD_ROOM_STATE_EMPTY "empty"
+#macro WORLD_ROOM_STATE_FILING "filing"
+#macro WORLD_ROOM_STATE_FILED "filed"
+#macro WORLD_ROOM_STATE_UNFILED "unfiling"
+#macro WORLD_ROOM_STATE_PARSING "parsing"
+#macro WORLD_ROOM_STATE_PARSED "parsed"
+#macro WORLD_ROOM_STATE_UNPARSING "unparsing"
+#macro WORLD_ROOM_STATE_LOADING "loading"
+#macro WORLD_ROOM_STATE_LOADED "loaded"
+#macro WORLD_ROOM_STATE_UNLOADING "unloading"
+
 /**
 @arg {struct.WorldMain} _world
 @arg {string} _id
@@ -473,6 +493,111 @@ function WorldRoom(_world, _id, _x, _y, _width, _height) constructor {
 	used for drawing.
 	*/
 	layer_graphic_front_vb = undefined;
+	
+	// set up the state machine.
+	
+	static __calico_base = undefined;
+	if __calico_base == undefined {
+		__calico_base := calico_base_create();
+		
+		/*
+		a weird strategy we'll be using here is creating struct variables inside the onenter events.
+		
+		this, first of all, sucks - but - it makes it easier to initialize and validate state since
+		it is all in one place, and may save on memory if the variables required to fully load a room
+		end up requiring the gamemaker struct to allocate more buckets.
+		*/
+		
+		calico_base_add(__calico_base, WORLD_ROOM_STATE_BASE);
+		
+		// empty
+		
+		calico_base_add(__calico_base, WORLD_ROOM_STATE_EMPTY, WORLD_ROOM_STATE_BASE);
+		
+		// file
+		
+		calico_base_add(__calico_base, WORLD_ROOM_STATE_FILING, WORLD_ROOM_STATE_BASE);
+		
+		static __calico_filing_onenter := function (_calico, _data) {
+			var _ := _data._;
+			
+			_.state_filing_buffer = undefined;
+		};
+		calico_base_onenter(__calico_base, WORLD_ROOM_STATE_FILING, __calico_filing_onenter);
+		
+		static __calico_filing_tick := function (_calico, _data) {
+			var _ := _data._;
+			
+			ASSERT_EQ(_.state_filing_buffer, undefined);
+			
+			_.state_filing_buffer = nullstars_root().package.load_world_room(parent.id);
+			
+			calico_change(_calico, WORLD_ROOM_STATE_FILED);
+		};
+		calico_base_event(__calico_base, WORLD_ROOM_STATE_FILING, "tick", __calico_filing_tick);
+		
+		// parse
+		
+		calico_base_add(__calico_base, WORLD_ROOM_STATE_PARSING, WORLD_ROOM_STATE_BASE);
+		
+		// set this out here, since, once it is set, it does not need to be reset.
+		state_parsing_buffer_map = undefined;
+		
+		static __calico_parsing_onenter := function (_calico, _data) {
+			
+		};
+		calico_base_onenter(__calico_base, WORLD_ROOM_STATE_PARSING, __calico_parsing_onenter);
+		
+		static __calico_parsing_tick := function (_calico, _data) {
+			var _ := _data._;
+			
+			ASSERT_NE(_.state_filing_buffer, undefined);
+			ASSERT(buffer_exists(_.state_filing_buffer));
+		
+			if _.state_parsing_buffer_map == undefined {
+				var _buffer := _.state_filing_buffer;
+				
+				buffer_seek(_buffer, buffer_seek_start, 0);
+		
+				var _magic_nullstars := buffer_read(_buffer, buffer_string);
+				// todo: proper error reporting
+				ASSERT_EQ(_magic_nullstars, "nullstars");
+		
+				var _magic_number := buffer_read(_buffer, buffer_string);
+				ASSERT_EQ(_magic_number, "R");
+		
+				var _version := buffer_read(_buffer, buffer_u16);
+		
+				var _width := buffer_read(_buffer, buffer_u32);
+				var _height := buffer_read(_buffer, buffer_u32);
+		
+				var _solid_size := buffer_read(_buffer, buffer_u32);
+		
+				var _solid_pointer := buffer_tell(_buffer);
+		
+				_.state_parsing_buffer_map = {
+					version: _version,
+					width: _width,
+					height: _height,
+					solid: {
+						pointer: _solid_pointer,
+						length: _solid_size,
+					},
+				};
+				
+				return WorldTaskStatus.Running;
+			}
+		
+			return WorldTaskStatus.Complete;
+		};
+		calico_base_event(__calico_base, WORLD_ROOM_STATE_PARSING, "tick", __calico_parsing_tick);
+	}
+	
+	calico := calico_create(__calico_base);
+	calico_data(calico)._ = self; // superstition; avoiding method()
+	
+	calico_change(calico, "main");
+	calico_run(calico, "tick");
 	
 	static tick := function () {
 		// update entities.
