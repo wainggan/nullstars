@@ -92,10 +92,7 @@ function WorldMain(_package) constructor {
 		
 		for (var i = 0, _len := ds_list_size(__list); i < _len; i++) {
 			// spam the room with a helpful suggestion!
-			var _room = __list[| i].parent;
-			if _room.state == WorldRoomState.Empty {
-				_room.filing();
-			}
+			var _room := __list[| i].parent;
 		}
 		
 		ds_list_clear(__list);
@@ -113,10 +110,7 @@ function WorldMain(_package) constructor {
 		);
 		
 		for (var i = 0, _len := ds_list_size(__list); i < _len; i++) {
-			var _room = __list[| i].parent;
-			if _room.state == WorldRoomState.Filed {
-				_room.parsing();
-			}
+			var _room := __list[| i].parent;
 		}
 		
 		ds_list_clear(__list);
@@ -135,10 +129,7 @@ function WorldMain(_package) constructor {
 		
 		// fucking kill me
 		for (var i = 0, _len := ds_list_size(__list); i < _len; i++) {
-			var _room = __list[| i].parent;
-			if _room.state == WorldRoomState.Parsed {
-				_room.loading();
-			}
+			var _room := __list[| i].parent;
 		}
 		
 		// at this point, rooms have been pinged and will be working on
@@ -147,13 +138,26 @@ function WorldMain(_package) constructor {
 		// entities will be ticked after the queue is ticked. that way, if a
 		// queue item is stuck on WorldTaskStatus.Waiting, entities can be safely paused.
 		
+		var _budget := new WorldBudget();
+		
+		var _pause = false;
+		
+		for (var i = 0, _len := array_length(self.rooms_list); i < _len; i++) {
+			var _room := self.rooms_list[i];
+			
+			var _status := _room.tick_components(RoomLoadTarget.File, _budget);
+			
+			if _status == RoomComponentStatus.Waiting {
+				_pause = true;
+			}
+		}
+		
 		// speaking of,
-		var _pause = queue_process();
 		if _pause {
 			return;
 		}
 		
-		entity_process();
+		self.entity_process();
 	};
 	
 	static entity_global_add := function (_entity) {
@@ -179,242 +183,274 @@ function WorldMain(_package) constructor {
 		}
 	};
 	
-	static queue_add := function (_task) {
-		ASSERT(is_instanceof(_task, WorldTask));
-		array_push(queue, _task);
-		queue_sorted = false;
-	};
-	
 	// goobinator 5000
-	static queue_process := function () {
-		var _config = nullstars_config();
-		
-		// time to process the queue!
-		
-		static __sort := function (_a, _b) {
-			return _b.priority - _a.priority;
-		};
-		
-		if !queue_sorted {
-			array_sort(queue, __sort);
-			queue_sorted = true;
-		}
-		
-		// value to return from this function.
-		// set to true to indicate that the game should freeze for a frame.
-		var _return_freeze = false;
-		
-		// we only have a limited budget to process these things. if we run out of either
-		// of these, then we need to stop processing.
-		
-		// how much time in milliseconds we have.
-		// the most important one, this makes sure that the rest of the
-		// game has enough time to process too.
-		var _budget_time = _config.game_loader_budget_time; // ms
-		// how much tasks we can process, total.
-		// this will prevent a WorldTaskStatus.Waiting task from devolving into a hot loop.
-		var _budget_count = _config.game_loader_budget_count;
-		
-		var _debug_track;
-		if DEBUG_LOAD_TRACK_OPS {
-			_debug_track := [];
-		}
-		
-		static __remove := [];
-		
-		array_resize(__remove, 0);
-		
-		// using a todo list because it makes it easier to deal with
-		// new tasks getting added during processing.
-		static __todo := [];
-		
-		array_resize(__todo, array_length(queue));
-		for (var i = 0, _len := array_length(queue); i < _len; i++) {
-			__todo[i] = i;
-		}
-			
-		// note: queue must be essentially immutable during this
-		while array_length(__todo) != 0 {
-				
-			var _time := get_timer();
-			
-			var _index := array_pop(__todo);
-				
-			var _task := queue[_index];
-				
-			var _status = WorldTaskStatus.Running;
-				
-			// todo: add collision check
-			// priority == 0 means they must be processed when in load range.
-			if _task.priority == 0 && true {
-				if DEBUG_LOAD_TRACK_OPS {
-					array_push(_debug_track, instanceof(_task));
-				}
-				
-				while true {
-					_status = _task.process(self);
-					ASSERT_NE(_status, undefined, $"{instanceof(_task)}");
-					
-					if _status == WorldTaskStatus.Complete {
-						break;
-					}
-					if _status == WorldTaskStatus.Waiting {
-						break;
-					}
-				}
-					
-				// if it must wait for the next frame to
-				// be processed, freeze the game for a frame.
-				if _status == WorldTaskStatus.Waiting {
-					// deal with budget
-					_budget_count -= 1;
-					_budget_time -= (get_timer() - _time) / 1000;
-					
-					if DEBUG_LOAD_TRACK_OPS {
-						array_push(_debug_track, (get_timer() - _time) / 1000);
-					}
-					
-					_return_freeze = true;
-					continue;
-				}
-			}
-			else if _budget_time > 0 && _budget_count > 0 {
-				if DEBUG_LOAD_TRACK_OPS {
-					array_push(_debug_track, instanceof(_task));
-				}
-				
-				// this item can be processed over multiple frames.
-				_status = _task.process(self);
-				ASSERT_NE(_status, undefined, $"{instanceof(_task)}");
-				
-				if _status != WorldTaskStatus.Complete {
-					// deal with budget
-					_budget_count -= 1;
-					_budget_time -= (get_timer() - _time) / 1000;
-					
-					if DEBUG_LOAD_TRACK_OPS {
-						array_push(_debug_track, (get_timer() - _time) / 1000);
-					}
-					
-					// whatever
-					continue;
-				}
-			}
-			else {
-				// this path happens when the budget runs out.
-				// this will simply keep running the loop until complete.
-				
-				continue;
-			}
-			
-			ASSERT_EQ(_status, WorldTaskStatus.Complete);
-			
-			var _out := _task.collect(self);
-			
-			ASSERT(is_array(_out));
-			
-			for (var i = 0, _len := array_length(_out); i < _len; i++) {
-				ASSERT(is_instanceof(_out[i], WorldTask));
-				
-				// if we recieve a task, we need to add it to
-				// the queue *and* todo list. this ensures that if it turns
-				// out to be a priority 0 option, it gets dealt with correctly later
-				queue_add(_out[i]);
-				array_push(__todo, array_length(queue) - 1);
-				// todo: sort?
-			}
-			
-			// the item was complete, so remove it
-			array_push(__remove, _index);
-			
-			// deal with budget
-			_budget_count -= 1;
-			_budget_time -= (get_timer() - _time) / 1000;
-			
-			if DEBUG_LOAD_TRACK_OPS {
-				array_push(_debug_track, (get_timer() - _time) / 1000);
-			}
-		}
-		
-		if array_length(__remove) != 0 {
-			LOG(_budget_count < 0 || _budget_time < 0 ? Log.Warn : Log.Note, $"{array_length(__remove)} processed; {_budget_count} {_budget_time}");
-			if DEBUG_LOAD_TRACK_OPS {
-				var _debug_track_str = "types: ";
-				while array_length(_debug_track) != 0 {
-					_debug_track_str += string(array_pop(_debug_track));
-					_debug_track_str += ", ";
-				}
-				LOG(Log.Note, _debug_track_str);
-			}
-		}
-		
-		// remove elements without screwing up indicies
-		array_sort(__remove, true);
-		while array_length(__remove) != 0 {
-			var _index = array_pop(__remove);
-			array_delete(queue, _index, 1);
-		}
-		
-		return _return_freeze;
+}
+
+function WorldBudget() constructor {
+	static tick := function () {};
+	static okay := function () {
+		return true;
 	};
 }
 
-/*
-rooms have state associated with how loaded they are.
-
-the state graph is as follows:
-
-Empty -> Filing -> Filed -> Parsing -> Parsed -> Loading -> Loaded
-  ^---- Unfiling <--' ^--- Unparsing <--'  ^--- Unloading <--'
-
-WorldLoader will inform WorldRoom() that it needs to change state, WorldRoom()
-will add new Tasks to WorldLoader().
-
-each state here represents a discrete step in the level loading process. there
-is only one way to reach a 'Loaded' room, through a 'Parsed' room.
-
-'Empty' means the room is completely unloaded. switch to 'Filing' when the room is
-in the file radius.
-
-'Filing' will open the file, changing state to 'Filed' when complete. switch
-to 'Parsing' when the room is in the parse radius.
-
-'Parsing' will take the contents of the file and completely unpack its
-data. when complete, the state will be 'Parsed', and all the layers will
-be created, all entities will be ready to be created. switch to 'Loading'
-when the room is in the loading radius.
-
-'Loading' will create the rest of the required resources from what has been
-parsed, notably initializing all the room's game objects. the room is now 'Loaded'!
-*/
-
-enum WorldRoomState {
-	Empty,
-	
-	Filing,
-	Filed,
-	Unfiling,
-	
-	Parsing,
-	Parsed,
-	Unparsing,
-	
-	Loading,
-	Loaded,
-	Unloading,
+enum RoomComponentState {
+	Idle,
+	Working,
+	Complete,
+	Cleaning,
 }
 
-#macro WORLD_ROOM_STATE_BASE "base"
-#macro WORLD_ROOM_STATE_EMPTY "empty"
-#macro WORLD_ROOM_STATE_FILING "filing"
-#macro WORLD_ROOM_STATE_FILED "filed"
-#macro WORLD_ROOM_STATE_UNFILED "unfiling"
-#macro WORLD_ROOM_STATE_PARSING "parsing"
-#macro WORLD_ROOM_STATE_PARSED "parsed"
-#macro WORLD_ROOM_STATE_UNPARSING "unparsing"
-#macro WORLD_ROOM_STATE_LOADING "loading"
-#macro WORLD_ROOM_STATE_LOADED "loaded"
-#macro WORLD_ROOM_STATE_UNLOADING "unloading"
+enum RoomComponentStatus {
+	Running,
+	Waiting,
+	Complete,
+}
+
+enum RoomLoadTarget {
+	Unload,
+	File,
+	Parse,
+	Load,
+}
+
+function WorldRoomResourceList() constructor {
+	storage := {};
+	
+	/**
+	@arg {string} _id
+	@arg {function} _item
+	@return {struct.WorldRoomResourceItem}
+	*/
+	static item := function (_id, _item) {
+		var _a := self.storage[$ _id];
+		if _a != undefined {
+			return _a;
+		}
+		
+		var _b = new _item();
+		self.storage[$ _id] = _b;
+		return _b;
+	};
+}
+
+function WorldRoomResourceItem() constructor {
+	state = RoomComponentState.Idle;
+	data := {};
+	resource := {};
+}
+
+/**
+@arg {string} _name
+@arg {function} _resource
+*/
+function WorldRoomComponent(_name, _resource) constructor {
+	name := _name;
+	resource := _resource;
+	
+	/**
+	@arg {struct.WorldRoomResourceItem} _state
+	@arg {struct.WorldRoomResourceList} _list
+	@arg {struct.WorldRoom} _room
+	*/
+	static fn_work_init := function (_state, _list, _room) {};
+	
+	/**
+	@arg {struct.WorldRoomResourceItem} _state
+	@arg {struct.WorldRoomResourceList} _list
+	@arg {struct.WorldRoom} _room
+	@return {enum.RoomComponentStatus}
+	*/
+	static fn_work_tick := function (_state, _list, _room) {
+		return RoomComponentStatus.Complete;
+	};
+	
+	/**
+	@arg {struct.WorldRoomResourceItem} _state
+	@arg {struct.WorldRoomResourceList} _list
+	@arg {struct.WorldRoom} _room
+	*/
+	static fn_clean_init := function (_state, _list, _room) {};
+	
+	/**
+	@arg {struct.WorldRoomResourceItem} _state
+	@arg {struct.WorldRoomResourceList} _list
+	@arg {struct.WorldRoom} _room
+	@return {enum.RoomComponentStatus}
+	*/
+	static fn_clean_tick := function (_state, _list, _room) {
+		return RoomComponentStatus.Complete;
+	};
+	
+	/**
+	@arg {struct.WorldRoomResourceList} _list
+	*/
+	static item := function (_list) {
+		return _list.item(self.name, self.resource);
+	};
+	
+	/**
+	@arg {struct.WorldRoomResourceList} _list
+	*/
+	static get := function (_list) {
+		var _item = self.item(_list);
+		
+		if _item.state != RoomComponentStatus.Complete {
+			return undefined;
+		}
+		
+		return _item.data;
+	};
+	
+	/**
+	@arg {struct.WorldRoomResourceList} _list
+	@return {enum.RoomComponentState}
+	*/
+	static state := function (_list) {
+		return self.item(_list).state;
+	};
+	
+	/**
+	@arg {bool} _load
+	@arg {struct.WorldRoom} _room
+	@arg {struct.WorldRoomResourceList} _list
+	@arg {struct.WorldBudget} _budget
+	@return {enum.RoomComponentState}
+	*/
+	static tick := function (_load, _room, _list, _budget) {
+		var _resource_state := self.item(_list);
+		
+		if _load {
+			if _resource_state.state == RoomComponentState.Idle {
+				_resource_state.state = RoomComponentState.Working;
+				self.fn_work_init(_resource_state, _list, _room);
+			}
+		}
+		else {
+			if _resource_state.state == RoomComponentState.Complete {
+				_resource_state.state = RoomComponentState.Cleaning;
+				self.fn_clean_init(_resource_state, _list, _room);
+			}
+		}
+		
+		if _resource_state.state == RoomComponentState.Working {
+			var _out = self.fn_work_tick(_resource_state, _list, _room);
+			_budget.tick();
+			
+			if _out == RoomComponentStatus.Complete {
+				_resource_state.state = RoomComponentState.Complete;
+			}
+			
+			return _out;
+		}
+		else if _resource_state.state == RoomComponentState.Cleaning {
+			var _out := self.fn_clean_tick(_resource_state, _list, _room);
+			_budget.tick();
+			
+			if _out == RoomComponentStatus.Complete {
+				_resource_state.state = RoomComponentState.Idle;
+			}
+			
+			return _out;
+		}
+		
+		return RoomComponentStatus.Complete;
+	};
+}
+
+function WorldRoomComponentFile() : WorldRoomComponent("file", WorldRoomResourceItem) constructor {
+	static fn_work_init := function (_state, _list, _room) {
+		LOG(Log.Note, $"WorldRoomComponentFile(): initializing (@ {_room.id})");
+		_state.resource.buffer = undefined;
+	};
+	
+	static fn_work_tick := function (_state, _list, _room) {
+		if _state.resource.buffer == undefined {
+			_state.resource.buffer = nullstars_root().package.load_world_room(_room.id);
+		}
+		return RoomComponentStatus.Complete;
+	};
+	
+	static fn_clean_init := function (_state, _list, _room) {
+		
+	};
+	
+	static fn_clean_tick := function (_state, _list, _room) {
+		buffer_delete(_state.resource.buffer);
+		return RoomComponentStatus.Complete;
+	};
+}
+
+function WorldRoomComponentHeader() : WorldRoomComponent("header", WorldRoomResourceItem) constructor {
+	static fn_work_init := function (_state, _list, _room) {
+		LOG(Log.Note, $"WorldRoomComponentHeader(): initializing (@ {_room.id})");
+		_state.resource.buffer_map = undefined;
+	};
+	
+	static fn_work_tick := function (_state, _list, _room) {
+		if _state.resource.buffer_map == undefined {
+			var _file_item := global.room_ticker.component_file.item(_list);
+			var _buffer := _file_item.resource.buffer;
+			ASSERT_NE(_buffer, undefined);
+			ASSERT(buffer_exists(_buffer));
+				
+			buffer_seek(_buffer, buffer_seek_start, 0);
+		
+			var _magic_nullstars := buffer_read(_buffer, buffer_string);
+			// todo: proper error reporting
+			ASSERT_EQ(_magic_nullstars, "nullstars");
+		
+			var _magic_number := buffer_read(_buffer, buffer_string);
+			ASSERT_EQ(_magic_number, "R");
+		
+			var _version := buffer_read(_buffer, buffer_u16);
+		
+			var _width := buffer_read(_buffer, buffer_u32);
+			var _height := buffer_read(_buffer, buffer_u32);
+		
+			var _solid_size := buffer_read(_buffer, buffer_u32);
+		
+			var _solid_pointer := buffer_tell(_buffer);
+		
+			_state.resource.buffer_map = {
+				version: _version,
+				width: _width,
+				height: _height,
+				solid: {
+					pointer: _solid_pointer,
+					length: _solid_size,
+				},
+			};
+		}
+		
+		return RoomComponentStatus.Complete;
+	};
+	
+	static fn_clean_init := function (_state, _list, _room) {
+		
+	};
+	
+	static fn_clean_tick := function (_state, _list, _room) {
+		return RoomComponentStatus.Complete;
+	};
+}
+
+function RoomTicker() constructor {
+	static component_file := new WorldRoomComponentFile();
+	static component_header := new WorldRoomComponentHeader();
+	
+	static list := [
+		component_file,
+		component_header,
+	];
+	
+	static phase_file := [
+		component_file,
+		component_header,
+	];
+}
+
+// stupid fucking work around
+global.room_ticker = new RoomTicker();
 
 /**
 @arg {struct.WorldMain} _world
@@ -447,7 +483,7 @@ function WorldRoom(_world, _id, _x, _y, _width, _height) constructor {
 	// entities owned by the room.
 	entities := [];
 	
-	state = WorldRoomState.Empty;
+	resources := new WorldRoomResourceList();
 	
 	buffer = undefined;
 	buffer_map = undefined;
@@ -494,133 +530,90 @@ function WorldRoom(_world, _id, _x, _y, _width, _height) constructor {
 	*/
 	layer_graphic_front_vb = undefined;
 	
-	// set up the state machine.
-	
-	static __calico_base = undefined;
-	if __calico_base == undefined {
-		__calico_base := calico_base_create();
-		
-		/*
-		a weird strategy we'll be using here is creating struct variables inside the onenter events.
-		
-		this, first of all, sucks - but - it makes it easier to initialize and validate state since
-		it is all in one place, and may save on memory if the variables required to fully load a room
-		end up requiring the gamemaker struct to allocate more buckets.
-		*/
-		
-		calico_base_add(__calico_base, WORLD_ROOM_STATE_BASE);
-		
-		// empty
-		
-		calico_base_add(__calico_base, WORLD_ROOM_STATE_EMPTY, WORLD_ROOM_STATE_BASE);
-		
-		// file
-		
-		calico_base_add(__calico_base, WORLD_ROOM_STATE_FILING, WORLD_ROOM_STATE_BASE);
-		
-		static __calico_filing_onenter := function (_calico, _data) {
-			var _ := _data._;
+	/**
+	@arg {Array<struct.RoomComponent>} _target
+	@arg {struct.RoomBudget} _budget
+	@return {enum.RoomComponentStatus}
+	*/
+	static tick_components_list := function (_target, _budget) {
+		for (var i = 0, _len := array_length(global.room_ticker.list); i < _len; i++) {
+			var _component := global.room_ticker.list[i];
 			
-			_.state_filing_buffer = undefined;
-		};
-		calico_base_onenter(__calico_base, WORLD_ROOM_STATE_FILING, __calico_filing_onenter);
-		
-		static __calico_filing_tick := function (_calico, _data) {
-			var _ := _data._;
-			
-			ASSERT_EQ(_.state_filing_buffer, undefined);
-			
-			_.state_filing_buffer = nullstars_root().package.load_world_room(parent.id);
-			
-			calico_change(_calico, WORLD_ROOM_STATE_FILED);
-		};
-		calico_base_event(__calico_base, WORLD_ROOM_STATE_FILING, "tick", __calico_filing_tick);
-		
-		// parse
-		
-		calico_base_add(__calico_base, WORLD_ROOM_STATE_PARSING, WORLD_ROOM_STATE_BASE);
-		
-		// set this out here, since, once it is set, it does not need to be reset.
-		state_parsing_buffer_map = undefined;
-		
-		static __calico_parsing_onenter := function (_calico, _data) {
-			
-		};
-		calico_base_onenter(__calico_base, WORLD_ROOM_STATE_PARSING, __calico_parsing_onenter);
-		
-		static __calico_parsing_tick := function (_calico, _data) {
-			var _ := _data._;
-			
-			ASSERT_NE(_.state_filing_buffer, undefined);
-			ASSERT(buffer_exists(_.state_filing_buffer));
-		
-			if _.state_parsing_buffer_map == undefined {
-				var _buffer := _.state_filing_buffer;
+			if _component.state(self.resources) == RoomComponentState.Working {
+				var _status := _component.tick(true, self, self.resources, _budget);
 				
-				buffer_seek(_buffer, buffer_seek_start, 0);
-		
-				var _magic_nullstars := buffer_read(_buffer, buffer_string);
-				// todo: proper error reporting
-				ASSERT_EQ(_magic_nullstars, "nullstars");
-		
-				var _magic_number := buffer_read(_buffer, buffer_string);
-				ASSERT_EQ(_magic_number, "R");
-		
-				var _version := buffer_read(_buffer, buffer_u16);
-		
-				var _width := buffer_read(_buffer, buffer_u32);
-				var _height := buffer_read(_buffer, buffer_u32);
-		
-				var _solid_size := buffer_read(_buffer, buffer_u32);
-		
-				var _solid_pointer := buffer_tell(_buffer);
-		
-				_.state_parsing_buffer_map = {
-					version: _version,
-					width: _width,
-					height: _height,
-					solid: {
-						pointer: _solid_pointer,
-						length: _solid_size,
-					},
-				};
+				if !_budget.okay() {
+					return RoomComponentStatus.Waiting;
+				}
 				
-				return WorldTaskStatus.Running;
+				if _status != RoomComponentStatus.Complete {
+					return _status;
+				}
 			}
+		}
 		
-			return WorldTaskStatus.Complete;
-		};
-		calico_base_event(__calico_base, WORLD_ROOM_STATE_PARSING, "tick", __calico_parsing_tick);
-	}
+		var _flagged = int64(0);
+		
+		for (var i = 0, _len := array_length(_target); i < _len; i++) {
+			var _component := _target[i];
+			
+			var _found_index := array_get_index(global.room_ticker.list, _component);
+			ASSERT_NE_DEBUG(_found_index, -1, "oops");
+			
+			_flagged |= int64(1) << int64(_found_index);
+			
+			var _status := _component.tick(true, self, self.resources, _budget);
+			
+			if !_budget.okay() {
+				return RoomComponentStatus.Waiting;
+			}
+			
+			if _status != RoomComponentStatus.Complete {
+				return _status;
+			}
+		}
+		
+		for (var i = 0, _len := array_length(global.room_ticker.list); i < _len; i++) {
+			var _flag := (_flagged & int64(1)) == int64(0);
+			_flagged = _flagged >> int64(1);
+			
+			if _flag {
+				var _component := global.room_ticker.list[i];
+				
+				var _status := _component.tick(false, self, self.resources, _budget);
+				
+				if !_budget.okay() {
+					return RoomComponentStatus.Waiting;
+				}
+				
+				if _status != RoomComponentStatus.Complete {
+					return _status;
+				}
+			}
+		}
+		
+		return RoomComponentStatus.Complete;
+	};
 	
-	calico := calico_create(__calico_base);
-	calico_data(calico)._ = self; // superstition; avoiding method()
-	
-	calico_change(calico, "main");
-	calico_run(calico, "tick");
+	/**
+	@arg {enum.RoomLoadTarget} _target
+	@arg {struct.RoomBudget} _budget
+	@return {enum.RoomComponentStatus}
+	*/
+	static tick_components := function (_target, _budget) {
+		var _list;
+		
+		_list := global.room_ticker.phase_file;
+		
+		return self.tick_components_list(_list, _budget);
+	};
 	
 	static tick := function () {
 		// update entities.
 		
 		
 	};
-	
-	static filing := function () {
-		ASSERT_EQ(state, WorldRoomState.Empty);
-		state = WorldRoomState.Filing;
-		world.queue_add(new WorldTaskFile(nullstars_root().async, self));
-	};
-	
-	static parsing := function () {
-		ASSERT_EQ(state, WorldRoomState.Filed);
-		state = WorldRoomState.Parsing;
-		world.queue_add(new WorldTaskParse(self));
-	};
-	
-	static loading := function () {
-		ASSERT_EQ(state, WorldRoomState.Parsed);
-		state = WorldRoomState.Loading;
-	};
+
 	
 	static purge := function () {
 		for (var i = 0, _len := array_length(entities); i < _len; i++) {
@@ -646,93 +639,7 @@ function WorldRoom(_world, _id, _x, _y, _width, _height) constructor {
 	};
 }
 
-enum WorldTaskStatus {
-	Complete,
-	Waiting,
-	Running,
-}
-
-/**
-@arg {struct.WorldRoom} _room
-@arg {real} _priority
-*/
-function WorldTask(_room, _priority) constructor {
-	parent := _room;
-	priority := _priority;
-
-	static process := function () {
-		return WorldTaskStatus.Complete;
-	};
-	
-	static collect := function () {
-		static __return := [];
-		return __return;
-	};
-}
-
-/**
-@arg {struct.AsyncHook} _async
-@arg {struct.WorldRoom} _room
-@arg {real} _priority
-*/
-function WorldTaskFile(_async, _room) : WorldTask(_room, 0) constructor {
-	LOG(Log.Note, $"WorldTaskFile(): initializing (@ {_room.id})");
-	
-	buffer = undefined;
-
-	static process := function () {
-		parent.buffer = nullstars_root().package.load_world_room(parent.id);
-		parent.state = WorldRoomState.Filed;
-		return WorldTaskStatus.Complete;
-	};
-}
-
-function WorldTaskParse(_room) : WorldTask(_room, 0) constructor {
-	LOG(Log.Note, $"WorldTaskParse(): initializing (@ {_room.id})");
-	
-	static process := function () {
-		ASSERT_NE(parent.buffer, undefined);
-		ASSERT(buffer_exists(parent.buffer));
-		
-		var _buffer := parent.buffer;
-		
-		var _magic_nullstars := buffer_read(_buffer, buffer_string);
-		// todo: proper error reporting
-		ASSERT_EQ(_magic_nullstars, "nullstars");
-		
-		var _magic_number := buffer_read(_buffer, buffer_string);
-		ASSERT_EQ(_magic_number, "R");
-		
-		var _version := buffer_read(_buffer, buffer_u16);
-		
-		var _width := buffer_read(_buffer, buffer_u32);
-		var _height := buffer_read(_buffer, buffer_u32);
-		
-		var _solid_size := buffer_read(_buffer, buffer_u32);
-		
-		var _solid_pointer := buffer_tell(_buffer);
-		
-		parent.buffer_map = {
-			version: _version,
-			width: _width,
-			height: _height,
-			solid: {
-				pointer: _solid_pointer,
-				length: _solid_size,
-			},
-		};
-		
-		return WorldTaskStatus.Complete;
-	};
-	
-	static collect := function () {
-		return [
-			new WorldTaskParseLayer(parent),
-		];
-	};
-}
-
-function WorldTaskParseLayer(_room) : WorldTask(_room, 0) constructor {
+function WorldTaskParseLayer(_room) constructor {
 	LOG(Log.Note, $"WorldTaskParseLayer(): initializing (@ {_room.id})");
 	
 	static process := function () {

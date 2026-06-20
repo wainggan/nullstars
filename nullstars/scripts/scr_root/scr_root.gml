@@ -22,7 +22,7 @@ function Root(_async) constructor {
 	package = new Package(undefined);
 	
 	// parse world data.
-	// world = new WorldMain(package);
+	world = new WorldMain(package);
 	
 	camera := new Camera();
 	
@@ -37,7 +37,7 @@ function Root(_async) constructor {
 		camera.x += _kh * 4;
 		camera.y += _kv * 4;
 		
-		// world.tick();
+		world.tick();
 	};
 	
 	static draw := function () {
