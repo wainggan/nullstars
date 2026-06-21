@@ -241,113 +241,101 @@ function WorldRoomResourceItem() constructor {
 
 /**
 @arg {string} _name
-@arg {function} _resource
 */
-function WorldRoomComponent(_name, _resource) constructor {
+function WorldRoomComponent(_name) constructor {
 	name := _name;
-	resource := _resource;
+	__var_state_name := $"__##{_name}_state";
+	__var_state_hash := variable_get_hash(__var_state_name);
 	
 	/**
-	@arg {struct.WorldRoomResourceItem} _state
-	@arg {struct.WorldRoomResourceList} _list
 	@arg {struct.WorldRoom} _room
 	*/
-	static fn_work_init := function (_state, _list, _room) {};
+	static fn_work_init := function (_room) {};
 	
 	/**
-	@arg {struct.WorldRoomResourceItem} _state
-	@arg {struct.WorldRoomResourceList} _list
 	@arg {struct.WorldRoom} _room
 	@return {enum.RoomComponentStatus}
 	*/
-	static fn_work_tick := function (_state, _list, _room) {
+	static fn_work_tick := function (_room) {
 		return RoomComponentStatus.Complete;
 	};
 	
 	/**
-	@arg {struct.WorldRoomResourceItem} _state
-	@arg {struct.WorldRoomResourceList} _list
 	@arg {struct.WorldRoom} _room
 	*/
-	static fn_clean_init := function (_state, _list, _room) {};
+	static fn_clean_init := function (_room) {};
 	
 	/**
-	@arg {struct.WorldRoomResourceItem} _state
-	@arg {struct.WorldRoomResourceList} _list
 	@arg {struct.WorldRoom} _room
 	@return {enum.RoomComponentStatus}
 	*/
-	static fn_clean_tick := function (_state, _list, _room) {
+	static fn_clean_tick := function (_room) {
 		return RoomComponentStatus.Complete;
 	};
 	
 	/**
-	@arg {struct.WorldRoomResourceList} _list
-	*/
-	static item := function (_list) {
-		return _list.item(self.name, self.resource);
-	};
-	
-	/**
-	@arg {struct.WorldRoomResourceList} _list
-	*/
-	static get := function (_list) {
-		var _item = self.item(_list);
-		
-		if _item.state != RoomComponentStatus.Complete {
-			return undefined;
-		}
-		
-		return _item.data;
-	};
-	
-	/**
-	@arg {struct.WorldRoomResourceList} _list
+	@arg {struct.WorldRoom} _room
 	@return {enum.RoomComponentState}
 	*/
-	static state := function (_list) {
-		return self.item(_list).state;
+	static state_get := function (_room) {
+		var _state := struct_get_from_hash(_room.resources, self.__var_state_hash);
+		ASSERT_NE_DEBUG(_state, undefined);
+		return _state;
+	};
+	
+	/**
+	@arg {struct.WorldRoom} _room
+	@arg {enum.RoomComponentState} _state
+	*/
+	static state_set := function (_room, _state) {
+		struct_set_from_hash(_room.resources, self.__var_state_hash, _state);
+	};
+	
+	/**
+	@arg {struct.WorldRoom} _room
+	*/
+	static init := function (_room) {
+		self.state_set(_room, RoomComponentState.Idle);
 	};
 	
 	/**
 	@arg {bool} _load
 	@arg {struct.WorldRoom} _room
-	@arg {struct.WorldRoomResourceList} _list
 	@arg {struct.WorldBudget} _budget
 	@return {enum.RoomComponentState}
 	*/
-	static tick := function (_load, _room, _list, _budget) {
-		var _resource_state := self.item(_list);
+	static tick := function (_load, _room, _budget) {
+		var _state := self.state_get(_room);
 		
 		if _load {
-			if _resource_state.state == RoomComponentState.Idle {
-				_resource_state.state = RoomComponentState.Working;
-				self.fn_work_init(_resource_state, _list, _room);
+			if _state == RoomComponentState.Idle {
+				self.state_set(_room, RoomComponentState.Working);
+				self.fn_work_init(_room);
 			}
 		}
 		else {
-			if _resource_state.state == RoomComponentState.Complete {
-				_resource_state.state = RoomComponentState.Cleaning;
-				self.fn_clean_init(_resource_state, _list, _room);
+			if _state == RoomComponentState.Complete {
+				self.state_set(_room, RoomComponentState.Cleaning);
+				self.fn_clean_init(_room);
 			}
 		}
 		
-		if _resource_state.state == RoomComponentState.Working {
-			var _out = self.fn_work_tick(_resource_state, _list, _room);
+		if _state == RoomComponentState.Working {
+			var _out = self.fn_work_tick(_room);
 			_budget.tick();
 			
 			if _out == RoomComponentStatus.Complete {
-				_resource_state.state = RoomComponentState.Complete;
+				self.state_set(_room, RoomComponentState.Complete);
 			}
 			
 			return _out;
 		}
-		else if _resource_state.state == RoomComponentState.Cleaning {
-			var _out := self.fn_clean_tick(_resource_state, _list, _room);
+		else if _state == RoomComponentState.Cleaning {
+			var _out := self.fn_clean_tick(_room);
 			_budget.tick();
 			
 			if _out == RoomComponentStatus.Complete {
-				_resource_state.state = RoomComponentState.Idle;
+				self.state_set(_room, RoomComponentState.Idle);
 			}
 			
 			return _out;
@@ -357,39 +345,50 @@ function WorldRoomComponent(_name, _resource) constructor {
 	};
 }
 
-function WorldRoomComponentFile() : WorldRoomComponent("file", WorldRoomResourceItem) constructor {
-	static fn_work_init := function (_state, _list, _room) {
+function WorldRoomComponentFile() : WorldRoomComponent("file") constructor {
+	var_buffer_name := $"{name}_buffer";
+
+	static get_buffer := function (_room) {
+		return _room.resources[$ self.var_buffer_name];
+	};
+	
+	static fn_work_init := function (_room) {
 		LOG(Log.Note, $"WorldRoomComponentFile(): initializing (@ {_room.id})");
-		_state.resource.buffer = undefined;
+		_room.resources[$ var_buffer_name] = undefined;
 	};
 	
-	static fn_work_tick := function (_state, _list, _room) {
-		if _state.resource.buffer == undefined {
-			_state.resource.buffer = nullstars_root().package.load_world_room(_room.id);
+	static fn_work_tick := function (_room) {
+		if _room.resources[$ var_buffer_name] == undefined {
+			_room.resources[$ var_buffer_name] = nullstars_root().package.load_world_room(_room.id);
 		}
 		return RoomComponentStatus.Complete;
 	};
 	
-	static fn_clean_init := function (_state, _list, _room) {
+	static fn_clean_init := function (_room) {
 		
 	};
 	
-	static fn_clean_tick := function (_state, _list, _room) {
-		buffer_delete(_state.resource.buffer);
+	static fn_clean_tick := function (_room) {
+		buffer_delete(_room.resources[$ var_buffer_name]);
 		return RoomComponentStatus.Complete;
 	};
 }
 
-function WorldRoomComponentHeader() : WorldRoomComponent("header", WorldRoomResourceItem) constructor {
-	static fn_work_init := function (_state, _list, _room) {
-		LOG(Log.Note, $"WorldRoomComponentHeader(): initializing (@ {_room.id})");
-		_state.resource.buffer_map = undefined;
+function WorldRoomComponentHeader() : WorldRoomComponent("header") constructor {
+	var_buffer_map_name := $"{name}_buffer_map";
+
+	static get_buffer_map := function (_room) {
+		return _room.resources[$ self.var_buffer_map_name];
 	};
 	
-	static fn_work_tick := function (_state, _list, _room) {
-		if _state.resource.buffer_map == undefined {
-			var _file_item := global.room_ticker.component_file.item(_list);
-			var _buffer := _file_item.resource.buffer;
+	static fn_work_init := function (_room) {
+		LOG(Log.Note, $"WorldRoomComponentHeader(): initializing (@ {_room.id})");
+		_room.resources[$ self.var_buffer_map_name] = undefined;
+	};
+	
+	static fn_work_tick := function (_room) {
+		if _room.resources[$ self.var_buffer_map_name] == undefined {
+			var _buffer := global.room_ticker.component_file.get_buffer(_room);
 			ASSERT_NE(_buffer, undefined);
 			ASSERT(buffer_exists(_buffer));
 				
@@ -411,7 +410,7 @@ function WorldRoomComponentHeader() : WorldRoomComponent("header", WorldRoomReso
 		
 			var _solid_pointer := buffer_tell(_buffer);
 		
-			_state.resource.buffer_map = {
+			_room.resources[$ self.var_buffer_map_name] = {
 				version: _version,
 				width: _width,
 				height: _height,
@@ -421,6 +420,173 @@ function WorldRoomComponentHeader() : WorldRoomComponent("header", WorldRoomReso
 				},
 			};
 		}
+		
+		return RoomComponentStatus.Complete;
+	};
+	
+	static fn_clean_init := function (_room) {
+		
+	};
+	
+	static fn_clean_tick := function (_room) {
+		delete _room.resources[$ self.var_buffer_map_name];
+		return RoomComponentStatus.Complete;
+	};
+}
+
+function WorldRoomComponentParseLayer() : WorldRoomComponent("parse_layer") constructor {
+	static fn_work_init := function (_state, _list, _room) {
+		LOG(Log.Note, $"WorldRoomComponentParseLayer(): initializing (@ {_room.id})");
+		_state.resource.buffer_map = undefined;
+	};
+	
+	static fn_work_tick := function (_state, _list, _room) {
+		ASSERT_NE(_state.resource.buffer_map, undefined);
+		
+		ASSERT_EQ(_room.layer_solid_base, undefined);
+		ASSERT_EQ(_room.layer_solid_tilemap, undefined);
+		
+		var _buffer := parent.buffer;
+		var _map := parent.buffer_map;
+		
+		var _layer_solid_base := layer_create(0);
+		layer_set_visible(_layer_solid_base, false);
+		var _layer_solid_tilemap := layer_tilemap_create(
+			_layer_solid_base,
+			_room.x * TILE_SIZE,
+			_room.y * TILE_SIZE,
+			ts_debug_tileset,
+			_room.width,
+			_room.height
+		);
+		tilemap_set_mask(_layer_solid_tilemap, 0);
+		
+		var _layer_spike_base := layer_create(0);
+		var _layer_spike_tilemap := layer_tilemap_create(
+			_layer_spike_base,
+			_room.x * TILE_SIZE,
+			_room.y * TILE_SIZE,
+			ts_spike,
+			_room.width,
+			_room.height
+		);
+		
+		var _layer_graphic_front_vb := vertex_create_buffer();
+		
+		_room.layer_solid_base = _layer_solid_base;
+		_room.layer_solid_tilemap = _layer_solid_tilemap;
+		
+		_room.layer_spike_base = _layer_spike_base;
+		_room.layer_spike_tilemap = _layer_spike_tilemap;
+		
+		_room.layer_graphic_front_vb = _layer_graphic_front_vb;
+		
+		buffer_seek(_buffer, buffer_seek_start, _map.solid.pointer);
+		
+		for (var i = 0; i < _map.solid.length; i++) {
+			var _data := buffer_read(_buffer, buffer_u8);
+			
+			if _data == 0 {
+				// empty tile
+			}
+			else {
+				var _x := i mod _map.width;
+				var _y := i div _map.width;
+				
+				var _kind := (_data & 0b1100_0000) >> 6;
+				var _value := _data & 0b0011_1111;
+				
+				if _kind == 0b00 {
+					// solid tile
+					tilemap_set(_layer_solid_tilemap, _value << 2, _x, _y);
+				}
+				else if _kind == 0b01 {
+					// spike tile
+					ASSERT(0 <= _value && _value <= 3);
+					tilemap_set(_layer_spike_tilemap, _value + 1, _x, _y);
+				}
+				else if _kind == 0b10 {
+					tilemap_set(_layer_solid_tilemap, (_value << 2) | 1, _x, _y);
+				}
+				else {
+					ASSERT(false);
+				}
+			}
+		}
+		
+		var _root := nullstars_root();
+		
+		var _tiles_sprite := _root.package.get_sprite_tiles();
+		var _tiles_uvs := _root.package.get_sprite_tiles_uvs();
+		
+		var _tex_ture := sprite_get_texture(_tiles_sprite, 0);
+		
+		var _tex_tw := texture_get_texel_width(_tex_ture);
+		var _tex_th := texture_get_texel_height(_tex_ture);
+		
+		var _rules := _root.world.rules;
+		
+		vertex_begin(_layer_graphic_front_vb, nullstars_world_get_vertex_format());
+		
+		var _time = get_timer();
+		
+		for (var _y = 0; _y < _map.height; _y++) {
+			for (var _x = 0; _x < _map.width; _x++) {
+				var _current := tilemap_get(_layer_solid_tilemap, _x, _y);
+				
+				if _current == 0 {
+					continue;
+				}
+				
+				var _resolve;
+				
+				if _current & 1 == 1 {
+					_resolve := _rules.collector;
+					_resolve.clear();
+					_resolve.add((_current >> 2) + 1, 0);
+				}
+				else {
+					_resolve := _rules.run(_layer_solid_tilemap, _x, _y)
+				}
+
+				for (var i = 0, _len := _resolve.length; i < _len; i++) {
+					var _tile := _resolve.array[i];
+					
+					var _v_x0 := _tiles_uvs.left + _tile.src_x * _tex_tw * TILE_SIZE;
+					var _v_x1 := _v_x0 + _tex_tw * TILE_SIZE;
+					var _v_y0 := _tiles_uvs.top + _tile.src_y * _tex_th * TILE_SIZE;
+					var _v_y1 := _v_y0 + _tex_th * TILE_SIZE;
+				
+					var _p_x0 := (_x + _tile.off_y) * TILE_SIZE + irandom_range(_tile.rand_x_min, _tile.rand_x_max);
+					var _p_x1 := _p_x0 + TILE_SIZE;
+					var _p_y0 := (_y + _tile.off_x) * TILE_SIZE + irandom_range(_tile.rand_y_min, _tile.rand_y_max);
+					var _p_y1 := _p_y0 + TILE_SIZE;
+				
+					vertex_position_3d(_layer_graphic_front_vb, _p_x0, _p_y0, 0);
+					vertex_texcoord(_layer_graphic_front_vb, _v_x0, _v_y0);
+				
+					vertex_position_3d(_layer_graphic_front_vb, _p_x1, _p_y0, 0);
+					vertex_texcoord(_layer_graphic_front_vb, _v_x1, _v_y0);
+				
+					vertex_position_3d(_layer_graphic_front_vb, _p_x0, _p_y1, 0);
+					vertex_texcoord(_layer_graphic_front_vb, _v_x0, _v_y1);
+				
+					vertex_position_3d(_layer_graphic_front_vb, _p_x1, _p_y0, 0);
+					vertex_texcoord(_layer_graphic_front_vb, _v_x1, _v_y0);
+				
+					vertex_position_3d(_layer_graphic_front_vb, _p_x1, _p_y1, 0);
+					vertex_texcoord(_layer_graphic_front_vb, _v_x1, _v_y1);
+				
+					vertex_position_3d(_layer_graphic_front_vb, _p_x0, _p_y1, 0);
+					vertex_texcoord(_layer_graphic_front_vb, _v_x0, _v_y1);
+				}
+			}
+		}
+		
+		show_debug_message((get_timer() - _time) / 1000)
+		
+		vertex_end(_layer_graphic_front_vb);
+		vertex_freeze(_layer_graphic_front_vb);
 		
 		return RoomComponentStatus.Complete;
 	};
@@ -437,15 +603,18 @@ function WorldRoomComponentHeader() : WorldRoomComponent("header", WorldRoomReso
 function RoomTicker() constructor {
 	static component_file := new WorldRoomComponentFile();
 	static component_header := new WorldRoomComponentHeader();
+	// static component_parse := new WorldRoomComponentParseLayer();
 	
 	static list := [
 		component_file,
 		component_header,
+		// component_parse,
 	];
 	
 	static phase_file := [
 		component_file,
 		component_header,
+		// component_parse,
 	];
 }
 
@@ -483,10 +652,10 @@ function WorldRoom(_world, _id, _x, _y, _width, _height) constructor {
 	// entities owned by the room.
 	entities := [];
 	
-	resources := new WorldRoomResourceList();
-	
-	buffer = undefined;
-	buffer_map = undefined;
+	resources := {};
+	for (var i = 0, _len := array_length(global.room_ticker.list); i < _len; i++) {
+		global.room_ticker.list[i].init(self);
+	}
 	
 	/*
 	used for collisions.
@@ -539,8 +708,8 @@ function WorldRoom(_world, _id, _x, _y, _width, _height) constructor {
 		for (var i = 0, _len := array_length(global.room_ticker.list); i < _len; i++) {
 			var _component := global.room_ticker.list[i];
 			
-			if _component.state(self.resources) == RoomComponentState.Working {
-				var _status := _component.tick(true, self, self.resources, _budget);
+			if _component.state_get(self) == RoomComponentState.Working {
+				var _status := _component.tick(true, self, _budget);
 				
 				if !_budget.okay() {
 					return RoomComponentStatus.Waiting;
@@ -562,7 +731,7 @@ function WorldRoom(_world, _id, _x, _y, _width, _height) constructor {
 			
 			_flagged |= int64(1) << int64(_found_index);
 			
-			var _status := _component.tick(true, self, self.resources, _budget);
+			var _status := _component.tick(true, self, _budget);
 			
 			if !_budget.okay() {
 				return RoomComponentStatus.Waiting;
@@ -580,7 +749,7 @@ function WorldRoom(_world, _id, _x, _y, _width, _height) constructor {
 			if _flag {
 				var _component := global.room_ticker.list[i];
 				
-				var _status := _component.tick(false, self, self.resources, _budget);
+				var _status := _component.tick(false, self, _budget);
 				
 				if !_budget.okay() {
 					return RoomComponentStatus.Waiting;
