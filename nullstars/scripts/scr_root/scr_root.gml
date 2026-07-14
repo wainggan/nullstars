@@ -26,7 +26,7 @@ function Root(_async) constructor {
 	
 	camera := new Camera();
 	
-	// render := new Render();
+	render := new Render();
 	
 	static tick := function () {
 		camera.tick();
@@ -41,7 +41,7 @@ function Root(_async) constructor {
 	};
 	
 	static draw := function () {
-		// render.draw(self);
+		render.draw(self);
 	};
 }
 

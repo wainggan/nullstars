@@ -435,19 +435,21 @@ function WorldRoomComponentHeader() : WorldRoomComponent("header") constructor {
 }
 
 function WorldRoomComponentParseLayer() : WorldRoomComponent("parse_layer") constructor {
-	static fn_work_init := function (_state, _list, _room) {
+	// var_buffer_name := $"{name}_buffer";
+	
+	static fn_work_init := function (_room) {
 		LOG(Log.Note, $"WorldRoomComponentParseLayer(): initializing (@ {_room.id})");
-		_state.resource.buffer_map = undefined;
 	};
 	
-	static fn_work_tick := function (_state, _list, _room) {
-		ASSERT_NE(_state.resource.buffer_map, undefined);
-		
+	static fn_work_tick := function (_room) {
 		ASSERT_EQ(_room.layer_solid_base, undefined);
 		ASSERT_EQ(_room.layer_solid_tilemap, undefined);
 		
-		var _buffer := parent.buffer;
-		var _map := parent.buffer_map;
+		var _buffer := global.room_ticker.component_file.get_buffer(_room);
+		var _map := global.room_ticker.component_header.get_buffer_map(_room);
+		
+		ASSERT_NE(_buffer, undefined);
+		ASSERT_NE(_map, undefined);
 		
 		var _layer_solid_base := layer_create(0);
 		layer_set_visible(_layer_solid_base, false);
@@ -591,11 +593,11 @@ function WorldRoomComponentParseLayer() : WorldRoomComponent("parse_layer") cons
 		return RoomComponentStatus.Complete;
 	};
 	
-	static fn_clean_init := function (_state, _list, _room) {
+	static fn_clean_init := function (_room) {
 		
 	};
 	
-	static fn_clean_tick := function (_state, _list, _room) {
+	static fn_clean_tick := function (_room) {
 		return RoomComponentStatus.Complete;
 	};
 }
@@ -603,18 +605,18 @@ function WorldRoomComponentParseLayer() : WorldRoomComponent("parse_layer") cons
 function RoomTicker() constructor {
 	static component_file := new WorldRoomComponentFile();
 	static component_header := new WorldRoomComponentHeader();
-	// static component_parse := new WorldRoomComponentParseLayer();
+	static component_parse := new WorldRoomComponentParseLayer();
 	
 	static list := [
 		component_file,
 		component_header,
-		// component_parse,
+		component_parse,
 	];
 	
 	static phase_file := [
 		component_file,
 		component_header,
-		// component_parse,
+		component_parse,
 	];
 }
 
