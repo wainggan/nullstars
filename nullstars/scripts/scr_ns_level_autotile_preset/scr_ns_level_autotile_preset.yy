@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_ns_level_autotile_preset",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_ns_level_autotile_preset",
+  "parent":{
+    "name":"autotile",
+    "path":"folders/ns/level/autotile.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

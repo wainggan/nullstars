@@ -1,7 +1,6 @@
-/*
-generic state machine.
+/**
+create a new state machine.
 */
-
 function calico_base_create() {
 	return new __CalicoBase();
 }

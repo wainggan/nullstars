@@ -5,9 +5,23 @@ these must not be used for validating user input. these should only be used to v
 enabling the release flag will disable all assertions.
 */
 
-#macro __ASSERT for (var __assert_check__ = undefined;; { if __assert_check__ != undefined { LOG(Log.Error, __assert_check__); LOG(Log.Error, string(debug_get_callstack())); throw __assert_concat__(_GMFILE_, _GMLINE_, __assert_check__); } break; }) __assert_check__ =
+#macro __ASSERT_INNER \
+	for ( \
+		var __assert_check__ = undefined; \
+		; \
+		{ \
+			if __assert_check__ != undefined { \
+				LOG(Log.Error, __assert_check__); \
+				LOG(Log.Error, string(debug_get_callstack())); \
+				throw __assert_concat__(_GMFILE_, _GMLINE_, __assert_check__); \
+			} \
+			break; \
+		}; \
+	) __assert_check__ =
 
-#macro __ASSERT_DEBUG if RELEASE {} else __ASSERT
+#macro __ASSERT if (ASSERT_ENABLE) {} else __ASSERT_INNER
+
+#macro __ASSERT_DEBUG if (ASSERT_ENABLE) && (ASSERT_DEBUG_ENABLE) {} else __ASSERT_INNER
 
 #macro ASSERT __ASSERT __assert__
 

@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_calico",
+  "%Name":"scr_ns_level_repr_component",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_calico",
+  "name":"scr_ns_level_repr_component",
   "parent":{
-    "name":"calico",
-    "path":"folders/lib/calico.yy",
+    "name":"repr",
+    "path":"folders/ns/level/repr.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

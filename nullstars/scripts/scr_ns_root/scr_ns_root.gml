@@ -8,13 +8,13 @@ directly accessing this.
 
 @arg {struct.AsyncHook} _async
 */
-function Root(_async) constructor {
-	LOG(Log.Note, "Root(): initializing");
+function ns_Root(_async) constructor {
+	LOG(Log.Note, "ns_Root(): initializing");
 	
-	// Root() is a singleton.
-	ASSERT_EQ(global.__root, undefined, "created Root() twice.");
+	// ns_Root() is a singleton.
+	ASSERT_EQ(global.__ns_root, undefined, "created ns_Root() twice.");
 	
-	global.__root = self;
+	global.__ns_root = self;
 	
 	async := _async;
 	
@@ -22,7 +22,7 @@ function Root(_async) constructor {
 	package = new Package(undefined);
 	
 	// parse world data.
-	world = new WorldMain(package);
+	world = new ns_level_World(package);
 	
 	camera := new Camera();
 	
@@ -45,11 +45,11 @@ function Root(_async) constructor {
 	};
 }
 
-global.__root = undefined;
+global.__ns_root = undefined;
 
-function nullstars_root() {
-	ASSERT_NE(global.__root, undefined);
-	return global.__root;
+function ns_root() {
+	ASSERT_NE(global.__ns_root, undefined);
+	return global.__ns_root;
 }
 
 function AsyncHook() constructor {

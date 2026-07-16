@@ -1,2 +1,2 @@
 async := new AsyncHook();
-root := new Root(async);
+root := new ns_Root(async);

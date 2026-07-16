@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_assert",
+  "%Name":"scr_assert_impl",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_assert",
+  "name":"scr_assert_impl",
   "parent":{
-    "name":"nullstars",
-    "path":"nullstars.yyp",
+    "name":"assert",
+    "path":"folders/lib/assert.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

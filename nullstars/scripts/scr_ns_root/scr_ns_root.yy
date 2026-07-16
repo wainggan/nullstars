@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_world",
+  "%Name":"scr_ns_root",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_world",
+  "name":"scr_ns_root",
   "parent":{
-    "name":"nullstars",
-    "path":"nullstars.yyp",
+    "name":"root",
+    "path":"folders/ns/root.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

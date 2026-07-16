@@ -3,7 +3,7 @@ function Render() constructor {
 	LOG(Log.Note, "Render(): initializing");
 	
 	/**
-	@arg {struct.Root} _root
+	@arg {struct.ns_Root} _root
 	*/
 	static draw := function (_root) {
 		shader_set(shd_tilemap);
