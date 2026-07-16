@@ -163,7 +163,7 @@ function ns_level_World(_package) constructor {
 	static entity_process := function () {
 		for (var i = 0, _len := array_length(rooms_loaded); i < _len; i++) {
 			var _room := rooms_loaded[i];
-			_room.tick();
+			_room.tick_entities();
 		}
 		
 		if !entities_global_sorted {
@@ -173,7 +173,7 @@ function ns_level_World(_package) constructor {
 		
 		for (var i = 0, _len := array_length(entities_global); i < _len; i++) {
 			var _entity := entities_global[i];
-			_entity.tick();
+			_entity.fn_tick();
 		}
 	};
 	

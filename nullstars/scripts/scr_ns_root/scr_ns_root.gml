@@ -38,6 +38,10 @@ function ns_Root(_async) constructor {
 		camera.y += _kv * 4;
 		
 		world.tick();
+		
+		if keyboard_check_pressed(vk_space) {
+			world.entity_global_add(instance_create_layer(0, 0, "Instances", obj_game_Nova));
+		}
 	};
 	
 	static draw := function () {

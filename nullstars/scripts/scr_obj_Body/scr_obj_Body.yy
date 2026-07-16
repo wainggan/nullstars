@@ -6,7 +6,7 @@
   "name":"scr_obj_Body",
   "parent":{
     "name":"Body",
-    "path":"folders/entities/Body.yy",
+    "path":"folders/ns/entity/Body.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -48,6 +48,8 @@ function ns_level_Room(_world, _id, _x, _y, _width, _height) constructor {
 		ns_level_component().list[i].init(self);
 	}
 	
+	resource_entity_data := undefined;
+	
 	/*
 	used for collisions.
 	not intended to be drawn !!
@@ -168,12 +170,15 @@ function ns_level_Room(_world, _id, _x, _y, _width, _height) constructor {
 		return self.tick_components_list(_list, _budget);
 	};
 	
-	static tick := function () {
+	static tick_entities := function () {
 		// update entities.
 		
-		
+		for (var i = 0, _len := array_length(entities); i < _len; i++) {
+			var _entity := entities[i];
+			
+			_entity.fn_tick();
+		}
 	};
-
 	
 	static purge := function () {
 		for (var i = 0, _len := array_length(entities); i < _len; i++) {

@@ -7,7 +7,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Solid",
-    "path":"folders/entities/objects/Solid.yy",
+    "path":"folders/ns/object/Solid.yy",
   },
   "parentObjectId":{
     "name":"obj_Body",

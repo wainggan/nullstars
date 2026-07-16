@@ -6,7 +6,7 @@
 	y_vel = 0;
 
 function obj_game_Nova_fn_tick() {
-	
+	obj_Body_move_y(1);
 }
 
 function obj_game_Nova_fn_draw() {

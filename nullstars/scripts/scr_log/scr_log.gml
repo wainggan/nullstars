@@ -16,7 +16,7 @@ enum Log {
 	None,
 }
 
-function Logger() constructor {
+function log_Logger() constructor {
 	point = Log.User;
 	messages := [];
 	anims := [];
@@ -43,7 +43,7 @@ function Logger() constructor {
 }
 
 function log_level(_level) {
-	global.logger.point = _level;
+	global.__log_logger.point = _level;
 }
 
 /// @ignore
@@ -54,7 +54,7 @@ function __log__(_file, _line) {
     };
 
     static __out = method(__ctx, function (_level, _message) {
-		global.__logger.write(_level, _message, file, line);
+		global.__log_logger.write(_level, _message, file, line);
     });
 
     __ctx.file = _file;
@@ -63,9 +63,9 @@ function __log__(_file, _line) {
     return __out;
 }
 
-global.__logger = new Logger();
-
-LOG(Log.Note, "init");
+global.__log_logger = new log_Logger();
 
 #macro LOG if !ENABLE_LOG {} else __log__(_GMFILE_, _GMLINE_)
+
+LOG(Log.Note, "init");
 

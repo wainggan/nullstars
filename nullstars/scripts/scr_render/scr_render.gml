@@ -18,6 +18,10 @@ function Render() constructor {
 		
 		shader_reset();
 		matrix_set(matrix_world, matrix_build_identity());
+		
+		with obj_game_Nova {
+			draw_self();
+		}
 	};
 }
 

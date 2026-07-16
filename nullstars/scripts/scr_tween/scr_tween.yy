@@ -6,7 +6,7 @@
   "name":"scr_tween",
   "parent":{
     "name":"tween",
-    "path":"folders/tween.yy",
+    "path":"folders/lib/tween.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

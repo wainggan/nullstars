@@ -62,7 +62,7 @@
   "name":"ac_tween",
   "parent":{
     "name":"tween",
-    "path":"folders/tween.yy",
+    "path":"folders/lib/tween.yy",
   },
   "resourceType":"GMAnimCurve",
   "resourceVersion":"2.0",

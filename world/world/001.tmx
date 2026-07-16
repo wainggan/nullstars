@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.11" tiledversion="1.12.1" class="Room" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
+<map version="1.11" tiledversion="1.12.2" class="Room" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="1">
  <editorsettings>
-  <export target="../../nullstars/datafiles/base/world/001.nsm" format="nsfmt"/>
+  <export target="../../nullstars/datafiles/base/world/001.nsm" format="nsmap"/>
  </editorsettings>
  <tileset firstgid="1" source="../asset/solid.tsx"/>
  <tileset firstgid="9" source="../asset/spike.tsx"/>
@@ -30,4 +30,5 @@
 1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
 </data>
  </layer>
+ <objectgroup id="2" name="Entity"/>
 </map>

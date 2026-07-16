@@ -9,7 +9,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Nova",
-    "path":"folders/entities/objects/Nova.yy",
+    "path":"folders/ns/object/Nova.yy",
   },
   "parentObjectId":{
     "name":"obj_Body",

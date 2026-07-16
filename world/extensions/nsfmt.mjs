@@ -217,16 +217,27 @@ tiled.registerMapFormat("nsmap", {
 		const layers = map.layers;
 
 		let layer_solid;
+		let layer_entity;
 
 		for (const layer of layers) {
 			if (layer.name === "Solid" && layer.isTileLayer) {
 				layer_solid = layer;
 				continue;
 			}
+
+			if (layer.name === "Entity" && layer.isObjectLayer) {
+				layer_entity = layer;
+				continue;
+			}
 		}
 
 		if (layer_solid === undefined) {
 			tiled.error("no tile layer named 'Solid'", () => {});
+			return;
+		}
+
+		if (layer_entity === undefined) {
+			tiled.error("no object layer named 'Entity'", () => {});
 			return;
 		}
 
@@ -281,6 +292,18 @@ tiled.registerMapFormat("nsmap", {
 		}
 
 		writer.buffer(solid_buffer);
+
+		const objects = layer_entity.objects;
+
+		writer.u32(objects.length);
+
+		for (let i = 0; i < objects.length; i++) {
+			const obj = objects[i];
+
+			writer.string(obj.name);
+			writer.i32(obj.x);
+			writer.i32(obj.y);
+		}
 
 		file.commit();
 	},

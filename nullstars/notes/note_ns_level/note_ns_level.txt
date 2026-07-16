@@ -1,4 +1,4 @@
-# nullstars::level
+# ns::level
 
 the level loader.
 

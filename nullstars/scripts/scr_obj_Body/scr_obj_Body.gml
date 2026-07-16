@@ -50,6 +50,8 @@ function obj_Body_fn_riding(_other) {
 /// @arg {function} _oncollide
 /// @arg {id.obj_Body} _pusher
 function obj_Body_fn_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = undefined) {
+	_vel := round(_vel);
+	
 	var _sign := sign(_vel);
 	
 	if _sign == 0 {
@@ -219,3 +221,16 @@ function obj_Body_fn_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = u
 	__index--;
 }
 
+/**
+@self asset.obj_Body
+*/
+function obj_Body_move_x(_vel, _oncollide = undefined) {
+	self.fn_move_blunt(true, _vel, _oncollide);
+}
+
+/**
+@self asset.obj_Body
+*/
+function obj_Body_move_y(_vel, _oncollide = undefined) {
+	self.fn_move_blunt(false, _vel, _oncollide);
+}
