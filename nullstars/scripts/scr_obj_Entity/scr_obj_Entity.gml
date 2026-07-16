@@ -19,6 +19,18 @@ function obj_Entity_fn_outside() {
 	return true;
 }
 
+function obj_Entity_tick() {
+	self.fn_tick();
+}
+
+function obj_Entity_draw() {
+	self.fn_draw();
+}
+
+function obj_Entity_outside() {
+	return self.fn_outside();
+}
+
 /// @self obj_Entity
 function obj_Entity_set_collidable(_yes) {
 	if _yes {

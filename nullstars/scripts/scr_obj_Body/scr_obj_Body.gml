@@ -58,7 +58,7 @@ function obj_Body_fn_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = u
 		return;
 	}
 	
-	// maintaining a stack of ds_lists because this function is recursive.
+	// maintaining a stack of ds_lists, since this function is recursive.
 	static __list := [];
 	static __index = 0;
 	
@@ -88,13 +88,8 @@ function obj_Body_fn_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = u
 	for (var i = 0; i < _len; i++) {
 		var _other := _list[| i];
 		
-		// filter for higher priority
-		if _other.priority < self.priority {
-			continue;
-		}
-		
-		// filter for solids
-		if !_other.strong {
+		// filter for solids and filter for higher priority
+		if !_other.strong && _other.priority < self.priority {
 			continue;
 		}
 		
@@ -148,8 +143,8 @@ function obj_Body_fn_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = u
 		for (var i = 0; i < _len; i++) {
 			var _other := _list[| i];
 		
-			// filter for lower priority
-			if _other.priority >= self.priority {
+			// filter for non-solids and solids with lower priority
+			if _other.strong && _other.priority >= self.priority {
 				continue;
 			}
 		
@@ -222,6 +217,20 @@ function obj_Body_fn_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = u
 }
 
 /**
+@arg {asset.obj_Body} _other
+@return {bool}
+*/
+function obj_Body_riding(_other) {
+	return self.fn_riding(_other);
+}
+
+function obj_Body_squish() {
+	self.fn_squish();
+}
+
+/**
+@arg {real} _vel
+@arg {function} _oncollide
 @self asset.obj_Body
 */
 function obj_Body_move_x(_vel, _oncollide = undefined) {
@@ -229,6 +238,8 @@ function obj_Body_move_x(_vel, _oncollide = undefined) {
 }
 
 /**
+@arg {real} _vel
+@arg {function} _oncollide
 @self asset.obj_Body
 */
 function obj_Body_move_y(_vel, _oncollide = undefined) {
