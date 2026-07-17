@@ -48,7 +48,20 @@ function ns_level_Room(_world, _id, _x, _y, _width, _height) constructor {
 		ns_level_component().list[i].init(self);
 	}
 	
-	resource_entity_data := undefined;
+	resource_buffer = undefined;
+	
+	resource_buffer_map = undefined;
+	
+	resource_entity_data = undefined;
+	
+	resource_state_autotile_vb = undefined;
+	resource_state_autotile_iter = 0;
+	resource_state_autotile_width = 0;
+	resource_state_autotile_uv_left = 0;
+	resource_state_autotile_uv_top = 0;
+	resource_state_autotile_tex_width = 0;
+	resource_state_autotile_tex_height = 0;
+	resource_state_autotile_rules = undefined;
 	
 	/*
 	used for collisions.

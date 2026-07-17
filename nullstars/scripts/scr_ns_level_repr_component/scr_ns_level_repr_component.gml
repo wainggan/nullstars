@@ -43,6 +43,19 @@ function ns_level_component() {
 	return __out;
 }
 
+#region RoomComponent variables
+
+/*
+I couldn't figure out a place to store these hashes.
+gamemaker should be able to optimize this at compile-time.
+*/
+
+#macro NS_LEVEL_NAME_BUFFER nameof(buffer)
+#macro NS_LEVEL_NAME_BUFFER_MAP nameof(buffer_map)
+#macro NS_LEVEL_NAME_ENTITY_DATA nameof(entity_data)
+
+#endregion
+
 #region RoomComponent
 
 /**
@@ -50,8 +63,7 @@ function ns_level_component() {
 */
 function ns_level_RoomComponent(_name) constructor {
 	name := _name;
-	__var_state_name := $"{_name}##state";
-	__var_state_hash := variable_get_hash(__var_state_name);
+	__var_state_hash := variable_get_hash(_name);
 	
 	/**
 	@arg {struct.ns_level_Room} _room
@@ -77,40 +89,6 @@ function ns_level_RoomComponent(_name) constructor {
 	*/
 	static fn_clean_tick := function (_room) {
 		return ns_level_RoomComponentStatus.Complete;
-	};
-
-	/**
-	@arg {string} _name
-	@return {real}
-	*/
-	static util_var_hash := function (_name, _prefix = self.name) {
-		return variable_get_hash($"{_prefix}_{_name}");
-	};
-	
-	/**
-	@arg {struct.ns_level_Room} _room
-	@arg {real} _hash
-	*/
-	static util_get := function (_room, _hash) {
-		return struct_get_from_hash(_room.resources, _hash);
-	};
-	
-	/**
-	@arg {struct.ns_level_Room} _room
-	@arg {real} _hash
-	@return {bool}
-	*/
-	static util_exists := function (_room, _hash) {
-		return struct_exists_from_hash(_room.resources, _hash);
-	};
-	
-	/**
-	@arg {struct.ns_level_Room} _room
-	@arg {real} _hash
-	@arg {any} _value
-	*/
-	static util_set := function (_room, _hash, _value) {
-		struct_set_from_hash(_room.resources, _hash, _value);
 	};
 	
 	/**
@@ -191,23 +169,16 @@ function ns_level_RoomComponent(_name) constructor {
 
 #region RoomComponent implementations
 
-function ns_level_RoomComponentFile() : ns_level_RoomComponent("file") constructor {
-	var_buffer_name := $"{name}_buffer";
-
-	static get_buffer := function (_room) {
-		return _room.resources[$ self.var_buffer_name];
-	};
-	
+function ns_level_RoomComponentFile() : ns_level_RoomComponent(nameof(ns_level_RoomComponentFile)) constructor {	
 	static fn_work_init := function (_room) {
 		LOG(Log.Note, $"ns_level_RoomComponentFile(): initializing (@ {_room.id})");
-		_room.resources[$ var_buffer_name] = undefined;
+		_room.resource_buffer = undefined;
 	};
 	
 	static fn_work_tick := function (_room) {
 		LOG(Log.Note, $"ns_level_RoomComponentFile(): tick (@ {_room.id})");
-		if _room.resources[$ var_buffer_name] == undefined {
-			_room.resources[$ var_buffer_name] = ns_root().package.load_world_room(_room.id);
-		}
+		ASSERT_EQ(_room.resource_buffer, undefined);
+		_room.resource_buffer = ns_root().package.load_world_room(_room.id);
 		return ns_level_RoomComponentStatus.Complete;
 	};
 	
@@ -216,67 +187,62 @@ function ns_level_RoomComponentFile() : ns_level_RoomComponent("file") construct
 	};
 	
 	static fn_clean_tick := function (_room) {
-		buffer_delete(_room.resources[$ var_buffer_name]);
+		buffer_delete(_room.resource_buffer);
+		_room.resource_buffer = undefined;
 		return ns_level_RoomComponentStatus.Complete;
 	};
 }
 
-function ns_level_RoomComponentHeader() : ns_level_RoomComponent("header") constructor {
-	var_buffer_map_name := $"{name}_buffer_map";
-
-	static get_buffer_map := function (_room) {
-		return _room.resources[$ self.var_buffer_map_name];
-	};
-	
+function ns_level_RoomComponentHeader() : ns_level_RoomComponent(nameof(ns_level_RoomComponentHeader)) constructor {
 	static fn_work_init := function (_room) {
 		LOG(Log.Note, $"ns_level_RoomComponentHeader(): initializing (@ {_room.id})");
-		_room.resources[$ self.var_buffer_map_name] = undefined;
+		_room.resource_buffer_map = undefined;
 	};
 	
 	static fn_work_tick := function (_room) {
-		if _room.resources[$ self.var_buffer_map_name] == undefined {
-			var _buffer := ns_level_component().component_file.get_buffer(_room);
-			ASSERT_NE(_buffer, undefined);
-			ASSERT(buffer_exists(_buffer));
+		ASSERT_EQ(_room.resource_buffer_map, undefined);
+		
+		var _buffer := _room.resource_buffer;
+		ASSERT_NE(_buffer, undefined);
+		ASSERT(buffer_exists(_buffer));
 				
-			buffer_seek(_buffer, buffer_seek_start, 0);
+		buffer_seek(_buffer, buffer_seek_start, 0);
 		
-			var _magic_nullstars := buffer_read(_buffer, buffer_string);
-			// todo: proper error reporting
-			ASSERT_EQ(_magic_nullstars, "nullstars");
+		var _magic_nullstars := buffer_read(_buffer, buffer_string);
+		// todo: proper error reporting
+		ASSERT_EQ(_magic_nullstars, "nullstars");
 		
-			var _magic_number := buffer_read(_buffer, buffer_string);
-			ASSERT_EQ(_magic_number, "R");
+		var _magic_number := buffer_read(_buffer, buffer_string);
+		ASSERT_EQ(_magic_number, "R");
 		
-			var _version := buffer_read(_buffer, buffer_u16);
+		var _version := buffer_read(_buffer, buffer_u16);
 		
-			var _width := buffer_read(_buffer, buffer_u32);
-			var _height := buffer_read(_buffer, buffer_u32);
+		var _width := buffer_read(_buffer, buffer_u32);
+		var _height := buffer_read(_buffer, buffer_u32);
 		
-			var _solid_size := buffer_read(_buffer, buffer_u32);
+		var _solid_size := buffer_read(_buffer, buffer_u32);
 		
-			var _solid_pointer := buffer_tell(_buffer);
+		var _solid_pointer := buffer_tell(_buffer);
 			
-			buffer_seek(_buffer, buffer_seek_relative, _solid_size); // tiles are 1 bit
+		buffer_seek(_buffer, buffer_seek_relative, _solid_size); // tiles are 1 bit
 			
-			var _entity_size := buffer_read(_buffer, buffer_u32);
+		var _entity_size := buffer_read(_buffer, buffer_u32);
 			
-			var _entity_pointer := buffer_tell(_buffer);
+		var _entity_pointer := buffer_tell(_buffer);
 		
-			_room.resources[$ self.var_buffer_map_name] = {
-				version: _version,
-				width: _width,
-				height: _height,
-				solid: {
-					pointer: _solid_pointer,
-					length: _solid_size,
-				},
-				entity: {
-					pointer: _entity_pointer,
-					length: _entity_size,
-				},
-			};
-		}
+		_room.resource_buffer_map = {
+			version: _version,
+			width: _width,
+			height: _height,
+			solid: {
+				pointer: _solid_pointer,
+				length: _solid_size,
+			},
+			entity: {
+				pointer: _entity_pointer,
+				length: _entity_size,
+			},
+		};
 		
 		return ns_level_RoomComponentStatus.Complete;
 	};
@@ -286,12 +252,12 @@ function ns_level_RoomComponentHeader() : ns_level_RoomComponent("header") const
 	};
 	
 	static fn_clean_tick := function (_room) {
-		delete _room.resources[$ self.var_buffer_map_name];
+		delete _room.resource_buffer_map;
 		return ns_level_RoomComponentStatus.Complete;
 	};
 }
 
-function ns_level_RoomComponentParseSetup() : ns_level_RoomComponent("parse_setup") constructor {
+function ns_level_RoomComponentParseSetup() : ns_level_RoomComponent(nameof(ns_level_RoomComponentParseSetup)) constructor {
 	static fn_work_init := function (_room) {};
 	
 	static fn_work_tick := function (_room) {
@@ -340,14 +306,14 @@ function ns_level_RoomComponentParseSetup() : ns_level_RoomComponent("parse_setu
 	// static fn_clean_tick := function (_room) {};
 }
 
-function ns_level_RoomComponentParseCollision() : ns_level_RoomComponent("parse_collision") constructor {
+function ns_level_RoomComponentParseCollision() : ns_level_RoomComponent(nameof(ns_level_RoomComponentParseCollision)) constructor {
 	static fn_work_init := function (_room) {
 		LOG(Log.Note, $"ns_level_RoomComponentParseCollision(): initializing (@ {_room.id})");
 	};
 	
 	static fn_work_tick := function (_room) {
-		var _buffer := ns_level_component().component_file.get_buffer(_room);
-		var _map := ns_level_component().component_header.get_buffer_map(_room);
+		var _buffer := _room.resource_buffer;
+		var _map := _room.resource_buffer_map;
 		
 		ASSERT_NE_DEBUG(_buffer, undefined);
 		ASSERT_NE_DEBUG(_map, undefined);
@@ -399,27 +365,36 @@ function ns_level_RoomComponentParseCollision() : ns_level_RoomComponent("parse_
 	// static fn_clean_tick := function (_room) {};
 }
 
-function ns_level_RoomComponentAutotile() : ns_level_RoomComponent("autotile") constructor {
-	// var_buffer_name := $"{name}_buffer";
-	
-	var_state := self.util_var_hash("state");
-	
+function ns_level_RoomComponentAutotile() : ns_level_RoomComponent(nameof(ns_level_RoomComponentAutotile)) constructor {
 	static fn_work_init := function (_room) {
 		LOG(Log.Note, $"ns_level_RoomComponentAutotile(): initializing (@ {_room.id})");
 		
-		if !self.util_exists(_room, self.var_state) {
-			self.util_set(_room, self.var_state, {});
-		}
+		var _root := ns_root();
+		var _map := _room.resource_buffer_map;
 		
-		var _state := self.util_get(_room, self.var_state);
+		var _tiles_uvs := _root.package.get_sprite_tiles_uvs();
 		
-		_state.vb := vertex_create_buffer();
-		vertex_begin(_state.vb, ns_level_get_vertex_format());
-		_state.y := 0;
+		var _tiles_sprite := _root.package.get_sprite_tiles();
+		var _tex_ture := sprite_get_texture(_tiles_sprite, 0);
+		
+		var _tex_tw := texture_get_texel_width(_tex_ture);
+		var _tex_th := texture_get_texel_height(_tex_ture);
+		
+		ASSERT_EQ(_room.resource_state_autotile_vb, undefined);
+		_room.resource_state_autotile_vb = vertex_create_buffer();
+		vertex_begin(_room.resource_state_autotile_vb, ns_level_get_vertex_format());
+		
+		_room.resource_state_autotile_iter = _map.width * _map.height;
+		_room.resource_state_autotile_width = _map.width;
+		_room.resource_state_autotile_uv_left = _tiles_uvs.left;
+		_room.resource_state_autotile_uv_top = _tiles_uvs.top;
+		_room.resource_state_autotile_tex_width = _tex_tw;
+		_room.resource_state_autotile_tex_height = _tex_th;
+		_room.resource_state_autotile_rules = _root.world.rules;
 	};
 	
 	static fn_work_tick := function (_room) {
-		var _map := ns_level_component().component_header.get_buffer_map(_room);
+		var _map := _room.resource_buffer_map;
 		
 		ASSERT_NE_DEBUG(_map, undefined);
 		
@@ -427,93 +402,83 @@ function ns_level_RoomComponentAutotile() : ns_level_RoomComponent("autotile") c
 		
 		ASSERT_NE_DEBUG(_layer_solid_tilemap, undefined);
 		
-		var _root := ns_root();
+		var _vb := _room.resource_state_autotile_vb;
+		var _iter = _room.resource_state_autotile_iter;
+		var _width = _room.resource_state_autotile_width;
+		var _uv_left = _room.resource_state_autotile_uv_left;
+		var _uv_top = _room.resource_state_autotile_uv_top;
+		var _tex_width = _room.resource_state_autotile_tex_width;
+		var _tex_height = _room.resource_state_autotile_tex_height;
+		var _rules := _room.resource_state_autotile_rules;
 		
-		var _tiles_sprite := _root.package.get_sprite_tiles();
-		var _tiles_uvs := _root.package.get_sprite_tiles_uvs();
-		
-		var _tex_ture := sprite_get_texture(_tiles_sprite, 0);
-		
-		var _tex_tw := texture_get_texel_width(_tex_ture);
-		var _tex_th := texture_get_texel_height(_tex_ture);
-		
-		var _rules := _root.world.rules;
-		
-		var _state := self.util_get(_room, self.var_state);
-		
-		var _layer_graphic_front_vb := _state.vb;
-		var _y = _state.y;
-		var _total = 1;
-		
-		for (; _y < _map.height; _y++) {
-			if _total-- <= 0 {
-				break;
+		for (var _count = 10; _iter >= 0 && _count >= 0; { _iter--; _count--; }) {
+			var _x := _iter mod _width;
+			var _y := _iter div _width;
+			
+			var _current := tilemap_get(_layer_solid_tilemap, _x, _y);
+			
+			if _current == 0 {
+				continue;
 			}
 			
-			for (var _x = 0; _x < _map.width; _x++) {
-				var _current := tilemap_get(_layer_solid_tilemap, _x, _y);
+			var _resolve;
+			
+			if _current & 1 == 1 {
+				_resolve := _rules.collector;
+				_resolve.clear();
+				_resolve.add((_current >> 2) + 1, 0);
+			}
+			else {
+				_resolve := _rules.run(_layer_solid_tilemap, _x, _y)
+			}
+			
+			for (var i = 0, _len := _resolve.length; i < _len; i++) {
+				var _tile := _resolve.array[i];
 				
-				if _current == 0 {
-					continue;
-				}
+				var _v_x0 := _uv_left + _tile.src_x * _tex_width * TILE_SIZE;
+				var _v_x1 := _v_x0 + _tex_width * TILE_SIZE;
+				var _v_y0 := _uv_top + _tile.src_y * _tex_height * TILE_SIZE;
+				var _v_y1 := _v_y0 + _tex_height * TILE_SIZE;
 				
-				var _resolve;
+				var _p_x0 := (_x + _tile.off_y) * TILE_SIZE + irandom_range(_tile.rand_x_min, _tile.rand_x_max);
+				var _p_x1 := _p_x0 + TILE_SIZE;
+				var _p_y0 := (_y + _tile.off_x) * TILE_SIZE + irandom_range(_tile.rand_y_min, _tile.rand_y_max);
+				var _p_y1 := _p_y0 + TILE_SIZE;
 				
-				if _current & 1 == 1 {
-					_resolve := _rules.collector;
-					_resolve.clear();
-					_resolve.add((_current >> 2) + 1, 0);
-				}
-				else {
-					_resolve := _rules.run(_layer_solid_tilemap, _x, _y)
-				}
-
-				for (var i = 0, _len := _resolve.length; i < _len; i++) {
-					var _tile := _resolve.array[i];
-					
-					var _v_x0 := _tiles_uvs.left + _tile.src_x * _tex_tw * TILE_SIZE;
-					var _v_x1 := _v_x0 + _tex_tw * TILE_SIZE;
-					var _v_y0 := _tiles_uvs.top + _tile.src_y * _tex_th * TILE_SIZE;
-					var _v_y1 := _v_y0 + _tex_th * TILE_SIZE;
+				vertex_position_3d(_vb, _p_x0, _p_y0, 0);
+				vertex_texcoord(_vb, _v_x0, _v_y0);
 				
-					var _p_x0 := (_x + _tile.off_y) * TILE_SIZE + irandom_range(_tile.rand_x_min, _tile.rand_x_max);
-					var _p_x1 := _p_x0 + TILE_SIZE;
-					var _p_y0 := (_y + _tile.off_x) * TILE_SIZE + irandom_range(_tile.rand_y_min, _tile.rand_y_max);
-					var _p_y1 := _p_y0 + TILE_SIZE;
+				vertex_position_3d(_vb, _p_x1, _p_y0, 0);
+				vertex_texcoord(_vb, _v_x1, _v_y0);
 				
-					vertex_position_3d(_layer_graphic_front_vb, _p_x0, _p_y0, 0);
-					vertex_texcoord(_layer_graphic_front_vb, _v_x0, _v_y0);
+				vertex_position_3d(_vb, _p_x0, _p_y1, 0);
+				vertex_texcoord(_vb, _v_x0, _v_y1);
 				
-					vertex_position_3d(_layer_graphic_front_vb, _p_x1, _p_y0, 0);
-					vertex_texcoord(_layer_graphic_front_vb, _v_x1, _v_y0);
+				vertex_position_3d(_vb, _p_x1, _p_y0, 0);
+				vertex_texcoord(_vb, _v_x1, _v_y0);
 				
-					vertex_position_3d(_layer_graphic_front_vb, _p_x0, _p_y1, 0);
-					vertex_texcoord(_layer_graphic_front_vb, _v_x0, _v_y1);
+				vertex_position_3d(_vb, _p_x1, _p_y1, 0);
+				vertex_texcoord(_vb, _v_x1, _v_y1);
 				
-					vertex_position_3d(_layer_graphic_front_vb, _p_x1, _p_y0, 0);
-					vertex_texcoord(_layer_graphic_front_vb, _v_x1, _v_y0);
-				
-					vertex_position_3d(_layer_graphic_front_vb, _p_x1, _p_y1, 0);
-					vertex_texcoord(_layer_graphic_front_vb, _v_x1, _v_y1);
-				
-					vertex_position_3d(_layer_graphic_front_vb, _p_x0, _p_y1, 0);
-					vertex_texcoord(_layer_graphic_front_vb, _v_x0, _v_y1);
-				}
+				vertex_position_3d(_vb, _p_x0, _p_y1, 0);
+				vertex_texcoord(_vb, _v_x0, _v_y1);
 			}
 		}
 		
-		_state.y = _y;
+		_room.resource_state_autotile_iter = _iter;
 		
-		if _y < _map.height {
-			return ns_level_RoomComponentStatus.Running;
-		}
-		else {
-			vertex_end(_layer_graphic_front_vb);
-			vertex_freeze(_layer_graphic_front_vb);
+		if _iter <= 0 {
+			ASSERT_EQ(_iter, 0);
 			
-			_room.layer_graphic_front_vb = _layer_graphic_front_vb;
+			vertex_end(_vb);
+			vertex_freeze(_vb);
+			
+			_room.layer_graphic_front_vb = _vb;
 		
 			return ns_level_RoomComponentStatus.Complete;
+		}
+		else {
+			return ns_level_RoomComponentStatus.Running;
 		}
 	};
 	
@@ -526,15 +491,15 @@ function ns_level_RoomComponentAutotile() : ns_level_RoomComponent("autotile") c
 	};
 }
 
-function ns_level_RoomComponentParseEntity() : ns_level_RoomComponent("parse_entity") constructor {
+function ns_level_RoomComponentParseEntity() : ns_level_RoomComponent(nameof(ns_level_RoomComponentParseEntity)) constructor {
 	static fn_work_init := function (_room) {
 		
 	};
 	
 	static fn_work_tick := function (_room) {
 		if _room.resource_entity_data == undefined {
-			var _buffer := ns_level_component().component_file.get_buffer(_room);
-			var _map := ns_level_component().component_header.get_buffer_map(_room);
+			var _buffer := _room.resource_buffer;
+			var _map := _room.resource_buffer_map;
 			
 			ASSERT_NE_DEBUG(_buffer, undefined);
 			ASSERT_NE_DEBUG(_map, undefined);
