@@ -33,11 +33,11 @@ function ns_level_Room(_world, _id, _x, _y, _width, _height) constructor {
 	height := _height;
 	
 	// used for collision testing
-	object := instance_create_layer(_x, _y, "Instances", obj_room);
+	object := instance_create_layer(_x * TILE_SIZE, _y * TILE_SIZE, "Instances", obj_room);
 	with object {
 		parent = other;
-		image_xscale = _width;
-		image_yscale = _height;
+		image_xscale = _width * TILE_SIZE;
+		image_yscale = _height * TILE_SIZE;
 	}
 	
 	// entities owned by the room.
