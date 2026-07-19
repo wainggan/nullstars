@@ -44,7 +44,7 @@ function obj_Entity_set_collidable(_yes) {
 
 /// @self obj_Entity
 function obj_Entity_get_collidable() {
-	return self.mask_index == spr_none;
+	return self.mask_index != spr_none;
 }
 
 /// @self obj_Entity
