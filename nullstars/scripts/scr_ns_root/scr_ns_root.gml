@@ -39,8 +39,16 @@ function ns_Root(_async) constructor {
 		
 		world.tick();
 		
-		if keyboard_check_pressed(vk_space) {
+		if keyboard_check_pressed(ord("B")) {
 			world.entity_global_add(instance_create_layer(-64, 64, "Instances", obj_game_Nova));
+		}
+		if keyboard_check_pressed(ord("N")) {
+			with instance_create_layer(-64, 64, "Instances", obj_game_Solid) {
+				image_xscale = 16;
+				image_yscale = 16;
+				image_blend = #ff00ff;
+				other.world.entity_global_add(self);
+			}
 		}
 	};
 	

@@ -129,10 +129,10 @@ function obj_Body_fn_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = u
 		var _tilemap_h := tilemap_get_height(_tilemap);
 		
 		// calculate exactly what tiles in the tilemap we could possibly collide with
-		var _bbtile_left := clamp((_area_left - _tilemap_x) div TILE_SIZE, 0, _tilemap_w - 1);
-		var _bbtile_right := clamp((_area_right - _tilemap_x - 1) div TILE_SIZE, 0, _tilemap_w - 1);
-		var _bbtile_top := clamp((_area_top - _tilemap_y) div TILE_SIZE, 0, _tilemap_h - 1);
-		var _bbtile_bottom := clamp((_area_bottom - _tilemap_y - 1) div TILE_SIZE, 0, _tilemap_h - 1);
+		var _bbtile_left := clamp((_area_left - _tilemap_x) div (TILE_SIZE), 0, _tilemap_w - 1);
+		var _bbtile_right := clamp((_area_right - _tilemap_x - 1) div (TILE_SIZE), 0, _tilemap_w - 1);
+		var _bbtile_top := clamp((_area_top - _tilemap_y) div (TILE_SIZE), 0, _tilemap_h - 1);
+		var _bbtile_bottom := clamp((_area_bottom - _tilemap_y - 1) div (TILE_SIZE), 0, _tilemap_h - 1);
 		
 		// no goto :(
 		var _exit = false;
@@ -144,7 +144,7 @@ function obj_Body_fn_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = u
 				for (var _x = _bbtile_left; _x <= _bbtile_right; _x++) {
 					for (var _y = _bbtile_top; _y <= _bbtile_bottom; _y++) {
 						if tilemap_get(_tilemap, _x, _y) != 0 {
-							_vel_wall = min(_vel_wall, (_x * TILE_SIZE + _tilemap_x) - self.bbox_right);
+							_vel_wall = min(_vel_wall, (_x * (TILE_SIZE) + _tilemap_x) - self.bbox_right);
 							_collided = true;
 							_exit = true;
 							break;
@@ -160,7 +160,7 @@ function obj_Body_fn_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = u
 				for (var _x = _bbtile_right; _x >= _bbtile_left; _x--) {
 					for (var _y = _bbtile_top; _y <= _bbtile_bottom; _y++) {
 						if tilemap_get(_tilemap, _x, _y) != 0 {
-							_vel_wall = max(_vel_wall, (_x * TILE_SIZE + _tilemap_x + TILE_SIZE) - self.bbox_left);
+							_vel_wall = max(_vel_wall, (_x * (TILE_SIZE) + _tilemap_x + (TILE_SIZE)) - self.bbox_left);
 							_collided = true;
 							_exit = true;
 							break;
@@ -178,7 +178,7 @@ function obj_Body_fn_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = u
 				for (var _y = _bbtile_top; _y <= _bbtile_bottom; _y++) {
 					for (var _x = _bbtile_left; _x <= _bbtile_right; _x++) {
 						if tilemap_get(_tilemap, _x, _y) != 0 {
-							_vel_wall = min(_vel_wall, (_y * TILE_SIZE + _tilemap_y) - self.bbox_bottom);
+							_vel_wall = min(_vel_wall, (_y * (TILE_SIZE) + _tilemap_y) - self.bbox_bottom);
 							_collided = true;
 							_exit = true;
 							break;
@@ -194,7 +194,7 @@ function obj_Body_fn_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = u
 				for (var _y = _bbtile_bottom; _y >= _bbtile_top; _y--) {
 					for (var _x = _bbtile_left; _x <= _bbtile_right; _x++) {
 						if tilemap_get(_tilemap, _x, _y) != 0 {
-							_vel_wall = max(_vel_wall, (_y * TILE_SIZE + _tilemap_y + TILE_SIZE) - self.bbox_top);
+							_vel_wall = max(_vel_wall, (_y * (TILE_SIZE) + _tilemap_y + (TILE_SIZE)) - self.bbox_top);
 							_collided = true;
 							_exit = true;
 							break;
@@ -240,7 +240,7 @@ function obj_Body_fn_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = u
 		var _other := _list[| i];
 		
 		// skip non-solids and solids with weaker priorities
-		if !_other.strong || _other.priority < self.priority {
+		if !_other.strong || _other.priority <= self.priority {
 			continue;
 		}
 		
@@ -305,7 +305,7 @@ function obj_Body_fn_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = u
 			var _other := _list[| i];
 		
 			// skip solids with stronger priorities
-			if _other.strong && _other.priority >= self.priority {
+			if _other.strong && _other.priority > self.priority {
 				continue;
 			}
 		
@@ -323,7 +323,7 @@ function obj_Body_fn_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = u
 				// move forward so _other's squish method can
 				// recognize where we are supposed to be.
 				// this is fine, because we are not collidable right now.
-				self.x += _vel_wall;
+				// self.x += _vel_wall;
 			}
 			else {
 				if _sign == 1 {
@@ -333,7 +333,7 @@ function obj_Body_fn_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = u
 					_diff := _area_top - _other.bbox_bottom;
 				}
 				
-				self.y += _vel_wall;
+				// self.y += _vel_wall;
 			}
 
 			// passing in _other's squish method to _oncollide, since
@@ -343,12 +343,12 @@ function obj_Body_fn_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = u
 			// eliminating _other).
 			_other.fn_move_blunt(_axis, _diff, _other.fn_squish, self);
 			
-			if _axis {
-				self.x -= _vel_wall;
-			}
-			else {
-				self.y -= _vel_wall;
-			}
+			//if _axis {
+			//	self.x -= _vel_wall;
+			//}
+			//else {
+			//	self.y -= _vel_wall;
+			//}
 		}
 		
 		obj_Entity_set_collidable(_last_collide);
