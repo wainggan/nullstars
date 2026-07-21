@@ -19,8 +19,7 @@ priority
 	strong = true; \
 	priority = 0; \
 	fn_riding := obj_Body_fn_riding; \
-	fn_squish := obj_Body_fn_squish; \
-	fn_move_blunt := obj_Body_fn_move_blunt;
+	fn_squish := obj_Body_fn_squish;
 
 /// @self obj_Body
 function obj_Body_fn_squish() {
@@ -49,7 +48,7 @@ function obj_Body_fn_riding(_other) {
 /// @arg {real} _vel
 /// @arg {function} _oncollide
 /// @arg {id.obj_Body} _pusher
-function obj_Body_fn_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = undefined) {
+function obj_Body_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = undefined) {
 	ASSERT_EQ_DEBUG(_vel, round(_vel))
 	
 	var _sign := sign(_vel);
@@ -341,7 +340,9 @@ function obj_Body_fn_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = u
 			// are about to overlap it (and solid bodys may not overlap
 			// anything). squish will ensure this doesn't happen (probably
 			// eliminating _other).
-			_other.fn_move_blunt(_axis, _diff, _other.fn_squish, self);
+			with _other {
+				obj_Body_move_blunt(_axis, _diff, self.fn_squish, other);
+			}
 			
 			//if _axis {
 			//	self.x -= _vel_wall;
@@ -355,7 +356,7 @@ function obj_Body_fn_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = u
 	
 		with obj_Body {
 			if self.fn_riding(other) {
-				self.fn_move_blunt(_axis, _vel_wall, , self);
+				obj_Body_move_blunt(_axis, _vel_wall, , self);
 			}
 		}
 	}
@@ -378,6 +379,63 @@ function obj_Body_fn_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = u
 	__index--;
 }
 
+function obj_Body_collision(_x, _y) {
+	static __list := ds_list_create();
+	var _len;
+	
+	ds_list_clear(__list);
+	
+	_len := instance_place_list( _x, _y, obj_room, __list, false);
+	
+	var _bbox_left;
+	var _bbox_right;
+	var _bbox_top;
+	var _bbox_bottom;
+	
+	if _len != 0 {
+		_bbox_left := self.bbox_left - self.x + _x;
+		_bbox_right := self.bbox_right - self.x + _x;
+		_bbox_top := self.bbox_top - self.y + _y;
+		_bbox_bottom := self.bbox_bottom - self.y + _y;
+	}
+	
+	for (var i = 0; i < _len; i++) {
+		var _tilemap := __list[| i].parent.layer_solid_tilemap;
+		
+		var _tilemap_x := tilemap_get_x(_tilemap);
+		var _tilemap_y := tilemap_get_y(_tilemap);
+		var _tilemap_w := tilemap_get_width(_tilemap);
+		var _tilemap_h := tilemap_get_height(_tilemap);
+		
+		// calculate exactly what tiles in the tilemap we could possibly collide with
+		var _bbtile_left := clamp((_bbox_left - _tilemap_x) div (TILE_SIZE), 0, _tilemap_w - 1);
+		var _bbtile_right := clamp((_bbox_right - _tilemap_x - 1) div (TILE_SIZE), 0, _tilemap_w - 1);
+		var _bbtile_top := clamp((_bbox_top - _tilemap_y) div (TILE_SIZE), 0, _tilemap_h - 1);
+		var _bbtile_bottom := clamp((_bbox_bottom - _tilemap_y - 1) div (TILE_SIZE), 0, _tilemap_h - 1);
+		
+		for (var _tile_y := _bbtile_top; _tile_y <= _bbtile_bottom; _tile_y++) {
+			for (var _tile_x := _bbtile_left; _tile_x <= _bbtile_right; _tile_x++) {
+				if tilemap_get(_tilemap, _tile_x, _tile_y) != 0 {
+					return true;
+				}
+			}
+		}
+	}
+	
+	ds_list_clear(__list);
+	
+	_len := instance_place_list( _x, _y, obj_Body, __list, false);
+	
+	for (var i = 0; i < _len; i++) {
+		var _check := __list[| i];
+		if _check.strong && _check.priority >= self.priority {
+			return true;
+		}
+	}
+	
+	return false;
+}
+
 /**
 @arg {asset.obj_Body} _other
 @return {bool}
@@ -396,7 +454,7 @@ function obj_Body_squish() {
 @self asset.obj_Body
 */
 function obj_Body_move_x(_vel, _oncollide = undefined) {
-	self.fn_move_blunt(true, _vel, _oncollide);
+	obj_Body_move_blunt(true, _vel, _oncollide);
 }
 
 /**
@@ -405,5 +463,5 @@ function obj_Body_move_x(_vel, _oncollide = undefined) {
 @self asset.obj_Body
 */
 function obj_Body_move_y(_vel, _oncollide = undefined) {
-	self.fn_move_blunt(false, _vel, _oncollide);
+	obj_Body_move_blunt(false, _vel, _oncollide);
 }

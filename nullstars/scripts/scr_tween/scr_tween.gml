@@ -8,7 +8,7 @@ function hermite(_t) {
     return _t * _t * (3.0 - 2.0 * _t);
 }
 
-/// smoothstep
+/// herpes smoothstep
 /// @pure
 function herp(_a, _b, _t) {
 	gml_pragma("forceinline");
@@ -32,15 +32,17 @@ enum Tween {
 /// @arg {enum.Tween} _index
 /// @arg {real} _t
 function tween(_index, _t) {
+	gml_pragma("forceinline");
 	var _channel = animcurve_get_channel(ac_tween, _index);
 	return animcurve_channel_evaluate(_channel, _t);
 }
 
+/// @arg {enum.Tween} _index
 /// @arg {real} _a
 /// @arg {real} _b
-/// @arg {enum.Tween} _index
 /// @arg {real} _t
-function terp(_a, _b, _index, _t) {
+function terp(_index, _a, _b, _t) {
+	gml_pragma("forceinline");
 	return lerp(_a, _b, tween(_index, _t));
 }
 
