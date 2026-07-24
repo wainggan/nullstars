@@ -65,7 +65,7 @@ function ns_level_World(_package) constructor {
 	
 	static tick := function () {
 		var _cam := nullstars_get_cam();
-		var _config := nullstars_config();
+		var _config := ns_config();
 		
 		// check rooms for loading.
 		static __list := ds_list_create();
