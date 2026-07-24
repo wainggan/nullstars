@@ -468,7 +468,7 @@ function ns_level_RoomComponentAutotile() : ns_level_RoomComponent(nameof(ns_lev
 		_room.resource_state_autotile_iter = _iter;
 		
 		if _iter <= 0 {
-			ASSERT_EQ(_iter, 0);
+			ASSERT_EQ(_iter, -1);
 			
 			vertex_end(_vb);
 			vertex_freeze(_vb);
