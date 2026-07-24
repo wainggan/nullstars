@@ -2,7 +2,7 @@
 @arg {struct.Package} _package
 */
 function ns_level_World(_package) constructor {
-	LOG(Log.Note, "ns_level_World(): initializing");
+	LOG(Log.Note, $"{nameof(ns_level_World)}(): initializing");
 	
 	// index of all loaded entities.
 	entities_all := [];
@@ -175,6 +175,7 @@ function ns_level_World(_package) constructor {
 		
 		// speaking of,
 		if _pause {
+			Log(Log.Warn, $"{nameof(ns_level_World)}(): paused on this frame ({self.frame})");
 			return;
 		}
 		

@@ -13,8 +13,6 @@ function obj_game_Nova_fn_tick() {
 	
 	var _onground := obj_Body_collision(x, y + 1);
 	
-	show_debug_message(_onground)
-	
 	if _kj && _onground {
 		y_vel = -4;
 	}
@@ -22,8 +20,8 @@ function obj_game_Nova_fn_tick() {
 	x_vel = approach(x_vel, _kh * 4, 1);
 	y_vel += 0.1;
 	
-	obj_Body_move_x(x_vel);
-	obj_Body_move_y(y_vel);
+	obj_Body_move_x(round(x_vel));
+	obj_Body_move_y(round(y_vel));
 }
 
 function obj_game_Nova_fn_draw() {

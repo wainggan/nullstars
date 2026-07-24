@@ -191,7 +191,7 @@ function ns_level_Room(_world, _id, _x, _y, _width, _height) constructor {
 			_list := ns_level_component().phase_parse;
 		}
 		else if _target == ns_level_RoomTarget.Load {
-			_list := ns_level_component().phase_parse;
+			_list := ns_level_component().phase_load;
 		}
 		else {
 			ASSERT(false);
@@ -228,6 +228,8 @@ function ns_level_Room(_world, _id, _x, _y, _width, _height) constructor {
 				instance_destroy(_entity);
 			}
 		}
+		
+		array_resize(entities, 0);
 	};
 	
 	static destroy := function () {

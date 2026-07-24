@@ -18,6 +18,7 @@ function ns_level_RoomComponentsList() constructor {
 	static component_parse_collision := new ns_level_RoomComponentParseCollision();
 	static component_autotile := new ns_level_RoomComponentAutotile();
 	static component_parse_entity := new ns_level_RoomComponentParseEntity();
+	static component_load_entity := new ns_level_RoomComponentLoadEntity();
 	
 	static list := [
 		component_file,
@@ -26,6 +27,7 @@ function ns_level_RoomComponentsList() constructor {
 		component_parse_collision,
 		component_autotile,
 		component_parse_entity,
+		component_load_entity,
 	];
 	
 	static phase_unload := [];
@@ -40,8 +42,18 @@ function ns_level_RoomComponentsList() constructor {
 		component_header,
 		component_parse_setup,
 		component_parse_collision,
-		component_autotile,
 		component_parse_entity,
+		component_autotile,
+	];
+	
+	static phase_load := [
+		component_file,
+		component_header,
+		component_parse_setup,
+		component_parse_collision,
+		component_parse_entity,
+		component_load_entity,
+		component_autotile,
 	];
 }
 
@@ -564,6 +576,34 @@ function ns_level_RoomComponentParseEntity() : ns_level_RoomComponent(nameof(ns_
 	
 	static fn_clean_tick := function (_room) {
 		delete _room.resource_entity_data;
+		return ns_level_RoomComponentStatus.Complete;
+	};
+}
+
+function ns_level_RoomComponentLoadEntity() : ns_level_RoomComponent(nameof(ns_level_RoomComponentLoadEntity)) constructor {
+	static fn_work_init := function (_room) {
+	};
+	
+	static fn_work_tick := function (_room) {
+		var _entity_data := _room.resource_entity_data;
+		
+		for (var i = 0, _len := array_length(_entity_data); i < _len; i++) {
+			var _data := _entity_data[i];
+			
+			LOG(Log.Note, $"{self.name}: creating {_data.name}");
+			var _inst := instance_create_layer(_data.x, _data.y, "Instances", _data.object);
+			
+			array_push(_room.entities, _inst);
+		} 
+		
+		return ns_level_RoomComponentStatus.Complete;
+	};
+	
+	static fn_clean_init := function (_room) {
+	};
+	
+	static fn_clean_tick := function (_room) {
+		_room.purge();
 		return ns_level_RoomComponentStatus.Complete;
 	};
 }
