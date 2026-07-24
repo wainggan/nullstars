@@ -142,7 +142,24 @@ function obj_Body_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = unde
 			if _sign == 1 {
 				for (var _x = _bbtile_left; _x <= _bbtile_right; _x++) {
 					for (var _y = _bbtile_top; _y <= _bbtile_bottom; _y++) {
-						if tilemap_get(_tilemap, _x, _y) != 0 {
+						var _tile = tilemap_get(_tilemap, _x, _y);
+						
+						var _check;
+						
+						if (_tile & 0b11) == 0b00 {
+							_check := _tile != 0;
+						}
+						else {
+							_tile = _tile >> 2;
+							if _tile == 2 {
+								_check := true;
+							}
+							else {
+								_check := false;
+							}
+						}
+						
+						if _check {
 							_vel_wall = min(_vel_wall, (_x * (TILE_SIZE) + _tilemap_x) - self.bbox_right);
 							_collided = true;
 							_exit = true;
@@ -158,7 +175,24 @@ function obj_Body_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = unde
 			else {
 				for (var _x = _bbtile_right; _x >= _bbtile_left; _x--) {
 					for (var _y = _bbtile_top; _y <= _bbtile_bottom; _y++) {
-						if tilemap_get(_tilemap, _x, _y) != 0 {
+						var _tile = tilemap_get(_tilemap, _x, _y);
+						
+						var _check;
+						
+						if (_tile & 0b11) == 0b00 {
+							_check := _tile != 0;
+						}
+						else {
+							_tile = _tile >> 2;
+							if _tile == 2 {
+								_check := true;
+							}
+							else {
+								_check := false;
+							}
+						}
+						
+						if _check {
 							_vel_wall = max(_vel_wall, (_x * (TILE_SIZE) + _tilemap_x + (TILE_SIZE)) - self.bbox_left);
 							_collided = true;
 							_exit = true;
