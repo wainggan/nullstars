@@ -61,7 +61,7 @@ function ns_level_World(_package) constructor {
 	
 	queue_sorted = true;
 	
-	rules := (new ns_level_AutotileCompiler().compile(nullstars_level_json_test()));
+	rules := (new ns_level_AutotileCompiler().compile(ns_level_json_test()));
 	
 	static tick := function () {
 		var _cam := nullstars_get_cam();

@@ -1,6 +1,6 @@
 // TODO: replace with json file
 
-function nullstars_level_json_test() {
+function ns_level_json_test() {
 	static __out := {
 		"stamps": [
 		],
