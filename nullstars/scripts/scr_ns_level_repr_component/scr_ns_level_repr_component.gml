@@ -50,19 +50,6 @@ function ns_level_component() {
 	return __out;
 }
 
-#region RoomComponent variables
-
-/*
-I couldn't figure out a place to store these hashes.
-gamemaker should be able to optimize this at compile-time.
-*/
-
-#macro NS_LEVEL_NAME_BUFFER nameof(buffer)
-#macro NS_LEVEL_NAME_BUFFER_MAP nameof(buffer_map)
-#macro NS_LEVEL_NAME_ENTITY_DATA nameof(entity_data)
-
-#endregion
-
 #region RoomComponent
 
 /**
@@ -135,12 +122,22 @@ function ns_level_RoomComponent(_name) constructor {
 		if _load {
 			if _state == ns_level_RoomComponentState.Idle {
 				self.state_set(_room, ns_level_RoomComponentState.Working);
+				
+				if (DEBUG_LOAD_EMIT_COMPONENT_COMPLETE_LOGS) && (DEBUG_LOAD_EMIT_COMPONENT_TICK_LOGS) {
+					LOG(Log.Note, $"{self.name}: work init (@ {_room.id})");
+				}
+				
 				self.fn_work_init(_room);
 			}
 		}
 		else {
 			if _state == ns_level_RoomComponentState.Complete {
 				self.state_set(_room, ns_level_RoomComponentState.Cleaning);
+				
+				if (DEBUG_LOAD_EMIT_COMPONENT_COMPLETE_LOGS) && (DEBUG_LOAD_EMIT_COMPONENT_TICK_LOGS) {
+					LOG(Log.Note, $"{self.name}: clean init (@ {_room.id})");
+				}
+				
 				self.fn_clean_init(_room);
 			}
 		}
@@ -148,21 +145,35 @@ function ns_level_RoomComponent(_name) constructor {
 		_state := self.state_get(_room);
 		
 		if _state == ns_level_RoomComponentState.Working {
+			if (DEBUG_LOAD_EMIT_COMPONENT_TICK_LOGS) {
+				LOG(Log.Hide, $"{self.name}: work tick (@ {_room.id})");
+			}
+				
 			var _out = self.fn_work_tick(_room);
 			_budget.tick();
 			
 			if _out == ns_level_RoomComponentStatus.Complete {
 				self.state_set(_room, ns_level_RoomComponentState.Complete);
+				if (DEBUG_LOAD_EMIT_COMPONENT_COMPLETE_LOGS) {
+					LOG(Log.Note, $"{self.name}: work tick complete (@ {_room.id})");
+				}
 			}
 			
 			return _out;
 		}
 		else if _state == ns_level_RoomComponentState.Cleaning {
+			if (DEBUG_LOAD_EMIT_COMPONENT_TICK_LOGS) {
+				LOG(Log.Hide, $"{self.name}: clean tick (@ {_room.id})");
+			}
+			
 			var _out := self.fn_clean_tick(_room);
 			_budget.tick();
 			
 			if _out == ns_level_RoomComponentStatus.Complete {
 				self.state_set(_room, ns_level_RoomComponentState.Idle);
+				if (DEBUG_LOAD_EMIT_COMPONENT_COMPLETE_LOGS) {
+					LOG(Log.Note, $"{self.name}: clean tick complete (@ {_room.id})");
+				}
 			}
 			
 			return _out;
@@ -178,19 +189,15 @@ function ns_level_RoomComponent(_name) constructor {
 
 function ns_level_RoomComponentFile() : ns_level_RoomComponent(nameof(ns_level_RoomComponentFile)) constructor {	
 	static fn_work_init := function (_room) {
-		LOG(Log.Note, $"ns_level_RoomComponentFile(): initializing (@ {_room.id})");
-		_room.resource_buffer = undefined;
 	};
 	
 	static fn_work_tick := function (_room) {
-		LOG(Log.Note, $"ns_level_RoomComponentFile(): tick (@ {_room.id})");
 		ASSERT_EQ(_room.resource_buffer, undefined);
 		_room.resource_buffer = ns_root().package.load_world_room(_room.id);
 		return ns_level_RoomComponentStatus.Complete;
 	};
 	
 	static fn_clean_init := function (_room) {
-		
 	};
 	
 	static fn_clean_tick := function (_room) {
@@ -202,8 +209,6 @@ function ns_level_RoomComponentFile() : ns_level_RoomComponent(nameof(ns_level_R
 
 function ns_level_RoomComponentHeader() : ns_level_RoomComponent(nameof(ns_level_RoomComponentHeader)) constructor {
 	static fn_work_init := function (_room) {
-		LOG(Log.Note, $"ns_level_RoomComponentHeader(): initializing (@ {_room.id})");
-		_room.resource_buffer_map = undefined;
 	};
 	
 	static fn_work_tick := function (_room) {
@@ -255,7 +260,6 @@ function ns_level_RoomComponentHeader() : ns_level_RoomComponent(nameof(ns_level
 	};
 	
 	static fn_clean_init := function (_room) {
-		
 	};
 	
 	static fn_clean_tick := function (_room) {
@@ -265,11 +269,10 @@ function ns_level_RoomComponentHeader() : ns_level_RoomComponent(nameof(ns_level
 }
 
 function ns_level_RoomComponentParseSetup() : ns_level_RoomComponent(nameof(ns_level_RoomComponentParseSetup)) constructor {
-	static fn_work_init := function (_room) {};
+	static fn_work_init := function (_room) {
+	};
 	
 	static fn_work_tick := function (_room) {
-		LOG(Log.Note, $"ns_level_RoomComponentParseSetup(): initializing (@ {_room.id})");
-		
 		ASSERT_EQ(_room.layer_solid_base, undefined);
 		ASSERT_EQ(_room.layer_solid_tilemap, undefined);
 		
@@ -305,8 +308,9 @@ function ns_level_RoomComponentParseSetup() : ns_level_RoomComponent(nameof(ns_l
 	};
 	
 	static fn_clean_init := function (_room) {
-		LOG(Log.Note, $"ns_level_RoomComponentParseSetup(): cleaning (@ {_room.id})");
-		
+	};
+	
+	static fn_clean_tick := function (_room) {
 		layer_destroy(_room.layer_solid_base);
 		
 		_room.layer_solid_base = undefined;
@@ -316,14 +320,13 @@ function ns_level_RoomComponentParseSetup() : ns_level_RoomComponent(nameof(ns_l
 		
 		_room.layer_spike_base = undefined;
 		_room.layer_spike_tilemap = undefined;
+		
+		return ns_level_RoomComponentStatus.Complete;
 	};
-	
-	// static fn_clean_tick := function (_room) {};
 }
 
 function ns_level_RoomComponentParseCollision() : ns_level_RoomComponent(nameof(ns_level_RoomComponentParseCollision)) constructor {
 	static fn_work_init := function (_room) {
-		LOG(Log.Note, $"ns_level_RoomComponentParseCollision(): initializing (@ {_room.id})");
 	};
 	
 	static fn_work_tick := function (_room) {
@@ -375,15 +378,17 @@ function ns_level_RoomComponentParseCollision() : ns_level_RoomComponent(nameof(
 		return ns_level_RoomComponentStatus.Complete;
 	};
 	
-	static fn_clean_init := function (_room) {};
+	static fn_clean_init := function (_room) {
+	};
 	
-	// static fn_clean_tick := function (_room) {};
+	// nothing to clean - ns_level_RoomComponentParseSetup() handles it for us
+	static fn_clean_tick := function (_room) {
+		return ns_level_RoomComponentStatus.Complete;
+	};
 }
 
 function ns_level_RoomComponentAutotile() : ns_level_RoomComponent(nameof(ns_level_RoomComponentAutotile)) constructor {
 	static fn_work_init := function (_room) {
-		LOG(Log.Note, $"ns_level_RoomComponentAutotile(): initializing (@ {_room.id})");
-		
 		var _root := ns_root();
 		var _map := _room.resource_buffer_map;
 		
@@ -444,7 +449,7 @@ function ns_level_RoomComponentAutotile() : ns_level_RoomComponent(nameof(ns_lev
 				_resolve.add((_current >> 2) + 1, 0);
 			}
 			else {
-				_resolve := _rules.run(_layer_solid_tilemap, _x, _y)
+				_resolve := _rules.run(_layer_solid_tilemap, _x, _y);
 			}
 			
 			for (var i = 0, _len := _resolve.length; i < _len; i++) {
@@ -499,7 +504,6 @@ function ns_level_RoomComponentAutotile() : ns_level_RoomComponent(nameof(ns_lev
 	};
 	
 	static fn_clean_init := function (_room) {
-		
 	};
 	
 	static fn_clean_tick := function (_room) {
@@ -512,40 +516,47 @@ function ns_level_RoomComponentAutotile() : ns_level_RoomComponent(nameof(ns_lev
 
 function ns_level_RoomComponentParseEntity() : ns_level_RoomComponent(nameof(ns_level_RoomComponentParseEntity)) constructor {
 	static fn_work_init := function (_room) {
-		
 	};
 	
 	static fn_work_tick := function (_room) {
-		if _room.resource_entity_data == undefined {
-			var _buffer := _room.resource_buffer;
-			var _map := _room.resource_buffer_map;
+		ASSERT_EQ(_room.resource_entity_data, undefined);
+		
+		var _buffer := _room.resource_buffer;
+		var _map := _room.resource_buffer_map;
 			
-			ASSERT_NE_DEBUG(_buffer, undefined);
-			ASSERT_NE_DEBUG(_map, undefined);
+		ASSERT_NE_DEBUG(_buffer, undefined);
+		ASSERT_NE_DEBUG(_map, undefined);
 			
-			buffer_seek(_buffer, buffer_seek_start, _map.entity.pointer);
+		buffer_seek(_buffer, buffer_seek_start, _map.entity.pointer);
 			
-			_room.resource_entity_data := [];
+		_room.resource_entity_data := [];
 			
-			for (var i = 0, _len := _map.entity.length; i < _len; i++) {
-				var _entity_name := buffer_read(_buffer, buffer_string);
-				var _entity_x := buffer_read(_buffer, buffer_s32);
-				var _entity_y := buffer_read(_buffer, buffer_s32);
+		for (var i = 0, _len := _map.entity.length; i < _len; i++) {
+			var _entity_name := buffer_read(_buffer, buffer_string);
+			var _entity_x := buffer_read(_buffer, buffer_s32);
+			var _entity_y := buffer_read(_buffer, buffer_s32);
 				
-				var _entity_object := ns_object_lut_name()[$ _entity_name];
-				ASSERT_NE(_entity_object, undefined, "object does not exist");
+			var _entity_object := ns_object_lut_name()[$ _entity_name];
+			ASSERT_NE(_entity_object, undefined, "object does not exist");
 				
-				array_push(_room.resource_entity_data, {
-					name: _entity_name,
-					object: _entity_object,
-					x: _entity_x,
-					y: _entity_y,
-				});
-			}
+			array_push(_room.resource_entity_data, {
+				name: _entity_name,
+				object: _entity_object,
+				x: _entity_x,
+				y: _entity_y,
+			});
 		}
 		
 		show_debug_message(_room.resource_entity_data);
 		
+		return ns_level_RoomComponentStatus.Complete;
+	};
+	
+	static fn_clean_init := function (_room) {
+	};
+	
+	static fn_clean_tick := function (_room) {
+		delete _room.resource_entity_data;
 		return ns_level_RoomComponentStatus.Complete;
 	};
 }

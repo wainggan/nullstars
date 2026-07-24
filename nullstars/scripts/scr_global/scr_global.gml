@@ -7,6 +7,8 @@ global config.
 #macro RELEASE false
 
 #macro DEBUG_LOAD_TRACK_OPS true
+#macro DEBUG_LOAD_EMIT_COMPONENT_TICK_LOGS true
+#macro DEBUG_LOAD_EMIT_COMPONENT_COMPLETE_LOGS true
 
 // it'd probably be a bad idea to let these change
 #macro WINDOW_WIDTH 960
