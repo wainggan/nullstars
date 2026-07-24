@@ -77,12 +77,14 @@ function ns_level_World(_package) constructor {
 		ds_list_clear(__list);
 		
 		var _len;
+		var _radius;
 		
+		_radius := _config.game_loader_radius_file;
 		_len := collision_rectangle_list(
-			_cam.x - _config.game_loader_radius_file,
-			_cam.y - _config.game_loader_radius_file,
-			_cam.x + _cam.w + _config.game_loader_radius_file * 2,
-			_cam.y + _cam.h + _config.game_loader_radius_file * 2,
+			_cam.x - _radius,
+			_cam.y - _radius,
+			_cam.x + _cam.w + _radius * 2,
+			_cam.y + _cam.h + _radius * 2,
 			obj_room,
 			false,
 			true,
@@ -102,11 +104,12 @@ function ns_level_World(_package) constructor {
 		
 		ds_list_clear(__list);
 		
+		_radius := _config.game_loader_radius_parse;
 		_len := collision_rectangle_list(
-			_cam.x - _config.game_loader_radius_parse,
-			_cam.y - _config.game_loader_radius_parse,
-			_cam.x + _cam.w + _config.game_loader_radius_parse * 2,
-			_cam.y + _cam.h + _config.game_loader_radius_parse * 2,
+			_cam.x - _radius,
+			_cam.y - _radius,
+			_cam.x + _cam.w + _radius * 2,
+			_cam.y + _cam.h + _radius * 2,
 			obj_room,
 			false,
 			true,
@@ -121,11 +124,12 @@ function ns_level_World(_package) constructor {
 		
 		ds_list_clear(__list);
 		
+		_radius := _config.game_loader_radius_load;
 		_len := collision_rectangle_list(
-			_cam.x - _config.game_loader_radius_load,
-			_cam.y - _config.game_loader_radius_load,
-			_cam.x + _cam.w + _config.game_loader_radius_load * 2,
-			_cam.y + _cam.h + _config.game_loader_radius_load * 2,
+			_cam.x - _radius,
+			_cam.y - _radius,
+			_cam.x + _cam.w + _radius * 2,
+			_cam.y + _cam.h + _radius * 2,
 			obj_room,
 			false,
 			true,

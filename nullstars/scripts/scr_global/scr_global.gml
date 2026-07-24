@@ -1,5 +1,12 @@
- /*
+/*
 global config.
+
+macros are for situations where
+1. gamemaker's compile time collapsing makes the nature of the config's usage faster. (see: RELEASE)
+2. the config is probably a bad idea to change. (see: TILE_SIZE)
+
+ns_config() is for situations where
+1. it might be useful to change the value at runtime through the debugger or in-game settings.
 */
 
 // whether the game is in 'release mode'. when true, various
@@ -16,13 +23,15 @@ global config.
 
 #macro TILE_SIZE 16
 
+// todo: it might be a better idea to move this to ns_Root(), for an
+// easier time modifying it when resolving settings.
 function ns_config() {
 	static __config := {
 		game_loader_radius_file: 1024,
 		game_loader_radius_parse: 512,
 		game_loader_radius_load: 256,
 		game_loader_budget_time: 2, // ms
-		game_loader_budget_count: 10,
+		game_loader_budget_count: 20,
 	};
 	
 	return __config;

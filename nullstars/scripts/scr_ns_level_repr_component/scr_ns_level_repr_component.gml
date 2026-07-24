@@ -431,7 +431,14 @@ function ns_level_RoomComponentAutotile() : ns_level_RoomComponent(nameof(ns_lev
 		var _tex_height = _room.resource_state_autotile_tex_height;
 		var _rules := _room.resource_state_autotile_rules;
 		
-		for (var _count = 10; _iter >= 0 && _count >= 0; { _iter--; _count--; }) {
+		for (
+			var _count = ns_config().game_loader_budget_count;
+			_iter >= 0 && _count > 0;
+			{
+				_iter--;
+				_count--;
+			};
+		) {
 			var _x := _iter mod _width;
 			var _y := _iter div _width;
 			
@@ -487,7 +494,7 @@ function ns_level_RoomComponentAutotile() : ns_level_RoomComponent(nameof(ns_lev
 		
 		_room.resource_state_autotile_iter = _iter;
 		
-		if _iter <= 0 {
+		if _iter < 0 {
 			ASSERT_EQ(_iter, -1);
 			
 			vertex_end(_vb);
