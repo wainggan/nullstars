@@ -28,7 +28,14 @@ function ns_level_RoomComponentsList() constructor {
 		component_parse_entity,
 	];
 	
+	static phase_unload := [];
+	
 	static phase_file := [
+		component_file,
+		component_header,
+	];
+	
+	static phase_parse := [
 		component_file,
 		component_header,
 		component_parse_setup,
@@ -288,20 +295,28 @@ function ns_level_RoomComponentParseSetup() : ns_level_RoomComponent(nameof(ns_l
 			_room.height
 		);
 		
-		var _layer_graphic_front_vb := vertex_create_buffer();
-		
 		_room.layer_solid_base = _layer_solid_base;
 		_room.layer_solid_tilemap = _layer_solid_tilemap;
 		
 		_room.layer_spike_base = _layer_spike_base;
 		_room.layer_spike_tilemap = _layer_spike_tilemap;
 		
-		// _room.layer_graphic_front_vb = _layer_graphic_front_vb;
-		
 		return ns_level_RoomComponentStatus.Complete;
 	};
 	
-	static fn_clean_init := function (_room) {};
+	static fn_clean_init := function (_room) {
+		LOG(Log.Note, $"ns_level_RoomComponentParseSetup(): cleaning (@ {_room.id})");
+		
+		layer_destroy(_room.layer_solid_base);
+		
+		_room.layer_solid_base = undefined;
+		_room.layer_solid_tilemap = undefined;
+		
+		layer_destroy(_room.layer_spike_base);
+		
+		_room.layer_spike_base = undefined;
+		_room.layer_spike_tilemap = undefined;
+	};
 	
 	// static fn_clean_tick := function (_room) {};
 }
@@ -473,6 +488,7 @@ function ns_level_RoomComponentAutotile() : ns_level_RoomComponent(nameof(ns_lev
 			vertex_end(_vb);
 			vertex_freeze(_vb);
 			
+			_room.resource_state_autotile_vb = undefined;
 			_room.layer_graphic_front_vb = _vb;
 		
 			return ns_level_RoomComponentStatus.Complete;
@@ -487,6 +503,9 @@ function ns_level_RoomComponentAutotile() : ns_level_RoomComponent(nameof(ns_lev
 	};
 	
 	static fn_clean_tick := function (_room) {
+		vertex_delete_buffer(_room.layer_graphic_front_vb);
+		_room.layer_graphic_front_vb = undefined;
+		
 		return ns_level_RoomComponentStatus.Complete;
 	};
 }

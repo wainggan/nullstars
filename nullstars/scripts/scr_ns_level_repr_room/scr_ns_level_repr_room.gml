@@ -105,6 +105,9 @@ function ns_level_Room(_world, _id, _x, _y, _width, _height) constructor {
 	*/
 	layer_graphic_front_vb = undefined;
 	
+	target = ns_level_RoomTarget.Unload;
+	target_frame = 0;
+	
 	/**
 	@arg {Array<struct.RoomComponent>} _target
 	@arg {struct.RoomBudget} _budget
@@ -178,7 +181,22 @@ function ns_level_Room(_world, _id, _x, _y, _width, _height) constructor {
 	static tick_components := function (_target, _budget) {
 		var _list;
 		
-		_list := ns_level_component().phase_file;
+		if _target == ns_level_RoomTarget.Unload {
+			_list := ns_level_component().phase_unload;
+		}
+		else if _target == ns_level_RoomTarget.File {
+			_list := ns_level_component().phase_file;
+		}
+		else if _target == ns_level_RoomTarget.Parse {
+			_list := ns_level_component().phase_parse;
+		}
+		else if _target == ns_level_RoomTarget.Load {
+			_list := ns_level_component().phase_parse;
+		}
+		else {
+			ASSERT(false);
+		}
+		
 		
 		return self.tick_components_list(_list, _budget);
 	};

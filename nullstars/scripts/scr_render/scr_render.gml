@@ -6,6 +6,8 @@ function Render() constructor {
 	@arg {struct.ns_Root} _root
 	*/
 	static draw := function (_root) {
+		var _cam := nullstars_get_cam();
+		
 		shader_set(shd_tilemap);
 		
 		for (var i = 0; i < array_length(_root.world.rooms_list); i++) {
@@ -26,6 +28,38 @@ function Render() constructor {
 		with obj_game_Solid {
 			draw_self();
 		}
+		
+		for (var i = 0; i < array_length(_root.world.rooms_list); i++) {
+			var _room = _root.world.rooms_list[i];
+			
+			var _color = c_white;
+			
+			if _room.target == ns_level_RoomTarget.Unload {
+				_color := #444444;
+			}
+			else if _room.target == ns_level_RoomTarget.File {
+				_color := c_red;
+			}
+			else if _room.target == ns_level_RoomTarget.Parse {
+				_color := c_lime;
+			}
+			else if _room.target == ns_level_RoomTarget.Load {
+				_color := c_blue;
+			}
+			else {
+				ASSERT(false, $"???? {_room.target}");
+			}
+			
+			draw_sprite_ext(spr_pixel, 0, _room.x + _cam.x, _room.y + _cam.y, _room.width, _room.height, 0, _color, 1);
+		}
+		
+		draw_rectangle(
+			_cam.x + _cam.x / TILE_SIZE,
+			_cam.y + _cam.y / TILE_SIZE,
+			_cam.x + _cam.x / TILE_SIZE + _cam.w / TILE_SIZE,
+			_cam.y + _cam.y / TILE_SIZE + _cam.h / TILE_SIZE,
+			true
+		);
 	};
 }
 

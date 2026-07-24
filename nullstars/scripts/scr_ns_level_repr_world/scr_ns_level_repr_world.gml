@@ -53,6 +53,8 @@ function ns_level_World(_package) constructor {
 		buffer_delete(_buffer);
 	}
 	
+	frame = 0;
+	
 	// currently loaded rooms.
 	rooms_loaded := [];
 	
@@ -64,6 +66,8 @@ function ns_level_World(_package) constructor {
 	rules := (new ns_level_AutotileCompiler().compile(ns_level_json_test()));
 	
 	static tick := function () {
+		frame += 1;
+		
 		var _cam := nullstars_get_cam();
 		var _config := ns_config();
 		
@@ -72,7 +76,9 @@ function ns_level_World(_package) constructor {
 		
 		ds_list_clear(__list);
 		
-		collision_rectangle_list(
+		var _len;
+		
+		_len := collision_rectangle_list(
 			_cam.x - _config.game_loader_radius_file,
 			_cam.y - _config.game_loader_radius_file,
 			_cam.x + _cam.w + _config.game_loader_radius_file * 2,
@@ -84,14 +90,19 @@ function ns_level_World(_package) constructor {
 			false
 		);
 		
-		for (var i = 0, _len := ds_list_size(__list); i < _len; i++) {
+		for (var i = 0; i < _len; i++) {
 			// spam the room with a helpful suggestion!
 			var _room := __list[| i].parent;
+			_room.target = ns_level_RoomTarget.File;
+			_room.target_frame = self.frame;
+			if array_get_index(self.rooms_loaded, _room) == -1 {
+				array_push(self.rooms_loaded, _room);
+			}
 		}
 		
 		ds_list_clear(__list);
 		
-		collision_rectangle_list(
+		_len := collision_rectangle_list(
 			_cam.x - _config.game_loader_radius_parse,
 			_cam.y - _config.game_loader_radius_parse,
 			_cam.x + _cam.w + _config.game_loader_radius_parse * 2,
@@ -103,13 +114,14 @@ function ns_level_World(_package) constructor {
 			false
 		);
 		
-		for (var i = 0, _len := ds_list_size(__list); i < _len; i++) {
+		for (var i = 0; i < _len; i++) {
 			var _room := __list[| i].parent;
+			_room.target = ns_level_RoomTarget.Parse;
 		}
 		
 		ds_list_clear(__list);
 		
-		collision_rectangle_list(
+		_len := collision_rectangle_list(
 			_cam.x - _config.game_loader_radius_load,
 			_cam.y - _config.game_loader_radius_load,
 			_cam.x + _cam.w + _config.game_loader_radius_load * 2,
@@ -122,8 +134,9 @@ function ns_level_World(_package) constructor {
 		);
 		
 		// fucking kill me
-		for (var i = 0, _len := ds_list_size(__list); i < _len; i++) {
+		for (var i = 0; i < _len; i++) {
 			var _room := __list[| i].parent;
+			_room.target = ns_level_RoomTarget.Load;
 		}
 		
 		// at this point, rooms have been pinged and will be working on
@@ -136,13 +149,23 @@ function ns_level_World(_package) constructor {
 		
 		var _pause = false;
 		
-		for (var i = 0, _len := array_length(self.rooms_list); i < _len; i++) {
-			var _room := self.rooms_list[i];
+		_len := array_length(self.rooms_loaded);
+		for (var i = 0; i < _len; i++) {
+			var _room := self.rooms_loaded[i];
 			
-			var _status := _room.tick_components(ns_level_RoomTarget.File, _budget);
+			if _room.target_frame != self.frame {
+				_room.target = ns_level_RoomTarget.Unload;
+			}
+			
+			var _status := _room.tick_components(_room.target, _budget);
 			
 			if _status == ns_level_RoomComponentStatus.Waiting {
 				_pause = true;
+			}
+			else if _room.target_frame != self.frame && _status == ns_level_RoomComponentStatus.Complete {
+				array_delete(self.rooms_loaded, i, 1);
+				i--;
+				_len--;
 			}
 		}
 		

@@ -18,6 +18,8 @@ function ns_Root(_async) constructor {
 	
 	async := _async;
 	
+	time := 0;
+	
 	// parse the package.
 	package = new Package(undefined);
 	
@@ -29,6 +31,8 @@ function ns_Root(_async) constructor {
 	render := new Render();
 	
 	static tick := function () {
+		self.time++;
+		
 		camera.tick();
 		
 		var _kh = keyboard_check(vk_right) - keyboard_check(vk_left);
@@ -60,7 +64,7 @@ function ns_Root(_async) constructor {
 global.__ns_root = undefined;
 
 function ns_root() {
-	ASSERT_NE(global.__ns_root, undefined);
+	ASSERT_NE_DEBUG(global.__ns_root, undefined);
 	return global.__ns_root;
 }
 
