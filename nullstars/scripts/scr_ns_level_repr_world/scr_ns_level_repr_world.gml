@@ -187,10 +187,14 @@ function ns_level_World(_package) constructor {
 				_room.target = ns_level_RoomTarget.Unload;
 			}
 			
+			// filter out 'unimportant' rooms.
+			// big big todo: this doesn't defer autotile. somehow we need to extract
+			// what the room is working on here, and tell if it is autotile or something.
 			if _room.target != ns_level_RoomTarget.Load {
 				continue;
 			}
 			
+			// tick until done.
 			while true {
 				var _status := _room.tick_components(_room.target, _budget);
 				
@@ -205,9 +209,18 @@ function ns_level_World(_package) constructor {
 			}
 		}
 		
+		// weird loop.
+		// basically, we're trying to run the budget dry, but we need to
+		// exit, even if there's budget left, if every room is complete.
+		// easiest way of doing this is keeping two i-like variables, but
+		// one we only increment when the room is complete. then at the end
+		// of the loop, if they are the same, then everything is complete.
 		var i = 0;
 		var _count = 0;
 		while true {
+			// kinda like var j = i mod _len.
+			// this is placed at the beginning, because it happens that if _len
+			// is 0, the loop exits before we do something stupid.
 			if i >= _len {
 				if _count == i {
 					break;
@@ -224,6 +237,7 @@ function ns_level_World(_package) constructor {
 			var _room := self.rooms_loaded[i];
 			
 			if _room.target == ns_level_RoomTarget.Load {
+				// consider it complete if 'important'
 				_count++;
 				i++;
 				continue;
@@ -236,7 +250,7 @@ function ns_level_World(_package) constructor {
 					array_delete(self.rooms_loaded, i, 1);
 					i--;
 					_count--;
-					_len--;
+					_len--; // the cost of cache
 				}
 				
 				_count++;
@@ -245,12 +259,17 @@ function ns_level_World(_package) constructor {
 			i++;
 		}
 		
-		// speaking of,
+		// the rest of this method is updating entities. returing if paused to avoid.
 		if _pause {
 			LOG(Log.Warn, $"{nameof(ns_level_World)}(): paused on this frame ({self.frame})");
 			return;
 		}
 		
+		// step 3 -- update entities
+		
+		// todo: whatever idk lol
+		
+		// first start with rooms
 		_len := array_length(rooms_loaded);
 		for (var i = 0; i < _len; i++) {
 			var _room := rooms_loaded[i];
@@ -265,7 +284,9 @@ function ns_level_World(_package) constructor {
 		_len := array_length(entities_global);
 		for (var i = 0; i < _len; i++) {
 			var _entity := entities_global[i];
-			_entity.fn_tick();
+			with _entity {
+				obj_Entity_tick();
+			}
 		}
 	};
 	
