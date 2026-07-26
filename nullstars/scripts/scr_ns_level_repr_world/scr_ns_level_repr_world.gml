@@ -66,6 +66,13 @@ function ns_level_World(_package) constructor {
 	rules := (new ns_level_AutotileCompiler().compile(ns_level_json_test()));
 	
 	static tick := function () {
+		// there are three parts to this method.
+		// first, we check what state we need to set any relevant room to.
+		// second, we tick room components.
+		// third, we tick every entity.
+		
+		// this variable is load bearing to tell if a room is outside
+		// any radius. (explained later)
 		frame += 1;
 		
 		var _cam := nullstars_get_cam();
@@ -74,10 +81,27 @@ function ns_level_World(_package) constructor {
 		// check rooms for loading.
 		static __list := ds_list_create();
 		
-		ds_list_clear(__list);
+		// step 1 -- set room states
+		
+		// a few assumptions with the following logic depends on this.
+		// like what the fuck are you doing if this doesn't hold anyways? lol?
+		ASSERT_DEBUG(_config.game_loader_radius_file < _config.game_loader_radius_parse);
+		ASSERT_DEBUG(_config.game_loader_radius_parse < _config.game_loader_radius_load);
 		
 		var _len;
 		var _radius;
+		
+		// this checking is done with collision functions.
+		// now, this probably isn't the fastest. especially for a really large world, it
+		// might honestly be faster to implement a quad-tree? at least then gamemaker
+		// wouldn't worry about the obj_room objects.
+		// probably not.
+		// either way, even this might be faster, just one collision_rectangle_list()
+		// and then manually doing collision checks with whats found. it really depends
+		// on the cost of collision_rectangle_list(). profiling is required.
+		
+		// first check the file radius.
+		ds_list_clear(__list);
 		
 		_radius := _config.game_loader_radius_file;
 		_len := collision_rectangle_list(
@@ -85,23 +109,24 @@ function ns_level_World(_package) constructor {
 			_cam.y - _radius,
 			_cam.x + _cam.w + _radius * 2,
 			_cam.y + _cam.h + _radius * 2,
-			obj_room,
-			false,
-			true,
-			__list,
-			false
+			obj_room, false, true, __list, false
 		);
 		
 		for (var i = 0; i < _len; i++) {
 			// spam the room with a helpful suggestion!
 			var _room := __list[| i].parent;
+			
 			_room.target = ns_level_RoomTarget.File;
-			_room.target_frame = self.frame;
+			_room.target_frame = self.frame; // foreshadowing
+			
+			// add to rooms_loaded. they aren't technically "loaded", but
+			// idk a better succinct common word. under consideration lol.
 			if array_get_index(self.rooms_loaded, _room) == -1 {
 				array_push(self.rooms_loaded, _room);
 			}
 		}
 		
+		// now check the parse radius.
 		ds_list_clear(__list);
 		
 		_radius := _config.game_loader_radius_parse;
@@ -110,11 +135,7 @@ function ns_level_World(_package) constructor {
 			_cam.y - _radius,
 			_cam.x + _cam.w + _radius * 2,
 			_cam.y + _cam.h + _radius * 2,
-			obj_room,
-			false,
-			true,
-			__list,
-			false
+			obj_room, false, true, __list, false
 		);
 		
 		for (var i = 0; i < _len; i++) {
@@ -122,6 +143,7 @@ function ns_level_World(_package) constructor {
 			_room.target = ns_level_RoomTarget.Parse;
 		}
 		
+		// finally check the load radius.
 		ds_list_clear(__list);
 		
 		_radius := _config.game_loader_radius_load;
@@ -130,40 +152,40 @@ function ns_level_World(_package) constructor {
 			_cam.y - _radius,
 			_cam.x + _cam.w + _radius * 2,
 			_cam.y + _cam.h + _radius * 2,
-			obj_room,
-			false,
-			true,
-			__list,
-			false
+			obj_room, false, true, __list, false
 		);
 		
-		// fucking kill me
 		for (var i = 0; i < _len; i++) {
-			var _room := __list[| i].parent;
+			var _room := __list[| i].parent; // fucking kill me
 			_room.target = ns_level_RoomTarget.Load;
 		}
 		
-		// at this point, rooms have been pinged and will be working on
-		// whatever they need to when the queue is ticked.
+		// step 2 -- distribute work among the rooms
 		
-		// entities will be ticked after the queue is ticked. that way, if a
-		// queue item is stuck on WorldTaskStatus.Waiting, entities can be safely paused.
+		// goobinator 5000
 		
 		var _budget := new ns_level_Budget();
 		
+		// this will control whether we update entities later.
 		var _pause = false;
 		
+		// cache...
 		_len := array_length(self.rooms_loaded);
 		
+		// do the "important" rooms first
 		for (var i = 0; i < _len; i++) {
 			var _room := self.rooms_loaded[i];
+			
+			// okay okay so quick aside
+			// we need to remove rooms from rooms_loaded when they are outside
+			// of the file radius. unfortunately, there isn't anything like a
+			// not_collision_rectangle_list() in gamemaker, here we avoid yet another
+			// collision_rectangle().
+			// _room.target_frame is updated to self.frame every tick if it's in the file
+			// radius, so if a room isn't updated, obviously it's outside the file radius.
 			if _room.target_frame != self.frame {
 				_room.target = ns_level_RoomTarget.Unload;
 			}
-		}
-		
-		for (var i = 0; i < _len; i++) {
-			var _room := self.rooms_loaded[i];
 			
 			if _room.target != ns_level_RoomTarget.Load {
 				continue;
@@ -229,17 +251,8 @@ function ns_level_World(_package) constructor {
 			return;
 		}
 		
-		self.entity_process();
-	};
-	
-	static entity_global_add := function (_entity) {
-		ASSERT(object_is_ancestor(_entity, obj_Entity));
-		array_push(entities_global, _entity);
-		entities_global_sorted = false;
-	};
-	
-	static entity_process := function () {
-		for (var i = 0, _len := array_length(rooms_loaded); i < _len; i++) {
+		_len := array_length(rooms_loaded);
+		for (var i = 0; i < _len; i++) {
 			var _room := rooms_loaded[i];
 			_room.tick_entities();
 		}
@@ -249,11 +262,16 @@ function ns_level_World(_package) constructor {
 			// array_sort(entities_global);
 		}
 		
-		for (var i = 0, _len := array_length(entities_global); i < _len; i++) {
+		_len := array_length(entities_global);
+		for (var i = 0; i < _len; i++) {
 			var _entity := entities_global[i];
 			_entity.fn_tick();
 		}
 	};
 	
-	// goobinator 5000
+	static entity_global_add := function (_entity) {
+		ASSERT(object_is_ancestor(_entity, obj_Entity));
+		array_push(entities_global, _entity);
+		entities_global_sorted = false;
+	};
 }
