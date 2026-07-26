@@ -55,6 +55,8 @@ function ns_level_RoomComponentsList() constructor {
 		component_load_entity,
 		component_autotile,
 	];
+	
+	static phase_load_loser := 6;
 }
 
 function ns_level_component() {
