@@ -30,6 +30,7 @@ function ns_config() {
 		game_loader_radius_file: 1024,
 		game_loader_radius_parse: 512,
 		game_loader_radius_load: 256,
+		game_loader_autotile_count: 20,
 		game_loader_budget_time: 2, // ms
 		game_loader_budget_count: 20,
 	};

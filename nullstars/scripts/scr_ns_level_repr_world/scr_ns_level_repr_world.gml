@@ -271,7 +271,7 @@ function ns_level_World(_package) constructor {
 		
 		// first start with rooms
 		_len := array_length(rooms_loaded);
-		for (var i = 0; i < _len; i++) {
+		for (i = 0; i < _len; i++) {
 			var _room := rooms_loaded[i];
 			_room.tick_entities();
 		}
@@ -282,7 +282,7 @@ function ns_level_World(_package) constructor {
 		}
 		
 		_len := array_length(entities_global);
-		for (var i = 0; i < _len; i++) {
+		for (i = 0; i < _len; i++) {
 			var _entity := entities_global[i];
 			with _entity {
 				obj_Entity_tick();
