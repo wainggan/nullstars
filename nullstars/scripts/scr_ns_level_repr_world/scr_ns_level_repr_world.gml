@@ -85,8 +85,8 @@ function ns_level_World(_package) constructor {
 		
 		// a few assumptions with the following logic depends on this.
 		// like what the fuck are you doing if this doesn't hold anyways? lol?
-		ASSERT_DEBUG(_config.game_loader_radius_file < _config.game_loader_radius_parse);
-		ASSERT_DEBUG(_config.game_loader_radius_parse < _config.game_loader_radius_load);
+		ASSERT_DEBUG(_config.game_loader_radius_file > _config.game_loader_radius_parse);
+		ASSERT_DEBUG(_config.game_loader_radius_parse > _config.game_loader_radius_load);
 		
 		var _len;
 		var _radius;
