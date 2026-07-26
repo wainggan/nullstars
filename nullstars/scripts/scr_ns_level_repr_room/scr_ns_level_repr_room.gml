@@ -6,10 +6,16 @@ enum ns_level_RoomTarget {
 }
 
 function ns_level_Budget() constructor {
-	static tick := function () {};
+	time := get_timer();
+	time_max := ns_config().game_loader_budget_time * 1000;
+	count := ns_config().game_loader_budget_count;
+	
+	static tick := function () {
+		self.count--;
+	};
 	
 	static okay := function () {
-		return true;
+		return self.count >= 0 && (get_timer() - self.time) <= self.time_max;
 	};
 }
 
