@@ -154,28 +154,78 @@ function ns_level_World(_package) constructor {
 		var _pause = false;
 		
 		_len := array_length(self.rooms_loaded);
+		
+		for (var i = 0; i < _len; i++) {
+			var _room := self.rooms_loaded[i];
+			if _room.target_frame != self.frame {
+				_room.target = ns_level_RoomTarget.Unload;
+			}
+		}
+		
 		for (var i = 0; i < _len; i++) {
 			var _room := self.rooms_loaded[i];
 			
-			if _room.target_frame != self.frame {
-				_room.target = ns_level_RoomTarget.Unload;
+			if _room.target != ns_level_RoomTarget.Load {
+				continue;
+			}
+			
+			while true {
+				var _status := _room.tick_components(_room.target, _budget);
+				
+				if _status == ns_level_RoomComponentStatus.Running {
+					continue;
+				}
+				else if _status == ns_level_RoomComponentStatus.Waiting {
+					_pause = true;
+				}
+				
+				break;
+			}
+		}
+		
+		var i = 0;
+		var _count = 0;
+		while true {
+			if i >= _len {
+				if _count == i {
+					break;
+				}
+				
+				i = 0;
+				_count = 0;
+			}
+			
+			if !_budget.okay() {
+				break;
+			}
+			
+			var _room := self.rooms_loaded[i];
+			
+			if _room.target == ns_level_RoomTarget.Load {
+				_count++;
+				i++;
+				continue;
 			}
 			
 			var _status := _room.tick_components(_room.target, _budget);
 			
-			if _status == ns_level_RoomComponentStatus.Waiting {
-				_pause = true;
+			if _status == ns_level_RoomComponentStatus.Complete {
+				if _room.target == ns_level_RoomTarget.Unload {
+					array_delete(self.rooms_loaded, i, 1);
+					i--;
+					_count--;
+					_len--;
+				}
+				
+				_count++;
 			}
-			else if _room.target_frame != self.frame && _status == ns_level_RoomComponentStatus.Complete {
-				array_delete(self.rooms_loaded, i, 1);
-				i--;
-				_len--;
-			}
+			
+			i++;
 		}
 		
 		// speaking of,
 		if _pause {
-			Log(Log.Warn, $"{nameof(ns_level_World)}(): paused on this frame ({self.frame})");
+			LOG(Log.Warn, $"{nameof(ns_level_World)}(): paused on this frame ({self.frame})");
 			return;
 		}
 		

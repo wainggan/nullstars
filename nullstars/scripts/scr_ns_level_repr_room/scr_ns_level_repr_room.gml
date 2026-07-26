@@ -7,6 +7,7 @@ enum ns_level_RoomTarget {
 
 function ns_level_Budget() constructor {
 	static tick := function () {};
+	
 	static okay := function () {
 		return true;
 	};
