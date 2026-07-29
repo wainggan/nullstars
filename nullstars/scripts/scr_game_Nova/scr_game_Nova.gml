@@ -1,12 +1,15 @@
-// Feather ignore GM1051
-#macro SETUP_OBJ_NOVA \
-	fn_tick := obj_game_Nova_fn_tick; \
-	fn_draw := obj_game_Nova_fn_draw; \
-	priority := 1; \
-	x_vel = 0; \
-	y_vel = 0; \
+/// @self obj_game_Nova
+function obj_game_Nova_fn_create() {
+	obj_Body_fn_create();
+	fn_tick := obj_game_Nova_fn_tick;
+	fn_draw := obj_game_Nova_fn_draw;
+	priority := 1;
+	x_vel = 0;
+	y_vel = 0;
 	buffer_jump = 0;
+}
 
+/// @self obj_game_Nova
 function obj_game_Nova_fn_tick() {
 	var _root := ns_root();
 	var _config := ns_config();

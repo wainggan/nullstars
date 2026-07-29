@@ -13,15 +13,17 @@ priority
 	can push bodys with lower priorities.
 */
 
-// Feather ignore GM1051
-#macro SETUP_OBJ_BODY \
-	collide = true; \
-	strong = true; \
-	priority = 0; \
-	x_rem = 0; \
-	y_rem = 0; \
-	fn_riding := obj_Body_fn_riding; \
+/// @self obj_Body
+function obj_Body_fn_create() {
+	obj_Entity_fn_create();
+	collide = true;
+	strong = true;
+	priority = 0;
+	x_rem = 0;
+	y_rem = 0;
+	fn_riding := obj_Body_fn_riding;
 	fn_squish := obj_Body_fn_squish;
+}
 
 /// @self obj_Body
 function obj_Body_fn_squish() {

@@ -1,12 +1,12 @@
 {
   "$GMObject":"",
   "%Name":"obj_Body",
-  "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-  ],
+  "eventList":[],
   "managed":true,
   "name":"obj_Body",
-  "overriddenProperties":[],
+  "overriddenProperties":[
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_Entity","path":"objects/obj_Entity/obj_Entity.yy",},"propertyId":{"name":"fn_create","path":"objects/obj_Entity/obj_Entity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"obj_Body_fn_create",},
+  ],
   "parent":{
     "name":"Body",
     "path":"folders/ns/entity/Body.yy",

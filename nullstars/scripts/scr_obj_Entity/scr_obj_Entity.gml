@@ -1,32 +1,44 @@
-// Feather ignore GM1051
-#macro SETUP_OBJ_ENTITY \
-	fn_tick := obj_Entity_fn_tick; \
-	fn_draw := obj_Entity_fn_draw; \
-	fn_outside := obj_Entity_fn_outside; \
-	p_entity_mask = mask_index; \
+/// @self obj_Entity
+function obj_Entity_fn_create() {
+	fn_tick := obj_Entity_fn_tick;
+	fn_draw := obj_Entity_fn_draw;
+	fn_outside := obj_Entity_fn_outside;
+	p_entity_mask = mask_index;
 	p_entity_id = 0;
+}
 
+/// @self obj_Entity
 function obj_Entity_fn_tick() {
 	// empty
 }
 
+/// @self obj_Entity
 function obj_Entity_fn_draw() {
 	// empty
 }
 
+/// @self obj_Entity
 function obj_Entity_fn_outside() {
 	// todo: replace with check for camera
 	return true;
 }
 
+/// @self obj_Entity
+function obj_Entity_create() {
+	self.fn_create();
+}
+
+/// @self obj_Entity
 function obj_Entity_tick() {
 	self.fn_tick();
 }
 
+/// @self obj_Entity
 function obj_Entity_draw() {
 	self.fn_draw();
 }
 
+/// @self obj_Entity
 function obj_Entity_outside() {
 	return self.fn_outside();
 }

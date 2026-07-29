@@ -1,2 +1,2 @@
 event_inherited();
-SETUP_OBJ_ENTITY
+obj_Entity_create();
