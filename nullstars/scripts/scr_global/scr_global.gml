@@ -27,6 +27,27 @@ ns_config() is for situations where
 // easier time modifying it when resolving settings.
 function ns_config() {
 	static __config := {
+		gen_terminal_vel: 5,
+		
+		nova_move_speed: 2,
+		nova_move_accel: 0.5,
+		nova_move_accel_fast: 0.8,
+		nova_move_slowdown: 0.08,
+		nova_move_slowdown_air: 0.04,
+		nova_gravity: 0.45,
+		nova_gravity_hold: 0.26,
+		nova_gravity_peak: 0.1,
+		nova_gravity_peak_thresh: 0.36,
+		nova_gravity_term: 0.12,
+		nova_jump_vel: 4.8,
+		nova_jump_time: 3,
+		nova_jump_damp: 0.6,
+		nova_jump_move_boost: 0.4,
+		nova_terminal_vel_hold: 1,
+		nova_terminal_vel_fast: 7,
+		nova_buffer_jump: 10,
+		nova_grounded_grace: 10,
+		
 		loader_radius_file: 1024,
 		loader_radius_parse: 512,
 		loader_radius_load: 256,
