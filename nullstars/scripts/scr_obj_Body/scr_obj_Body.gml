@@ -18,6 +18,8 @@ priority
 	collide = true; \
 	strong = true; \
 	priority = 0; \
+	x_rem = 0; \
+	y_rem = 0; \
 	fn_riding := obj_Body_fn_riding; \
 	fn_squish := obj_Body_fn_squish;
 
@@ -561,7 +563,12 @@ function obj_Body_squish() {
 @self asset.obj_Body
 */
 function obj_Body_move_x(_vel, _oncollide = undefined) {
-	obj_Body_move_blunt(true, _vel, _oncollide);
+	self.x_rem += _vel;
+	var _move := round(self.x_rem);
+	if _move != 0 {
+		self.x_rem -= _move;
+		obj_Body_move_blunt(true, _move, _oncollide);
+	}
 }
 
 /**
@@ -570,5 +577,10 @@ function obj_Body_move_x(_vel, _oncollide = undefined) {
 @self asset.obj_Body
 */
 function obj_Body_move_y(_vel, _oncollide = undefined) {
-	obj_Body_move_blunt(false, _vel, _oncollide);
+	self.y_rem += _vel;
+	var _move := round(self.y_rem);
+	if _move != 0 {
+		self.y_rem -= _move;
+		obj_Body_move_blunt(false, _move, _oncollide);
+	}
 }
