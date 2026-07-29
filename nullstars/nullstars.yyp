@@ -70,6 +70,7 @@
     {"id":{"name":"scr_global","path":"scripts/scr_global/scr_global.yy",},},
     {"id":{"name":"scr_json","path":"scripts/scr_json/scr_json.yy",},},
     {"id":{"name":"scr_log","path":"scripts/scr_log/scr_log.yy",},},
+    {"id":{"name":"scr_ns_controls","path":"scripts/scr_ns_controls/scr_ns_controls.yy",},},
     {"id":{"name":"scr_ns_level_autotile_compiler","path":"scripts/scr_ns_level_autotile_compiler/scr_ns_level_autotile_compiler.yy",},},
     {"id":{"name":"scr_ns_level_autotile_lut","path":"scripts/scr_ns_level_autotile_lut/scr_ns_level_autotile_lut.yy",},},
     {"id":{"name":"scr_ns_level_autotile_preset","path":"scripts/scr_ns_level_autotile_preset/scr_ns_level_autotile_preset.yy",},},

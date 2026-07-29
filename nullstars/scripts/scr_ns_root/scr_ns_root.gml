@@ -30,18 +30,14 @@ function ns_Root(_async) constructor {
 	
 	render := new Render();
 	
+	control := new ns_Control();
+	
 	static tick := function () {
 		self.time++;
 		
+		control.manager.update();
+		
 		camera.tick();
-		
-		var _kh = keyboard_check(vk_right) - keyboard_check(vk_left);
-		var _kv = keyboard_check(vk_down) - keyboard_check(vk_up);
-		
-		var _ks = keyboard_check(vk_shift);
-		
-		camera.x += _kh * 4 * (_ks + 1);
-		camera.y += _kv * 4 * (_ks + 1);
 		
 		world.tick();
 		
