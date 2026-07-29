@@ -7,15 +7,15 @@ function vinput_Manager(_gamepad = 0, _deadzone = 0.3) constructor {
 	inputs := {};
 	
 	static update := function () {
-		var _inputs := variable_struct_get_names(inputs)
+		var _inputs := variable_struct_get_names(inputs);
 		for (var i = 0; i < array_length(_inputs); i++) {
-			inputs[$ _inputs[i]].update()
+			inputs[$ _inputs[i]].update();
 		}
 		self.consumed = false;
 	};
 	
 	static create_input := function (_name) {
-		var _input := new Input(self);
+		var _input := new vinput_Input(self);
 		inputs[$ _name] = _input;
 		return _input;
 	};
@@ -61,6 +61,9 @@ function vinput_Input(_manager) constructor {
 		}
 		
 		if _active {
+			if self.time <= 0 {
+				self.time = 0;
+			}
 			self.time += 1;
 		}
 		else if self.time > 0 {
@@ -73,7 +76,7 @@ function vinput_Input(_manager) constructor {
 	
 	static add_keyboard_key := function (_key) {
 		var key := {
-			button : _key
+			button: _key
 		};
 		
 		key.check := method(key, function () {
@@ -87,8 +90,8 @@ function vinput_Input(_manager) constructor {
 	
 	static add_keyboard_axis := function (_key_l, _key_r) {
 		var key := {
-			button_left : _key_l,
-			button_right : _key_r,
+			button_left: _key_l,
+			button_right: _key_r,
 		};
 		
 		key.check := method(key, function () {
