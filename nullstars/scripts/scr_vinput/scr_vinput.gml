@@ -156,7 +156,7 @@ function vinput_Input(_manager) constructor {
 		return self;
     };
 	
-	static add_gamepad_shoulder_virtual := function (_button, _direction) {
+	static add_gamepad_shoulder_virtual := function (_button) {
 		var key := {
 		    creator: other,
 		    button: _button,
@@ -171,7 +171,7 @@ function vinput_Input(_manager) constructor {
 		return self;
     }
 	
-	static add_gamepad_shoulder := function (_button, _direction) {
+	static add_gamepad_shoulder := function (_button) {
 		var key := {
 		    creator: other,
 		    button: _button,
