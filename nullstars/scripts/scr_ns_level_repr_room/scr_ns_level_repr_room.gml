@@ -7,8 +7,8 @@ enum ns_level_RoomTarget {
 
 function ns_level_Budget() constructor {
 	time := get_timer();
-	time_max := ns_config().game_loader_budget_time * 1000;
-	count := ns_config().game_loader_budget_count;
+	time_max := ns_config().loader_budget_time * 1000;
+	count := ns_config().loader_budget_count;
 	
 	static tick := function () {
 		self.count--;

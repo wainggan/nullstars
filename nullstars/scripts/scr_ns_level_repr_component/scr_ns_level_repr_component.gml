@@ -446,7 +446,7 @@ function ns_level_RoomComponentAutotile() : ns_level_RoomComponent(nameof(ns_lev
 		var _rules := _room.resource_state_autotile_rules;
 		
 		for (
-			var _count = ns_config().game_loader_autotile_count;
+			var _count = ns_config().loader_autotile_iter_count;
 			_iter >= 0 && _count > 0;
 			{
 				_iter--;

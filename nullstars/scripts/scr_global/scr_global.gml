@@ -27,12 +27,14 @@ ns_config() is for situations where
 // easier time modifying it when resolving settings.
 function ns_config() {
 	static __config := {
-		game_loader_radius_file: 1024,
-		game_loader_radius_parse: 512,
-		game_loader_radius_load: 256,
-		game_loader_autotile_count: 20,
-		game_loader_budget_time: 2, // ms
-		game_loader_budget_count: 20,
+		loader_radius_file: 1024,
+		loader_radius_parse: 512,
+		loader_radius_load: 256,
+		
+		loader_autotile_iter_count: 20,
+		
+		loader_budget_time: 2, // ms
+		loader_budget_count: 20,
 	};
 	
 	return __config;

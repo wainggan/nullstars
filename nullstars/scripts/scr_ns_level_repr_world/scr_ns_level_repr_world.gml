@@ -85,8 +85,8 @@ function ns_level_World(_package) constructor {
 		
 		// a few assumptions with the following logic depends on this.
 		// like what the fuck are you doing if this doesn't hold anyways? lol?
-		ASSERT_DEBUG(_config.game_loader_radius_file > _config.game_loader_radius_parse);
-		ASSERT_DEBUG(_config.game_loader_radius_parse > _config.game_loader_radius_load);
+		ASSERT_DEBUG(_config.loader_radius_file > _config.loader_radius_parse);
+		ASSERT_DEBUG(_config.loader_radius_parse > _config.loader_radius_load);
 		
 		var _len;
 		var _radius;
@@ -103,7 +103,7 @@ function ns_level_World(_package) constructor {
 		// first check the file radius.
 		ds_list_clear(__list);
 		
-		_radius := _config.game_loader_radius_file;
+		_radius := _config.loader_radius_file;
 		_len := collision_rectangle_list(
 			_cam.x - _radius,
 			_cam.y - _radius,
@@ -129,7 +129,7 @@ function ns_level_World(_package) constructor {
 		// now check the parse radius.
 		ds_list_clear(__list);
 		
-		_radius := _config.game_loader_radius_parse;
+		_radius := _config.loader_radius_parse;
 		_len := collision_rectangle_list(
 			_cam.x - _radius,
 			_cam.y - _radius,
@@ -146,7 +146,7 @@ function ns_level_World(_package) constructor {
 		// finally check the load radius.
 		ds_list_clear(__list);
 		
-		_radius := _config.game_loader_radius_load;
+		_radius := _config.loader_radius_load;
 		_len := collision_rectangle_list(
 			_cam.x - _radius,
 			_cam.y - _radius,
