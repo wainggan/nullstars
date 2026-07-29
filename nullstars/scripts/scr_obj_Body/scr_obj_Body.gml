@@ -2,25 +2,23 @@
 a Body represents an in-game object that can collide with other Bodys.
 */
 
-/*
-collide
-	whether other bodys should consider this one 'collidable'
-strong
-	whether this body is 'solid'. solid bodys may not overlap
-	another body, and they are able to push other bodys.
-priority
-	determines push priority. bodys with higher priorities
-	can push bodys with lower priorities.
-*/
-
 /// @self obj_Body
 function obj_Body_fn_create() {
 	obj_Entity_fn_create();
+	
+	// whether other bodies should consider this one 'collidable'.
 	collide = true;
+	// whether this body is 'solid'. solid bodies may not overlap
+	// another body, and they are able to push other bodies.
 	strong = true;
+	// determines push priority. bodies with higher priorities
+	// can push bodies with lower priorities.
 	priority = 0;
+	
+	// fractional position - obj_Body x and y are always integers
 	x_rem = 0;
 	y_rem = 0;
+	
 	fn_riding := obj_Body_fn_riding;
 	fn_squish := obj_Body_fn_squish;
 }
