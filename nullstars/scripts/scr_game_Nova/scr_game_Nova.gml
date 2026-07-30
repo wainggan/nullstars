@@ -16,10 +16,11 @@ function obj_game_Nova_fn_tick() {
 	
 	buffer_jump -= 1;
 	
-	var _k_hor := ns_control().check("right") - ns_control().check("left");
-	var _k_ver := ns_control().check("right") - ns_control().check("left");
-	var _k_jump_p := ns_control().check_pressed("jump");
-	var _k_jump := ns_control().check("jump");
+	var _k_hor := ns_control_hold(ns_control_RIGHT) - ns_control_hold(ns_control_LEFT);
+	var _k_ver := ns_control_hold(ns_control_DOWN) - ns_control_hold(ns_control_UP);
+	var _k_jump_p := ns_control_press(ns_control_JUMP);
+	var _k_jump_r := ns_control_release(ns_control_JUMP);
+	var _k_jump := ns_control_hold(ns_control_JUMP);
 	
 	if _k_jump_p {
 		buffer_jump = _config.nova_buffer_jump;
@@ -65,7 +66,7 @@ function obj_game_Nova_fn_tick() {
 		_y_accel = _config.nova_gravity_term;
 	}
 	
-	if (ns_control().check_released("jump")) && y_vel < 0 {
+	if _k_jump_r && y_vel < 0 {
 		y_vel *= _config.nova_jump_damp;
 	}
 	
