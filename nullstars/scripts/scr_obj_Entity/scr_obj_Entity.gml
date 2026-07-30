@@ -1,7 +1,6 @@
 /// @self obj_Entity
 function obj_Entity_fn_create() {
 	fn_tick := obj_Entity_fn_tick;
-	fn_draw := obj_Entity_fn_draw;
 	fn_outside := obj_Entity_fn_outside;
 	p_entity_mask = mask_index;
 	p_entity_id = 0;
@@ -9,11 +8,6 @@ function obj_Entity_fn_create() {
 
 /// @self obj_Entity
 function obj_Entity_fn_tick() {
-	// empty
-}
-
-/// @self obj_Entity
-function obj_Entity_fn_draw() {
 	// empty
 }
 
@@ -31,11 +25,6 @@ function obj_Entity_create() {
 /// @self obj_Entity
 function obj_Entity_tick() {
 	self.fn_tick();
-}
-
-/// @self obj_Entity
-function obj_Entity_draw() {
-	self.fn_draw();
 }
 
 /// @self obj_Entity

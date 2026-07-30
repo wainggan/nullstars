@@ -6,6 +6,9 @@ a Body represents an in-game object that can collide with other Bodys.
 function obj_Body_fn_create() {
 	obj_Entity_fn_create();
 	
+	fn_tick := obj_Body_fn_tick;
+	fn_outside := obj_Body_fn_outside;
+	
 	// whether other bodies should consider this one 'collidable'.
 	collide = true;
 	// whether this body is 'solid'. solid bodies may not overlap
@@ -21,6 +24,16 @@ function obj_Body_fn_create() {
 	
 	fn_riding := obj_Body_fn_riding;
 	fn_squish := obj_Body_fn_squish;
+}
+
+/// @self obj_Body
+function obj_Body_fn_tick() {
+	obj_Entity_fn_tick();
+}
+
+/// @self obj_Body
+function obj_Body_fn_outside() {
+	return obj_Entity_fn_outside();
 }
 
 /// @self obj_Body

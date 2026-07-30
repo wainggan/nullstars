@@ -2,7 +2,6 @@
 function obj_game_Nova_fn_create() {
 	obj_Body_fn_create();
 	fn_tick := obj_game_Nova_fn_tick;
-	fn_draw := obj_game_Nova_fn_draw;
 	priority := 1;
 	x_vel = 0;
 	y_vel = 0;
@@ -97,8 +96,4 @@ function obj_game_Nova_fn_tick() {
 	
 	obj_Body_move_x(x_vel, __oncollide_x);
 	obj_Body_move_y(y_vel, __oncollide_y);
-}
-
-function obj_game_Nova_fn_draw() {
-	draw_self();
 }
