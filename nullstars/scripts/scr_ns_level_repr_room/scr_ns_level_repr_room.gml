@@ -213,8 +213,9 @@ function ns_level_Room(_world, _id, _x, _y, _width, _height) constructor {
 		
 		for (var i = 0, _len := array_length(entities); i < _len; i++) {
 			var _entity := entities[i];
-			
-			_entity.fn_tick();
+			with _entity {
+				obj_Entity_tick();
+			}
 		}
 	};
 	
