@@ -66,6 +66,10 @@ function ns_root() {
 	return global.__ns_root;
 }
 
+function ns_deltatime() {
+	return 1;
+}
+
 function AsyncHook() constructor {
 	__registered_file := [];
 	
