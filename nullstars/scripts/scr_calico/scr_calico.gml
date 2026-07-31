@@ -88,9 +88,10 @@ function calico_base_flag_reenter(_base, _state, _reenter) {
 create a new, empty state machine.
 
 @arg {struct.__CalicoBase} _base
+@arg {struct} _self
 */
-function calico_create(_base) {
-	return new __Calico(_base);
+function calico_create(_base, _self = undefined) {
+	return new __Calico(_base, _self);
 }
 
 /**
@@ -180,9 +181,11 @@ function __CalicoBase() constructor {
 @arg {struct.__CalicoBase} _base
 @ignore
 */
-function __Calico(_base) constructor {
+function __Calico(_base, _self = other) constructor {
 	// state base
 	__base := _base;
+	
+	__self := _self;
 	
 	// current state. indexes into `__states`.
 	/// @ignore
@@ -326,7 +329,9 @@ function __Calico(_base) constructor {
 			}
 			
 			if _callback != undefined {
-				_callback(self, __data);
+				with __self {
+					_callback(other, other.__data);
+				}
 			}
 			else {
 				// automatically delegate if not set.
