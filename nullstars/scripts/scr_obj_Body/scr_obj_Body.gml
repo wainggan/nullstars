@@ -10,13 +10,13 @@ function obj_Body_fn_create() {
 	fn_outside := obj_Body_fn_outside;
 	
 	// whether other bodies should consider this one 'collidable'.
-	collide = true;
+	body_collide = true;
 	// whether this body is 'solid'. solid bodies may not overlap
 	// another body, and they are able to push other bodies.
-	strong = true;
+	body_strong = true;
 	// determines push priority. bodies with higher priorities
 	// can push bodies with lower priorities.
-	priority = 0;
+	body_priority = 0;
 	
 	// fractional position - obj_Body x and y are always integers
 	x_rem = 0;
@@ -330,7 +330,7 @@ function obj_Body_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = unde
 		var _other := _list[| i];
 		
 		// skip non-solids and solids with weaker priorities
-		if !_other.strong || _other.priority <= self.priority {
+		if !_other.body_strong || _other.body_priority <= self.body_priority {
 			continue;
 		}
 		
@@ -358,7 +358,7 @@ function obj_Body_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = unde
 	// _vel_wall is now 'clipped', assuming that all non-priority
 	// bodies are moved. speaking of:
 	
-	if self.strong {
+	if self.body_strong {
 		// step 2: resolve all non-priority collisions
 		
 		// refresh collision since velocity was clipped
@@ -395,7 +395,7 @@ function obj_Body_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = unde
 			var _other := _list[| i];
 		
 			// skip solids with stronger priorities
-			if _other.strong && _other.priority > self.priority {
+			if _other.body_strong && _other.body_priority > self.body_priority {
 				continue;
 			}
 		
@@ -432,7 +432,7 @@ function obj_Body_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = unde
 			// anything). squish will ensure this doesn't happen (probably
 			// eliminating _other).
 			with _other {
-				obj_Body_move_blunt(_axis, _diff, self.fn_squish, other);
+				obj_Body_move_blunt(_axis, _diff, self.body_fn_squish, other);
 			}
 			
 			//if _axis {
@@ -550,7 +550,7 @@ function obj_Body_collision(_x, _y) {
 	
 	for (var i = 0; i < _len; i++) {
 		var _check := __list[| i];
-		if _check.strong && _check.priority >= self.priority {
+		if _check.body_strong && _check.body_priority >= self.body_priority {
 			return true;
 		}
 	}
