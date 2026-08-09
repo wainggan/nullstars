@@ -70,6 +70,10 @@ function ns_level_Room(_world, _id, _x, _y, _width, _height) constructor {
 	resource_state_autotile_tex_height = 0;
 	resource_state_autotile_rules = undefined;
 	
+	resource_state_collision_velocity_iter = 0;
+	resource_state_collision_velocity_dir = 0;
+	resource_state_collision_velocity_width = 0;
+	
 	/*
 	used for collisions.
 	not intended to be drawn !!
@@ -95,6 +99,19 @@ function ns_level_Room(_world, _id, _x, _y, _width, _height) constructor {
 	// unfortunately we can't use the tilemap without a layer.
 	layer_solid_base = undefined;
 	layer_solid_tilemap = undefined;
+	
+	/*
+	also used for collisions.
+	still not intended to be drawn...
+	
+	0bxxxx_yyyy_zzzz_wwww
+	x => tiles to the east until solid tile
+	y => tiles to the north until solid tile
+	z => tiles to the west until solid tile
+	w => tiles to the south until solid tile
+	*/
+	layer_velocity_base = undefined;
+	layer_velocity_tilemap = undefined;
 	
 	/*
 	used for collisions and drawing.

@@ -16,6 +16,7 @@ function ns_level_RoomComponentsList() constructor {
 	static component_header := new ns_level_RoomComponentHeader();
 	static component_parse_setup := new ns_level_RoomComponentParseSetup();
 	static component_parse_collision := new ns_level_RoomComponentParseCollision();
+	static component_calculate_collision_velocity := new ns_level_RoomComponentCalculateCollisionVelocity();
 	static component_autotile := new ns_level_RoomComponentAutotile();
 	static component_parse_entity := new ns_level_RoomComponentParseEntity();
 	static component_load_entity := new ns_level_RoomComponentLoadEntity();
@@ -25,6 +26,7 @@ function ns_level_RoomComponentsList() constructor {
 		component_header,
 		component_parse_setup,
 		component_parse_collision,
+		component_calculate_collision_velocity,
 		component_autotile,
 		component_parse_entity,
 		component_load_entity,
@@ -43,6 +45,7 @@ function ns_level_RoomComponentsList() constructor {
 		component_parse_setup,
 		component_parse_collision,
 		component_parse_entity,
+		component_calculate_collision_velocity,
 		component_autotile,
 	];
 	
@@ -52,11 +55,12 @@ function ns_level_RoomComponentsList() constructor {
 		component_parse_setup,
 		component_parse_collision,
 		component_parse_entity,
+		component_calculate_collision_velocity,
 		component_load_entity,
 		component_autotile,
 	];
 	
-	static phase_load_loser := 6;
+	static phase_load_loser := 7;
 }
 
 function ns_level_component() {
@@ -315,11 +319,29 @@ function ns_level_RoomComponentParseSetup() : ns_level_RoomComponent(nameof(ns_l
 			_room.height
 		);
 		
+		ASSERT_EQ(_room.layer_velocity_base, undefined);
+		ASSERT_EQ(_room.layer_velocity_tilemap, undefined);
+		
+		var _layer_velocity_base := layer_create(0);
+		layer_set_visible(_layer_velocity_base, false);
+		var _layer_velocity_tilemap := layer_tilemap_create(
+			_layer_velocity_base,
+			_room.x * TILE_SIZE,
+			_room.y * TILE_SIZE,
+			ts_debug_tileset,
+			_room.width,
+			_room.height
+		);
+		tilemap_set_mask(_layer_velocity_tilemap, 0);
+		
 		_room.layer_solid_base = _layer_solid_base;
 		_room.layer_solid_tilemap = _layer_solid_tilemap;
 		
 		_room.layer_spike_base = _layer_spike_base;
 		_room.layer_spike_tilemap = _layer_spike_tilemap;
+		
+		_room.layer_velocity_base = _layer_velocity_base;
+		_room.layer_velocity_tilemap = _layer_velocity_tilemap;
 		
 		return ns_level_RoomComponentStatus.Complete;
 	};
@@ -337,6 +359,11 @@ function ns_level_RoomComponentParseSetup() : ns_level_RoomComponent(nameof(ns_l
 		
 		_room.layer_spike_base = undefined;
 		_room.layer_spike_tilemap = undefined;
+		
+		layer_destroy(_room.layer_velocity_base);
+		
+		_room.layer_velocity_base = undefined;
+		_room.layer_velocity_tilemap = undefined;
 		
 		return ns_level_RoomComponentStatus.Complete;
 	};
@@ -534,6 +561,109 @@ function ns_level_RoomComponentAutotile() : ns_level_RoomComponent(nameof(ns_lev
 		vertex_delete_buffer(_room.layer_graphic_front_vb);
 		_room.layer_graphic_front_vb = undefined;
 		
+		return ns_level_RoomComponentStatus.Complete;
+	};
+}
+
+function ns_level_RoomComponentCalculateCollisionVelocity() : ns_level_RoomComponent(nameof(ns_level_RoomComponentCalculateCollisionVelocity)) constructor {
+	static fn_work_init := function (_room) {
+		var _root := ns_root();
+		var _map := _room.resource_buffer_map;
+		
+		_room.resource_state_collision_velocity_iter = _map.width * _map.height;
+		_room.resource_state_collision_velocity_dir = 0;
+		_room.resource_state_collision_velocity_width = _map.width;
+	};
+	
+	static fn_work_tick := function (_room) {
+		var _tilemap := _room.layer_velocity_tilemap;
+		ASSERT_NE_DEBUG(_tilemap, undefined);
+		
+		var _layer_solid_tilemap := _room.layer_solid_tilemap;
+		ASSERT_NE_DEBUG(_layer_solid_tilemap, undefined);
+
+		var _iter = _room.resource_state_collision_velocity_iter;
+		var _dir = _room.resource_state_collision_velocity_dir;
+		var _width := _room.resource_state_collision_velocity_width;
+		
+		for (
+			var _count = ns_config().loader_collision_velocity_iter_count;
+			_iter >= 0 && _count > 0;
+			{
+				_dir++;
+				if _dir > 3 {
+					_dir = 0;
+					_iter--;
+				}
+				_count--;
+			};
+		) {
+			var _x := _iter mod _width;
+			var _y := _iter div _width;
+			
+			var _current := tilemap_get(_layer_solid_tilemap, _x, _y);
+			
+			if _current != 0 {
+				tilemap_set(_tilemap, 0, _x, _y);
+				_dir = 3;
+				continue;
+			}
+			
+			ASSERT_EQ_DEBUG(_current, 0); // lol
+			
+			var _search_dir_x = 0;
+			var _search_dir_y = 0;
+			
+			if _dir == 0 {
+				_search_dir_x := 1;
+			}
+			else if _dir == 1 {
+				_search_dir_y := -1;
+			}
+			else if _dir == 2 {
+				_search_dir_x := -1;
+			}
+			else if _dir == 3 {
+				_search_dir_y := 1;
+			}
+			else {
+				ASSERT(false);
+			}
+			
+			var _distance = 1;
+			for (; _distance < 15; _distance += 1) {
+				_current := tilemap_get(_layer_solid_tilemap, _x + _search_dir_x * _distance, _y + _search_dir_y * _distance);
+				
+				if _current != 0 {
+					break;
+				}
+			}
+			
+			ASSERT_DEBUG(_distance < 16);
+			
+			var _inset_new := _distance << (_dir * 4);
+			var _inset_old := tilemap_get(_tilemap, _x, _y);
+			
+			tilemap_set(_tilemap, _inset_old | _inset_new, _x, _y);
+		}
+		
+		_room.resource_state_collision_velocity_iter = _iter;
+		_room.resource_state_collision_velocity_dir = _dir;
+		
+		if _iter < 0 {
+			ASSERT_EQ(_iter, -1);
+		
+			return ns_level_RoomComponentStatus.Complete;
+		}
+		else {
+			return ns_level_RoomComponentStatus.Running;
+		}
+	};
+	
+	static fn_clean_init := function (_room) {
+	};
+	
+	static fn_clean_tick := function (_room) {
 		return ns_level_RoomComponentStatus.Complete;
 	};
 }

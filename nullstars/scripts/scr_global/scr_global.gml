@@ -53,6 +53,7 @@ function ns_config() {
 		loader_radius_load: 256,
 		
 		loader_autotile_iter_count: 20,
+		loader_collision_velocity_iter_count: 20,
 		
 		loader_budget_time: 2, // ms
 		loader_budget_count: 20,

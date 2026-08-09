@@ -56,6 +56,19 @@ function ns_Root(_async) constructor {
 	
 	static draw := function () {
 		render.draw(self);
+		
+		var _inst = collision_point(mouse_x, mouse_y, obj_room, false, true);
+		with _inst {
+			with parent {
+				if layer_velocity_tilemap != undefined {
+					var _tile = tilemap_get_at_pixel(layer_velocity_tilemap, mouse_x, mouse_y);
+					draw_text(16, 16, _tile & 0b1111)
+					draw_text(16, 16 + 16, (_tile >> 4) & 0b1111)
+					draw_text(16, 16 + 32, (_tile >> 8) & 0b1111)
+					draw_text(16, 16 + 48, (_tile >> 12) & 0b1111)
+				}
+			}
+		}
 	};
 }
 
