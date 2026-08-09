@@ -595,28 +595,32 @@ function ns_level_RoomComponentCalculateCollisionVelocity() : ns_level_RoomCompo
 			
 			var _current := tilemap_get(_layer_solid_tilemap, _x, _y);
 			
-			if _current != 0 {
+			if (_current & 0b11) == 0b00 && _current != 0 {
 				tilemap_set(_tilemap, 0, _x, _y);
 				_dir = 3;
 				continue;
 			}
 			
-			ASSERT_EQ_DEBUG(_current, 0); // lol
-			
 			var _search_dir_x = 0;
 			var _search_dir_y = 0;
 			
+			var _dir_inv;
+			
 			if _dir == 0 {
 				_search_dir_x := 1;
+				_dir_inv := 2;
 			}
 			else if _dir == 1 {
 				_search_dir_y := -1;
+				_dir_inv := 3;
 			}
 			else if _dir == 2 {
 				_search_dir_x := -1;
+				_dir_inv := 0;
 			}
 			else if _dir == 3 {
 				_search_dir_y := 1;
+				_dir_inv := 1;
 			}
 			else {
 				ASSERT(false);
@@ -624,13 +628,23 @@ function ns_level_RoomComponentCalculateCollisionVelocity() : ns_level_RoomCompo
 			
 			var _distance = 1;
 			for (; _distance < 15; _distance += 1) {
-				_current := tilemap_get(_layer_solid_tilemap, _x + _search_dir_x * _distance, _y + _search_dir_y * _distance);
+				var _tile := tilemap_get(_layer_solid_tilemap, _x + _search_dir_x * _distance, _y + _search_dir_y * _distance);
 				
-				if _current != 0 {
-					if _current == -1 {
-						_distance = 15;
-					}
+				if _tile == -1 {
+					_distance = 15;
 					break;
+				}
+				
+				if (_tile & 0b11) == 0b00 {
+					if _tile != 0 {
+						break;
+					}
+				}
+				else {
+					_tile = _tile >> 2;
+					if _tile == _dir_inv {
+						break;
+					}
 				}
 			}
 			
