@@ -319,29 +319,11 @@ function ns_level_RoomComponentParseSetup() : ns_level_RoomComponent(nameof(ns_l
 			_room.height
 		);
 		
-		ASSERT_EQ(_room.layer_velocity_base, undefined);
-		ASSERT_EQ(_room.layer_velocity_tilemap, undefined);
-		
-		var _layer_velocity_base := layer_create(0);
-		layer_set_visible(_layer_velocity_base, false);
-		var _layer_velocity_tilemap := layer_tilemap_create(
-			_layer_velocity_base,
-			_room.x * TILE_SIZE,
-			_room.y * TILE_SIZE,
-			ts_debug_tileset,
-			_room.width,
-			_room.height
-		);
-		tilemap_set_mask(_layer_velocity_tilemap, 0);
-		
 		_room.layer_solid_base = _layer_solid_base;
 		_room.layer_solid_tilemap = _layer_solid_tilemap;
 		
 		_room.layer_spike_base = _layer_spike_base;
 		_room.layer_spike_tilemap = _layer_spike_tilemap;
-		
-		_room.layer_velocity_base = _layer_velocity_base;
-		_room.layer_velocity_tilemap = _layer_velocity_tilemap;
 		
 		return ns_level_RoomComponentStatus.Complete;
 	};
@@ -359,11 +341,6 @@ function ns_level_RoomComponentParseSetup() : ns_level_RoomComponent(nameof(ns_l
 		
 		_room.layer_spike_base = undefined;
 		_room.layer_spike_tilemap = undefined;
-		
-		layer_destroy(_room.layer_velocity_base);
-		
-		_room.layer_velocity_base = undefined;
-		_room.layer_velocity_tilemap = undefined;
 		
 		return ns_level_RoomComponentStatus.Complete;
 	};
@@ -573,6 +550,21 @@ function ns_level_RoomComponentCalculateCollisionVelocity() : ns_level_RoomCompo
 		_room.resource_state_collision_velocity_iter = _map.width * _map.height;
 		_room.resource_state_collision_velocity_dir = 0;
 		_room.resource_state_collision_velocity_width = _map.width;
+		
+		var _layer_velocity_base := layer_create(0);
+		layer_set_visible(_layer_velocity_base, false);
+		var _layer_velocity_tilemap := layer_tilemap_create(
+			_layer_velocity_base,
+			_room.x * TILE_SIZE,
+			_room.y * TILE_SIZE,
+			ts_debug_tileset,
+			_room.width,
+			_room.height
+		);
+		tilemap_set_mask(_layer_velocity_tilemap, 0);
+		
+		_room.resource_state_collision_velocity_layer = _layer_velocity_base;
+		_room.resource_state_collision_velocity_tilemap = _layer_velocity_tilemap;
 	};
 	
 	static fn_work_tick := function (_room) {
@@ -655,6 +647,12 @@ function ns_level_RoomComponentCalculateCollisionVelocity() : ns_level_RoomCompo
 		
 		if _iter < 0 {
 			ASSERT_EQ(_iter, -1);
+			
+			ASSERT_EQ(_room.layer_velocity_base, undefined);
+			ASSERT_EQ(_room.layer_velocity_tilemap, undefined);
+			
+			_room.layer_velocity_base = _room.resource_state_collision_velocity_layer;
+			_room.layer_velocity_tilemap = _room.resource_state_collision_velocity_tilemap;
 		
 			return ns_level_RoomComponentStatus.Complete;
 		}
@@ -667,6 +665,11 @@ function ns_level_RoomComponentCalculateCollisionVelocity() : ns_level_RoomCompo
 	};
 	
 	static fn_clean_tick := function (_room) {
+		layer_destroy(_room.layer_velocity_base);
+		
+		_room.layer_velocity_base = undefined;
+		_room.layer_velocity_tilemap = undefined;
+		
 		return ns_level_RoomComponentStatus.Complete;
 	};
 }

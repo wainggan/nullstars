@@ -73,6 +73,8 @@ function ns_level_Room(_world, _id, _x, _y, _width, _height) constructor {
 	resource_state_collision_velocity_iter = 0;
 	resource_state_collision_velocity_dir = 0;
 	resource_state_collision_velocity_width = 0;
+	resource_state_collision_velocity_layer = undefined;
+	resource_state_collision_velocity_tilemap = undefined;
 	
 	/*
 	used for collisions.
