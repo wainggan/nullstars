@@ -163,7 +163,9 @@ function obj_Body_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = unde
 			// another nightmare if-else.
 			if _axis {
 				if _sign == 1 {
-					var _bbtile_iter = _bbtile_left;
+					var _bbtile_edge := clamp((self.bbox_right - _tilemap_x - 1) div (TILE_SIZE), 0, _tilemap_w - 1);
+					
+					var _bbtile_iter = max(_bbtile_left, _bbtile_edge);
 					
 					while true {
 						var _check = 16;
@@ -195,7 +197,9 @@ function obj_Body_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = unde
 					}
 				}
 				else {
-					var _bbtile_iter = _bbtile_right;
+					var _bbtile_edge := clamp((self.bbox_left - _tilemap_x) div (TILE_SIZE), 0, _tilemap_w - 1);
+					
+					var _bbtile_iter = min(_bbtile_right, _bbtile_edge);
 					
 					while true {
 						var _check = 16;
@@ -229,7 +233,9 @@ function obj_Body_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = unde
 			}
 			else {
 				if _sign == 1 {
-					var _bbtile_iter = _bbtile_top;
+					var _bbtile_edge := clamp((self.bbox_bottom - _tilemap_y - 1) div (TILE_SIZE), 0, _tilemap_h - 1);
+					
+					var _bbtile_iter = max(_bbtile_top, _bbtile_edge);
 					
 					while true {
 						var _check = 16;
@@ -261,7 +267,9 @@ function obj_Body_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = unde
 					}
 				}
 				else {
-					var _bbtile_iter = _bbtile_bottom;
+					var _bbtile_edge := clamp((self.bbox_top - _tilemap_y) div (TILE_SIZE), 0, _tilemap_h - 1);
+					
+					var _bbtile_iter = min(_bbtile_bottom, _bbtile_edge);
 					
 					while true {
 						var _check = 16;
