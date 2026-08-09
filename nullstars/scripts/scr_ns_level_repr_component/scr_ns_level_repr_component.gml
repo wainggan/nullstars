@@ -568,8 +568,6 @@ function ns_level_RoomComponentParseEntity() : ns_level_RoomComponent(nameof(ns_
 			});
 		}
 		
-		show_debug_message(_room.resource_entity_data);
-		
 		return ns_level_RoomComponentStatus.Complete;
 	};
 	
