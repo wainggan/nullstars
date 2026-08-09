@@ -158,6 +158,8 @@ function obj_Body_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = unde
 			
 			var _tilemap_vel := _room.layer_velocity_tilemap;
 			
+			var _exit = false;
+			
 			// another nightmare if-else.
 			if _axis {
 				if _sign == 1 {
@@ -173,16 +175,23 @@ function obj_Body_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = unde
 						
 						_bbtile_iter += _check;
 						
-						if _check != 15 || _bbtile_iter > _bbtile_right {
+						if _check != 15 {
+							break;
+						}
+						
+						if _bbtile_iter > _bbtile_right {
+							_exit = true;
 							break;
 						}
 					}
 					
-					var _bbtile := _bbtile_iter * (TILE_SIZE) + _tilemap_x;
+					if !_exit {
+						var _bbtile := _bbtile_iter * (TILE_SIZE) + _tilemap_x;
 					
-					if self.bbox_right + _vel_wall >= _bbtile {
-						_vel_wall = min(_vel_wall, _bbtile - self.bbox_right);
-						_collided = true;
+						if self.bbox_right + _vel_wall >= _bbtile {
+							_vel_wall = min(_vel_wall, _bbtile - self.bbox_right);
+							_collided = true;
+						}
 					}
 				}
 				else {
@@ -198,16 +207,23 @@ function obj_Body_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = unde
 						
 						_bbtile_iter -= _check;
 						
-						if _check != 15 || _bbtile_iter < _bbtile_left {
+						if _check != 15 {
+							break;
+						}
+						
+						if _bbtile_iter < _bbtile_left {
+							_exit = true;
 							break;
 						}
 					}
 					
-					var _bbtile := _bbtile_iter * (TILE_SIZE) + _tilemap_x + (TILE_SIZE);
+					if !_exit {
+						var _bbtile := _bbtile_iter * (TILE_SIZE) + _tilemap_x + (TILE_SIZE);
 					
-					if self.bbox_left + _vel_wall <= _bbtile {
-						_vel_wall = max(_vel_wall, _bbtile - self.bbox_left);
-						_collided = true;
+						if self.bbox_left + _vel_wall <= _bbtile {
+							_vel_wall = max(_vel_wall, _bbtile - self.bbox_left);
+							_collided = true;
+						}
 					}
 				}
 			}
@@ -225,16 +241,23 @@ function obj_Body_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = unde
 						
 						_bbtile_iter += _check;
 						
-						if _check != 15 || _bbtile_iter > _bbtile_bottom {
+						if _check != 15 {
+							break;
+						}
+						
+						if _bbtile_iter > _bbtile_bottom {
+							_exit = true;
 							break;
 						}
 					}
 					
-					var _bbtile := _bbtile_iter * (TILE_SIZE) + _tilemap_y;
+					if !_exit {
+						var _bbtile := _bbtile_iter * (TILE_SIZE) + _tilemap_y;
 					
-					if self.bbox_bottom + _vel_wall >= _bbtile {
-						_vel_wall = min(_vel_wall, _bbtile - self.bbox_bottom);
-						_collided = true;
+						if self.bbox_bottom + _vel_wall >= _bbtile {
+							_vel_wall = min(_vel_wall, _bbtile - self.bbox_bottom);
+							_collided = true;
+						}
 					}
 				}
 				else {
@@ -250,16 +273,23 @@ function obj_Body_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = unde
 						
 						_bbtile_iter -= _check;
 						
-						if _check != 15 || _bbtile_iter < _bbtile_top {
+						if _check != 15 {
+							break;
+						}
+						
+						if _bbtile_iter < _bbtile_top {
+							_exit = true;
 							break;
 						}
 					}
 					
-					var _bbtile := _bbtile_iter * (TILE_SIZE) + _tilemap_y + (TILE_SIZE);
+					if !_exit {
+						var _bbtile := _bbtile_iter * (TILE_SIZE) + _tilemap_y + (TILE_SIZE);
 					
-					if self.bbox_top + _vel_wall <= _bbtile {
-						_vel_wall = max(_vel_wall, _bbtile - self.bbox_top);
-						_collided = true;
+						if self.bbox_top + _vel_wall <= _bbtile {
+							_vel_wall = max(_vel_wall, _bbtile - self.bbox_top);
+							_collided = true;
+						}
 					}
 				}
 			}
