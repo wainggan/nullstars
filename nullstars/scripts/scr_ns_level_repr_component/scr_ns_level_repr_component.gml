@@ -635,6 +635,9 @@ function ns_level_RoomComponentCalculateCollisionVelocity() : ns_level_RoomCompo
 				_current := tilemap_get(_layer_solid_tilemap, _x + _search_dir_x * _distance, _y + _search_dir_y * _distance);
 				
 				if _current != 0 {
+					if _current == -1 {
+						_distance = 15;
+					}
 					break;
 				}
 			}
