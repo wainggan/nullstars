@@ -568,7 +568,7 @@ function ns_level_RoomComponentCalculateCollisionVelocity() : ns_level_RoomCompo
 	};
 	
 	static fn_work_tick := function (_room) {
-		var _tilemap := _room.layer_velocity_tilemap;
+		var _tilemap := _room.resource_state_collision_velocity_tilemap;
 		ASSERT_NE_DEBUG(_tilemap, undefined);
 		
 		var _layer_solid_tilemap := _room.layer_solid_tilemap;
