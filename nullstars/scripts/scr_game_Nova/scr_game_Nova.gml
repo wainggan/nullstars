@@ -30,6 +30,8 @@ function obj_game_Nova_fn_create() {
 	self.release_jump_buffer_timer = 0;
 	
 	self.buffer_jump = 0;
+	self.buffer_ground = 0;
+	self.buffer_ground_y = 0;
 	
 	self.state := calico_create(obj_game_Nova_get_state_base(), self);
 	calico_change(self.state, obj_game_Nova_STATE_FREE);
@@ -49,6 +51,8 @@ function obj_game_Nova_state_generic(_state, _data) {
 		self.buffer_jump = _config.nova_buffer_jump;
 	}
 	
+	self.buffer_ground -= ns_deltatime();
+	
 	calico_child(_state);
 	
 	static __oncollide_x := function () {
@@ -57,6 +61,7 @@ function obj_game_Nova_state_generic(_state, _data) {
 	
 	static __oncollide_y := function () {
 		self.y_vel = 0;
+		obj_game_Nova_set_force_y_vel(0, 0);
 	};
 	
 	obj_Body_move_x(self.x_vel * ns_deltatime(), __oncollide_x);
@@ -109,13 +114,12 @@ function obj_game_Nova_state_free(_state, _data) {
 	var _k_jump_r := ns_control_release(ns_control_JUMP);
 	var _k_jump := ns_control_hold(ns_control_JUMP);
 	
-	var _onground := obj_Body_collision(x, y + 1);
+	var _onground := y_vel >= 0 && obj_Body_collision(self.x, self.y + 1);
 	
 	var _k_move = _k_hor;
 	
-	
-	
 	var _x_accel = 0;
+	
 	if abs(self.x_vel) > _config.nova_move_speed && _k_hor == sign(self.x_vel) {
 		if _onground {
 			_x_accel = _config.nova_move_slowdown;
@@ -133,12 +137,12 @@ function obj_game_Nova_state_free(_state, _data) {
 		}
 	}
 	
-	x_vel = approach(x_vel, _k_hor * _config.nova_move_speed, _x_accel * ns_deltatime());
+	self.x_vel = approach(self.x_vel, _k_hor * _config.nova_move_speed, _x_accel * ns_deltatime());
 	
 	var _y_accel = 0;
 	
-	if _k_jump {
-		if abs(y_vel) < _config.nova_gravity_peak_thresh {
+	if _k_jump || self.release_jump_buffer_timer > 0 {
+		if abs(self.y_vel) < _config.nova_gravity_peak_thresh {
 			_y_accel = _config.nova_gravity_peak;
 		}
 		else {
@@ -149,16 +153,17 @@ function obj_game_Nova_state_free(_state, _data) {
 		_y_accel = _config.nova_gravity;
 	}
 	
-	if y_vel >= _config.gen_terminal_vel {
+	if self.y_vel >= _config.gen_terminal_vel {
 		_y_accel = _config.nova_gravity_term;
 	}
 	
-	if (_k_jump_r || self.release_jump_buffer_timer > 0) && y_vel < 0 {
+	if (_k_jump_r || self.release_jump_buffer_timer > 0) && self.y_vel < 0 {
 		obj_game_Nova_jump_normal_set_release();
 	}
 	self.release_jump_buffer_timer = 0;
 	
 	var _term_vel = _config.gen_terminal_vel;
+	
 	if _k_ver == 1 {
 		_term_vel = _config.nova_terminal_vel_fast;
 	}
@@ -167,8 +172,13 @@ function obj_game_Nova_state_free(_state, _data) {
 		_term_vel -= _config.nova_terminal_vel_hold;
 	}
 	
+	if _onground {
+		self.buffer_ground = _config.nova_buffer_ground;
+		self.buffer_ground_y = y;
+	}
+	
 	if self.force_y_vel_timer > 0 {
-		self.force_y_vel_timer -= 1;
+		self.force_y_vel_timer -= ns_deltatime();
 		if _k_jump {
 			self.y_vel = self.force_y_vel_value;
 		}
@@ -182,13 +192,37 @@ function obj_game_Nova_state_free(_state, _data) {
 		}
 	}
 	
-	if buffer_jump > 0 && _onground {
-		buffer_jump = 0
+	if self.buffer_jump > 0 {
+		if self.buffer_ground > 0 {
+			self.buffer_jump = 0;
 		
-		obj_game_Nova_jump_normal_set_start();
+			obj_Body_move_y(self.buffer_ground_y - self.y);
+			self.buffer_ground = 0;
+			self.buffer_ground_y = 0;
 		
-		if !_k_jump {
-			self.release_jump_buffer_timer = 1;
+			obj_game_Nova_jump_normal_set_start();
+		
+			if !_k_jump {
+				self.release_jump_buffer_timer = 1;
+			}
+		}
+		else {
+			var _wall_distance = max(4, abs(self.x_vel));
+			var _wall_left = obj_Body_collision(self.x - _wall_distance, self.y);
+			var _wall_right = obj_Body_collision(self.x + _wall_distance, self.y);
+			var _wall_dir = _wall_right - _wall_left;
+			
+			if _wall_left || _wall_right {
+				self.buffer_jump = 0;
+				self.buffer_ground = 0;
+				self.buffer_ground_y = 0;
+				
+				obj_game_Nova_jump_normal_set_start();
+		
+				if !_k_jump {
+					self.release_jump_buffer_timer = 1;
+				}
+			}
 		}
 	}
 	
