@@ -134,6 +134,8 @@ function obj_Body_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = unde
 	);
 	
 	for (var i = 0; i < _len; i++) {
+		var _room := __tilemap_list[| i].parent;
+		
 		var _tilemap := __tilemap_list[| i].parent.layer_solid_tilemap;
 		ASSERT_NE(_tilemap, undefined);
 		
@@ -148,151 +150,269 @@ function obj_Body_move_blunt(_axis, _vel, _oncollide = undefined, _pusher = unde
 		var _bbtile_top := clamp((_area_top - _tilemap_y) div (TILE_SIZE), 0, _tilemap_h - 1);
 		var _bbtile_bottom := clamp((_area_bottom - _tilemap_y - 1) div (TILE_SIZE), 0, _tilemap_h - 1);
 		
-		// no goto :(
-		var _exit = false;
+		// there are two versions of this collision check.
 		
-		// evil nightmare if-else. these loops are oriented such that
-		// we always scan from self outward.
-		if _axis {
-			if _sign == 1 {
-				for (var _x = _bbtile_left; _x <= _bbtile_right; _x++) {
-					for (var _y = _bbtile_top; _y <= _bbtile_bottom; _y++) {
-						var _tile = tilemap_get(_tilemap, _x, _y);
-						
-						var _bbtile := _x * (TILE_SIZE) + _tilemap_x;
-						
-						var _check;
-						
-						if (_tile & 0b11) == 0b00 {
-							_check := _tile != 0;
-						}
-						else {
-							_tile = _tile >> 2;
-							if _tile == 2 {
-								_check := self.bbox_right <= _bbtile;
-							}
-							else {
-								_check := false;
-							}
+		if _room.layer_velocity_tilemap != undefined {
+			// the first is if the room had calculated the cached collision yet.
+			// we can do significantly less work!
+			
+			var _tilemap_vel := _room.layer_velocity_tilemap;
+			
+			// another nightmare if-else.
+			if _axis {
+				if _sign == 1 {
+					var _bbtile_iter = _bbtile_left;
+					
+					while true {
+						var _check = 16;
+						for (var _y = _bbtile_top; _y <= _bbtile_bottom; _y++) {
+							_check = min(_check, tilemap_get(_tilemap_vel, _bbtile_iter, _y) & 0b1111);
 						}
 						
-						if _check {
-							_vel_wall = min(_vel_wall, _bbtile - self.bbox_right);
-							_collided = true;
-							_exit = true;
+						ASSERT_NE_DEBUG(_check, 16);
+						
+						_bbtile_iter += _check;
+						
+						if _check != 15 || _bbtile_iter > _bbtile_right {
 							break;
 						}
 					}
 					
-					if _exit {
-						break;
+					var _bbtile := _bbtile_iter * (TILE_SIZE) + _tilemap_x;
+					
+					if self.bbox_right + _vel_wall >= _bbtile {
+						_vel_wall = min(_vel_wall, _bbtile - self.bbox_right);
+						_collided = true;
+					}
+				}
+				else {
+					var _bbtile_iter = _bbtile_right;
+					
+					while true {
+						var _check = 16;
+						for (var _y = _bbtile_top; _y <= _bbtile_bottom; _y++) {
+							_check = min(_check, (tilemap_get(_tilemap_vel, _bbtile_iter, _y) >> 8) & 0b1111);
+						}
+						
+						ASSERT_NE_DEBUG(_check, 16);
+						
+						_bbtile_iter -= _check;
+						
+						if _check != 15 || _bbtile_iter < _bbtile_left {
+							break;
+						}
+					}
+					
+					var _bbtile := _bbtile_iter * (TILE_SIZE) + _tilemap_x + (TILE_SIZE);
+					
+					if self.bbox_left + _vel_wall <= _bbtile {
+						_vel_wall = max(_vel_wall, _bbtile - self.bbox_left);
+						_collided = true;
 					}
 				}
 			}
 			else {
-				for (var _x = _bbtile_right; _x >= _bbtile_left; _x--) {
-					for (var _y = _bbtile_top; _y <= _bbtile_bottom; _y++) {
-						var _tile = tilemap_get(_tilemap, _x, _y);
-						
-						var _bbtile := _x * (TILE_SIZE) + _tilemap_x + (TILE_SIZE);
-						
-						var _check;
-						
-						if (_tile & 0b11) == 0b00 {
-							_check := _tile != 0;
-						}
-						else {
-							_tile = _tile >> 2;
-							if _tile == 0 {
-								_check := self.bbox_left >= _bbtile;
-							}
-							else {
-								_check := false;
-							}
+				if _sign == 1 {
+					var _bbtile_iter = _bbtile_top;
+					
+					while true {
+						var _check = 16;
+						for (var _x = _bbtile_left; _x <= _bbtile_right; _x++) {
+							_check = min(_check, (tilemap_get(_tilemap_vel, _x, _bbtile_iter) >> 12) & 0b1111);
 						}
 						
-						if _check {
-							_vel_wall = max(_vel_wall, _bbtile - self.bbox_left);
-							_collided = true;
-							_exit = true;
+						ASSERT_NE_DEBUG(_check, 16);
+						
+						_bbtile_iter += _check;
+						
+						if _check != 15 || _bbtile_iter > _bbtile_bottom {
 							break;
 						}
 					}
 					
-					if _exit {
-						break;
+					var _bbtile := _bbtile_iter * (TILE_SIZE) + _tilemap_y;
+					
+					if self.bbox_bottom + _vel_wall >= _bbtile {
+						_vel_wall = min(_vel_wall, _bbtile - self.bbox_bottom);
+						_collided = true;
+					}
+				}
+				else {
+					var _bbtile_iter = _bbtile_bottom;
+					
+					while true {
+						var _check = 16;
+						for (var _x = _bbtile_left; _x <= _bbtile_right; _x++) {
+							_check = min(_check, (tilemap_get(_tilemap_vel, _x, _bbtile_iter) >> 4) & 0b1111);
+						}
+						
+						ASSERT_NE_DEBUG(_check, 16);
+						
+						_bbtile_iter -= _check;
+						
+						if _check != 15 || _bbtile_iter < _bbtile_top {
+							break;
+						}
+					}
+					
+					var _bbtile := _bbtile_iter * (TILE_SIZE) + _tilemap_y + (TILE_SIZE);
+					
+					if self.bbox_top + _vel_wall <= _bbtile {
+						_vel_wall = max(_vel_wall, _bbtile - self.bbox_top);
+						_collided = true;
 					}
 				}
 			}
 		}
 		else {
-			if _sign == 1 {
-				for (var _y = _bbtile_top; _y <= _bbtile_bottom; _y++) {
+			// otherwise, we have to search tiles manually.
+		
+			// no goto :(
+			var _exit = false;
+		
+			// evil nightmare if-else. these loops are oriented such that
+			// we always scan from self outward.
+			if _axis {
+				if _sign == 1 {
 					for (var _x = _bbtile_left; _x <= _bbtile_right; _x++) {
-						var _tile = tilemap_get(_tilemap, _x, _y);
+						for (var _y = _bbtile_top; _y <= _bbtile_bottom; _y++) {
+							var _tile = tilemap_get(_tilemap, _x, _y);
 						
-						var _bbtile := _y * (TILE_SIZE) + _tilemap_y;
+							var _bbtile := _x * (TILE_SIZE) + _tilemap_x;
 						
-						var _check;
+							var _check;
 						
-						if (_tile & 0b11) == 0b00 {
-							_check := _tile != 0;
-						}
-						else {
-							_tile = _tile >> 2;
-							if _tile == 1 {
-								_check := self.bbox_bottom <= _bbtile;
+							if (_tile & 0b11) == 0b00 {
+								_check := _tile != 0;
 							}
 							else {
-								_check := false;
+								_tile = _tile >> 2;
+								if _tile == 2 {
+									_check := self.bbox_right <= _bbtile;
+								}
+								else {
+									_check := false;
+								}
+							}
+						
+							if _check {
+								_vel_wall = min(_vel_wall, _bbtile - self.bbox_right);
+								_collided = true;
+								_exit = true;
+								break;
 							}
 						}
-						
-						if _check {
-							_vel_wall = min(_vel_wall, _bbtile - self.bbox_bottom);
-							_collided = true;
-							_exit = true;
+					
+						if _exit {
 							break;
 						}
 					}
+				}
+				else {
+					for (var _x = _bbtile_right; _x >= _bbtile_left; _x--) {
+						for (var _y = _bbtile_top; _y <= _bbtile_bottom; _y++) {
+							var _tile = tilemap_get(_tilemap, _x, _y);
+						
+							var _bbtile := _x * (TILE_SIZE) + _tilemap_x + (TILE_SIZE);
+						
+							var _check;
+						
+							if (_tile & 0b11) == 0b00 {
+								_check := _tile != 0;
+							}
+							else {
+								_tile = _tile >> 2;
+								if _tile == 0 {
+									_check := self.bbox_left >= _bbtile;
+								}
+								else {
+									_check := false;
+								}
+							}
+						
+							if _check {
+								_vel_wall = max(_vel_wall, _bbtile - self.bbox_left);
+								_collided = true;
+								_exit = true;
+								break;
+							}
+						}
 					
-					if _exit {
-						break;
+						if _exit {
+							break;
+						}
 					}
 				}
 			}
 			else {
-				for (var _y = _bbtile_bottom; _y >= _bbtile_top; _y--) {
-					for (var _x = _bbtile_left; _x <= _bbtile_right; _x++) {
-						var _tile = tilemap_get(_tilemap, _x, _y);
+				if _sign == 1 {
+					for (var _y = _bbtile_top; _y <= _bbtile_bottom; _y++) {
+						for (var _x = _bbtile_left; _x <= _bbtile_right; _x++) {
+							var _tile = tilemap_get(_tilemap, _x, _y);
 						
-						var _bbtile := _y * (TILE_SIZE) + _tilemap_y + (TILE_SIZE);
+							var _bbtile := _y * (TILE_SIZE) + _tilemap_y;
 						
-						var _check;
+							var _check;
 						
-						if (_tile & 0b11) == 0b00 {
-							_check := _tile != 0;
-						}
-						else {
-							_tile = _tile >> 2;
-							if _tile == 3 {
-								_check := self.bbox_top >= _bbtile;
+							if (_tile & 0b11) == 0b00 {
+								_check := _tile != 0;
 							}
 							else {
-								_check := false;
+								_tile = _tile >> 2;
+								if _tile == 1 {
+									_check := self.bbox_bottom <= _bbtile;
+								}
+								else {
+									_check := false;
+								}
+							}
+						
+							if _check {
+								_vel_wall = min(_vel_wall, _bbtile - self.bbox_bottom);
+								_collided = true;
+								_exit = true;
+								break;
 							}
 						}
-						
-						if _check {
-							_vel_wall = max(_vel_wall, _bbtile - self.bbox_top);
-							_collided = true;
-							_exit = true;
+					
+						if _exit {
 							break;
 						}
 					}
+				}
+				else {
+					for (var _y = _bbtile_bottom; _y >= _bbtile_top; _y--) {
+						for (var _x = _bbtile_left; _x <= _bbtile_right; _x++) {
+							var _tile = tilemap_get(_tilemap, _x, _y);
+						
+							var _bbtile := _y * (TILE_SIZE) + _tilemap_y + (TILE_SIZE);
+						
+							var _check;
+						
+							if (_tile & 0b11) == 0b00 {
+								_check := _tile != 0;
+							}
+							else {
+								_tile = _tile >> 2;
+								if _tile == 3 {
+									_check := self.bbox_top >= _bbtile;
+								}
+								else {
+									_check := false;
+								}
+							}
+						
+							if _check {
+								_vel_wall = max(_vel_wall, _bbtile - self.bbox_top);
+								_collided = true;
+								_exit = true;
+								break;
+							}
+						}
 					
-					if _exit {
-						break;
+						if _exit {
+							break;
+						}
 					}
 				}
 			}
