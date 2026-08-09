@@ -302,6 +302,9 @@ function ns_level_RoomComponentParseSetup() : ns_level_RoomComponent(nameof(ns_l
 		);
 		tilemap_set_mask(_layer_solid_tilemap, 0);
 		
+		ASSERT_EQ(_room.layer_spike_base, undefined);
+		ASSERT_EQ(_room.layer_spike_tilemap, undefined);
+		
 		var _layer_spike_base := layer_create(0);
 		var _layer_spike_tilemap := layer_tilemap_create(
 			_layer_spike_base,
