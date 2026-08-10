@@ -291,7 +291,7 @@ function ns_level_World(_package) constructor {
 	};
 	
 	static entity_global_add := function (_entity) {
-		ASSERT(object_is_ancestor(_entity, obj_Entity));
+		ASSERT(object_is_ancestor(_entity.object_index, obj_Entity));
 		array_push(entities_global, _entity);
 		entities_global_sorted = false;
 	};
