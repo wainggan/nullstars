@@ -40,35 +40,11 @@ function ns_Root(_async) constructor {
 		camera.tick();
 		
 		world.tick();
-		
-		if keyboard_check_pressed(ord("B")) {
-			world.entity_global_add(instance_create_layer(-64, 64, "Instances", obj_game_Nova));
-		}
-		if keyboard_check_pressed(ord("N")) {
-			with instance_create_layer(-64, 64, "Instances", obj_game_Solid) {
-				image_xscale = 16;
-				image_yscale = 16;
-				image_blend = #ff00ff;
-				other.world.entity_global_add(self);
-			}
-		}
 	};
 	
 	static draw := function () {
 		render.draw(self);
 		
-		var _inst = collision_point(mouse_x, mouse_y, obj_room, false, true);
-		with _inst {
-			with parent {
-				if layer_velocity_tilemap != undefined {
-					var _tile = tilemap_get_at_pixel(layer_velocity_tilemap, mouse_x, mouse_y);
-					draw_text(16, 16, _tile & 0b1111)
-					draw_text(16, 16 + 16, (_tile >> 4) & 0b1111)
-					draw_text(16, 16 + 32, (_tile >> 8) & 0b1111)
-					draw_text(16, 16 + 48, (_tile >> 12) & 0b1111)
-				}
-			}
-		}
 	};
 }
 
