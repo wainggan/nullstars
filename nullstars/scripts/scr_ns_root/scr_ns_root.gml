@@ -45,6 +45,8 @@ function ns_Root(_async) constructor {
 	static draw := function () {
 		render.draw(self);
 		
+		draw_text(16, 16, fps_real);
+		draw_text(16, 32, fps);
 	};
 }
 
