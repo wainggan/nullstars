@@ -21,10 +21,20 @@ function ns_level_json_test() {
 								"rule": "emit",
 								"emit": "single",
 								"single": {
-									"stamp": "choose",
-									"choose": [
-										{ "stamp": "tile", "src_x": 1, "src_y": 11, "rand_y_max": 1 },
-										{ "stamp": "tile", "src_x": 2, "src_y": 11, "rand_y_max": 1 },
+									"stamp": "list",
+									"list": [
+										{
+											"stamp": "tile",
+											"src_x": 1,
+											"src_y": 3,
+										},
+										{
+											"stamp": "choose",
+											"choose": [
+												{ "stamp": "tile", "src_x": 1, "src_y": 11, "rand_y_max": -1 },
+												{ "stamp": "tile", "src_x": 2, "src_y": 11, "rand_y_max": -1 },
+											],
+										},
 									],
 								},
 							},
