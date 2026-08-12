@@ -230,10 +230,25 @@ function ns_level_AutotileCompiler() constructor {
 			}
 			
 			case "noise": {
-				var _noise := variable_struct_get(_json, "noise");
-				ASSERT(is_real(_noise));
+				var _threshold := variable_struct_get(_json, "threshold") ?? 0.5;
+				ASSERT(is_real(_threshold));
 				
-				ASSERT(false);
+				var _width := variable_struct_get(_json, "width") ?? 10;
+				ASSERT(is_real(_width));
+			
+				var _height := variable_struct_get(_json, "height") ?? 10;
+				ASSERT(is_real(_width));
+				
+				var _scale := variable_struct_get(_json, "scale") ?? 40;
+				ASSERT(is_real(_scale));
+				
+				var _noise := ns_level_autotile_noise_generate(_width, _height);
+			
+				return method({
+					noise: _noise,
+					scale: _scale,
+					threshold: _threshold,
+				}, ns_level_autotile_expr_condition_noise);
 			}
 			
 			default: {
@@ -651,6 +666,38 @@ function ns_level_autotile_expr_condition_tileset(_root) {
 			return true;
 		}
 	}
+}
+
+/**
+@arg {struct.ns_level_AutotilePebis} _root
+*/
+function ns_level_autotile_expr_condition_noise(_root) {
+	var _noise := noise;
+	var _noise_grid := noise.data;
+	var _noise_w := _noise.width;
+	var _noise_h := _noise.height;
+	
+	var _x_s := _root.x * _noise_w / scale % _noise_w;
+	var _y_s := _root.y * _noise_h / scale % _noise_h;
+	
+	var _x_m := _x_s % 1;
+	var _y_m := _y_s % 1;
+	
+	var _x_0 := floor(_x_s);
+	var _x_1 := ceil(_x_s) % _noise_w;
+	var _y_0 := floor(_y_s);
+	var _y_1 := ceil(_y_s) % _noise_h;
+	
+	var _r_00 := _noise_grid[_x_0 + _y_0 * _noise_w];
+	var _r_10 := _noise_grid[_x_1 + _y_0 * _noise_w];
+	var _r_01 := _noise_grid[_x_0 + _y_1 * _noise_w];
+	var _r_11 := _noise_grid[_x_1 + _y_1 * _noise_w];
+	
+	var _r_x0 := _r_00 * (1 - _x_m) + _r_10 * _x_m;
+	var _r_x1 := _r_01 * (1 - _x_m) + _r_11 * _x_m;
+	var _r_xy := _r_x0 * (1 - _y_m) + _r_x1 * _y_m;
+	
+	return _r_xy > threshold;
 }
 
 /**
