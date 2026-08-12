@@ -13,8 +13,17 @@ function obj_Entity_fn_tick() {
 
 /// @self obj_Entity
 function obj_Entity_fn_outside() {
-	// todo: replace with check for camera
-	return true;
+	var _cam := ns_cam_get();
+	return !rectangle_in_rectangle(
+		_cam.x,
+		_cam.y,
+		_cam.x + _cam.w,
+		_cam.y + _cam.h,
+		self.bbox_left,
+		self.bbox_top,
+		self.bbox_right,
+		self.bbox_bottom
+	);
 }
 
 /// @self obj_Entity

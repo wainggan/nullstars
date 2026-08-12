@@ -249,7 +249,7 @@ function ns_level_Room(_world, _id, _x, _y, _width, _height) constructor {
 			// otherwise, they are destroyed.
 			
 			if !_entity.fn_outside() {
-				array_push(world.entities, _entity);
+				self.world.entity_global_add(_entity);
 			}
 			else {
 				instance_destroy(_entity);
