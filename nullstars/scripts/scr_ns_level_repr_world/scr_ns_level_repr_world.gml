@@ -75,7 +75,7 @@ function ns_level_World(_package) constructor {
 		// any radius. (explained later)
 		frame += 1;
 		
-		var _cam := nullstars_get_cam();
+		var _cam := ns_cam_get();
 		var _config := ns_config();
 		
 		// check rooms for loading.

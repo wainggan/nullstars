@@ -6,7 +6,7 @@ function Render() constructor {
 	@arg {struct.ns_Root} _root
 	*/
 	static draw := function (_root) {
-		var _cam := nullstars_get_cam();
+		var _cam := ns_cam_get();
 		
 		shader_set(shd_tilemap);
 		

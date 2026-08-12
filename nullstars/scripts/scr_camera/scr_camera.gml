@@ -4,11 +4,11 @@ function Camera() constructor {
 	y = 0;
 	
 	static tick := function () {
-		camera_set_view_pos(view_camera[0], x, y);
+		camera_set_view_pos(view_camera[0], x - (WINDOW_WIDTH) / 2, y - (WINDOW_HEIGHT) / 2);
 	};
 }
 
-function nullstars_get_cam() {
+function ns_cam_get() {
 	static __cache := {
 		x: 0,
 		y: 0,
