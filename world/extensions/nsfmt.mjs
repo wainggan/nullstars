@@ -232,13 +232,15 @@ tiled.registerMapFormat("nsmap", {
 		}
 
 		if (layer_solid === undefined) {
-			tiled.error("no tile layer named 'Solid'", () => {});
-			return;
+			const msg = "no tile layer named 'Solid'";
+			tiled.error(msg, () => {});
+			throw new Error(msg);
 		}
 
 		if (layer_entity === undefined) {
-			tiled.error("no object layer named 'Entity'", () => {});
-			return;
+			const msg = "no object layer named 'Entity'";
+			tiled.error(msg, () => {});
+			throw new Error(msg);
 		}
 
 		writer.u32(width * height);
