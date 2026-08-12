@@ -37,7 +37,6 @@
     {"$GMIncludedFile":"","%Name":"tiles.png","CopyToMask":-1,"filePath":"datafiles/base","name":"tiles.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"000.nsm","CopyToMask":-1,"filePath":"datafiles/base/world","name":"000.nsm","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"001.nsm","CopyToMask":-1,"filePath":"datafiles/base/world","name":"001.nsm","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
-    {"$GMIncludedFile":"","%Name":"002.nsm","CopyToMask":-1,"filePath":"datafiles/base/world","name":"002.nsm","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"root.nsw","CopyToMask":-1,"filePath":"datafiles/base/world","name":"root.nsw","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
   ],
   "isEcma":false,

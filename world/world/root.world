@@ -2,24 +2,17 @@
     "maps": [
         {
             "fileName": "000.tmx",
-            "height": 320,
-            "width": 480,
+            "height": 752,
+            "width": 1088,
             "x": 0,
             "y": 0
         },
         {
             "fileName": "001.tmx",
-            "height": 320,
-            "width": 480,
-            "x": 480,
-            "y": 32
-        },
-        {
-            "fileName": "002.tmx",
-            "height": 256,
-            "width": 256,
-            "x": 224,
-            "y": 320
+            "height": 560,
+            "width": 784,
+            "x": 1088,
+            "y": 160
         }
     ],
     "onlyShowAdjacentMaps": false,
