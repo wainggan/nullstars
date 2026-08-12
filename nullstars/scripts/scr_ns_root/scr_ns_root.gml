@@ -40,6 +40,11 @@ function ns_Root(_async) constructor {
 		camera.tick();
 		
 		world.tick();
+		
+		with obj_game_Nova {
+			other.camera.x = x;
+			other.camera.y = y;
+		}
 	};
 	
 	static draw := function () {
