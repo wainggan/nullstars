@@ -45,6 +45,7 @@ function ns_config() {
 		nova_jump_move_boost: 0.4,
 		nova_terminal_vel_hold: 1,
 		nova_terminal_vel_fast: 7,
+		nova_ledge_stick: 4,
 		nova_buffer_jump: 10,
 		nova_buffer_ground: 4,
 		

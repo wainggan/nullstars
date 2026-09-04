@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_syntax",
+  "%Name":"scr_extsyn",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_syntax",
+  "name":"scr_extsyn",
   "parent":{
-    "name":"nullstars",
-    "path":"nullstars.yyp",
+    "name":"extsyn",
+    "path":"folders/lib/extsyn.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

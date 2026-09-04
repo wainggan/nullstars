@@ -33,12 +33,15 @@ function obj_game_Nova_fn_create() {
 	self.buffer_ground = 0;
 	self.buffer_ground_y = 0;
 	
+	self.ledge_stick = 0;
+	
 	self.state := calico_create(obj_game_Nova_get_state_base(), self);
 	calico_change(self.state, obj_game_Nova_STATE_FREE);
 }
 
 #macro obj_game_Nova_STATE_GENERIC "base"
 #macro obj_game_Nova_STATE_FREE "free"
+#macro obj_game_Nova_STATE_LEDGE "ledge"
 
 #macro obj_game_Nova_EVENT_TICK "tick"
 
@@ -227,6 +230,60 @@ function obj_game_Nova_state_free(_state, _data) {
 	}
 	
 	calico_child(_state);
+	
+	if y_vel > 0 && !_onground && _k_ver != 1 && obj_Body_collision(self.x + _k_hor, self.y) {
+		self.y_vel = 0;
+		calico_change(_state, obj_game_Nova_STATE_LEDGE);
+	}
+}
+
+/// @self obj_game_Nova
+function obj_game_Nova_state_ledge(_state, _data) {
+	var _config := ns_config();
+	
+	var _k_hor _MUT := ns_control_hold(ns_control_RIGHT) - ns_control_hold(ns_control_LEFT);
+	
+	self.x_vel = 0;
+	self.y_vel = 0;
+	obj_game_Nova_set_force_y_vel(0, 0);
+	
+	self.buffer_ground = _config.nova_buffer_ground;
+	self.buffer_ground_y = y;
+	
+	_BLOCK {
+		if self.buffer_jump > 0 {
+			self.buffer_jump = 0;
+		
+			obj_game_Nova_jump_normal_set_start();
+		
+			if !ns_control_hold(ns_control_JUMP) {
+				self.release_jump_buffer_timer = 1;
+			}
+		
+			calico_change(_state, obj_game_Nova_STATE_FREE);
+			
+			break;
+		}
+		
+		if !obj_Body_collision(self.x + _k_hor, self.y) {
+			if self.ledge_stick <= 0 {
+				calico_change(_state, obj_game_Nova_STATE_FREE);
+				break;
+			}
+			
+			self.ledge_stick -= ns_deltatime();
+		}
+		else {
+			self.ledge_stick = _config.nova_ledge_stick;
+		}
+		
+		if obj_Body_collision(self.x, self.y + 1) {
+			calico_change(_state, obj_game_Nova_STATE_FREE);
+			break;
+		}
+	}
+	
+	calico_child(_state);
 }
 
 /// @self obj_game_Nova
@@ -240,6 +297,8 @@ function obj_game_Nova_get_state_base() {
 		calico_base_event(__base, obj_game_Nova_STATE_GENERIC, obj_game_Nova_EVENT_TICK, obj_game_Nova_state_generic);
 		calico_base_add(__base, obj_game_Nova_STATE_FREE, obj_game_Nova_STATE_GENERIC);
 		calico_base_event(__base, obj_game_Nova_STATE_FREE, obj_game_Nova_EVENT_TICK, obj_game_Nova_state_free);
+		calico_base_add(__base, obj_game_Nova_STATE_LEDGE, obj_game_Nova_STATE_GENERIC);
+		calico_base_event(__base, obj_game_Nova_STATE_LEDGE, obj_game_Nova_EVENT_TICK, obj_game_Nova_state_ledge);
 	}
 	
 	return __base;
