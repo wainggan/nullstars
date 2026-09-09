@@ -231,7 +231,7 @@ function obj_game_Nova_state_free(_state, _data) {
 	
 	calico_child(_state);
 	
-	if y_vel > 0 && !_onground && _k_ver != 1 && obj_Body_collision(self.x + _k_hor, self.y) {
+	if y_vel > 0 && !_onground && _k_ver == -1 && obj_Body_collision(self.x + _k_hor, self.y) {
 		self.y_vel = 0;
 		calico_change(_state, obj_game_Nova_STATE_LEDGE);
 	}
@@ -241,7 +241,8 @@ function obj_game_Nova_state_free(_state, _data) {
 function obj_game_Nova_state_ledge(_state, _data) {
 	var _config := ns_config();
 	
-	var _k_hor _MUT := ns_control_hold(ns_control_RIGHT) - ns_control_hold(ns_control_LEFT);
+	var _k_hor := ns_control_hold(ns_control_RIGHT) - ns_control_hold(ns_control_LEFT);
+	var _k_ver := ns_control_hold(ns_control_DOWN) - ns_control_hold(ns_control_UP);
 	
 	self.x_vel = 0;
 	self.y_vel = 0;
@@ -275,6 +276,11 @@ function obj_game_Nova_state_ledge(_state, _data) {
 		}
 		else {
 			self.ledge_stick = _config.nova_ledge_stick;
+		}
+		
+		if _k_ver != -1 {
+			calico_change(_state, obj_game_Nova_STATE_FREE);
+			break;
 		}
 		
 		if obj_Body_collision(self.x, self.y + 1) {
