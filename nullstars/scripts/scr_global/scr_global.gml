@@ -13,7 +13,6 @@ ns_config() is for situations where
 // safety and integrity checks will be disabled to help with performance.
 #macro RELEASE false
 
-#macro DEBUG_LOAD_TRACK_OPS true
 #macro DEBUG_LOAD_EMIT_COMPONENT_TICK_LOGS true
 #macro DEBUG_LOAD_EMIT_COMPONENT_COMPLETE_LOGS true
 
