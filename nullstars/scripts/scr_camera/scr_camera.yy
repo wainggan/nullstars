@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_camera",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_camera",
+  "parent":{
+    "name":"nullstars",
+    "path":"nullstars.yyp",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

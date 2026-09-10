@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_log",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_log",
+  "parent":{
+    "name":"log",
+    "path":"folders/lib/log.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

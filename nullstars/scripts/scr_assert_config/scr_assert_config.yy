@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_assert_config",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_assert_config",
+  "parent":{
+    "name":"assert",
+    "path":"folders/lib/assert.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

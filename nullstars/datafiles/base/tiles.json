@@ -1,0 +1,60 @@
+{
+	"classes": {
+		"base": [
+			{
+				"class": "blob",
+				"src_x": 0,
+				"src_y": 1
+			}
+		],
+		"ground": [
+			{
+				"class": "replace",
+				"replace": []
+			}
+			{
+				"class": "inherit",
+				"inherit": "blob"
+			}
+		]
+	}
+	,
+	"rules": [
+		{
+			"rule": "match",
+			"match": {
+				"condition": "tileset",
+				"tileset": [1]
+			},
+			"then": {
+				"rule": "list",
+				"list": [
+					{
+						"rule": "match",
+						"match": {
+							"condition": "class",
+							"class": [6, 7, 8, 4, 5, 24, 25, 26]
+						},
+						"then": {
+							"rule": "emit",
+							"emit": "single",
+							"single": {
+								"stamp": "choose",
+								"choose": [
+									{ "stamp": "tile", "src_x": 0, "src_y": 0 },
+									{ "stamp": "tile", "src_x": 1, "src_y": 0 }
+								]
+							}
+						}
+					}
+				]
+			}
+		},
+		{
+			"rule": "emit",
+			"emit": "blob",
+			"src_x": 0,
+			"src_y": 1
+		}
+	]
+}

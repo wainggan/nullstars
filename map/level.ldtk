@@ -10,7 +10,7 @@
 	},
 	"iid": "d5a16520-6280-11ee-ba61-ad454e9d2411",
 	"jsonVersion": "1.5.3",
-	"appBuildId": 485934,
+	"appBuildId": 496222,
 	"nextUid": 675,
 	"identifierStyle": "Free",
 	"toc": [{
@@ -12994,9 +12994,9 @@
 		{
 			"__cWid": 32,
 			"__cHei": 32,
-			"identifier": "tiles2",
+			"identifier": "tiles_old",
 			"uid": 73,
-			"relPath": "../assets/tiles.aseprite",
+			"relPath": "../assets/tiles-old.aseprite",
 			"embedAtlas": null,
 			"pxWid": 512,
 			"pxHei": 512,
