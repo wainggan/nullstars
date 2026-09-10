@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_object_lut",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_object_lut",
+  "parent":{
+    "name":"object",
+    "path":"folders/ns/object.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

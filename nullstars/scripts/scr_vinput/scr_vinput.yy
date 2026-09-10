@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_vinput",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_vinput",
+  "parent":{
+    "name":"vinput",
+    "path":"folders/lib/vinput.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_game_Nova",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_game_Nova",
+  "parent":{
+    "name":"Nova",
+    "path":"folders/ns/object/Nova.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

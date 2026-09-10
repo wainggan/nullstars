@@ -1,0 +1,81 @@
+{
+    "automappingRulesFile": "",
+    "commands": [
+    ],
+    "extensionsPath": "extensions",
+    "folders": [
+        "."
+    ],
+    "properties": [
+        {
+            "name": "__nsfmt_exportdefault",
+            "propertytype": "",
+            "type": "string",
+            "value": "../nullstars/datafiles/base/world/root.nsw"
+        }
+    ],
+    "propertyTypes": [
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 4,
+            "members": [
+            ],
+            "name": "ObjPlatformActivate",
+            "type": "class",
+            "useAs": [
+                "property",
+                "object"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 1,
+            "members": [
+                {
+                    "name": "class",
+                    "type": "string",
+                    "value": ""
+                }
+            ],
+            "name": "Room",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 3,
+            "members": [
+                {
+                    "name": "type",
+                    "propertyType": "SolidType",
+                    "type": "int",
+                    "value": 0
+                }
+            ],
+            "name": "SolidTileset",
+            "type": "class",
+            "useAs": [
+                "property",
+                "tileset"
+            ]
+        },
+        {
+            "id": 2,
+            "name": "SolidType",
+            "storageType": "int",
+            "type": "enum",
+            "values": [
+                "Solid",
+                "Spike",
+                "Semisolid"
+            ],
+            "valuesAsFlags": false
+        }
+    ]
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_ns_level_repr_component",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_ns_level_repr_component",
+  "parent":{
+    "name":"repr",
+    "path":"folders/ns/level/repr.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
