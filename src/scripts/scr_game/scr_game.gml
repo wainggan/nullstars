@@ -49,6 +49,7 @@ function Game() constructor {
 	checkpoint = new GameHandleCheckpoints();
 	gate = new GameHandleGates();
 	
+	global_entities := [];
 	level = new Loader();
 	
 	schedule = new Schedule();
@@ -56,6 +57,10 @@ function Game() constructor {
 	news_sound = new News();
 	
 	menu = new GameMenu();
+	// todo: see later todo
+	menu_x := 0;
+	menu_y := 0;
+	menu_anim := 0;
 	
 	music = new Music();
 	
@@ -72,11 +77,63 @@ function Game() constructor {
 		global.logger.update();
 		self.state.update();
 		self.input.update();
-		self.menu.system.update();
 		
 		if !self.state.get_pause() {
 			self.step_begin();
+			
+			// menu check
+			
+			// todo: can we abstract systems like this away?
+			var _can_menu := false;
+			with obj_player {
+				_can_menu = self.fn_get_can_menu();
+			}
+			
+			// only way this could fail is obj_player.fn_get_can_menu is bugged
+			ASSERT(is_bool(_can_menu));
+			// anyways. I'm paranoid.
+			
+			// true if the player can press the "menu" button to open a menu
+			var _touch := false;
+			
+			var _winner := noone;
+			
+			if _can_menu {
+				with obj_flag_menu {
+					if place_meeting(x, y, obj_player) && (_winner == noone || _winner.priority < self.priority) {
+						_winner = self;
+					}
+				}
+			}
+			
+			with _winner {
+				ASSERT_NE(self.target, undefined, "forgot to set obj_flag_menu target lol");
+				ASSERT_NE(self.at_x, 0, "forgot to set obj_flag_menu target lol");
+				ASSERT_NE(self.at_y, 0, "forgot to set obj_flag_menu target (L)");
+				
+				other.menu_x = self.at_x;
+				other.menu_y = self.at_y;
+				
+				if _can_menu {
+					if !global.game.menu.system.is_open() {
+						_touch = true;
+						
+						if INPUT.check_pressed("menu") {
+							global.game.menu.system.open(self.target);
+							INPUT.consume();
+						}
+					}
+				}
+			}
+			
+			if _touch {
+				self.menu_anim = approach(self.menu_anim, 1, 0.1);
+			} else {
+				self.menu_anim = approach(self.menu_anim, 0, 0.1);
+			}
 		}
+		
+		self.menu.system.update();
 	};
 	static update = function() {
 		
@@ -92,6 +149,16 @@ function Game() constructor {
 		self.level.update();
 		self.music.update();
 		self.buffers.update();
+		
+		var _cam := game_camera_get();
+		
+		for (var i_entity = 0; i_entity < array_length(self.global_entities); i_entity++) {
+			var _entity := self.global_entities[i_entity];
+			if _entity.fn_outside(_cam) {
+				instance_destroy(_entity);
+				array_kick(self.global_entities, i_entity--);
+			}
+		}
 	}
 	
 	static step_begin = function() {
@@ -121,6 +188,20 @@ function Game() constructor {
 			}
 		} else {
 			instance_destroy(obj_checkpoint_dyn);
+		}
+	};
+	
+	// todo: temporary?
+	static draw_ui := function () {
+		var _cam = game_camera_get();
+		
+		if self.menu_anim > 0 {
+			var _width = 20 * tween(Tween.Circ, self.menu_anim);
+			var _height = 20 * tween(Tween.Ease, self.menu_anim);
+			draw_sprite_stretched(spr_sign_board, 0, self.menu_x - _width / 2 - _cam.x, self.menu_y - _cam.y, _width, _height);
+			if self.menu_anim == 1 {
+				draw_sprite(spr_sign_emark, 0, self.menu_x - _cam.x, self.menu_y - _cam.y + 3);
+			}
 		}
 	};
 	

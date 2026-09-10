@@ -1,0 +1,7 @@
+# ns::level
+
+the level loader.
+
+this is essentially the beating heart of nullstars. it is responsible for
+orchestrating the loading and unloading of rooms, maintaining entities in a game
+loop, etc.

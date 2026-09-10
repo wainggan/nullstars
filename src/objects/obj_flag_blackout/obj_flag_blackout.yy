@@ -6,8 +6,8 @@
   "name":"obj_flag_blackout",
   "overriddenProperties":[],
   "parent":{
-    "name":"game",
-    "path":"folders/game.yy",
+    "name":"flags",
+    "path":"folders/game/flags.yy",
   },
   "parentObjectId":null,
   "persistent":false,

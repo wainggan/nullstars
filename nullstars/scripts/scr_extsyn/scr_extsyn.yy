@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_extsyn",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_extsyn",
+  "parent":{
+    "name":"extsyn",
+    "path":"folders/lib/extsyn.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

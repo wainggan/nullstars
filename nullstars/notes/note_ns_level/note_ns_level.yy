@@ -1,0 +1,11 @@
+{
+  "$GMNotes":"v1",
+  "%Name":"note_ns_level",
+  "name":"note_ns_level",
+  "parent":{
+    "name":"level",
+    "path":"folders/ns/level.yy",
+  },
+  "resourceType":"GMNotes",
+  "resourceVersion":"2.0",
+}

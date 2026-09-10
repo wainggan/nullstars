@@ -23,7 +23,7 @@
   ],
   "name":"spr_sign_emark",
   "nineSlice":null,
-  "origin":7,
+  "origin":1,
   "parent":{
     "name":"decor",
     "path":"folders/graphics/object/decor.yy",
@@ -76,7 +76,7 @@
     "visibleRange":null,
     "volume":1.0,
     "xorigin":6,
-    "yorigin":12,
+    "yorigin":0,
   },
   "swatchColours":null,
   "swfPrecision":0.5,

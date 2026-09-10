@@ -11,8 +11,8 @@
   "name":"obj_dash",
   "overriddenProperties":[],
   "parent":{
-    "name":"objects",
-    "path":"folders/objects.yy",
+    "name":"_Dash",
+    "path":"folders/objects/_Dash.yy",
   },
   "parentObjectId":{
     "name":"obj_Entity",

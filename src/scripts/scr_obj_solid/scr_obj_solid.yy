@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_obj_solid",
   "parent":{
-    "name":"entities",
-    "path":"folders/entities.yy",
+    "name":"_Solid",
+    "path":"folders/entities/_Solid.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

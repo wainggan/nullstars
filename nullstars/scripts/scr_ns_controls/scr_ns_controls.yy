@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_ns_controls",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_ns_controls",
+  "parent":{
+    "name":"ns",
+    "path":"folders/ns.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

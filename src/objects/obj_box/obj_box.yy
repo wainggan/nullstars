@@ -9,8 +9,8 @@
   "name":"obj_box",
   "overriddenProperties":[],
   "parent":{
-    "name":"objects",
-    "path":"folders/objects.yy",
+    "name":"_Box",
+    "path":"folders/objects/_Box.yy",
   },
   "parentObjectId":{
     "name":"obj_Actor",

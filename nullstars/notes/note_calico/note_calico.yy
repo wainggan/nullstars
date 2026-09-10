@@ -1,0 +1,11 @@
+{
+  "$GMNotes":"v1",
+  "%Name":"note_calico",
+  "name":"note_calico",
+  "parent":{
+    "name":"calico",
+    "path":"folders/lib/calico.yy",
+  },
+  "resourceType":"GMNotes",
+  "resourceVersion":"2.0",
+}

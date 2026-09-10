@@ -178,9 +178,9 @@ if !surface_exists(surf_background_lights)
 surface_set_target(surf_background_lights);
 draw_clear(c_black);
 
-shader_set(shd_rimlight);
-draw_surface(surf_background, 0, 0);
-shader_reset();
+// shader_set(shd_rimlight);
+// draw_surface(surf_background, 0, 0);
+// shader_reset();
 
 surface_reset_target();
 

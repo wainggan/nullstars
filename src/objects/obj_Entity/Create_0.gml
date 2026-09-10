@@ -8,6 +8,8 @@
 
 event_inherited();
 
+SETUP_OBJ_ENTITY
+
 collidable := true;
 
 // returns list of interfaces

@@ -38,13 +38,13 @@ enum LoaderProgress {
 /// responsible for all level loading related operations
 function Loader() constructor {
 	
-	var _buffer = buffer_load("world/world.bin");
+	var _buffer := buffer_load("world/world.bin");
 	if _buffer == -1 {
 		LOG(Log.error, $"Loader(): file 'world.bin' doesn't exist");
 		LOG(Log.error, "what do you even do about this?");
 		ASSERT(false, "world.bin must exist");
 	}
-	file = level_unpack_bin_main(_buffer);
+	file := level_unpack_bin_main(_buffer);
 	buffer_delete(_buffer);
 	
 	
@@ -70,7 +70,7 @@ function Loader() constructor {
 		var _inst := instance_create_layer(_room.x, _room.y, "Instances", obj_room);
 		
 		// this might be a circular reference, but because these are intended to stay alive
-		// for the entire course of the program, this should be fine
+		// for the entire course of the program, this should be fine (?)
 		
 		_data.obj = _inst;
 		
@@ -81,14 +81,15 @@ function Loader() constructor {
 			image_yscale = _room.height;
 			
 			data := _data;
+			entities := [];
 		}
 	}
 	
-	loaded = [];
+	loaded := [];
 	
-	flagged = [];
+	flagged := [];
 	
-	queue = [];
+	queue := [];
 	
 	static queue_process = function () {
 		static __sort = function (_a, _b) {
@@ -399,28 +400,28 @@ function Loader() constructor {
 		
 		self.queue_process();
 		
-		with obj_Exists {
-			if (global.time + parity) % GAME_PARITY_ENTITY > 0 {
-				continue;
-			}
-			var _lvl = game_level_get_safe_rect(bbox_left, bbox_top, bbox_right, bbox_bottom);
-			if (_lvl == undefined || !_lvl.loaded) && fn_outside(_cam) {
-				instance_destroy();
-			}
-		}
+		//with obj_Exists {
+		//	if (global.time + parity) % GAME_PARITY_ENTITY > 0 {
+		//		continue;
+		//	}
+		//	var _lvl = game_level_get_safe_rect(bbox_left, bbox_top, bbox_right, bbox_bottom);
+		//	if (_lvl == undefined || !_lvl.loaded) && fn_outside(_cam) {
+		//		instance_destroy();
+		//	}
+		//}
 		
-		with obj_spike_bubble {
-			if (global.time + parity) % GAME_PARITY_BUBBLE > 0 {
-				continue;
-			}
-			var _lvl = game_level_get_safe(x, y);
-			if (_lvl == undefined || !_lvl.loaded)
-			&& rectangle_in_rectangle(
-				x - 64, y - 64, x + 64, y + 64,
-				_cam.x, _cam.y, _cam.x + _cam.w, _cam.y + _cam.h) {
-				instance_destroy();
-			}
-		}
+		//with obj_spike_bubble {
+		//	if (global.time + parity) % GAME_PARITY_BUBBLE > 0 {
+		//		continue;
+		//	}
+		//	var _lvl = game_level_get_safe(x, y);
+		//	if (_lvl == undefined || !_lvl.loaded)
+		//	&& rectangle_in_rectangle(
+		//		x - 64, y - 64, x + 64, y + 64,
+		//		_cam.x, _cam.y, _cam.x + _cam.w, _cam.y + _cam.h) {
+		//		instance_destroy();
+		//	}
+		//}
 	};
 }
 
@@ -621,7 +622,7 @@ function LoaderOptionLoad(_level) : LoaderOption(_level, 0) constructor {
 	static process = function (_loader) {
 		ASSERT(level.loaded == LoaderProgress.prepared);
 		level.loaded = LoaderProgress.loaded;
-		level.data.load();
+		level.data.load(level);
 		array_push(_loader.loaded, level);
 		return LoaderOptionStatus.complete;
 	};
@@ -635,7 +636,7 @@ function LoaderOptionUnload(_level) : LoaderOption(_level, 1) constructor {
 			return LoaderOptionStatus.complete;
 		}
 		level.loaded = LoaderProgress.prepared;
-		level.data.unload();
+		level.data.unload(level);
 		return LoaderOptionStatus.complete;
 	};
 }

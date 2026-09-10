@@ -81,6 +81,7 @@ fn_get_crouch := obj_player_get_crouch;
 fn_set_crouch(false);
 
 fn_get_can_uncrouch := obj_player_get_can_uncrouch;
+fn_get_can_menu := obj_player_get_can_menu;
 
 onground = false;
 onground_last = false;
@@ -249,7 +250,6 @@ anim_jab_timer = 0;
 anim_longjump_timer = 0;
 anim_flip_timer = 0;
 anim_runjump_timer = 0;
-anim_menu = 0;
 
 action_anim_onground = function() {
 	anim_longjump_timer = 0;
@@ -326,7 +326,7 @@ get_check_death = function(_x, _y) {
 		return true;
 	}
 	
-	static __size = 5;
+	static __size = 3;
 	
 	var _left = (bbox_left - x) + _x + 1;
 	var _top = (bbox_top - y) + _y + 1;
@@ -419,16 +419,6 @@ get_check_death = function(_x, _y) {
 	
 	return false;
 	
-};
-
-fn_get_menu := function () {
-	if place_meeting(x, y, obj_checkpoint) || place_meeting(x, y, obj_checkpoint_dyn) {
-		return global.game.menu.page_none;
-	}
-	else if collision_rectangle(bbox_left - 64, bbox_top, bbox_right + 64, bbox_bottom, obj_timer_start, false, true) {
-		return global.game.menu.page_gate_none;
-	}
-	return undefined;
 };
 
 #endregion
@@ -941,19 +931,6 @@ state_base.set("step", function () {
 	}
 	
 	if state.is(state_free) || state.is(state_swim) {
-		if INPUT.check_pressed("menu") &&
-			!fn_get_crouch() &&
-			!state.is(state_swim)
-		{
-			var _check = self.fn_get_menu();
-			if _check != undefined {
-				ASSERT(!global.game.menu.system.is_open());
-				global.game.menu.system.open(_check);
-				self.state.change(state_menu);
-				return;
-			}
-		}
-		
 		if INPUT.check("menu") {
 			respawn_timer += 1;
 			if respawn_timer > 17 {
@@ -1275,6 +1252,7 @@ action_dash_end = function() {
 		hold_jump_vel = defs.terminal_vel;
 		hold_jump_vel_timer = 12;
 	} else if dash_dir_y == -1 {
+		// todo: fix up dash
 		x_vel = max(abs(dash_pre_x_vel), 3) * sign(x_vel);
 		
 		hold_jump_key_timer = 24;
@@ -1352,7 +1330,7 @@ state_dash.set("enter", function() {
 			}
 			dash_dir_y = _kv;
 		} else {
-			if _kh == 0 {
+			if _kh == 0 && _kv == 0 {
 				dash_dir_x = dir;
 			} else {
 				dash_dir_x = _kh;
@@ -1369,7 +1347,7 @@ state_dash.set("enter", function() {
 		x_vel = 0;
 		y_vel = 0;
 		
-		x_vel = abs(dash_pre_x_vel) * dash_dir_x;
+		x_vel = abs(dash_pre_x_vel) * (dash_dir_x == 0 ? sign(dash_pre_x_vel) * (1 / 8) : dash_dir_x);
 		
 		x_vel += lengthdir_x(7, _dir);
 		y_vel += lengthdir_y(7, _dir);
@@ -1682,27 +1660,6 @@ state_swim_bullet.set("enter", function() {
 	
 	swim_frame += 1;
 	
-});
-
-state_menu = state_base.add();
-state_menu.set("enter", function () {
-});
-state_menu.set("leave", function () {
-	with global.game.menu {
-		system.stop();
-	}
-});
-state_menu.set("step", function () {
-	x_vel = approach(x_vel, 0, defs.move_accel);
-	y_vel = approach(y_vel, defs.terminal_vel, defs.gravity);
-	
-	buffer_dash = 0;
-	buffer_jump = 0;
-	
-	if !global.game.menu.system.is_open() || self.fn_get_menu() == undefined {
-		state.change(state_free);
-		return;
-	}
 });
 
 fn_squish = function(_data) {

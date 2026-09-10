@@ -58,9 +58,6 @@ else if state.is(state_swim) {
 else if state.is(state_ledge) {
 	anim.set("ledge");
 }
-else if state.is(state_menu) {
-	anim.set("idle");
-}
 else if state.is(state_dash) || anim_dive_timer || anim_jab_timer {
 	if anim_dive_timer > 0 {
 		anim.set("dive");

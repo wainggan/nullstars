@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_obj_Actor",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_obj_Actor",
+  "parent":{
+    "name":"_Actor",
+    "path":"folders/entities/_Actor.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
