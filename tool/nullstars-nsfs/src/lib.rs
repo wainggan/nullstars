@@ -85,7 +85,7 @@ pub enum RoomTile {
 }
 
 impl RoomTile {
-	fn from_raw(index: u8) -> Self {
+	pub fn from_raw(index: u8) -> Self {
 		if index == 0 {
 			RoomTile::Empty
 		}
@@ -106,7 +106,7 @@ impl RoomTile {
 		}
 	}
 
-	fn into_raw(self) -> u8 {
+	pub fn into_raw(self) -> u8 {
 		match self {
 			Self::Empty => 0,
 			Self::Solid(x) => {
@@ -114,8 +114,8 @@ impl RoomTile {
 				assert!(new <= 0b0011_1111);
 				new
 			}
-			Self::Semisolid(dir) => 0b1000_0000 & dir.into_index(),
-			Self::Spike(dir) => 0b0100_0000 & dir.into_index(),
+			Self::Semisolid(dir) => 0b1000_0000 | dir.into_index(),
+			Self::Spike(dir) => 0b0100_0000 | dir.into_index(),
 		}
 	}
 }
@@ -129,7 +129,8 @@ pub enum Direction {
 }
 
 impl Direction {
-	fn from_index(index: u8) -> Self {
+	#[must_use]
+	pub fn from_index(index: u8) -> Self {
 		debug_assert!(index <= 0b11);
 		match index {
 			0b00 => Self::Right,
@@ -140,7 +141,8 @@ impl Direction {
 		}
 	}
 
-	fn into_index(self) -> u8 {
+	#[must_use]
+	pub fn into_index(self) -> u8 {
 		self as u8
 	}
 }
@@ -239,22 +241,22 @@ impl Next for u32 {
 pub fn pack_world(world: &World) -> Vec<u8> {
 	let mut buf = Vec::new();
 
-	buf.copy_from_slice(MAGIC_TAG.as_bytes());
+	buf.extend_from_slice(MAGIC_TAG.as_bytes());
 	buf.push(0);
 
-	buf.copy_from_slice(MAGIC_WORLD.as_bytes());
+	buf.extend_from_slice(MAGIC_WORLD.as_bytes());
 	buf.push(0);
 
-	buf.copy_from_slice(&VERSION_WORLD.to_le_bytes());
+	buf.extend_from_slice(&VERSION_WORLD.to_le_bytes());
 
 	for room in &world.rooms {
-		buf.copy_from_slice(room.name.as_bytes());
+		buf.extend_from_slice(room.name.as_bytes());
 		buf.push(0);
 
-		buf.copy_from_slice(&room.x.to_le_bytes());
-		buf.copy_from_slice(&room.y.to_le_bytes());
-		buf.copy_from_slice(&room.width.to_le_bytes());
-		buf.copy_from_slice(&room.height.to_le_bytes());
+		buf.extend_from_slice(&room.x.to_le_bytes());
+		buf.extend_from_slice(&room.y.to_le_bytes());
+		buf.extend_from_slice(&room.width.to_le_bytes());
+		buf.extend_from_slice(&room.height.to_le_bytes());
 	}
 
 	buf
@@ -310,31 +312,31 @@ pub fn unpack_world(mut buf: &[u8]) -> Result<World, ReadError> {
 pub fn pack_room(room: &Room) -> Vec<u8> {
 	let mut buf = Vec::new();
 
-	buf.copy_from_slice(MAGIC_TAG.as_bytes());
+	buf.extend_from_slice(MAGIC_TAG.as_bytes());
 	buf.push(0);
 
-	buf.copy_from_slice(MAGIC_ROOM.as_bytes());
+	buf.extend_from_slice(MAGIC_ROOM.as_bytes());
 	buf.push(0);
 
-	buf.copy_from_slice(&VERSION_ROOM.to_le_bytes());
+	buf.extend_from_slice(&VERSION_ROOM.to_le_bytes());
 
 	let size = room.width * room.height;
 
 	assert_eq!(size, room.tiles.len().try_into().unwrap());
 
-	buf.copy_from_slice(&size.to_le_bytes());
+	buf.extend_from_slice(&size.to_le_bytes());
 	for tile in &room.tiles {
 		let index = tile.into_raw();
 		buf.push(index);
 	}
 
 	let size: u32 = room.entities.len().try_into().unwrap();
-	buf.copy_from_slice(&size.to_le_bytes());
+	buf.extend_from_slice(&size.to_le_bytes());
 	for entity in &room.entities {
-		buf.copy_from_slice(entity.name.as_bytes());
+		buf.extend_from_slice(entity.name.as_bytes());
 		buf.push(0);
-		buf.copy_from_slice(&entity.x.to_le_bytes());
-		buf.copy_from_slice(&entity.y.to_le_bytes());
+		buf.extend_from_slice(&entity.x.to_le_bytes());
+		buf.extend_from_slice(&entity.y.to_le_bytes());
 	}
 
 	buf
