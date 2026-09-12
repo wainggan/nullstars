@@ -1,14 +1,14 @@
 {
     "maps": [
         {
-            "fileName": "000.tmx",
+            "fileName": "000.tmj",
             "height": 752,
             "width": 1088,
             "x": 0,
             "y": 0
         },
         {
-            "fileName": "001.tmx",
+            "fileName": "001.tmj",
             "height": 560,
             "width": 784,
             "x": 1088,
