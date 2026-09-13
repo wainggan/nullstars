@@ -7,6 +7,7 @@ const MAGIC_WORLD: &str = "W";
 const MAGIC_ROOM: &str = "R";
 const VERSION_WORLD: u16 = 0;
 const VERSION_ROOM: u16 = 0;
+const TILE_SIZE: u32 = 16;
 
 pub struct World {
 	/// list of rooms
@@ -249,14 +250,17 @@ pub fn pack_world(world: &World) -> Vec<u8> {
 
 	buf.extend_from_slice(&VERSION_WORLD.to_le_bytes());
 
+	let size: u32 = world.rooms.len().try_into().unwrap();
+	buf.extend_from_slice(&size.to_le_bytes());
+
 	for room in &world.rooms {
 		buf.extend_from_slice(room.name.as_bytes());
 		buf.push(0);
 
-		buf.extend_from_slice(&room.x.to_le_bytes());
-		buf.extend_from_slice(&room.y.to_le_bytes());
-		buf.extend_from_slice(&room.width.to_le_bytes());
-		buf.extend_from_slice(&room.height.to_le_bytes());
+		buf.extend_from_slice(&(room.x / TILE_SIZE.cast_signed()).to_le_bytes());
+		buf.extend_from_slice(&(room.y / TILE_SIZE.cast_signed()).to_le_bytes());
+		buf.extend_from_slice(&(room.width / TILE_SIZE).to_le_bytes());
+		buf.extend_from_slice(&(room.height / TILE_SIZE).to_le_bytes());
 	}
 
 	buf

@@ -1,3 +1,5 @@
+use std::path::Path;
+
 #[derive(Debug, serde::Deserialize)]
 struct TiledMap {
 	/// in tiles
@@ -70,15 +72,36 @@ struct TiledTileset {
 	source: String,
 }
 
+#[derive(Debug, serde::Deserialize)]
+struct TiledWorld {
+	maps: Vec<TiledWorldMap>,
+}
+
+#[derive(Debug, serde::Deserialize)]
+struct TiledWorldMap {
+	#[serde(rename = "fileName")]
+	filename: String,
+	x: i32,
+	y: i32,
+	width: i32,
+	height: i32,
+}
+
 #[derive(Debug, Default)]
 enum Cli {
 	#[default] None,
 	Room(CliRoom),
+	World(CliWorld),
 }
-
 
 #[derive(Debug, Default)]
 struct CliRoom {
+	input: Option<String>,
+	output: Option<String>,
+}
+
+#[derive(Debug, Default)]
+struct CliWorld {
 	input: Option<String>,
 	output: Option<String>,
 }
@@ -123,6 +146,43 @@ const COMMAND: purcarg::Command<Cli, ()> = purcarg::Command::new()
 						Ok(layer)
 					}),
 			]),
+		purcarg::Command::new()
+			.name(&[b"world"])
+			.action_layer(|_, _| {
+				Ok(Cli::World(CliWorld::default()))
+			})
+			.argument(&[
+				purcarg::Argument::new()
+					.positional(b"input")
+					.action_layer(|mut layer, next| {
+						match layer {
+							Cli::World(ref mut world) => {
+								world.input = next()
+									.map(|x| str::from_utf8(x))
+									.transpose()
+									.map_err(|_| ())?
+									.map(|x| x.to_string());
+							}
+							_ => unreachable!(),
+						}
+						Ok(layer)
+					}),
+				purcarg::Argument::new()
+					.positional(b"output")
+					.action_layer(|mut layer, next| {
+						match layer {
+							Cli::World(ref mut world) => {
+								world.output = next()
+									.map(|x| str::from_utf8(x))
+									.transpose()
+									.map_err(|_| ())?
+									.map(|x| x.to_string());
+							}
+							_ => unreachable!(),
+						}
+						Ok(layer)
+					}),
+			]),
 	]);
 
 const CONFIG: purcarg::Config = purcarg::Config::new();
@@ -150,14 +210,14 @@ fn main() {
 			eprintln!("no action specified.");
 		}
 
-		Cli::Room(cli_room) => {
-			let Some(input) = cli_room.input
+		Cli::Room(cli) => {
+			let Some(input) = cli.input
 				else {
 					eprintln!("missing input");
 					return;
 				};
 
-			let Some(output) = cli_room.output
+			let Some(output) = cli.output
 				else {
 					eprintln!("missing output");
 					return;
@@ -286,6 +346,61 @@ fn main() {
 			};
 
 			let bin = nullstars_nsfs::pack_room(&room);
+
+			match std::fs::write(&output, bin) {
+				Ok(_) => (),
+				Err(error) => {
+					eprintln!("error writing file: {error}");
+				}
+			}
+		}
+
+		Cli::World(cli) => {
+			let Some(input) = cli.input
+				else {
+					eprintln!("missing input");
+					return;
+				};
+
+			let Some(output) = cli.output
+				else {
+					eprintln!("missing output");
+					return;
+				};
+
+			let input_file =
+				match std::fs::read_to_string(input) {
+					Ok(ok) => ok,
+					Err(error) => {
+						eprintln!("error reading file: {error}");
+						return;
+					}
+				};
+
+			let json = serde_json::from_str::<TiledWorld>(&input_file).unwrap();
+
+			let mut rooms = Vec::new();
+
+			for map in &json.maps {
+				rooms.push(nullstars_nsfs::WorldRoom {
+					name: Path::new(&map.filename)
+						.file_stem()
+						.unwrap()
+						.to_str()
+						.unwrap()
+						.to_string(),
+					x: map.x,
+					y: map.y,
+					width: map.width.cast_unsigned(),
+					height: map.height.cast_unsigned(),
+				})
+			}
+
+			let world = nullstars_nsfs::World {
+				rooms,
+			};
+
+			let bin = nullstars_nsfs::pack_world(&world);
 
 			match std::fs::write(&output, bin) {
 				Ok(_) => (),
