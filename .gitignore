@@ -1,10 +1,9 @@
 backup/*
 assets/export/*
-src/datafiles/world/*
-nullstars/datafiles/base/**/*.nsm
-nullstars/datafiles/base/**/*.nsw
-nullstars/datafiles/base/tiles.png
-src/Build/*
+source/datafiles/base/**/*.nsm
+source/datafiles/base/**/*.nsw
+source/datafiles/base/tiles.png
+source/Build/*
 bin/*
 *.tiled-session
 *.kate-swp
