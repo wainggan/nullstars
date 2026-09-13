@@ -320,6 +320,9 @@ pub fn pack_room(room: &Room) -> Vec<u8> {
 
 	buf.extend_from_slice(&VERSION_ROOM.to_le_bytes());
 
+	buf.extend_from_slice(&room.width.to_le_bytes());
+	buf.extend_from_slice(&room.height.to_le_bytes());
+
 	let size = room.width * room.height;
 
 	assert_eq!(size, room.tiles.len().try_into().unwrap());
