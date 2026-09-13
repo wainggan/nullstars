@@ -187,6 +187,17 @@ fn main() {
 				})
 				.unwrap();
 
+			let json_objects = json.layers
+				.iter()
+				.find(|x| x.name == "Entity")
+				.and_then(|x| match x.type_ {
+					TiledLayerType::Objectgroup {
+						ref objects,
+					} => Some(objects),
+					_ => None,
+				})
+				.unwrap();
+
 			let tileset_solid = json.tilesets
 				.iter()
 				.find(|x| x.source.ends_with("solid.tsx"))
@@ -214,9 +225,14 @@ fn main() {
 				let Some(tileset) = tilesets
 					.iter()
 					.fold(
-						None,
+						Option::<&(i32, i32)>::None,
 						|acc, x| {
-							if x.1.cast_unsigned() <= tile {
+							if let Some(prev) = acc
+								&& x.1.cast_unsigned() < prev.1.cast_unsigned()
+							{
+								acc
+							}
+							else if x.1.cast_unsigned() <= tile {
 								Some(x)
 							}
 							else {
@@ -250,13 +266,23 @@ fn main() {
 				}
 			}
 
+			let mut entities = Vec::new();
+
+			for object in json_objects {
+				entities.push(nullstars_nsfs::Entity {
+					name: object.name.clone(),
+					x: object.x as i32,
+					y: object.y as i32,
+				});
+			}
+
 			let room = nullstars_nsfs::Room {
 				x_offset: 0,
 				y_offset: 0,
 				width: json.width.cast_unsigned(),
 				height: json.height.cast_unsigned(),
 				tiles,
-				entities: Vec::new(),
+				entities,
 			};
 
 			let bin = nullstars_nsfs::pack_room(&room);
