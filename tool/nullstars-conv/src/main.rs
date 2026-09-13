@@ -70,196 +70,205 @@ struct TiledTileset {
 	source: String,
 }
 
-const COMMAND: purcarg::Command<(), ()> = purcarg::Command::new();
-
-fn main() {
-	let json = serde_json::from_str::<TiledMap>(FILE).unwrap();
-
-	println!("meow {:?}", json);
-
-	let mut tiles = Vec::new();
-
-	let json_tiles = json.layers
-		.iter()
-		.find(|x| x.name == "Solid")
-		.and_then(|x| match x.type_ {
-			TiledLayerType::Tilelayer {
-				width,
-				height,
-				ref data,
-			} => Some((width, height, data)),
-			_ => None,
-		})
-		.unwrap();
-
-	let tileset_solid = json.tilesets
-		.iter()
-		.find(|x| x.source.ends_with("solid.tsx"))
-		.unwrap();
-
-	let tileset_semisolid = json.tilesets
-		.iter()
-		.find(|x| x.source.ends_with("semisolid.tsx"))
-		.unwrap();
-
-	let tileset_spike = json.tilesets
-		.iter()
-		.find(|x| x.source.ends_with("spike.tsx"))
-		.unwrap();
-
-	let tilesets = [
-		(0, tileset_solid.firstgid),
-		(1, tileset_semisolid.firstgid),
-		(2, tileset_spike.firstgid),
-	];
-
-	for tile in json_tiles.2.iter().copied() {
-		let Some(tileset) = tilesets
-			.iter()
-			.fold(
-				None,
-				|acc, x| {
-					if x.1.cast_unsigned() <= tile {
-						Some(x)
-					}
-					else {
-						acc
-					}
-				})
-		else {
-			tiles.push(nullstars_nsfs::RoomTile::Empty);
-			continue;
-		};
-
-		let index = u8::try_from(
-			tile.strict_sub(tileset.1.cast_unsigned())
-		).unwrap();
-
-		if tileset.0 == 0 {
-			tiles.push(nullstars_nsfs::RoomTile::Solid(index));
-		}
-		else if tileset.0 == 1 {
-			tiles.push(nullstars_nsfs::RoomTile::Semisolid(
-				nullstars_nsfs::Direction::from_index(index)
-			));
-		}
-		else if tileset.0 == 2 {
-			tiles.push(nullstars_nsfs::RoomTile::Spike(
-				nullstars_nsfs::Direction::from_index(index)
-			));
-		}
-		else {
-			unreachable!();
-		}
-	}
-
-	let room = nullstars_nsfs::Room {
-		x_offset: 0,
-		y_offset: 0,
-		width: json.width.cast_unsigned(),
-		height: json.height.cast_unsigned(),
-		entities: Vec::new(),
-		tiles,
-	};
-
-	println!("{:?}", nullstars_nsfs::pack_room(&room));
+#[derive(Debug, Default)]
+enum Cli {
+	#[default] None,
+	Room(CliRoom),
 }
 
-const FILE: &str = r#"{ "compressionlevel":-1,
- "height":35,
- "infinite":false,
- "layers":[
-        {
-         "data":[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 17, 17, 17, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 2, 2, 2, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 2, 0, 0, 2, 2, 2, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 17, 17, 17, 2, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 2, 17, 17, 17, 17, 17, 17, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 17, 2, 17, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 2, 2,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 15, 2, 2,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 2,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0,
-            2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0,
-            2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 2, 2, 17, 17, 17, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0,
-            2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 2, 2, 0, 0, 0, 17, 17, 17, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0,
-            2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0,
-            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 2, 2, 2, 2, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 2, 2, 2, 2, 2, 0, 2, 2, 2, 10, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 15, 15, 15, 15, 15, 15, 15, 2, 2, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 15, 15, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
-         "height":35,
-         "id":1,
-         "name":"Solid",
-         "opacity":1,
-         "type":"tilelayer",
-         "visible":true,
-         "width":49,
-         "x":0,
-         "y":0
-        },
-        {
-         "draworder":"topdown",
-         "id":2,
-         "name":"Entity",
-         "objects":[
-                         {
-                          "height":0,
-                          "id":11,
-                          "name":"Nova",
-                          "opacity":1,
-                          "point":true,
-                          "rotation":0,
-                          "type":"",
-                          "visible":true,
-                          "width":0,
-                          "x":64,
-                          "y":624
-                         }],
-         "opacity":1,
-         "type":"objectgroup",
-         "visible":true,
-         "x":0,
-         "y":0
-        }],
- "nextlayerid":3,
- "nextobjectid":1,
- "orientation":"orthogonal",
- "renderorder":"right-down",
- "tiledversion":"1.12.2",
- "tileheight":16,
- "tilesets":[
-        {
-         "firstgid":1,
-         "source":"..\/asset\/solid.tsx"
-        },
-        {
-         "firstgid":9,
-         "source":"..\/asset\/semisolid.tsx"
-        },
-        {
-         "firstgid":14,
-         "source":"..\/asset\/spike.tsx"
-        }],
- "tilewidth":16,
- "type":"map",
- "version":"1.11",
- "width":49
-}"#;
+
+#[derive(Debug, Default)]
+struct CliRoom {
+	input: Option<String>,
+	output: Option<String>,
+}
+
+const COMMAND: purcarg::Command<Cli, ()> = purcarg::Command::new()
+	.name(&[b"nsconv"])
+	.subcommand(&[
+		purcarg::Command::new()
+			.name(&[b"room"])
+			.action_layer(|_, _| {
+				Ok(Cli::Room(CliRoom::default()))
+			})
+			.argument(&[
+				purcarg::Argument::new()
+					.positional(b"input")
+					.action_layer(|mut layer, next| {
+						match layer {
+							Cli::Room(ref mut room) => {
+								room.input = next()
+									.map(|x| str::from_utf8(x))
+									.transpose()
+									.map_err(|_| ())?
+									.map(|x| x.to_string());
+							}
+							_ => unreachable!(),
+						}
+						Ok(layer)
+					}),
+				purcarg::Argument::new()
+					.positional(b"output")
+					.action_layer(|mut layer, next| {
+						match layer {
+							Cli::Room(ref mut room) => {
+								room.output = next()
+									.map(|x| str::from_utf8(x))
+									.transpose()
+									.map_err(|_| ())?
+									.map(|x| x.to_string());
+							}
+							_ => unreachable!(),
+						}
+						Ok(layer)
+					}),
+			]),
+	]);
+
+const CONFIG: purcarg::Config = purcarg::Config::new();
+
+const OUTPUT: purcarg::Output = purcarg::Output::new();
+
+fn main() {
+	let cli = purcarg::parse_bytes(
+		OUTPUT,
+		CONFIG,
+		COMMAND,
+		argv::iter()
+			.map(|x| x.as_encoded_bytes())
+			.skip(1),
+		Cli::default(),
+	).unwrap();
+
+	let cli = match cli {
+		purcarg::Success::Help | purcarg::Success::Version => return,
+		purcarg::Success::Layer(cli) => cli,
+	};
+
+	match cli {
+		Cli::None => {
+			eprintln!("no action specified.");
+		}
+
+		Cli::Room(cli_room) => {
+			let Some(input) = cli_room.input
+				else {
+					eprintln!("missing input");
+					return;
+				};
+
+			let Some(output) = cli_room.output
+				else {
+					eprintln!("missing output");
+					return;
+				};
+
+			let input_file =
+				match std::fs::read_to_string(input) {
+					Ok(ok) => ok,
+					Err(error) => {
+						eprintln!("error reading file: {error}");
+						return;
+					}
+				};
+
+			let json = serde_json::from_str::<TiledMap>(&input_file).unwrap();
+
+			println!("meow {:?}", json);
+
+			let mut tiles = Vec::new();
+
+			let json_tiles = json.layers
+				.iter()
+				.find(|x| x.name == "Solid")
+				.and_then(|x| match x.type_ {
+					TiledLayerType::Tilelayer {
+						width,
+						height,
+						ref data,
+					} => Some((width, height, data)),
+					_ => None,
+				})
+				.unwrap();
+
+			let tileset_solid = json.tilesets
+				.iter()
+				.find(|x| x.source.ends_with("solid.tsx"))
+				.unwrap();
+
+			let tileset_semisolid = json.tilesets
+				.iter()
+				.find(|x| x.source.ends_with("semisolid.tsx"))
+				.unwrap();
+
+			let tileset_spike = json.tilesets
+				.iter()
+				.find(|x| x.source.ends_with("spike.tsx"))
+				.unwrap();
+
+			let tilesets = [
+				(0, tileset_solid.firstgid),
+				(1, tileset_semisolid.firstgid),
+				(2, tileset_spike.firstgid),
+			];
+
+			for tile in json_tiles.2.iter().copied() {
+				let Some(tileset) = tilesets
+					.iter()
+					.fold(
+						None,
+						|acc, x| {
+							if x.1.cast_unsigned() <= tile {
+								Some(x)
+							}
+							else {
+								acc
+							}
+						})
+				else {
+					tiles.push(nullstars_nsfs::RoomTile::Empty);
+					continue;
+				};
+
+				let index = u8::try_from(
+					tile.strict_sub(tileset.1.cast_unsigned())
+				).unwrap();
+
+				if tileset.0 == 0 {
+					tiles.push(nullstars_nsfs::RoomTile::Solid(index));
+				}
+				else if tileset.0 == 1 {
+					tiles.push(nullstars_nsfs::RoomTile::Semisolid(
+						nullstars_nsfs::Direction::from_index(index)
+					));
+				}
+				else if tileset.0 == 2 {
+					tiles.push(nullstars_nsfs::RoomTile::Spike(
+						nullstars_nsfs::Direction::from_index(index)
+					));
+				}
+				else {
+					unreachable!();
+				}
+			}
+
+			let room = nullstars_nsfs::Room {
+				x_offset: 0,
+				y_offset: 0,
+				width: json.width.cast_unsigned(),
+				height: json.height.cast_unsigned(),
+				tiles,
+				entities: Vec::new(),
+			};
+
+			let bin = nullstars_nsfs::pack_room(&room);
+
+			match std::fs::write(&output, bin) {
+				Ok(_) => (),
+				Err(error) => {
+					eprintln!("error writing file: {error}");
+				}
+			}
+		}
+	}
+}
