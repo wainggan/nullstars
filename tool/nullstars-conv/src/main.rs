@@ -174,10 +174,6 @@ fn main() {
 
 			let json = serde_json::from_str::<TiledMap>(&input_file).unwrap();
 
-			println!("meow {:?}", json);
-
-			let mut tiles = Vec::new();
-
 			let json_tiles = json.layers
 				.iter()
 				.find(|x| x.name == "Solid")
@@ -211,6 +207,8 @@ fn main() {
 				(1, tileset_semisolid.firstgid),
 				(2, tileset_spike.firstgid),
 			];
+
+			let mut tiles = Vec::new();
 
 			for tile in json_tiles.2.iter().copied() {
 				let Some(tileset) = tilesets
