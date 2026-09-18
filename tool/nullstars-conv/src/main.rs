@@ -1,5 +1,3 @@
-use std::path::Path;
-
 #[derive(Debug, serde::Deserialize)]
 struct TiledMap {
 	/// in tiles
@@ -416,7 +414,7 @@ fn main() {
 				}
 
 				rooms.push(nullstars_nsfs::WorldRoom {
-					name: Path::new(&map.filename)
+					name: std::path::Path::new(&map.filename)
 						.file_stem()
 						.unwrap()
 						.to_str()
