@@ -12,6 +12,7 @@ const TILE_SIZE: u32 = 16;
 pub struct World {
 	/// list of rooms
 	pub rooms: Vec<WorldRoom>,
+	pub checkpoints: Vec<WorldCheckpoint>,
 }
 
 pub struct WorldRoom {
@@ -27,6 +28,12 @@ pub struct WorldRoom {
 	pub height: u32,
 }
 
+pub struct WorldCheckpoint {
+	pub name: String,
+	pub x: i32,
+	pub y: i32,
+}
+
 pub struct Room {
 	/// room x offset in tiles
 	pub x_offset: i32,
@@ -38,13 +45,8 @@ pub struct Room {
 	pub height: u32,
 	/// 'solid' tiles.
 	pub tiles: Vec<RoomTile>,
+	/// 'entities' list.
 	pub entities: Vec<Entity>,
-}
-
-pub struct Entity {
-	pub name: String,
-	pub x: i32,
-	pub y: i32,
 }
 
 impl Room {
@@ -75,6 +77,12 @@ impl Room {
 			Some(&mut self.tiles[i])
 		}
 	}
+}
+
+pub struct Entity {
+	pub name: String,
+	pub x: i32,
+	pub y: i32,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -263,6 +271,17 @@ pub fn pack_world(world: &World) -> Vec<u8> {
 		buf.extend_from_slice(&(room.height / TILE_SIZE).to_le_bytes());
 	}
 
+	let size: u32 = world.checkpoints.len().try_into().unwrap();
+	buf.extend_from_slice(&size.to_le_bytes());
+
+	for checkpoint in &world.checkpoints {
+		buf.extend_from_slice(checkpoint.name.as_bytes());
+		buf.push(0);
+
+		buf.extend_from_slice(&checkpoint.x.to_le_bytes());
+		buf.extend_from_slice(&checkpoint.y.to_le_bytes());
+	}
+
 	buf
 }
 
@@ -301,12 +320,28 @@ pub fn unpack_world(mut buf: &[u8]) -> Result<World, ReadError> {
 		});
 	}
 
+	let size = u32::next(&mut buf)?;
+	let mut checkpoints = Vec::new();
+
+	for _ in 0..size {
+		let name = String::next(&mut buf)?;
+		let x = u32::next(&mut buf)?.cast_signed();
+		let y = u32::next(&mut buf)?.cast_signed();
+
+		checkpoints.push(WorldCheckpoint {
+			name,
+			x,
+			y,
+		});
+	}
+
 	if !buf.is_empty() {
 		return Err(ReadError::NotEmptyBuffer);
 	}
 
 	let world = World {
 		rooms,
+		checkpoints,
 	};
 
 	Ok(world)
@@ -328,7 +363,6 @@ pub fn pack_room(room: &Room) -> Vec<u8> {
 	buf.extend_from_slice(&room.height.to_le_bytes());
 
 	let size = room.width * room.height;
-
 	assert_eq!(size, room.tiles.len().try_into().unwrap());
 
 	buf.extend_from_slice(&size.to_le_bytes());
@@ -339,9 +373,11 @@ pub fn pack_room(room: &Room) -> Vec<u8> {
 
 	let size: u32 = room.entities.len().try_into().unwrap();
 	buf.extend_from_slice(&size.to_le_bytes());
+
 	for entity in &room.entities {
 		buf.extend_from_slice(entity.name.as_bytes());
 		buf.push(0);
+
 		buf.extend_from_slice(&entity.x.to_le_bytes());
 		buf.extend_from_slice(&entity.y.to_le_bytes());
 	}

@@ -217,11 +217,15 @@ fn main() {
 					return;
 				};
 
+			let input = std::path::PathBuf::from(input);
+
 			let Some(output) = cli.output
 				else {
 					eprintln!("missing output");
 					return;
 				};
+
+			let output = std::path::PathBuf::from(output);
 
 			let input_file =
 				match std::fs::read_to_string(input) {
@@ -362,14 +366,18 @@ fn main() {
 					return;
 				};
 
+			let input = std::path::PathBuf::from(input);
+
 			let Some(output) = cli.output
 				else {
 					eprintln!("missing output");
 					return;
 				};
 
+			let mut output = std::path::PathBuf::from(output);
+
 			let input_file =
-				match std::fs::read_to_string(input) {
+				match std::fs::read_to_string(&input) {
 					Ok(ok) => ok,
 					Err(error) => {
 						eprintln!("error reading file: {error}");
@@ -379,9 +387,46 @@ fn main() {
 
 			let json = serde_json::from_str::<TiledWorld>(&input_file).unwrap();
 
+			output.pop();
+
 			let mut rooms = Vec::new();
+			let mut checkpoints = Vec::new();
 
 			for map in &json.maps {
+				let map_path = output.join(&map.filename);
+
+				let map_file =
+					match std::fs::read_to_string(&map_path) {
+						Ok(ok) => ok,
+						Err(error) => {
+							eprintln!("error reading file: {error}");
+							return;
+						}
+					};
+
+				let json = serde_json::from_str::<TiledMap>(&map_file).unwrap();
+
+				let entity_layer = json.layers
+					.iter()
+					.find(|x| x.name == "Entity")
+					.and_then(|x| match x.type_ {
+						TiledLayerType::Objectgroup {
+							ref objects,
+						} => Some(objects),
+						_ => None,
+					})
+					.unwrap();
+
+				for entity in entity_layer {
+					if entity.name == "Checkpoint" {
+						checkpoints.push(nullstars_nsfs::WorldCheckpoint {
+							name: entity.name.clone(),
+							x: entity.x as i32,
+							y: entity.y as i32,
+						});
+					}
+				}
+
 				rooms.push(nullstars_nsfs::WorldRoom {
 					name: Path::new(&map.filename)
 						.file_stem()
@@ -398,6 +443,7 @@ fn main() {
 
 			let world = nullstars_nsfs::World {
 				rooms,
+				checkpoints,
 			};
 
 			let bin = nullstars_nsfs::pack_world(&world);
