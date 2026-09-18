@@ -262,47 +262,35 @@ fn main() {
 				})
 				.unwrap();
 
-			let tileset_solid = json.tilesets
-				.iter()
-				.find(|x| x.source.ends_with("solid.tsx"))
-				.unwrap();
+			let tilesets = json.tilesets
+				.as_array::<3>()
+				.unwrap()
+				.each_ref()
+				.map(|tileset| {
+					let idx =
+						if tileset.source.ends_with("solid.tsx") {
+							0
+						}
+						else if tileset.source.ends_with("semisolid.tsx") {
+							1
+						}
+						else if tileset.source.ends_with("spike.tsx") {
+							2
+						}
+						else {
+							panic!();
+						};
 
-			let tileset_semisolid = json.tilesets
-				.iter()
-				.find(|x| x.source.ends_with("semisolid.tsx"))
-				.unwrap();
-
-			let tileset_spike = json.tilesets
-				.iter()
-				.find(|x| x.source.ends_with("spike.tsx"))
-				.unwrap();
-
-			let tilesets = [
-				(0, tileset_solid.firstgid),
-				(1, tileset_semisolid.firstgid),
-				(2, tileset_spike.firstgid),
-			];
+					(idx, tileset.firstgid)
+				});
 
 			let mut tiles = Vec::new();
 
 			for tile in json_tiles.2.iter().copied() {
 				let Some(tileset) = tilesets
 					.iter()
-					.fold(
-						Option::<&(i32, i32)>::None,
-						|acc, x| {
-							if let Some(prev) = acc
-								&& x.1.cast_unsigned() < prev.1.cast_unsigned()
-							{
-								acc
-							}
-							else if x.1.cast_unsigned() <= tile {
-								Some(x)
-							}
-							else {
-								acc
-							}
-						})
+					.rev()
+					.find(|(_, firstgid)| firstgid.cast_unsigned() <= tile)
 				else {
 					tiles.push(nullstars_nsfs::RoomTile::Empty);
 					continue;
